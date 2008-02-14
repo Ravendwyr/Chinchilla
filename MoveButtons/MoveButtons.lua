@@ -126,10 +126,15 @@ local function button_OnUpdate(this)
 	Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
 end
 local function button_OnDragStart(this)
+	this.isMoving = true
 	this:SetScript("OnUpdate", button_OnUpdate)
 	this:StartMoving()
 end
 local function button_OnDragStop(this)
+	if not this.isMoving then
+		return
+	end
+	this.isMoving = nil
 	this:SetScript("OnUpdate", nil)
 	this:StopMovingOrSizing()
 	button_OnUpdate(this)
