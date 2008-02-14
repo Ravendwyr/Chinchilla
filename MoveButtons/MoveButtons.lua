@@ -8,9 +8,9 @@ if Chinchilla.revision < VERSION then
 	Chinchilla.revision = VERSION
 	Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
 end
-local L = Chinchilla:L("Chinchilla_MoveButtons")
+local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
-Chinchilla_MoveButtons.desc = L["Show and hide interface elements of the minimap"]
+Chinchilla_MoveButtons.desc = L["Move buttons around the minimap"]
 
 local buttons = {
 	battleground = MiniMapBattlefieldFrame,

@@ -8,7 +8,7 @@ if Chinchilla.revision < VERSION then
 	Chinchilla.revision = VERSION
 	Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
 end
-local L = Chinchilla:L("Chinchilla_AutoZoom")
+local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_AutoZoom.desc = L["Automatically zoom out after a specified time."]
 

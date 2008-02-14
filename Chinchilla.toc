@@ -15,6 +15,14 @@
 
 embeds.xml
 
+locale\enUS.lua
+locale\deDE.lua
+locale\frFR.lua
+locale\esES.lua
+locale\koKR.lua
+locale\zhCN.lua
+locale\zhTW.lua
+
 Chinchilla.lua
 
 modules.xml

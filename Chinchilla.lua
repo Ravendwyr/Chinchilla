@@ -10,21 +10,10 @@ Chinchilla:SetDatabase("ChinchillaDB")
 Chinchilla:SetDatabaseDefaults('profile', {
 })
 
-local localeTables = {}
-function Chinchilla:L(name, defaultTable)
-	if not localeTables[name] then
-		localeTables[name] = setmetatable(defaultTable or {}, {__index = function(self, key)
-			self[key] = key
-			return key
-		end})
-	end
-	return localeTables[name]
-end
-
-local L = Chinchilla:L("Chinchilla")
+local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla.options = {
-	name = L["Chinchilla"],
+	name = "Chinchilla",
 	desc = L["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."],
 	type = 'group',
 	icon = [[Interface\AddOns\Chinchilla\icon]],

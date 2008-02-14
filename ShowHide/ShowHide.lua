@@ -8,7 +8,7 @@ if Chinchilla.revision < VERSION then
 	Chinchilla.revision = VERSION
 	Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
 end
-local L = Chinchilla:L("Chinchilla_ShowHide")
+local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_ShowHide.desc = L["Show and hide interface elements of the minimap"]
 

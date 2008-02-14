@@ -8,7 +8,7 @@ if Chinchilla.revision < VERSION then
 	Chinchilla.revision = VERSION
 	Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
 end
-local L = Chinchilla:L("Chinchilla_WheelZoom")
+local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_WheelZoom.desc = L["Use the mouse wheel to zoom in and out on the minimap."]
 

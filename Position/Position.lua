@@ -8,9 +8,9 @@ if Chinchilla.revision < VERSION then
 	Chinchilla.revision = VERSION
 	Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
 end
-local L = Chinchilla:L("Chinchilla_Position")
+local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
-Chinchilla_Position.desc = L["Allow for a customized look of the minimap"]
+Chinchilla_Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 function Chinchilla_Position:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Position")
@@ -302,15 +302,15 @@ function Chinchilla_Position:ShowFrameMover(frame, value)
 end
 
 local choices = {
-	TOPLEFT = L["Top-left"],
-	TOP = L["Top"],
-	TOPRIGHT = L["Top-right"],
+	TOP = L["Top"],	
 	LEFT = L["Left"],
 	RIGHT = L["Right"],
-	BOTTOMLEFT = L["Bottom-left"],
 	BOTTOM = L["Bottom"],
-	BOTTOMRIGHT = L["Bottom-right"],
 	CENTER = L["Center"],
+	TOPLEFT = L["Top-left"],
+	TOPRIGHT = L["Top-right"],
+	BOTTOMLEFT = L["Bottom-left"],
+	BOTTOMRIGHT = L["Bottom-right"],
 }
 
 local function movable_get(frame)
