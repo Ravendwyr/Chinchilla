@@ -42,7 +42,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set the time it takes between manually zooming in and automatically zooming out"] = "设置在手动放大小地图后，经过多少时间会自动缩小回去",
 
 	["Coordinates"] = "坐标",
-	["Use the mouse wheel to zoom in and out on the minimap."] = "",
+	["Show coordinates on or near the minimap"] = "在小地图之上或者周围显示当前坐标",
 	["Precision"] = "精确度",
 	["Set the amount of numbers past the decimal place to show."] = "设置小数点后显示几位数字",
 	["Set the size of the coordinate display."] = "设置坐标框的大小",
