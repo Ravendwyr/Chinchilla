@@ -12,12 +12,6 @@ local L = Chinchilla:L("Chinchilla_MoveButtons")
 
 Chinchilla_MoveButtons.desc = L["Show and hide interface elements of the minimap"]
 
-function Chinchilla_MoveButtons:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("MoveButtons")
-	Chinchilla:SetDatabaseNamespaceDefaults("MoveButtons", "profile", {
-	})
-end
-
 local buttons = {
 	battleground = MiniMapBattlefieldFrame,
 	map = MiniMapWorldMapButton,
@@ -111,7 +105,7 @@ local function getAngle(x1, y1)
 	while deg > 360 do
 		deg = deg - 360
 	end
-	return deg
+	return math.floor(deg + 0.5)
 end
 
 local function button_OnUpdate(this)
@@ -141,10 +135,18 @@ local function button_OnDragStop(this)
 	button_OnUpdate(this)
 end
 
-function Chinchilla_MoveButtons:OnEnable()
+function Chinchilla_MoveButtons:OnInitialize()
+	self.db = Chinchilla:GetDatabaseNamespace("MoveButtons")
+	Chinchilla:SetDatabaseNamespaceDefaults("MoveButtons", "profile", {
+	})
+	
 	for k,v in pairs(buttons) do
 		buttonStarts[k] = getAngle(v:GetCenter())
-		
+	end
+end
+
+function Chinchilla_MoveButtons:OnEnable()
+	for k,v in pairs(buttons) do
 		v:SetMovable(true)
 		v:RegisterForDrag("LeftButton")
 		v:SetScript("OnDragStart", button_OnDragStart)
