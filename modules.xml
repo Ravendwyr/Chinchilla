@@ -1,0 +1,10 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="Appearance\Appearance.lua"/>
+	<Script file="AutoZoom\AutoZoom.lua"/>
+	<Script file="Coordinates\Coordinates.lua"/>
+	<Script file="MoveButtons\MoveButtons.lua"/>
+	<Script file="Position\Position.lua"/>
+	<Script file="ShowHide\ShowHide.lua"/>
+	<Script file="WheelZoom\WheelZoom.lua"/>
+</Ui>
