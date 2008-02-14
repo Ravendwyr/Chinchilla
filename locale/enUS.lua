@@ -40,7 +40,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set the time it takes between manually zooming in and automatically zooming out"] = true,
 	
 	["Coordinates"] = true,
-	["Use the mouse wheel to zoom in and out on the minimap."] = true,
+	["Show coordinates on or near the minimap"] = true,
 	["Precision"] = true,
 	["Set the amount of numbers past the decimal place to show."] = true,
 	["Set the size of the coordinate display."] = true,

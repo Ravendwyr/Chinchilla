@@ -10,7 +10,7 @@ if Chinchilla.revision < VERSION then
 end
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
-Chinchilla_Coordinates.desc = L["Use the mouse wheel to zoom in and out on the minimap."]
+Chinchilla_Coordinates.desc = L["Show coordinates on or near the minimap"]
 
 local coordString
 local function recalculateCoordString()
