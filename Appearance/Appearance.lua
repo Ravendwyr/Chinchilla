@@ -18,6 +18,7 @@ function Chinchilla_Appearance:OnInitialize()
 		scale = 1,
 		alpha = 1,
 		borderAlpha = 1,
+		buttonBorderAlpha = 1,
 		strata = "BACKGROUND",
 		shape = "CORNER-BOTTOMLEFT",
 	})
@@ -30,6 +31,7 @@ function Chinchilla_Appearance:OnEnable()
 	self:SetFrameStrata(nil)
 	self:SetShape(nil)
 	self:SetBorderAlpha(nil)
+	self:SetButtonBorderAlpha(nil)
 	
 	MinimapBorder:Hide()
 	for i,v in ipairs(cornerTextures) do
@@ -43,6 +45,7 @@ function Chinchilla_Appearance:OnDisable()
 	self:SetFrameStrata(nil)
 	self:SetShape(nil)
 	self:SetBorderAlpha(nil)
+	self:SetButtonBorderAlpha(nil)
 	
 	MinimapBorder:Show()
 	Minimap:SetMaskTexture([[Textures\MinimapMask]])
@@ -174,6 +177,32 @@ function Chinchilla_Appearance:SetBorderAlpha(alpha)
 	end
 end
 
+local buttonBorderTextures = {
+	MiniMapBattlefieldBorder,
+	MiniMapWorldBorder,
+	MiniMapMailBorder,
+	MiniMapMeetingStoneBorder,
+--	GameTimeFrame,
+	MiniMapTrackingBorder,
+	MiniMapVoiceChatFrameBorder,
+--	MinimapZoomIn,
+--	MinimapZoomOut
+}
+function Chinchilla_Appearance:SetButtonBorderAlpha(alpha)
+	if alpha then
+		self.db.profile.buttonBorderAlpha = alpha
+	else
+		alpha = self.db.profile.buttonBorderAlpha
+	end
+	if not Chinchilla:IsModuleActive(self) then
+		alpha = 1
+	end
+	
+	for i,v in ipairs(buttonBorderTextures) do
+		v:SetAlpha(alpha)
+	end
+end
+
 Chinchilla_Appearance:AddChinchillaOption({
 	name = L["Appearance"],
 	desc = Chinchilla_Appearance.desc,
@@ -269,6 +298,20 @@ Chinchilla_Appearance:AddChinchillaOption({
 				return Chinchilla_Appearance.db.profile.borderAlpha
 			end,
 			set = "SetBorderAlpha",
+			isPercent = true,
+		},
+		buttonBorderAlpha = {
+			name = L["Button border opacity"],
+			desc = L["Set how transparent or opaque the minimap button borders are."],
+			type = 'number',
+			min = 0,
+			max = 1,
+			step = 0.01,
+			bigStep = 0.05,
+			get = function()
+				return Chinchilla_Appearance.db.profile.buttonBorderAlpha
+			end,
+			set = "SetButtonBorderAlpha",
 			isPercent = true,
 		}
 	}

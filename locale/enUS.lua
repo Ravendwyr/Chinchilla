@@ -33,6 +33,8 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Side, left rounded"] = true,
 	["Border opacity"] = true,
 	["Set how transparent or opaque the minimap border is."] = true,
+	["Button border opacity"] = true,
+	["Set how transparent or opaque the minimap button borders are."] = true,
 	
 	["Auto zoom"] = true,
 	["Automatically zoom out after a specified time."] = true,
