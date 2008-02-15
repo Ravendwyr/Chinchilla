@@ -268,6 +268,10 @@ local function y_max()
 	return math.floor(GetScreenHeight()/10 + 0.5) * 10
 end
 
+function Chinchilla_MoveButtons:IsLocked()
+	return self.db.profile.lock
+end
+
 function Chinchilla_MoveButtons:SetLocked(value)
 	if value ~= nil then
 		self.db.profile.lock = value
@@ -351,9 +355,7 @@ Chinchilla_MoveButtons:AddChinchillaOption({
 			desc = L["Lock buttons in place so that they won't be mistakenly dragged"],
 			type = 'boolean',
 			order = 2,
-			get = function()
-				return self.db.profile.lock
-			end,
+			get = "IsLocked",
 			set = "SetLocked",
 		},
 		battleground = {

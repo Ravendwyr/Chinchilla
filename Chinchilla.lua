@@ -17,7 +17,40 @@ Chinchilla.options = {
 	desc = L["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."],
 	type = 'group',
 	icon = [[Interface\AddOns\Chinchilla\icon]],
-	args = {},
+	args = {
+		lock = {
+			name = L["Lock"],
+			desc = L["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."],
+			type = 'boolean',
+			get = function()
+				local current = 0
+				local max = 0
+				for name, module in Chinchilla:IterateModules(false) do
+					if type(module.IsLocked) == "function" then
+						local locked = module:IsLocked()
+						max = max + 1
+						if locked then
+							if locked == "HALF" then
+								current = current + 0.5
+							else
+								current = current + 1
+							end
+						end
+					end
+				end
+				if current == 0 then
+					return false
+				elseif current == max then
+					return true
+				else
+					return "HALF"
+				end
+			end,
+			set = function(value)
+				Chinchilla:CallMethodOnAllModules(false, "SetLocked", value)
+			end
+		}
+	},
 }
 Chinchilla:SetConfigTable(Chinchilla.options)
 Chinchilla:SetConfigSlashCommand("/Chinchilla", "/Chin")

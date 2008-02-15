@@ -2,6 +2,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = true,
 	["Enable"] = true,
 	["Enable this module"] = true,
+	["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."] = true,
 	
 	["Appearance"] = true,
 	["Allow for a customized look of the minimap"] = true,

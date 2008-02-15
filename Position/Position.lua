@@ -68,7 +68,7 @@ function Chinchilla_Position:OnEnable()
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
-	self:SetMinimapLock(nil)
+	self:SetLocked(nil)
 	
 	Minimap:SetClampedToScreen(true)
 	
@@ -85,7 +85,7 @@ function Chinchilla_Position:OnDisable()
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
-	self:SetMinimapLock(nil)
+	self:SetLocked(nil)
 	
 	Minimap:SetClampedToScreen(false)
 end
@@ -106,7 +106,11 @@ local quadrantToShape = {
 	"CORNER-BOTTOMLEFT",
 }
 
-function Chinchilla_Position:SetMinimapLock(value)
+function Chinchilla_Position:IsLocked()
+	return self.db.profile.minimapLock
+end
+
+function Chinchilla_Position:SetLocked(value)
 	if value ~= nil then
 		self.db.profile.minimapLock = value
 	else
@@ -390,10 +394,8 @@ Chinchilla_Position:AddChinchillaOption({
 					desc = L["Lock the minimap so it cannot be mistakenly dragged"],
 					type = 'boolean',
 					order = 1,
-					get = function()
-						return self.db.profile.minimapLock
-					end,
-					set = "SetMinimapLock"
+					get = "IsLocked",
+					set = "SetLocked"
 				},
 				point = {
 					name = L["Point"],
