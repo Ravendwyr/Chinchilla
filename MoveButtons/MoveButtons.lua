@@ -143,6 +143,7 @@ end
 function Chinchilla_MoveButtons:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("MoveButtons")
 	Chinchilla:SetDatabaseNamespaceDefaults("MoveButtons", "profile", {
+		lock = false
 	})
 	
 	for k,v in pairs(buttons) do
@@ -151,22 +152,13 @@ function Chinchilla_MoveButtons:OnInitialize()
 end
 
 function Chinchilla_MoveButtons:OnEnable()
-	for k,v in pairs(buttons) do
-		v:SetMovable(true)
-		v:RegisterForDrag("LeftButton")
-		v:SetScript("OnDragStart", button_OnDragStart)
-		v:SetScript("OnDragStop", button_OnDragStop)
-	end
+	self:SetLocked(nil)
 	self:Update()
 end
 
 function Chinchilla_MoveButtons:OnDisable()
+	self:SetLocked(nil)
 	for k,v in pairs(buttons) do
-		v:SetMovable(false)
-		v:RegisterForDrag()
-		v:SetScript("OnDragStart", nil)
-		v:SetScript("OnDragStop", nil)
-		
 		local deg = buttonStarts[k]
 		v:ClearAllPoints()
 		v:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
@@ -197,11 +189,47 @@ local function set(key, value)
 	buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
 end
 
+function Chinchilla_MoveButtons:SetLocked(value)
+	if value ~= nil then
+		self.db.profile.lock = value
+	else
+		value = self.db.profile.lock
+	end
+	if not Chinchilla:IsModuleActive(self) then
+		value = true
+	end
+	if value then
+		for k,v in pairs(buttons) do
+			v:SetMovable(false)
+			v:RegisterForDrag()
+			v:SetScript("OnDragStart", nil)
+			v:SetScript("OnDragStop", nil)
+		end
+	else
+		for k,v in pairs(buttons) do
+			v:SetMovable(true)
+			v:RegisterForDrag("LeftButton")
+			v:SetScript("OnDragStart", button_OnDragStart)
+			v:SetScript("OnDragStop", button_OnDragStop)
+		end
+	end
+end
+
 Chinchilla_MoveButtons:AddChinchillaOption({
 	name = L["Move Buttons"],
 	desc = Chinchilla_MoveButtons.desc,
 	type = 'group',
 	args = {
+		lock = {
+			name = L["Lock"],
+			desc = L["Lock buttons in place so that they won't be mistakenly dragged"],
+			type = 'boolean',
+			order = 2,
+			get = function()
+				return self.db.profile.lock
+			end,
+			set = "SetLocked",
+		},
 		battleground = {
 			name = L["Battleground"],
 			desc = L["Set the position of the battleground indicator"],

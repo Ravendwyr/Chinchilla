@@ -78,6 +78,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set the position of the zoom in button"] = true,
 	["Zoom out"] = true,
 	["Set the position of the zoom out button"] = true,
+	["Lock buttons in place so that they won't be mistakenly dragged"] = true,
 	
 	["Position"] = true,
 	["Allow for moving of the minimap and surrounding frames"] = true,
