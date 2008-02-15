@@ -77,7 +77,17 @@ function Chinchilla_Coordinates:OnEnable()
 		local countdown = 0
 		function frame:Update()
 			local x, y = GetPlayerMapPosition("player")
-			text:SetText(coordString:format(x*100, y*100))
+			if x == 0 and y == 0 then
+				-- instance or can't get coords
+				self:Hide()
+			else
+				if not self:IsShown() then
+					self:Show()
+					Chinchilla_Coordinates:Update()
+					return
+				end
+				text:SetText(coordString:format(x*100, y*100))
+			end
 		end
 		frame:SetScript("OnUpdate", function(this, elapsed)
 			countdown = countdown - elapsed
