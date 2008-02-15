@@ -79,6 +79,12 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Zoom out"] = true,
 	["Set the position of the zoom out button"] = true,
 	["Lock buttons in place so that they won't be mistakenly dragged"] = true,
+	["Attach to minimap"] = true,
+	["Whether to stay attached to the minimap or move freely.\nNote: If you hold Alt while dragging, it will automatically unattach."] = true,
+	["Angle"] = true,
+	["Angle on the minimap"] = true,
+	["Horizontal position of the button on-screen"] = true,
+	["Vertical position of the button on-screen"] = true,
 	
 	["Position"] = true,
 	["Allow for moving of the minimap and surrounding frames"] = true,

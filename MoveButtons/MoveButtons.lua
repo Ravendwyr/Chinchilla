@@ -113,15 +113,36 @@ local function button_OnUpdate(this)
 	local x, y = GetCursorPosition()
 	local scale = UIParent:GetEffectiveScale()
 	x, y = x / scale, y / scale
-	local deg = math.floor(getAngle(x, y) + 0.5)
-	for k,v in pairs(buttons) do
-		if v == this then
-			self.db.profile[k] = deg
-			break
+	local deg
+	if not IsAltKeyDown() then
+		deg = math.floor(getAngle(x, y) + 0.5)
+		for k,v in pairs(buttons) do
+			if v == this then
+				self.db.profile[k] = deg
+				break
+			end
 		end
+	else
+		for k,v in pairs(buttons) do
+			if v == this then
+				deg = self.db.profile[k]
+				if type(deg) == "number" then
+					deg = {}
+					self.db.profile[k] = deg
+				end
+				break
+			end
+		end
+		assert(deg)
+		deg[1] = x
+		deg[2] = y
 	end
 	this:ClearAllPoints()
-	this:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
+	if type(deg) == "table" then
+		this:SetPoint("CENTER", UIParent, "BOTTOMLEFT", deg[1], deg[2])
+	else
+		this:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
+	end
 	
 	Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
 end
@@ -172,13 +193,18 @@ function Chinchilla_MoveButtons:Update()
 			deg = getAngle(v:GetCenter())
 		end
 		v:ClearAllPoints()
-		v:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
+		if type(deg) == "table" then
+			v:SetPoint("CENTER", UIParent, "BOTTOMLEFT", deg[1], deg[2])
+		else
+			v:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
+		end
 	end
 end
 
 local function get(key)
 	return self.db.profile[key] or getAngle(buttons[key]:GetCenter())
 end
+local angle_get = get
 
 local function set(key, value)
 	self.db.profile[key] = value
@@ -187,6 +213,59 @@ local function set(key, value)
 	end
 	buttons[key]:ClearAllPoints()
 	buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+end
+local angle_set = set
+
+local function attach_get(key)
+	return not self.db.profile[key] or type(self.db.profile[key]) == "number"
+end
+
+local function not_attach_get(key)
+	return not attach_get(key)
+end
+
+local function attach_set(key, value)
+	if not value then
+		self.db.profile[key] = { buttons[key]:GetCenter() }
+	else
+		self.db.profile[key] = getAngle(buttons[key]:GetCenter())
+		buttons[key]:ClearAllPoints()
+		buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(self.db.profile[key]))
+	end
+end
+
+local function x_get(key)
+	return self.db.profile[key][1]
+end
+
+local function x_set(key, value)
+	self.db.profile[key][1] = value
+	if not Chinchilla:IsModuleActive(self) then
+		return
+	end
+	buttons[key]:ClearAllPoints()
+	buttons[key]:SetPoint("CENTER", UIParent, "BOTTOMLEFT", unpack(self.db.profile[key]))
+end
+
+local function y_get(key)
+	return self.db.profile[key][2]
+end
+
+local function y_set(key, value)
+	self.db.profile[key][2] = value
+	if not Chinchilla:IsModuleActive(self) then
+		return
+	end
+	buttons[key]:ClearAllPoints()
+	buttons[key]:SetPoint("CENTER", UIParent, "BOTTOMLEFT", unpack(self.db.profile[key]))
+end
+
+local function x_max()
+	return math.floor(GetScreenWidth()/10 + 0.5) * 10
+end
+
+local function y_max()
+	return math.floor(GetScreenHeight()/10 + 0.5) * 10
 end
 
 function Chinchilla_MoveButtons:SetLocked(value)
@@ -215,6 +294,53 @@ function Chinchilla_MoveButtons:SetLocked(value)
 	end
 end
 
+local args = {
+	attach = {
+		name = L["Attach to minimap"],
+		desc = L["Whether to stay attached to the minimap or move freely.\nNote: If you hold Alt while dragging, it will automatically unattach."],
+		type = 'boolean',
+		get = attach_get,
+		set = attach_set,
+		order = 1,
+	},
+	angle = {
+		name = L["Angle"],
+		desc = L["Angle on the minimap"],
+		type = 'range',
+		min = 0,
+		max = 360,
+		step = 1,
+		bigStep = 5,
+		get = angle_get,
+		set = angle_set,
+		hidden = not_attach_get,
+	},
+	x = {
+		name = L["Horizontal position"],
+		desc = L["Horizontal position of the button on-screen"],
+		type = 'range',
+		min = 0,
+		max = x_max,
+		step = 1,
+		bigStep = 5,
+		get = x_get,
+		set = x_set,
+		hidden = attach_get,
+	},
+	y = {
+		name = L["Vertical position"],
+		desc = L["Vertical position of the button on-screen"],
+		type = 'range',
+		min = 0,
+		max = y_max,
+		step = 1,
+		bigStep = 5,
+		get = y_get,
+		set = y_set,
+		hidden = attach_get,
+	},
+}
+
 Chinchilla_MoveButtons:AddChinchillaOption({
 	name = L["Move Buttons"],
 	desc = Chinchilla_MoveButtons.desc,
@@ -233,110 +359,74 @@ Chinchilla_MoveButtons:AddChinchillaOption({
 		battleground = {
 			name = L["Battleground"],
 			desc = L["Set the position of the battleground indicator"],
-			type = 'range',
-			min = 0,
-			max = 360,
-			step = 1,
-			bigStep = 5,
-			passValue = 'battleground',
-			get = get,
-			set = set,
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'battleground',
+			args = args,
 		},
 		map = {
 			name = L["World map"],
 			desc = L["Set the position of the world map button"],
-			type = 'range',
-			min = 0,
-			max = 360,
-			step = 1,
-			bigStep = 5,
-			passValue = 'map',
-			get = get,
-			set = set,
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'map',
+			args = args,
 		},
 		mail = {
 			name = L["Mail"],
 			desc = L["Set the position of the mail indicator"],
-			type = 'range',
-			min = 0,
-			max = 360,
-			step = 1,
-			bigStep = 5,
-			passValue = 'mail',
-			get = get,
-			set = set,
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'mail',
+			args = args,
 		},
 		lfg = {
 			name = L["LFG"],
 			desc = L["Set the position of the looking for group indicator"],
-			type = 'range',
-			min = 0,
-			max = 360,
-			step = 1,
-			bigStep = 5,
-			passValue = 'lfg',
-			get = get,
-			set = set,
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'lfg',
+			args = args,
 		},
 		clock = {
 			name = L["Clock"],
 			desc = L["Set the position of the clock"],
-			type = 'range',
-			min = 0,
-			max = 360,
-			step = 1,
-			bigStep = 5,
-			passValue = 'clock',
-			get = get,
-			set = set,
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'clock',
+			args = args,
 		},
 		track = {
 			name = L["Tracking"],
 			desc = L["Set the position of the tracking indicator"],
-			type = 'range',
-			min = 0,
-			max = 360,
-			step = 1,
-			bigStep = 5,
-			passValue = 'track',
-			get = get,
-			set = set,
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'track',
+			args = args,
 		},
 		voice = {
 			name = L["Voice chat"],
 			desc = L["Set the position of the voice chat button"],
-			type = 'range',
-			min = 0,
-			max = 360,
-			step = 1,
-			bigStep = 5,
-			passValue = 'voice',
-			get = get,
-			set = set,
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'voice',
+			args = args,
 		},
 		zoomIn = {
 			name = L["Zoom in"],
 			desc = L["Set the position of the zoom in button"],
-			type = 'range',
-			min = 0,
-			max = 360,
-			step = 1,
-			bigStep = 5,
-			passValue = 'zoomIn',
-			get = get,
-			set = set,
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'zoomIn',
+			args = args,
 		},
 		zoomOut = {
 			name = L["Zoom out"],
 			desc = L["Set the position of the zoom out button"],
-			type = 'range',
-			min = 0,
-			max = 360,
-			step = 1,
-			bigStep = 5,
-			passValue = 'zoomOut',
-			get = get,
-			set = set,
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'zoomOut',
+			args = args,
 		},
 	}
 })
