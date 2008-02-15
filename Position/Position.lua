@@ -35,22 +35,58 @@ local function getPointXY(frame)
 	if x < width/3 then
 		x = frame:GetLeft()
 		point = "LEFT"
+		if frame == MinimapCluster then
+			if x < -35 then
+				x = -35
+			end
+		else
+			if x < 0 then
+				x = 0
+			end
+		end
 	elseif x < width*2/3 then
 		x = x - width/2
 		point = "CENTER"
 	else
 		x = frame:GetRight() - width
 		point = "RIGHT"
+		if frame == MinimapCluster then
+			if x > 17 then
+				x = 17
+			end
+		else
+			if x < 0 then
+				x = 0
+			end
+		end
 	end
 	
 	if y < height/3 then
 		point = "BOTTOM" .. (point == "CENTER" and "" or point)
 		y = frame:GetBottom()
+		if frame == MinimapCluster then
+			if y < -30 then
+				y = -30
+			end
+		else
+			if y < 0 then
+				y = 0
+			end
+		end
 	elseif y < height*2/3 then
 		y = y - height/2
 	else
 		point = "TOP" .. (point == "CENTER" and "" or point)
 		y = frame:GetTop() - height
+		if frame == MinimapCluster then
+			if y > 22 then
+				y = 22
+			end
+		else
+			if y < 0 then
+				y = 0
+			end
+		end
 	end
 	return point, x, y
 end
