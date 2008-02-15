@@ -33,6 +33,8 @@
 	["Side, left rounded"] = "한쪽, 왼쪽을 둥글게",
 	["Border opacity"] = "테두리 투명도",
 	["Set how transparent or opaque the minimap border is."] = "미니맵 테두리의 투명도를 조절합니다.",
+	["Button border opacity"] = "버튼 테두리 투명도",
+	["Set how transparent or opaque the minimap button borders are."] = "미니맵 버튼의 테두리 투명도를 변경합니다.",
 	
 	["Auto zoom"] = "자동 축소",
 	["Automatically zoom out after a specified time."] = "미니맵 확대 후 일정 시간이 지나면 자동으로 축소되어 원래상태로 돌아옵니다.",
@@ -76,6 +78,13 @@
 	["Set the position of the zoom in button"] = "확대 버튼의 위치를 변경합니다.",
 	["Zoom out"] = "축소",
 	["Set the position of the zoom out button"] = "축소 버튼의 위치를 변경합니다.",
+	["Lock buttons in place so that they won't be mistakenly dragged"] = "미니맵 버튼을 고정합니다.",
+	["Attach to minimap"] = "간격",
+	["Whether to stay attached to the minimap or move freely.\nNote: If you hold Alt while dragging, it will automatically unattach."] = "미니맵과의 버튼 간격을 조절합니다. 버튼을 이동하면 그자리에 고정됩니다.",
+	["Angle"] = "각도",
+	["Angle on the minimap"] = "미니맵의 각도",
+	["Horizontal position of the button on-screen"] = "화면상의 버튼의 가로 위치",
+	["Vertical position of the button on-screen"] = "화면상의 버튼의 세로 위치",
 	
 	["Position"] = "위치",
 	["Allow for moving of the minimap and surrounding frames"] = "미니맵 주변의 프레임에 대한 위치를 변경합니다.",
@@ -144,4 +153,15 @@
 	
 	["Wheel zoom"] = "휠로 확대/축소",
 	["Use the mouse wheel to zoom in and out on the minimap."] = "미니맵의 확대/축소를 마우스 휠로 가능하게 합니다.",
+	
+	["Ping"] = "핑",
+	["Show who last pinged the minimap"] = "미니맵에 누가 마지막으로 찍었는지 표시합니다.",
+	["Ping by %s"] = "핑 : %s",
+	["Minimap pinged by %s"] = "%s|1이;가; 미니맵에 위치를 찍었습니다.",
+	["Test"] = "테스트",
+	["Show a test ping"] = "테스트를 핑을 표시합니다.",
+	["Show in chat"] = "대화창에 표시",
+	["Show who pinged in chat instead of in a frame on the minimap."] = "위치를 표시한 유저를 대화창에 표시합니다.",
+	["Set the size of the ping display."] = "핑 표시 크기를 변경합니다.",
+	["Set the position of the ping indicator"] = "핑 표시 위치를 변경합니다.",
 } end)
