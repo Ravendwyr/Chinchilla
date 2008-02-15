@@ -121,6 +121,8 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Point of the screen the capture bar is anchored to"] = true,
 	["Set the position on the x-axis for the capture bar."] = true,
 	["Set the position on the y-axis for the capture bar."] = true,
+	["Lock"] = true,
+	["Lock the minimap so it cannot be mistakenly dragged"] = true,
 	
 	["Show / Hide"] = true,
 	["Show and hide interface elements of the minimap"] = true,

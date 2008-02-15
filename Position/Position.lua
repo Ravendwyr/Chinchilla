@@ -16,6 +16,7 @@ function Chinchilla_Position:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Position")
 	Chinchilla:SetDatabaseNamespaceDefaults("Position", "profile", {
 		minimap = { "TOPRIGHT", 0, 0 },
+		minimapLock = false,
 		durability = { "TOPRIGHT", -143, -221 },
 		questWatch = { "TOPRIGHT", -183, -226 },
 		questTimer = { "TOPRIGHT", -173, -211 },
@@ -67,14 +68,8 @@ function Chinchilla_Position:OnEnable()
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
+	self:SetMinimapLock(nil)
 	
-	Minimap:RegisterForDrag("LeftButton")
-	MinimapZoneTextButton:RegisterForDrag("LeftButton")
-	Minimap:SetScript("OnDragStart", Minimap_OnDragStart)
-	Minimap:SetScript("OnDragStop", Minimap_OnDragStop)
-	MinimapZoneTextButton:SetScript("OnDragStart", Minimap_OnDragStart)
-	MinimapZoneTextButton:SetScript("OnDragStop", Minimap_OnDragStop)
-	MinimapCluster:SetMovable(true)
 	Minimap:SetClampedToScreen(true)
 	
 	self:AddSecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
@@ -90,14 +85,8 @@ function Chinchilla_Position:OnDisable()
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
+	self:SetMinimapLock(nil)
 	
-	Minimap:RegisterForDrag()
-	MinimapZoneTextButton:RegisterForDrag()
-	Minimap:SetScript("OnDragStart", nil)
-	Minimap:SetScript("OnDragStop", nil)
-	MinimapZoneTextButton:SetScript("OnDragStart", nil)
-	MinimapZoneTextButton:SetScript("OnDragStop", nil)
-	MinimapCluster:SetMovable(false)
 	Minimap:SetClampedToScreen(false)
 end
 
@@ -116,6 +105,34 @@ local quadrantToShape = {
 	"SIDE-BOTTOM",
 	"CORNER-BOTTOMLEFT",
 }
+
+function Chinchilla_Position:SetMinimapLock(value)
+	if value ~= nil then
+		self.db.profile.minimapLock = value
+	else
+		value = self.db.profile.minimapLock
+	end
+	if not Chinchilla:IsModuleActive(self) then
+		value = true
+	end
+	if value then
+		Minimap:RegisterForDrag()
+		MinimapZoneTextButton:RegisterForDrag()
+		Minimap:SetScript("OnDragStart", nil)
+		Minimap:SetScript("OnDragStop", nil)
+		MinimapZoneTextButton:SetScript("OnDragStart", nil)
+		MinimapZoneTextButton:SetScript("OnDragStop", nil)
+		MinimapCluster:SetMovable(false)
+	else
+		Minimap:RegisterForDrag("LeftButton")
+		MinimapZoneTextButton:RegisterForDrag("LeftButton")
+		Minimap:SetScript("OnDragStart", Minimap_OnDragStart)
+		Minimap:SetScript("OnDragStop", Minimap_OnDragStop)
+		MinimapZoneTextButton:SetScript("OnDragStart", Minimap_OnDragStart)
+		MinimapZoneTextButton:SetScript("OnDragStop", Minimap_OnDragStop)
+		MinimapCluster:SetMovable(true)
+	end
+end
 
 local lastQuadrant
 function Chinchilla_Position:SetMinimapPosition(point, x, y)
@@ -368,6 +385,16 @@ Chinchilla_Position:AddChinchillaOption({
 			type = 'group',
 			groupType = 'inline',
 			args = {
+				lock = {
+					name = L["Lock"],
+					desc = L["Lock the minimap so it cannot be mistakenly dragged"],
+					type = 'boolean',
+					order = 1,
+					get = function()
+						return self.db.profile.minimapLock
+					end,
+					set = "SetMinimapLock"
+				},
 				point = {
 					name = L["Point"],
 					desc = L["Point of the screen the minimap is anchored to"],
