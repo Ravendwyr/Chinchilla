@@ -4,6 +4,7 @@
 	<Script file="AutoZoom\AutoZoom.lua"/>
 	<Script file="Coordinates\Coordinates.lua"/>
 	<Script file="MoveButtons\MoveButtons.lua"/>
+	<Script file="Ping\Ping.lua"/>
 	<Script file="Position\Position.lua"/>
 	<Script file="ShowHide\ShowHide.lua"/>
 	<Script file="WheelZoom\WheelZoom.lua"/>

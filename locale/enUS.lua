@@ -153,4 +153,15 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	
 	["Wheel zoom"] = true,
 	["Use the mouse wheel to zoom in and out on the minimap."] = true,
+	
+	["Ping"] = true,
+	["Show who last pinged the minimap"] = true,
+	["Ping by %s"] = true,
+	["Minimap pinged by %s"] = true,
+	["Test"] = true,
+	["Show a test ping"] = true,
+	["Show in chat"] = true,
+	["Show who pinged in chat instead of in a frame on the minimap."] = true,
+	["Set the size of the ping display."] = true,
+	["Set the position of the ping indicator"] = true,
 } end)
