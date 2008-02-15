@@ -33,6 +33,8 @@
 	["Side, left rounded"] = "Côté, gauche arrondie",
 	["Border opacity"] = "Opacité de la bordure",
 	["Set how transparent or opaque the minimap border is."] = "Détermine la transparence/l'opacité de la bordure de la minicarte.",
+	["Button border opacity"] = "Opacité de la bordure des boutons",
+	["Set how transparent or opaque the minimap button borders are."] = "Détermine la transparence/l'opacité de la bordure des boutons.",
 
 	["Auto zoom"] = "Zoom auto",
 	["Automatically zoom out after a specified time."] = "Dézoome automatiquement après une durée spécifiée.",
@@ -76,6 +78,13 @@
 	["Set the position of the zoom in button"] = "Détermine la position du bouton servant à zoomer.",
 	["Zoom out"] = "Dézoomer",
 	["Set the position of the zoom out button"] = "Détermine la position du bouton servant à dézoomer.",
+	["Lock buttons in place so that they won't be mistakenly dragged"] = "Verrouille les boutons à leur place actuelle afin qu'ils ne puissent pas être déplacés par accident.",
+	["Attach to minimap"] = "Attacher à la minicarte",
+	["Whether to stay attached to the minimap or move freely.\nNote: If you hold Alt while dragging, it will automatically unattach."] = "Laisse ou non ce bouton attaché à la minicarte ou permet de le déplacer librement.\nNote : si vous maintenez enfoncer la touche Alt pendant la saisie, il sera automatiquement détaché.",
+	["Angle"] = "Angle",
+	["Angle on the minimap"] = "Détermine l'angle sur la minicarte.",
+	["Horizontal position of the button on-screen"] = "Détermine la position horizontale du bouton à l'écran.",
+	["Vertical position of the button on-screen"] = "Détermine la position verticale du bouton à l'écran.",
 
 	["Position"] = "Position",
 	["Allow for moving of the minimap and surrounding frames"] = "Permet le déplacement de la minicarte et des cadres l'entourant.",
@@ -121,6 +130,8 @@
 	["Point of the screen the capture bar is anchored to"] = "Détermine le point de l'écran où la barre de capture est ancrée.",
 	["Set the position on the x-axis for the capture bar."] = "Détermine la position sur l'axe des X de la barre de capture.",
 	["Set the position on the y-axis for the capture bar."] = "Détermine la position sur l'axe des Y de la barre de capture.",
+	["Lock"] = "Verrouiller",
+	["Lock the minimap so it cannot be mistakenly dragged"] = "Verrouille la minicarte afin qu'elle ne puisse pas être déplacée par accident.",
 
 	["Show / Hide"] = "Afficher/Masquer",
 	["Show and hide interface elements of the minimap"] = "Affiche et masques les éléments de la minicarte.",
@@ -142,4 +153,15 @@
 
 	["Wheel zoom"] = "Zoom à la molette",
 	["Use the mouse wheel to zoom in and out on the minimap."] = "Utilise la molette de la souris pour (dé)zoomer sur la minicarte.",
+
+	["Ping"] = "Ping",
+	["Show who last pinged the minimap"] = "Indique la dernière personne qui a pingé sur la minicarte.",
+	["Ping by %s"] = "Ping par %s",
+	["Minimap pinged by %s"] = "Minicarte pingée par %s.",
+	["Test"] = "Test",
+	["Show a test ping"] = "Effectue un un test du ping.",
+	["Show in chat"] = "Afficher dans la discussion",
+	["Show who pinged in chat instead of in a frame on the minimap."] = "Affiche qui a pingé dans la fenêtre de discussion au lieu de l'afficher sur la minicarte.",
+	["Set the size of the ping display."] = "Détermine la taille de l'affichage du ping.",
+	["Set the position of the ping indicator"] = "Détermine la position de l'indicateur de ping.",
 } end)
