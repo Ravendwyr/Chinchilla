@@ -121,6 +121,8 @@
 	["Point of the screen the capture bar is anchored to"] = "점령시간 바의 기준 위치를 선택합니다.",
 	["Set the position on the x-axis for the capture bar."] = "점령시간 바의 가로 위치를 변경합니다.",
 	["Set the position on the y-axis for the capture bar."] = "점령시간 바의 세로 위치를 변경합니다.",
+	["Lock"] = "고정",
+	["Lock the minimap so it cannot be mistakenly dragged"] = "미니맵의 위치를 고정합니다.",
 	
 	["Show / Hide"] = "보기/숨기기",
 	["Show and hide interface elements of the minimap"] = "미니맵 버튼의 표시 여부를 선택합니다.",
