@@ -1,7 +1,7 @@
 local VERSION = tonumber(("$Revision$"):match("%d+"))
 
 local Chinchilla = Chinchilla
-local Chinchilla_Appearance = Chinchilla:NewModule("Appearance")
+local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "LibRockEvent-1.0", "LibRockTimer-1.0")
 local self = Chinchilla_Appearance
 if Chinchilla.revision < VERSION then
 	Chinchilla.version = "1.0r" .. VERSION
@@ -37,6 +37,8 @@ function Chinchilla_Appearance:OnEnable()
 	for i,v in ipairs(cornerTextures) do
 		v:Show()
 	end
+	
+	self:AddEventListener("MINIMAP_UPDATE_ZOOM")
 end
 
 function Chinchilla_Appearance:OnDisable()
@@ -56,6 +58,26 @@ function Chinchilla_Appearance:OnDisable()
 	if Chinchilla:HasModule("MoveButtons") then
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
+end
+
+function Chinchilla_Appearance:MINIMAP_UPDATE_ZOOM()
+	local zoom = Minimap:GetZoom()
+	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
+		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
+	end
+	local indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
+	Minimap:SetZoom(zoom)
+	
+	if indoors then
+		MinimapCluster:SetAlpha(1)
+		self:AddEventListener("ZONE_CHANGED_INDOORS")
+		self:AddTimer("Chinchilla_Appearance-SetAlpha", 5, "SetAlpha")
+	end
+end
+
+function Chinchilla_Appearance:ZONE_CHANGED_INDOORS()
+	self:RemoveEventListener("ZONE_CHANGED_INDOORS")
+	self:AddTimer("Chinchilla_Appearance-SetAlpha", 0, "SetAlpha")
 end
 
 function Chinchilla_Appearance:SetScale(value)
