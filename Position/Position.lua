@@ -55,7 +55,7 @@ local function getPointXY(frame)
 				x = 17
 			end
 		else
-			if x < 0 then
+			if x > 0 then
 				x = 0
 			end
 		end
@@ -83,7 +83,7 @@ local function getPointXY(frame)
 				y = 22
 			end
 		else
-			if y < 0 then
+			if y > 0 then
 				y = 0
 			end
 		end
