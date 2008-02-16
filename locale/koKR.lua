@@ -2,6 +2,7 @@
 	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = "미니맵 확장 애드온 입니다.",
 	["Enable"] = "사용",
 	["Enable this module"] = "현재 모듈 사용",
+	["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."] = "미니맵의 모든 요소를 고정합니다. 실수로 이동하는 것을 방지합니다.",
 	
 	["Appearance"] = "미니맵 모양",
 	["Allow for a customized look of the minimap"] = "미니맵의 형태를 변경합니다.",
