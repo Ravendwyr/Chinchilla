@@ -97,6 +97,8 @@ function Chinchilla_ShowHide:Update()
 	end
 end
 
+local lastShow = 0
+local lastShowObject = nil
 function Chinchilla_ShowHide:frame_Show(object)
 	local object_k
 	for k,v in pairs(frames) do
@@ -110,7 +112,12 @@ function Chinchilla_ShowHide:frame_Show(object)
 		end
 	end
 	if object_k and not self.db.profile[object_k] then
-		object:Hide()
+		if lastShow < GetTime() - 1e5 or lastShowObject ~= object then
+			-- don't want infinite loops
+			lastShow = GetTime()
+			lastShowObject = object
+			object:Hide()
+		end
 	end
 	
 	framesShown[object] = true
