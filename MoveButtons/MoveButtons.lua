@@ -97,6 +97,9 @@ end
 
 local function getAngle(x1, y1)
 	local x2, y2 = Minimap:GetCenter()
+	local scale = Minimap:GetEffectiveScale() / UIParent:GetEffectiveScale()
+	x2 = x2*scale
+	y2 = y2*scale
 	local x, y = x1 - x2, y1 - y2
 	local deg = math.deg(math.atan2(y, x))
 	while deg < 0 do
@@ -112,9 +115,9 @@ local function button_OnUpdate(this)
 	this:ClearAllPoints()
 	local x, y = GetCursorPosition()
 	local scale = UIParent:GetEffectiveScale()
-	x, y = x / scale, y / scale
 	local deg
 	if not IsAltKeyDown() then
+		x, y = x / scale, y / scale
 		deg = math.floor(getAngle(x, y) + 0.5)
 		for k,v in pairs(buttons) do
 			if v == this then
@@ -134,8 +137,8 @@ local function button_OnUpdate(this)
 			end
 		end
 		assert(deg)
-		deg[1] = x
-		deg[2] = y
+		deg[1] = x / Minimap:GetEffectiveScale()
+		deg[2] = y / Minimap:GetEffectiveScale()
 	end
 	this:ClearAllPoints()
 	if type(deg) == "table" then

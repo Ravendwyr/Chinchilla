@@ -30,10 +30,13 @@ end
 
 local function getPointXY(frame)
 	local x, y = frame:GetCenter()
+	local scale = frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
+	x = x*scale
+	y = y*scale
 	local width, height = GetScreenWidth(), GetScreenHeight()
 	local point
 	if x < width/3 then
-		x = frame:GetLeft()
+		x = frame:GetLeft()*scale
 		point = "LEFT"
 		if frame == MinimapCluster then
 			if x < -35 then
@@ -48,7 +51,7 @@ local function getPointXY(frame)
 		x = x - width/2
 		point = "CENTER"
 	else
-		x = frame:GetRight() - width
+		x = frame:GetRight()*scale - width
 		point = "RIGHT"
 		if frame == MinimapCluster then
 			if x > 17 then
@@ -63,7 +66,7 @@ local function getPointXY(frame)
 	
 	if y < height/3 then
 		point = "BOTTOM" .. (point == "CENTER" and "" or point)
-		y = frame:GetBottom()
+		y = frame:GetBottom()*scale
 		if frame == MinimapCluster then
 			if y < -30 then
 				y = -30
@@ -77,7 +80,7 @@ local function getPointXY(frame)
 		y = y - height/2
 	else
 		point = "TOP" .. (point == "CENTER" and "" or point)
-		y = frame:GetTop() - height
+		y = frame:GetTop()*scale - height
 		if frame == MinimapCluster then
 			if y > 22 then
 				y = 22
@@ -88,7 +91,7 @@ local function getPointXY(frame)
 			end
 		end
 	end
-	return point, x, y
+	return point, x/scale, y/scale
 end
 
 local function Minimap_OnDragStop(this)
@@ -202,6 +205,9 @@ function Chinchilla_Position:SetMinimapPosition(point, x, y)
 	MinimapCluster:SetPoint(point, UIParent, point, x, y)
 	
 	local x, y = MinimapCluster:GetCenter()
+	local scale = MinimapCluster:GetEffectiveScale() / UIParent:GetEffectiveScale()
+	x = x*scale
+	y = y*scale
 	local quadrant = 0
 	local width, height = GetScreenWidth(), GetScreenHeight()
 	if x < width/3 then
