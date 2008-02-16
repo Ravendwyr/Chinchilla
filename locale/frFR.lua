@@ -1,8 +1,8 @@
 ﻿Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("frFR", function() return {
-	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = "Minicarte incroyablement incroyable. *bruit de mastication*. Je vais grignoter votre foin.",
+	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = "Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.",
 	["Enable"] = "Activer",
 	["Enable this module"] = "Active ce module.",
-	["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."] = "Verrouille tous les éléments de la minicarte afin qu'ils ne puissent pas être déplacés par accident",
+	["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."] = "Verrouille tous les éléments de la minicarte afin qu'ils ne puissent pas être déplacés par accident.",
 
 	["Appearance"] = "Apparence",
 	["Allow for a customized look of the minimap"] = "Permet de personnaliser le style de la minicarte.",
@@ -21,7 +21,7 @@
 	["Fullscreen-dialog"] = "Plein écran-dialogue",
 	["Tooltip"] = "Infobulle",
 	["Shape"] = "Forme",
-	["Set the shape of the minimap."] = "Définit la forme de la minicarte",
+	["Set the shape of the minimap."] = "Définit la forme de la minicarte.",
 	["Round"] = "Ronde",
 	["Square"] = "Carrée",
 	["Corner, top-right rounded"] = "Coin, haut-droit arrondi",
