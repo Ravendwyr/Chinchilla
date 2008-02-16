@@ -117,6 +117,10 @@ end
 
 function Chinchilla_Position:OnDisable()
 	self:SetMinimapPosition(nil, nil, nil)
+	self:ShowFrameMover('durability', false)
+	self:ShowFrameMover('questWatch', false)
+	self:ShowFrameMover('questTimer', false)
+	self:ShowFrameMover('capture', false)
 	self:SetFramePosition('durability', nil, nil, nil)
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('questTimer', nil, nil, nil)
@@ -306,10 +310,13 @@ local nameToNiceName = {
 
 function Chinchilla_Position:ShowFrameMover(frame, value)
 	local mover = movers[frame]
-	if value == not not (mover and mover:IsShown()) or not Chinchilla:IsModuleActive(self) then
+	if value == not not (mover and mover:IsShown()) then
 		return
 	end
-	if not mover then
+	if not Chinchilla:IsModuleActive(self) then
+		value = false
+	end
+	if value and not mover then
 		mover = CreateFrame("Frame", "Chinchilla_Position_" .. frame .. "_Mover", UIParent)
 		movers[frame] = mover
 		mover.name = frame
@@ -331,8 +338,10 @@ function Chinchilla_Position:ShowFrameMover(frame, value)
 		text:SetText(nameToNiceName[frame])
 	end
 	if not value then
-		mover:Hide()
-		self:SetFramePosition(frame, nil, nil, nil)
+		if mover then
+			mover:Hide()
+			self:SetFramePosition(frame, nil, nil, nil)
+		end
 	else
 		if frame == 'capture' then
 			mover:SetWidth(173)
