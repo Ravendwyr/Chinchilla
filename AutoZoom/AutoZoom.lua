@@ -29,7 +29,7 @@ function Chinchilla_AutoZoom:OnEnable()
 			if nextZoomOutTime <= currentTime then
 				if Minimap:GetZoom() > 0 then
 					Minimap_ZoomOut()
---					nextZoomOutTime = currentTime + 0 -- just do it every frame
+					nextZoomOutTime = currentTime -- reset and do it every frame
 				else
 					this:Hide()
 				end
