@@ -1,7 +1,7 @@
 local VERSION = tonumber(("$Revision$"):match("%d+"))
 
 local Chinchilla = Chinchilla
-local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "LibRockEvent-1.0")
+local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "LibRockEvent-1.0", "LibRockTimer-1.0")
 local self = Chinchilla_Appearance
 if Chinchilla.revision < VERSION then
 	Chinchilla.version = "1.0r" .. VERSION
@@ -39,6 +39,7 @@ function Chinchilla_Appearance:OnEnable()
 	end
 	
 	self:AddEventListener("MINIMAP_UPDATE_ZOOM")
+	self:AddEventListener("CVAR_UPDATE", "CVAR_UPDATE", 0.05)
 end
 
 function Chinchilla_Appearance:OnDisable()
@@ -69,6 +70,11 @@ function Chinchilla_Appearance:MINIMAP_UPDATE_ZOOM()
 	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
 	Minimap:SetZoom(zoom)
 	
+	self:SetAlpha(nil)
+end
+
+function Chinchilla_Appearance:CVAR_UPDATE()
+	self:SetShape(nil)
 	self:SetAlpha(nil)
 end
 
