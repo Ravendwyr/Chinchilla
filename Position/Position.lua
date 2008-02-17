@@ -39,8 +39,8 @@ local function getPointXY(frame)
 		x = frame:GetLeft()*scale
 		point = "LEFT"
 		if frame == MinimapCluster then
-			if x < -35 then
-				x = -35
+			if x < -35*scale then
+				x = -35*scale
 			end
 		else
 			if x < 0 then
@@ -54,8 +54,8 @@ local function getPointXY(frame)
 		x = frame:GetRight()*scale - width
 		point = "RIGHT"
 		if frame == MinimapCluster then
-			if x > 17 then
-				x = 17
+			if x > 17*scale then
+				x = 17*scale
 			end
 		else
 			if x > 0 then
@@ -68,8 +68,8 @@ local function getPointXY(frame)
 		point = "BOTTOM" .. (point == "CENTER" and "" or point)
 		y = frame:GetBottom()*scale
 		if frame == MinimapCluster then
-			if y < -30 then
-				y = -30
+			if y < -30*scale then
+				y = -30*scale
 			end
 		else
 			if y < 0 then
@@ -82,8 +82,8 @@ local function getPointXY(frame)
 		point = "TOP" .. (point == "CENTER" and "" or point)
 		y = frame:GetTop()*scale - height
 		if frame == MinimapCluster then
-			if y > 22 then
-				y = 22
+			if y > 22*scale then
+				y = 22*scale
 			end
 		else
 			if y > 0 then
