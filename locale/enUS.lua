@@ -40,6 +40,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set what texture style you want the minimap border to use."] = true,
 	["Blizzard"] = true,
 	["Thin"] = true,
+	["Alliance"] = true,
 	
 	["Auto zoom"] = true,
 	["Automatically zoom out after a specified time."] = true,

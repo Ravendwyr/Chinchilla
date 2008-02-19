@@ -37,6 +37,11 @@ local borderStyles = {
 		L["Thin"],
 		[[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Round]],
 		[[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Square]],
+	},
+	Alliance = {
+		L["Alliance"],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Round]],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Square]]
 	}
 }
 
