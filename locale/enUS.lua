@@ -36,6 +36,10 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set how transparent or opaque the minimap border is."] = true,
 	["Button border opacity"] = true,
 	["Set how transparent or opaque the minimap button borders are."] = true,
+	["Border style"] = true,
+	["Set what texture style you want the minimap border to use."] = true,
+	["Blizzard"] = true,
+	["Thin"] = true,
 	
 	["Auto zoom"] = true,
 	["Automatically zoom out after a specified time."] = true,

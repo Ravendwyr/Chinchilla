@@ -12,6 +12,8 @@ local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_Appearance.desc = L["Allow for a customized look of the minimap"]
 
+local newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newDict", "unpackDictAndDel")
+
 function Chinchilla_Appearance:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Appearance")
 	Chinchilla:SetDatabaseNamespaceDefaults("Appearance", "profile", {
@@ -21,8 +23,22 @@ function Chinchilla_Appearance:OnInitialize()
 		buttonBorderAlpha = 1,
 		strata = "BACKGROUND",
 		shape = "CORNER-BOTTOMLEFT",
+		borderStyle = "Blizzard",
 	})
 end
+
+local borderStyles = {
+	Blizzard = {
+		L["Blizzard"],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]],
+	},
+	Thin = {
+		L["Thin"],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Round]],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Square]],
+	}
+}
 
 local cornerTextures = {}
 function Chinchilla_Appearance:OnEnable()
@@ -159,8 +175,8 @@ function Chinchilla_Appearance:SetShape(shape)
 		for i = 1, 4 do
 			local tex = MinimapBackdrop:CreateTexture("Chinchilla_Appearance_MinimapCorner" .. i, "ARTWORK")
 			cornerTextures[i] = tex
-			cornerTextures[i]:SetWidth(72)
-			cornerTextures[i]:SetHeight(72)
+			cornerTextures[i]:SetWidth(80)
+			cornerTextures[i]:SetHeight(80)
 		end
 		
 		cornerTextures[1]:SetPoint("BOTTOMRIGHT", Minimap, "CENTER")
@@ -176,8 +192,9 @@ function Chinchilla_Appearance:SetShape(shape)
 		cornerTextures[4]:SetTexCoord(0.5, 1, 0.5, 1)
 	end
 	
+	local borderStyle = borderStyles[self.db.profile.borderStyle] or borderStyles.Blizzard
 	for i,v in ipairs(cornerTextures) do
-		v:SetTexture(tmp[i] and [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]])
+		v:SetTexture(tmp[i] and borderStyle[2] or borderStyle[3])
 	end
 	
 	Minimap:SetMaskTexture(shapeToMask[shape])
@@ -185,6 +202,15 @@ function Chinchilla_Appearance:SetShape(shape)
 	if Chinchilla:HasModule("MoveButtons") then
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
+end
+
+function Chinchilla_Appearance:SetBorderStyle(style)
+	if style then
+		self.db.profile.borderStyle = style
+	else
+		return
+	end
+	self:SetShape(nil)
 end
 
 function Chinchilla_Appearance:SetBorderAlpha(alpha)
@@ -324,6 +350,22 @@ Chinchilla_Appearance:AddChinchillaOption({
 			end,
 			set = "SetBorderAlpha",
 			isPercent = true,
+		},
+		borderStyle = {
+			name = L["Border style"],
+			desc = L["Set what texture style you want the minimap border to use."],
+			type = 'choice',
+			choices = function()
+				local t = newDict()
+				for k,v in pairs(borderStyles) do
+					t[k] = v[1]
+				end
+				return "@dict", unpackDictAndDel(t)
+			end,
+			get = function()
+				return Chinchilla_Appearance.db.profile.borderStyle
+			end,
+			set = "SetBorderStyle",
 		},
 		buttonBorderAlpha = {
 			name = L["Button border opacity"],
