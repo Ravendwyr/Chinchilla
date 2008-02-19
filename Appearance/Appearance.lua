@@ -42,6 +42,11 @@ local borderStyles = {
 		L["Alliance"],
 		[[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Round]],
 		[[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Square]]
+	},
+	Tooltip = {
+		L["Tooltip"],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip-Round]],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip-Square]]
 	}
 }
 

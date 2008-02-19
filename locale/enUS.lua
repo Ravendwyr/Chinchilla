@@ -41,6 +41,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Blizzard"] = true,
 	["Thin"] = true,
 	["Alliance"] = true,
+	["Tooltip"] = true,
 	
 	["Auto zoom"] = true,
 	["Automatically zoom out after a specified time."] = true,
