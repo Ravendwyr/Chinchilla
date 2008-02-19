@@ -123,16 +123,16 @@ function Chinchilla_Appearance:SetFrameStrata(value)
 end
 
 local shapeToMask = {
-	["ROUND"] = [[Textures\MinimapMask]],
-	["SQUARE"] = [[Interface\AddOns\Chinchilla\Appearance\Square]],
-	["CORNER-TOPLEFT"] = [[Interface\AddOns\Chinchilla\Appearance\Corner-TopLeft]],
-	["CORNER-TOPRIGHT"] = [[Interface\AddOns\Chinchilla\Appearance\Corner-TopRight]],
-	["CORNER-BOTTOMLEFT"] = [[Interface\AddOns\Chinchilla\Appearance\Corner-BottomLeft]],
-	["CORNER-BOTTOMRIGHT"] = [[Interface\AddOns\Chinchilla\Appearance\Corner-BottomRight]],
-	["SIDE-TOP"] = [[Interface\AddOns\Chinchilla\Appearance\Side-Top]],
-	["SIDE-RIGHT"] = [[Interface\AddOns\Chinchilla\Appearance\Side-Right]],
-	["SIDE-BOTTOM"] = [[Interface\AddOns\Chinchilla\Appearance\Side-Bottom]],
-	["SIDE-LEFT"] = [[Interface\AddOns\Chinchilla\Appearance\Side-Left]],
+	["ROUND"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Round]],
+	["SQUARE"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Square]],
+	["CORNER-TOPLEFT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Corner-TopLeft]],
+	["CORNER-TOPRIGHT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Corner-TopRight]],
+	["CORNER-BOTTOMLEFT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Corner-BottomLeft]],
+	["CORNER-BOTTOMRIGHT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Corner-BottomRight]],
+	["SIDE-TOP"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Side-Top]],
+	["SIDE-RIGHT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Side-Right]],
+	["SIDE-BOTTOM"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Side-Bottom]],
+	["SIDE-LEFT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Side-Left]],
 }
 
 local tmp = {}
@@ -164,20 +164,20 @@ function Chinchilla_Appearance:SetShape(shape)
 		end
 		
 		cornerTextures[1]:SetPoint("BOTTOMRIGHT", Minimap, "CENTER")
-		cornerTextures[1]:SetTexCoord(96/256, 168/256, 33/256, 105/256)
+		cornerTextures[1]:SetTexCoord(0, 0.5, 0, 0.5)
 		
 		cornerTextures[2]:SetPoint("BOTTOMLEFT", Minimap, "CENTER")
-		cornerTextures[2]:SetTexCoord(168/256, 240/256, 33/256, 105/256)
+		cornerTextures[2]:SetTexCoord(0.5, 1, 0, 0.5)
 		
 		cornerTextures[3]:SetPoint("TOPRIGHT", Minimap, "CENTER")
-		cornerTextures[3]:SetTexCoord(96/256, 168/256, 105/256, 177/256)
+		cornerTextures[3]:SetTexCoord(0, 0.5, 0.5, 1)
 		
 		cornerTextures[4]:SetPoint("TOPLEFT", Minimap, "CENTER")
-		cornerTextures[4]:SetTexCoord(168/256, 240/256, 105/256, 177/256)
+		cornerTextures[4]:SetTexCoord(0.5, 1, 0.5, 1)
 	end
 	
 	for i,v in ipairs(cornerTextures) do
-		v:SetTexture(tmp[i] and [[Interface\Minimap\UI-Minimap-Border]] or [[Interface\AddOns\Chinchilla\Appearance\Tex-Square]])
+		v:SetTexture(tmp[i] and [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]])
 	end
 	
 	Minimap:SetMaskTexture(shapeToMask[shape])
