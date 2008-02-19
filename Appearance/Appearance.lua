@@ -40,6 +40,11 @@ function Chinchilla_Appearance:OnEnable()
 	
 	self:AddEventListener("MINIMAP_UPDATE_ZOOM")
 	self:AddEventListener("CVAR_UPDATE", "CVAR_UPDATE", 0.05)
+	
+	if IsMacClient() then --temporary hack to try and fix minimaps going black for Mac users. ~Ellipsis
+		self:AddEventListener("DISPLAY_SIZE_CHANGED", "CVAR_UPDATE")
+		self:AddEventListener("ZONE_CHANGED_NEW_AREA", "CVAR_UPDATE")
+	end
 end
 
 function Chinchilla_Appearance:OnDisable()
