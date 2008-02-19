@@ -19,7 +19,7 @@ function Chinchilla_Appearance:OnInitialize()
 	Chinchilla:SetDatabaseNamespaceDefaults("Appearance", "profile", {
 		scale = 1,
 		alpha = 1,
-		borderAlpha = 1,
+		borderColor = {1, 1, 1, 1},
 		buttonBorderAlpha = 1,
 		strata = "BACKGROUND",
 		shape = "CORNER-BOTTOMLEFT",
@@ -46,7 +46,7 @@ function Chinchilla_Appearance:OnEnable()
 	self:SetAlpha(nil)
 	self:SetFrameStrata(nil)
 	self:SetShape(nil)
-	self:SetBorderAlpha(nil)
+	self:SetBorderColor(nil, nil, nil, nil)
 	self:SetButtonBorderAlpha(nil)
 	
 	MinimapBorder:Hide()
@@ -68,7 +68,7 @@ function Chinchilla_Appearance:OnDisable()
 	self:SetAlpha(nil)
 	self:SetFrameStrata(nil)
 	self:SetShape(nil)
-	self:SetBorderAlpha(nil)
+	self:SetBorderColor(nil, nil, nil, nil)
 	self:SetButtonBorderAlpha(nil)
 	
 	MinimapBorder:Show()
@@ -213,18 +213,24 @@ function Chinchilla_Appearance:SetBorderStyle(style)
 	self:SetShape(nil)
 end
 
-function Chinchilla_Appearance:SetBorderAlpha(alpha)
-	if alpha then
-		self.db.profile.borderAlpha = alpha
+function Chinchilla_Appearance:SetBorderColor(r, g, b, a)
+	if r and g and b and a then
+		self.db.profile.borderColor[1] = r
+		self.db.profile.borderColor[2] = g
+		self.db.profile.borderColor[3] = b
+		self.db.profile.borderColor[4] = a
 	else
-		alpha = self.db.profile.borderAlpha
+		r = self.db.profile.borderColor[1]
+		g = self.db.profile.borderColor[2]
+		b = self.db.profile.borderColor[3]
+		a = self.db.profile.borderColor[4]
 	end
 	if not Chinchilla:IsModuleActive(self) then
 		return
 	end
 	
 	for i,v in ipairs(cornerTextures) do
-		v:SetAlpha(alpha)
+		v:SetVertexColor(r, g, b, a)
 	end
 end
 
@@ -338,18 +344,14 @@ Chinchilla_Appearance:AddChinchillaOption({
 			set = "SetShape",
 		},
 		borderAlpha = {
-			name = L["Border opacity"],
-			desc = L["Set how transparent or opaque the minimap border is."],
-			type = 'number',
-			min = 0,
-			max = 1,
-			step = 0.01,
-			bigStep = 0.05,
+			name = L["Border color"],
+			desc = L["Set the color the minimap border is."],
+			type = 'color',
+			hasAlpha = true,
 			get = function()
-				return Chinchilla_Appearance.db.profile.borderAlpha
+				return unpack(Chinchilla_Appearance.db.profile.borderColor)
 			end,
-			set = "SetBorderAlpha",
-			isPercent = true,
+			set = "SetBorderColor",
 		},
 		borderStyle = {
 			name = L["Border style"],
