@@ -36,6 +36,12 @@
 	["Set how transparent or opaque the minimap border is."] = "Définit la transparence de la bordure de la minicarte.",
 	["Button border opacity"] = "Opacité de la bordure des boutons",
 	["Set how transparent or opaque the minimap button borders are."] = "Définit la transparence de la bordure des boutons.",
+	["Border style"] = "Style de bordure",
+	["Set what texture style you want the minimap border to use."] = "Définit le style de texture que vous voulez utiliser sur la bordure de la minicarte.",
+	["Blizzard"] = "Blizzard",
+	["Thin"] = "Mince",
+	["Alliance"] = "Alliance",
+	["Tooltip"] = "Infobulle",
 
 	["Auto zoom"] = "Zoom auto",
 	["Automatically zoom out after a specified time."] = "Dézoome automatiquement après une durée spécifiée.",
