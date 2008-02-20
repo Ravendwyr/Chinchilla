@@ -1,7 +1,7 @@
 local VERSION = tonumber(("$Revision$"):match("%d+"))
 
 local Chinchilla = Chinchilla
-local Chinchilla_Coordinates = Chinchilla:NewModule("Coordinates")
+local Chinchilla_Coordinates = Chinchilla:NewModule("Coordinates", "LibRockTimer-1.0")
 local self = Chinchilla_Coordinates
 if Chinchilla.revision < VERSION then
 	Chinchilla.version = "1.0r" .. VERSION
@@ -74,7 +74,6 @@ function Chinchilla_Coordinates:OnEnable()
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
 		text:SetPoint("CENTER")
-		local countdown = 0
 		function frame:Update()
 			local x, y = GetPlayerMapPosition("player")
 			if x == 0 and y == 0 then
@@ -89,17 +88,10 @@ function Chinchilla_Coordinates:OnEnable()
 				text:SetText(coordString:format(x*100, y*100))
 			end
 		end
-		frame:SetScript("OnUpdate", function(this, elapsed)
-			countdown = countdown - elapsed
-			if countdown > 0 then
-				return
-			end
-			countdown = 0.1
-			this:Update()
-		end)
 	end
 	frame:Show()
 	self:Update()
+	self:AddRepeatingTimer(0.1, frame.Update, frame)
 end
 
 function Chinchilla_Coordinates:OnDisable()
