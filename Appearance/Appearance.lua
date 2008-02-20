@@ -30,24 +30,28 @@ end
 local borderStyles = {
 	Blizzard = {
 		L["Blizzard"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard]],
 	},
 	Thin = {
 		L["Thin"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Round]],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Square]],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Thin]],
 	},
 	Alliance = {
 		L["Alliance"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Round]],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Square]]
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Alliance]],
 	},
 	Tooltip = {
 		L["Tooltip"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip-Round]],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip-Square]]
-	}
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip]],
+	},
+	Tubular = {
+		L["Tubular"],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Tubular]],
+	},
+	Flat = {
+		L["Flat"],
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Flat]],
+	},
 }
 
 local cornerTextures = {}
@@ -190,21 +194,23 @@ function Chinchilla_Appearance:SetShape(shape)
 		end
 		
 		cornerTextures[1]:SetPoint("BOTTOMRIGHT", Minimap, "CENTER")
-		cornerTextures[1]:SetTexCoord(0, 0.5, 0, 0.5)
+		cornerTextures[1]:SetTexCoord(0, 0.25, 0, 0.5)
 		
 		cornerTextures[2]:SetPoint("BOTTOMLEFT", Minimap, "CENTER")
-		cornerTextures[2]:SetTexCoord(0.5, 1, 0, 0.5)
+		cornerTextures[2]:SetTexCoord(0.25, 0.5, 0, 0.5)
 		
 		cornerTextures[3]:SetPoint("TOPRIGHT", Minimap, "CENTER")
-		cornerTextures[3]:SetTexCoord(0, 0.5, 0.5, 1)
+		cornerTextures[3]:SetTexCoord(0, 0.25, 0.5, 1)
 		
 		cornerTextures[4]:SetPoint("TOPLEFT", Minimap, "CENTER")
-		cornerTextures[4]:SetTexCoord(0.5, 1, 0.5, 1)
+		cornerTextures[4]:SetTexCoord(0.25, 0.5, 0.5, 1)
 	end
 	
 	local borderStyle = borderStyles[self.db.profile.borderStyle] or borderStyles.Blizzard
 	for i,v in ipairs(cornerTextures) do
-		v:SetTexture(tmp[i] and borderStyle[2] or borderStyle[3])
+		v:SetTexture(borderStyle[2])
+		local x_offset = tmp[i] and 0 or 0.5
+		v:SetTexCoord(((i-1) % 2) / 4 + x_offset, ((i-1) % 2) / 4 + 0.25 + x_offset, math.floor((i-1) / 2) / 2, math.floor((i-1) / 2) / 2 + 0.5)
 	end
 	
 	Minimap:SetMaskTexture(shapeToMask[shape])
