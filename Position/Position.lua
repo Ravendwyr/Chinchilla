@@ -111,6 +111,11 @@ function Chinchilla_Position:OnEnable()
 	
 	Minimap:SetClampedToScreen(true)
 	
+	--hack so that frame positioning doesn't break
+	MinimapCluster:SetMovable(true)
+	MinimapCluster:StartMoving()
+  	MinimapCluster:StopMovingOrSizing()
+	
 	self:AddSecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:AddSecureHook(QuestWatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
 	self:AddSecureHook(QuestTimerFrame, "SetPoint", "QuestTimerFrame_SetPoint")
