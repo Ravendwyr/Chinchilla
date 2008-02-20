@@ -36,6 +36,12 @@
 	["Set how transparent or opaque the minimap border is."] = "미니맵 테두리의 투명도를 조절합니다.",
 	["Button border opacity"] = "버튼 테두리 투명도",
 	["Set how transparent or opaque the minimap button borders are."] = "미니맵 버튼의 테두리 투명도를 변경합니다.",
+	["Border style"] = "테두리 모양",
+	["Set what texture style you want the minimap border to use."] = "미니맵의 테두리 모양을 변경합니다.",
+	["Blizzard"] = "기본",
+	["Thin"] = "얇게",
+	["Alliance"] = "얼라이언스",
+	["Tooltip"] = "툴팁",
 	
 	["Auto zoom"] = "자동 축소",
 	["Automatically zoom out after a specified time."] = "미니맵 확대 후 일정 시간이 지나면 자동으로 축소되어 원래상태로 돌아옵니다.",
