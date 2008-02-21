@@ -42,6 +42,8 @@
 	["Thin"] = "얇게",
 	["Alliance"] = "얼라이언스",
 	["Tooltip"] = "툴팁",
+	["Tubular"] = "통모양",
+	["Flat"] = "두껍게",
 	
 	["Auto zoom"] = "자동 축소",
 	["Automatically zoom out after a specified time."] = "미니맵 확대 후 일정 시간이 지나면 자동으로 축소되어 원래상태로 돌아옵니다.",
