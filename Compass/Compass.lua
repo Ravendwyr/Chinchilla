@@ -136,7 +136,7 @@ Chinchilla_Compass:AddChinchillaOption({
 		radius = {
 			name = L["Radius"],
 			desc = L["The distance from the center of the minimap to show the indicators."],
-			type = 'range',
+			type = 'number',
 			min = 50,
 			max = 100,
 			step = 1,

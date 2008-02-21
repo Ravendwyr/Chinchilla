@@ -463,7 +463,7 @@ Chinchilla_Position:AddChinchillaOption({
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the minimap."],
-					type = 'range',
+					type = 'number',
 					min = function()
 						return -math.floor(GetScreenWidth()/5 + 0.5)*5
 					end,
@@ -483,7 +483,7 @@ Chinchilla_Position:AddChinchillaOption({
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the minimap."],
-					type = 'range',
+					type = 'number',
 					min = function()
 						return -math.floor(GetScreenHeight()/5 + 0.5)*5
 					end,
@@ -531,7 +531,7 @@ Chinchilla_Position:AddChinchillaOption({
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the durability man."],
-					type = 'range',
+					type = 'number',
 					min = x_min,
 					max = x_max,
 					step = 1,
@@ -544,7 +544,7 @@ Chinchilla_Position:AddChinchillaOption({
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the durability man."],
-					type = 'range',
+					type = 'number',
 					min = y_min,
 					max = y_max,
 					step = 1,
@@ -585,7 +585,7 @@ Chinchilla_Position:AddChinchillaOption({
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the quest tracker."],
-					type = 'range',
+					type = 'number',
 					min = x_min,
 					max = x_max,
 					step = 1,
@@ -598,7 +598,7 @@ Chinchilla_Position:AddChinchillaOption({
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the quest tracker."],
-					type = 'range',
+					type = 'number',
 					min = y_min,
 					max = y_max,
 					step = 1,
@@ -639,7 +639,7 @@ Chinchilla_Position:AddChinchillaOption({
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the quest timer."],
-					type = 'range',
+					type = 'number',
 					min = x_min,
 					max = x_max,
 					step = 1,
@@ -652,7 +652,7 @@ Chinchilla_Position:AddChinchillaOption({
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the quest timer."],
-					type = 'range',
+					type = 'number',
 					min = y_min,
 					max = y_max,
 					step = 1,
@@ -693,7 +693,7 @@ Chinchilla_Position:AddChinchillaOption({
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the capture bar."],
-					type = 'range',
+					type = 'number',
 					min = x_min,
 					max = x_max,
 					step = 1,
@@ -706,7 +706,7 @@ Chinchilla_Position:AddChinchillaOption({
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the capture bar."],
-					type = 'range',
+					type = 'number',
 					min = y_min,
 					max = y_max,
 					step = 1,

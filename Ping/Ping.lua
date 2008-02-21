@@ -127,7 +127,7 @@ Chinchilla_Ping:AddChinchillaOption({
 		scale = {
 			name = L["Size"],
 			desc = L["Set the size of the ping display."],
-			type = 'range',
+			type = 'number',
 			min = 0.25,
 			max = 4,
 			step = 0.01,

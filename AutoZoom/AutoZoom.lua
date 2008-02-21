@@ -51,7 +51,7 @@ Chinchilla_AutoZoom:AddChinchillaOption({
 		time = {
 			name = L["Time to zoom"],
 			desc = L["Set the time it takes between manually zooming in and automatically zooming out"],
-			type = 'range',
+			type = 'number',
 			min = 1,
 			max = 60,
 			step = 0.1,
