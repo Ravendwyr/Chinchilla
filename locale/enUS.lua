@@ -50,6 +50,17 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Time to zoom"] = true,
 	["Set the time it takes between manually zooming in and automatically zooming out"] = true,
 	
+	["Compass"] = true,
+	["Show direction indicators on the minimap"] = true,
+	["Radius"] = true,
+	["The distance from the center of the minimap to show the indicators."] = true,
+	["Color"] = true,
+	["Color of the indicators"] = true,
+	["Size"] = true,
+	["Size of the indicators"] = true,
+	["Non-north size"] = true,
+	["Size of the east, west, and south indicators relative to the north indicator"] = true,
+	
 	["Coordinates"] = true,
 	["Show coordinates on or near the minimap"] = true,
 	["Precision"] = true,
