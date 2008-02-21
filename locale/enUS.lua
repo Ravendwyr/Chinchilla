@@ -109,6 +109,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Angle on the minimap"] = true,
 	["Horizontal position of the button on-screen"] = true,
 	["Vertical position of the button on-screen"] = true,
+	["Set how far away from the center to place buttons on the minimap"] = true,
 	
 	["Position"] = true,
 	["Allow for moving of the minimap and surrounding frames"] = true,

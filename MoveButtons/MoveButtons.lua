@@ -82,10 +82,24 @@ local function getOffset(deg)
 		end
 	end
 	
+	local radius = Chinchilla_MoveButtons.db.profile.radius
+	
 	if round then
-		return 80 * cos, 80 * sin
+		return radius * cos, radius * sin
 	else
-		return math.max(-82, math.min(110 * cos, 84)), math.max(-86, math.min(110 * sin, 82))
+		local x = radius * 2^0.5 * cos
+		local y = radius * 2^0.5 * sin
+		if x < -radius then
+			x = -radius
+		elseif x > radius then
+			x = radius
+		end
+		if y < -radius then
+			y = -radius
+		elseif y > radius then
+			y = radius
+		end
+		return x, y
 	end
 end
 
@@ -161,7 +175,8 @@ end
 function Chinchilla_MoveButtons:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("MoveButtons")
 	Chinchilla:SetDatabaseNamespaceDefaults("MoveButtons", "profile", {
-		lock = false
+		lock = false,
+		radius = 80,
 	})
 	
 	for k,v in pairs(buttons) do
@@ -295,6 +310,13 @@ function Chinchilla_MoveButtons:SetLocked(value)
 	end
 end
 
+function Chinchilla_MoveButtons:SetRadius(value)
+	if value then
+		self.db.profile.radius = value
+	end
+	self:Update()
+end
+
 local args = {
 	attach = {
 		name = L["Attach to minimap"],
@@ -354,6 +376,19 @@ Chinchilla_MoveButtons:AddChinchillaOption({
 			order = 2,
 			get = "IsLocked",
 			set = "SetLocked",
+		},
+		radius = {
+			name = L["Radius"],
+			desc = L["Set how far away from the center to place buttons on the minimap"],
+			type = 'number',
+			order = 3,
+			min = 60,
+			max = 100,
+			step = 1,
+			get = function()
+				return Chinchilla_MoveButtons.db.profile.radius
+			end,
+			set = "SetRadius",
 		},
 		battleground = {
 			name = L["Battleground"],
