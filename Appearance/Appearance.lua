@@ -116,6 +116,7 @@ end
 function Chinchilla_Appearance:OnRotateMinimapUpdate(value)
 	rotateMinimap = value
 	self:SetShape(nil)
+	Minimap:SetFrameLevel(MinimapCluster:GetFrameLevel()+1)
 end
 
 function Chinchilla_Appearance:SetScale(value)
