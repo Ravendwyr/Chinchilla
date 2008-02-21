@@ -76,12 +76,12 @@ function Chinchilla_Compass:OnRotateMinimapUpdate(value)
 	rotateMinimap = value
 	if self:IsActive() then
 		self:AddTimer(0, hideBlizzDirections)
-	end
-	if value then
-		frame:SetScript("OnUpdate", repositionCompass)
-	else
-		frame:SetScript("OnUpdate", nil)
-		repositionCompass()
+		if value then
+			frame:SetScript("OnUpdate", repositionCompass)
+		else
+			frame:SetScript("OnUpdate", nil)
+			repositionCompass()
+		end
 	end
 end
 
