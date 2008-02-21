@@ -58,6 +58,17 @@ Chinchilla.options = {
 			set = function(value)
 				Chinchilla:CallMethodOnAllModules(false, "SetLocked", value)
 			end
+		},
+		rotateMinimap = {
+			name = _G.ROTATE_MINIMAP,
+			desc = _G.OPTION_TOOLTIP_ROTATE_MINIMAP,
+			type = 'boolean',
+			get = function()
+				return GetCVar("rotateMinimap") == "1"
+			end,
+			set = function(value)
+				SetCVar("rotateMinimap", value and "1" or "0")
+			end,
 		}
 	},
 }
