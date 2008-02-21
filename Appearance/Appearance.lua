@@ -49,6 +49,10 @@ local borderStyles = {
 		L["Flat"],
 		[[Interface\AddOns\Chinchilla\Appearance\Border-Flat]],
 	},
+	Chinchilla = {
+		"Chinchilla",
+		[[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla]],
+	}
 }
 
 local cornerTextures = {}
