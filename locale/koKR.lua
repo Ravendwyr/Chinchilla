@@ -11,7 +11,7 @@
 	["Opacity"] = "투명도",
 	["Set how transparent or opaque the minimap is"] = "미니맵의 투명도",
 	["Strata"] = "프레임 레벨",
-	["Set which layer the minimap is layed on in relation to others in your interface."] = "다른 프레임과 겹쳐질 때 우선순위를 결정합니다.",
+	["Set which layer the minimap is layered on in relation to others in your interface."] = "다른 프레임과 겹쳐질 때 우선순위를 결정합니다.",
 --	["Background"] = true,
 --	["Low"] = true,
 --	["Medium"] = true,

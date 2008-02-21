@@ -17,6 +17,7 @@ function Chinchilla_Appearance:OnInitialize()
 		borderColor = {1, 1, 1, 1},
 		buttonBorderAlpha = 1,
 		strata = "BACKGROUND",
+		frameLevel = 1,
 		shape = "CORNER-BOTTOMLEFT",
 		borderStyle = "Blizzard",
 	})
@@ -54,6 +55,7 @@ function Chinchilla_Appearance:OnEnable()
 	self:SetScale(nil)
 	self:SetAlpha(nil)
 	self:SetFrameStrata(nil)
+	self:SetFrameLevel(nil)
 	self:SetShape(nil)
 	self:SetBorderColor(nil, nil, nil, nil)
 	self:SetButtonBorderAlpha(nil)
@@ -78,6 +80,7 @@ function Chinchilla_Appearance:OnDisable()
 	self:SetScale(nil)
 	self:SetAlpha(nil)
 	self:SetFrameStrata(nil)
+	self:SetFrameLevel(nil)
 	self:SetShape(nil)
 	self:SetBorderColor(nil, nil, nil, nil)
 	self:SetButtonBorderAlpha(nil)
@@ -147,6 +150,19 @@ function Chinchilla_Appearance:SetFrameStrata(value)
 	end
 
 	MinimapCluster:SetFrameStrata(value)
+end
+
+function Chinchilla_Appearance:SetFrameLevel(value)
+	if value then
+		self.db.profile.frameLevel = value
+	else
+		value = self.db.profile.frameLevel
+	end
+	if not Chinchilla:IsModuleActive(self) then
+		value = 1
+	end
+	
+	MinimapCluster:SetFrameLevel(value)
 end
 
 local shapeToMask = {
@@ -311,7 +327,7 @@ Chinchilla_Appearance:AddChinchillaOption({
 		},
 		strata = {
 			name = L["Strata"],
-			desc = L["Set which layer the minimap is layed on in relation to others in your interface."],
+			desc = L["Set which layer the minimap is layered on in relation to others in your interface."],
 			type = 'choice',
 			choices = {
 				BACKGROUND = L["Background"],
@@ -337,6 +353,18 @@ Chinchilla_Appearance:AddChinchillaOption({
 				return Chinchilla_Appearance.db.profile.strata
 			end,
 			set = "SetFrameStrata",
+		},
+		frameLevel = {
+			name = L["Frame level"],
+			desc = L["Set which frame level the minimap is layered on in relation to others in your interface."],
+			type = 'number',
+			min = 0,
+			max = 50,
+			step = 1,
+			get = function()
+				return Chinchilla_Appearance.db.profile.frameLevel
+			end,
+			set = "SetFrameLevel",
 		},
 		shape = {
 			name = L["Shape"],

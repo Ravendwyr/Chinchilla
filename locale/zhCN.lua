@@ -13,7 +13,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Opacity"] = "透明度",
 	["Set how transparent or opaque the minimap is"] = "设置小地图的透明度",
 	["Strata"] = "层级",
-	["Set which layer the minimap is layed on in relation to others in your interface."] = "设置小地图的层级，层级用来决定小地图是在别的窗口的上面还是下面。",
+	["Set which layer the minimap is layered on in relation to others in your interface."] = "设置小地图的层级，层级用来决定小地图是在别的窗口的上面还是下面。",
 	["Background"] = "背景",
 	["Low"] = "低",
 	["Medium"] = "中",

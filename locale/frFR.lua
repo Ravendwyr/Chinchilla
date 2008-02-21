@@ -11,7 +11,7 @@
 	["Opacity"] = "Opacité",
 	["Set how transparent or opaque the minimap is"] = "Définit la transparence de la minicarte.",
 	["Strata"] = "Couche",
-	["Set which layer the minimap is layed on in relation to others in your interface."] = "Définit sur quelle couche se trouve la minicarte par rapport au reste de l'interface.",
+	["Set which layer the minimap is layered on in relation to others in your interface."] = "Définit sur quelle couche se trouve la minicarte par rapport au reste de l'interface.",
 	["Background"] = "Arrière-plan",
 	["Low"] = "Faible",
 	["Medium"] = "Moyen",
