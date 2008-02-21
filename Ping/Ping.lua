@@ -1,13 +1,7 @@
-local VERSION = tonumber(("$Revision$"):match("%d+"))
-
 local Chinchilla = Chinchilla
+Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_Ping = Chinchilla:NewModule("Ping", "LibRockEvent-1.0")
 local self = Chinchilla_Ping
-if Chinchilla.revision < VERSION then
-	Chinchilla.version = "1.0r" .. VERSION
-	Chinchilla.revision = VERSION
-	Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
-end
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_Ping.desc = L["Show who last pinged the minimap"]

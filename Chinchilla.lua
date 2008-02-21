@@ -10,6 +10,15 @@ Chinchilla:SetDatabase("ChinchillaDB")
 Chinchilla:SetDatabaseDefaults('profile', {
 })
 
+function Chinchilla:ProvideVersion(revision, date)
+	revision = tonumber(revision:match("%d+"))
+	if Chinchilla.revision < revision then
+		Chinchilla.version = "1.0r" .. revision
+		Chinchilla.revision = revision
+		Chinchilla.date = date:match("%d%d%d%d%-%d%d%-%d%d")
+	end
+end
+
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla.options = {
@@ -85,10 +94,12 @@ end
 
 function Chinchilla:OnInitialize()
 	self:AddScriptHook(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
+	self:AddSecureHook("SetCVar")
 end
 
 function Chinchilla:OnDisable()
 	self:AddScriptHook(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
+	self:AddSecureHook("SetCVar")
 end
 
 function Chinchilla:Minimap_OnMouseUp(this, button, ...)
@@ -96,5 +107,11 @@ function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 		self:OpenConfigMenu()
 	else
 		return self.hooks[this].OnMouseUp(this, button, ...)
+	end
+end
+
+function Chinchilla:SetCVar(key, value)
+	if key == "rotateMinimap" then
+		self:CallMethodOnAllModules(false, "OnRotateMinimapUpdate", value == "1")
 	end
 end

@@ -1,13 +1,7 @@
-local VERSION = tonumber(("$Revision$"):match("%d+"))
-
 local Chinchilla = Chinchilla
+Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_AutoZoom = Chinchilla:NewModule("AutoZoom", "LibRockTimer-1.0", "LibRockHook-1.0")
 local self = Chinchilla_AutoZoom
-if Chinchilla.revision < VERSION then
-	Chinchilla.version = "1.0r" .. VERSION
-	Chinchilla.revision = VERSION
-	Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
-end
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_AutoZoom.desc = L["Automatically zoom out after a specified time."]

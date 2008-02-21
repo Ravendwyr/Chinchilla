@@ -1,19 +1,14 @@
-local VERSION = tonumber(("$Revision$"):match("%d+"))
-
 local Chinchilla = Chinchilla
+Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "LibRockEvent-1.0", "LibRockTimer-1.0")
 local self = Chinchilla_Appearance
-if Chinchilla.revision < VERSION then
-	Chinchilla.version = "1.0r" .. VERSION
-	Chinchilla.revision = VERSION
-	Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
-end
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_Appearance.desc = L["Allow for a customized look of the minimap"]
 
 local newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newDict", "unpackDictAndDel")
 
+local rotateMinimap = GetCVar("rotateMinimap") == "1"
 function Chinchilla_Appearance:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Appearance")
 	Chinchilla:SetDatabaseNamespaceDefaults("Appearance", "profile", {
@@ -110,9 +105,9 @@ function Chinchilla_Appearance:MINIMAP_UPDATE_ZOOM()
 	self:SetAlpha(nil)
 end
 
-function Chinchilla_Appearance:CVAR_UPDATE()
+function Chinchilla_Appearance:OnRotateMinimapUpdate(value)
+	rotateMinimap = value
 	self:SetShape(nil)
-	self:SetAlpha(nil)
 end
 
 function Chinchilla_Appearance:SetScale(value)
@@ -176,6 +171,9 @@ function Chinchilla_Appearance:SetShape(shape)
 	end
 	if not Chinchilla:IsModuleActive(self) then
 		return
+	end
+	if rotateMinimap then
+		shape = "ROUND"
 	end
 	
 	-- topleft round?
@@ -360,6 +358,9 @@ Chinchilla_Appearance:AddChinchillaOption({
 				return Chinchilla_Appearance.db.profile.shape
 			end,
 			set = "SetShape",
+			disabled = function()
+				return rotateMinimap
+			end,
 		},
 		borderAlpha = {
 			name = L["Border color"],
@@ -405,7 +406,7 @@ Chinchilla_Appearance:AddChinchillaOption({
 })
 
 function _G.GetMinimapShape()
-	if Chinchilla:IsModuleActive(self) then
+	if Chinchilla_Appearance:IsActive() and not rotateMinimap then
 		return self.db.profile.shape
 	else
 		return "ROUND"
