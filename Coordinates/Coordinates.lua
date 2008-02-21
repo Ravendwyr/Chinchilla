@@ -236,10 +236,13 @@ Chinchilla_Coordinates:AddChinchillaOption({
 					desc = L["Allow the coordinate indicator to be moved"],
 					type = 'boolean',
 					get = function()
-						return frame:IsMovable()
+						return frame and frame:IsMovable()
 					end,
 					set = "SetMovable",
 					order = 1,
+					disabled = function()
+						return not frame
+					end,
 				},
 				x = {
 					name = L["Horizontal position"],
