@@ -20,6 +20,7 @@ function Chinchilla_Appearance:OnInitialize()
 		frameLevel = 1,
 		shape = "CORNER-BOTTOMLEFT",
 		borderStyle = "Blizzard",
+		borderRadius = 80,
 	})
 end
 
@@ -202,11 +203,12 @@ function Chinchilla_Appearance:SetShape(shape)
 	tmp[4] = shape == "ROUND" or shape == "CORNER-BOTTOMRIGHT" or shape == "SIDE-RIGHT" or shape == "SIDE-BOTTOM"
 	
 	if not cornerTextures[1] then
+		local borderRadius = self.db.profile.borderRadius
 		for i = 1, 4 do
 			local tex = MinimapBackdrop:CreateTexture("Chinchilla_Appearance_MinimapCorner" .. i, "ARTWORK")
 			cornerTextures[i] = tex
-			cornerTextures[i]:SetWidth(80)
-			cornerTextures[i]:SetHeight(80)
+			cornerTextures[i]:SetWidth(borderRadius)
+			cornerTextures[i]:SetHeight(borderRadius)
 		end
 		
 		cornerTextures[1]:SetPoint("BOTTOMRIGHT", Minimap, "CENTER")
@@ -243,6 +245,20 @@ function Chinchilla_Appearance:SetBorderStyle(style)
 		return
 	end
 	self:SetShape(nil)
+end
+
+function Chinchilla_Appearance:SetBorderRadius(value)
+	if value then
+		self.db.profile.borderRadius = value
+	else
+		return
+	end
+	if cornerTextures[1] then
+		for i,v in ipairs(cornerTextures) do
+			v:SetWidth(value)
+			v:SetHeight(value)
+		end
+	end
 end
 
 function Chinchilla_Appearance:SetBorderColor(r, g, b, a)
@@ -415,6 +431,19 @@ Chinchilla_Appearance:AddChinchillaOption({
 				return Chinchilla_Appearance.db.profile.borderStyle
 			end,
 			set = "SetBorderStyle",
+		},
+		borderRadius = {
+			name = L["Border radius"],
+			desc = L["Set how large the border texture is."],
+			type = 'number',
+			min = 50,
+			max = 200,
+			step = 1,
+			bigStep = 5,
+			get = function()
+				return Chinchilla_Appearance.db.profile.borderRadius
+			end,
+			set = "SetBorderRadius",
 		},
 		buttonBorderAlpha = {
 			name = L["Button border opacity"],

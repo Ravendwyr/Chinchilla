@@ -40,6 +40,8 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set how transparent or opaque the minimap button borders are."] = true,
 	["Border style"] = true,
 	["Set what texture style you want the minimap border to use."] = true,
+	["Border radius"] = true,
+	["Set how large the border texture is."] = true,
 	["Blizzard"] = true,
 	["Thin"] = true,
 	["Alliance"] = true,
