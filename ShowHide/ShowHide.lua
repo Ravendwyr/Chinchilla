@@ -75,7 +75,11 @@ function Chinchilla_ShowHide:Update()
 				end
 			end
 		end
-		if not self.db.profile.locationBar then
+		if Chinchilla:HasModule("Location") and Chinchilla:IsModuleActive("Location") then
+			MinimapToggleButton:Hide()
+			MinimapBorderTop:Hide()
+			MinimapZoneTextButton:Hide()
+		elseif not self.db.profile.locationBar then
 			MinimapToggleButton:Hide()
 			MinimapBorderTop:Hide()
 			if not self.db.profile.locationText then

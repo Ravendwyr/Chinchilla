@@ -1,30 +1,17 @@
 local Chinchilla = Chinchilla
 Chinchilla:ProvideVersion("$Revision$", "$Date$")
-local Chinchilla_Coordinates = Chinchilla:NewModule("Coordinates", "LibRockTimer-1.0")
-local self = Chinchilla_Coordinates
+local Chinchilla_Location = Chinchilla:NewModule("Location", "LibRockEvent-1.0")
+local self = Chinchilla_Location
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
-Chinchilla_Coordinates.desc = L["Show coordinates on or near the minimap"]
+Chinchilla_Location.desc = L["Show zone information on or near minimap"]
 
-local coordString
-local function recalculateCoordString()
-	local sep
-	if ("%.1f"):format(1.1) == "1,1" then
-		sep = " x "
-	else
-		sep = ", "
-	end
-	local prec = self.db.profile.precision
-	coordString = ("%%.%df%s%%.%df"):format(prec, sep, prec)
-end
-
-function Chinchilla_Coordinates:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("Coordinates")
-	Chinchilla:SetDatabaseNamespaceDefaults("Coordinates", "profile", {
-		precision = 1,
-		scale = 1,
-		positionX = -30,
-		positionY = -50,
+function Chinchilla_Location:OnInitialize()
+	self.db = Chinchilla:GetDatabaseNamespace("Location")
+	Chinchilla:SetDatabaseNamespaceDefaults("Location", "profile", {
+		scale = 1.2,
+		positionX = 0,
+		positionY = 70,
 		background = {
 			TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
 			TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
@@ -38,18 +25,18 @@ function Chinchilla_Coordinates:OnInitialize()
 			1
 		},
 		textColor = {
-			0.8,
-			0.8,
-			0.6,
+			1,
+			0.82,
+			0,
 			1
 		}
 	})
 end
 
 local frame
-function Chinchilla_Coordinates:OnEnable()
+function Chinchilla_Location:OnEnable()
 	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_Coordinates_Frame", Minimap)
+		frame = CreateFrame("Frame", "Chinchilla_Location_Frame", Minimap)
 		frame:SetBackdrop({
 			bgFile = [[Interface\Tooltips\UI-Tooltip-Background]],
 			edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
@@ -68,20 +55,6 @@ function Chinchilla_Coordinates:OnEnable()
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
 		text:SetPoint("CENTER")
-		function frame:Update()
-			local x, y = GetPlayerMapPosition("player")
-			if x == 0 and y == 0 then
-				-- instance or can't get coords
-				self:Hide()
-			else
-				if not self:IsShown() then
-					self:Show()
-					Chinchilla_Coordinates:Update()
-					return
-				end
-				text:SetText(coordString:format(x*100, y*100))
-			end
-		end
 		frame:SetScript("OnDragStart", function(this)
 			this:StartMoving()
 		end)
@@ -102,32 +75,44 @@ function Chinchilla_Coordinates:OnEnable()
 	end
 	frame:Show()
 	self:Update()
-	self:AddRepeatingTimer(0.1, frame.Update, frame)
+	self:AddEventListener("ZONE_CHANGED", "Update")
+	self:AddEventListener("ZONE_CHANGED_INDOORS", "Update")
+	self:AddEventListener("ZONE_CHANGED_NEW_AREA", "Update")
+	MinimapToggleButton:Hide()
+	MinimapBorderTop:Hide()
+	MinimapZoneTextButton:Hide()
+	if Chinchilla:HasModule("ShowHide") then
+		Chinchilla:GetModule("ShowHide"):Update()
+	end
 end
 
-function Chinchilla_Coordinates:OnDisable()
+function Chinchilla_Location:OnDisable()
 	frame:Hide()
+	MinimapToggleButton:Show()
+	MinimapBorderTop:Show()
+	MinimapZoneTextButton:Show()
+	if Chinchilla:HasModule("ShowHide") then
+		Chinchilla:GetModule("ShowHide"):Update()
+	end
 end
 
-function Chinchilla_Coordinates:Update()
+function Chinchilla_Location:Update()
 	if not Chinchilla:IsModuleActive(self) then
 		return
 	end
-	recalculateCoordString()
 	frame:SetScale(self.db.profile.scale)
-	frame.text:SetText(coordString:format(12.345, 23.456))
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+5)
-	frame:SetWidth(frame.text:GetWidth() + 12)
-	frame:SetHeight(frame.text:GetHeight() + 12)
 	frame.text:SetTextColor(unpack(self.db.profile.textColor))
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
 	frame:ClearAllPoints()
 	frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
-	frame:Update()
+	frame.text:SetText(GetMinimapZoneText())
+	frame:SetWidth(frame.text:GetWidth() + 12)
+	frame:SetHeight(frame.text:GetHeight() + 12)
 end
 
-function Chinchilla_Coordinates:SetMovable(value)
+function Chinchilla_Location:SetMovable(value)
 	frame:SetMovable(value)
 	frame:EnableMouse(value)
 	if value then
@@ -137,29 +122,14 @@ function Chinchilla_Coordinates:SetMovable(value)
 	end
 end
 
-Chinchilla_Coordinates:AddChinchillaOption({
-	name = L["Coordinates"],
-	desc = Chinchilla_Coordinates.desc,
+Chinchilla_Location:AddChinchillaOption({
+	name = L["Location"],
+	desc = Chinchilla_Location.desc,
 	type = 'group',
 	args = {
-		precision = {
-			name = L["Precision"],
-			desc = L["Set the amount of numbers past the decimal place to show."],
-			type = 'number',
-			min = 0,
-			max = 3,
-			step = 1,
-			get = function()
-				return self.db.profile.precision
-			end,
-			set = function(value)
-				self.db.profile.precision = value
-				self:Update()
-			end,
-		},
 		scale = {
 			name = L["Size"],
-			desc = L["Set the size of the coordinate display."],
+			desc = L["Set the size of the location display."],
 			type = 'number',
 			min = 0.25,
 			max = 4,
@@ -227,13 +197,13 @@ Chinchilla_Coordinates:AddChinchillaOption({
 		},
 		position = {
 			name = L["Position"],
-			desc = L["Set the position of the coordinate indicator"],
+			desc = L["Set the position of the location indicator"],
 			type = 'group',
 			groupType = 'inline',
 			args = {
 				movable = {
 					name = L["Movable"],
-					desc = L["Allow the coordinate indicator to be moved"],
+					desc = L["Allow the location indicator to be moved"],
 					type = 'boolean',
 					get = function()
 						return frame:IsMovable()
@@ -243,7 +213,7 @@ Chinchilla_Coordinates:AddChinchillaOption({
 				},
 				x = {
 					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the coordinate indicator relative to the minimap."],
+					desc = L["Set the position on the x-axis for the location indicator relative to the minimap."],
 					type = 'number',
 					min = function()
 						return -math.floor(GetScreenWidth()/5 + 0.5)*5
@@ -264,7 +234,7 @@ Chinchilla_Coordinates:AddChinchillaOption({
 				},
 				y = {
 					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the coordinate indicator relative to the minimap."],
+					desc = L["Set the position on the y-axis for the location indicator relative to the minimap."],
 					type = 'number',
 					min = function()
 						return -math.floor(GetScreenHeight()/5 + 0.5)*5
@@ -285,29 +255,5 @@ Chinchilla_Coordinates:AddChinchillaOption({
 				},
 			}
 		},
-		--[[
-		position = {
-			name = L["Position"],
-			desc = L["Set the position of the coordinate indicator"],
-			type = 'choice',
-			choices = {
-				["BOTTOM;BOTTOM"] = L["Bottom, inside"],
-				["TOP;BOTTOM"] = L["Bottom, outside"],
-				["TOP;TOP"] = L["Top, inside"],
-				["BOTTOM;TOP"] = L["Top, outside"],
-				["TOPLEFT;TOPLEFT"] = L["Top-left"],
-				["BOTTOMLEFT;BOTTOMLEFT"] = L["Bottom-left"],
-				["TOPRIGHT;TOPRIGHT"] = L["Top-right"],
-				["BOTTOMRIGHT;BOTTOMRIGHT"] = L["Bottom-right"]
-			},
-			get = function()
-				return self.db.profile.point .. ";" .. self.db.profile.relpoint
-			end,
-			set = function(value)
-				self.db.profile.point, self.db.profile.relpoint = value:match("(.*);(.*)")
-				self:Update()
-			end
-		},
-		]]
 	}
 })

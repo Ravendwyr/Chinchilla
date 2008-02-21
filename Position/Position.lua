@@ -440,12 +440,14 @@ Chinchilla_Position:AddChinchillaOption({
 			groupType = 'inline',
 			args = {
 				lock = {
-					name = L["Lock"],
-					desc = L["Lock the minimap so it cannot be mistakenly dragged"],
+					name = L["Movable"],
+					desc = L["Allow the minimap to be movable so you can drag it where you want"],
 					type = 'boolean',
 					order = 1,
-					get = "IsLocked",
-					set = "SetLocked"
+					get = "~IsLocked",
+					set = function(value)
+						Chinchilla_Position:SetLocked(not value)
+					end
 				},
 				point = {
 					name = L["Point"],

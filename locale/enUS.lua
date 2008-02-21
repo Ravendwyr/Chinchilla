@@ -2,6 +2,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = true,
 	["Enable"] = true,
 	["Enable this module"] = true,
+	["Lock"] = true,
 	["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."] = true,
 	
 	["Appearance"] = true,
@@ -85,6 +86,14 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set the position on the x-axis for the coordinate indicator relative to the minimap."] = true,
 	["Set the position on the y-axis for the coordinate indicator relative to the minimap."] = true,
 	
+	["Location"] = true,
+	["Show zone information on or near minimap"] = true,
+	["Set the size of the location display."] = true,
+	["Set the position of the location indicator"] = true,
+	["Allow the location indicator to be moved"] = true,
+	["Set the position on the x-axis for the location indicator relative to the minimap."] = true,
+	["Set the position on the y-axis for the location indicator relative to the minimap."] = true,
+	
 	["Move Buttons"] = true,
 	["Move buttons around the minimap"] = true,
 	["Battleground"] = true,
@@ -158,8 +167,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Point of the screen the capture bar is anchored to"] = true,
 	["Set the position on the x-axis for the capture bar."] = true,
 	["Set the position on the y-axis for the capture bar."] = true,
-	["Lock"] = true,
-	["Lock the minimap so it cannot be mistakenly dragged"] = true,
+	["Allow the minimap to be movable so you can drag it where you want"] = true,
 	
 	["Show / Hide"] = true,
 	["Show and hide interface elements of the minimap"] = true,
