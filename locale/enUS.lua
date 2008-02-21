@@ -81,6 +81,9 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Bottom, outside"] = true,
 	["Top, inside"] = true,
 	["Top, outside"] = true,
+	["Allow the coordinate indicator to be moved"] = true,
+	["Set the position on the x-axis for the coordinate indicator relative to the minimap."] = true,
+	["Set the position on the y-axis for the coordinate indicator relative to the minimap."] = true,
 	
 	["Move Buttons"] = true,
 	["Move buttons around the minimap"] = true,

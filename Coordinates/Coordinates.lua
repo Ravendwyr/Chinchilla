@@ -23,8 +23,8 @@ function Chinchilla_Coordinates:OnInitialize()
 	Chinchilla:SetDatabaseNamespaceDefaults("Coordinates", "profile", {
 		precision = 1,
 		scale = 1,
-		point = "BOTTOMLEFT",
-		relpoint = "BOTTOMLEFT",
+		positionX = -30,
+		positionY = -50,
 		background = {
 			TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
 			TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
@@ -82,6 +82,18 @@ function Chinchilla_Coordinates:OnEnable()
 				text:SetText(coordString:format(x*100, y*100))
 			end
 		end
+		frame:SetScript("OnDragStart", function(this)
+			this:StartMoving()
+		end)
+		frame:SetScript("OnDragStop", function(this)
+			this:StopMovingOrSizing()
+			local x, y = this:GetCenter()
+			local mx, my = Minimap:GetCenter()
+			self.db.profile.positionX = x - mx
+			self.db.profile.positionY = y - my
+			self:Update()
+			Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
+		end)
 	end
 	frame:Show()
 	self:Update()
@@ -106,8 +118,18 @@ function Chinchilla_Coordinates:Update()
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
 	frame:ClearAllPoints()
-	frame:SetPoint(self.db.profile.point, Minimap, self.db.profile.relpoint)
+	frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
 	frame:Update()
+end
+
+function Chinchilla_Coordinates:SetMovable(value)
+	frame:SetMovable(value)
+	frame:EnableMouse(value)
+	if value then
+		frame:RegisterForDrag("LeftButton")
+	else
+		frame:RegisterForDrag()
+	end
 end
 
 Chinchilla_Coordinates:AddChinchillaOption({
@@ -201,6 +223,67 @@ Chinchilla_Coordinates:AddChinchillaOption({
 		position = {
 			name = L["Position"],
 			desc = L["Set the position of the coordinate indicator"],
+			type = 'group',
+			groupType = 'inline',
+			args = {
+				movable = {
+					name = L["Movable"],
+					desc = L["Allow the coordinate indicator to be moved"],
+					type = 'boolean',
+					get = function()
+						return frame:IsMovable()
+					end,
+					set = "SetMovable",
+					order = 1,
+				},
+				x = {
+					name = L["Horizontal position"],
+					desc = L["Set the position on the x-axis for the coordinate indicator relative to the minimap."],
+					type = 'number',
+					min = function()
+						return -math.floor(GetScreenWidth()/5 + 0.5)*5
+					end,
+					max = function()
+						return math.floor(GetScreenWidth()/5 + 0.5)*5
+					end,
+					step = 1,
+					bigStep = 5,
+					get = function()
+						return self.db.profile.positionX
+					end,
+					set = function(value)
+						self.db.profile.positionX = value
+						self:Update()
+					end,
+					order = 2,
+				},
+				y = {
+					name = L["Vertical position"],
+					desc = L["Set the position on the y-axis for the coordinate indicator relative to the minimap."],
+					type = 'number',
+					min = function()
+						return -math.floor(GetScreenHeight()/5 + 0.5)*5
+					end,
+					max = function()
+						return math.floor(GetScreenHeight()/5 + 0.5)*5
+					end,
+					step = 1,
+					bigStep = 5,
+					get = function()
+						return self.db.profile.positionY
+					end,
+					set = function(value)
+						self.db.profile.positionY = value
+						self:Update()
+					end,
+					order = 3,
+				},
+			}
+		},
+		--[[
+		position = {
+			name = L["Position"],
+			desc = L["Set the position of the coordinate indicator"],
 			type = 'choice',
 			choices = {
 				["BOTTOM;BOTTOM"] = L["Bottom, inside"],
@@ -219,6 +302,7 @@ Chinchilla_Coordinates:AddChinchillaOption({
 				self.db.profile.point, self.db.profile.relpoint = value:match("(.*);(.*)")
 				self:Update()
 			end
-		}
+		},
+		]]
 	}
 })
