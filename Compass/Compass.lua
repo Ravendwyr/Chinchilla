@@ -61,6 +61,7 @@ function Chinchilla_Compass:OnEnable()
 		frame:SetScript("OnUpdate", repositionCompass)
 	end
 	self:SetFontSize(nil)
+	self:SetColor(nil)
 end
 
 function Chinchilla_Compass:OnDisable()
@@ -94,10 +95,15 @@ end
 
 function Chinchilla_Compass:SetColor(r, g, b, a)
 	local color = Chinchilla_Compass.db.profile.color
-	color[1] = r
-	color[2] = g
-	color[3] = b
-	color[4] = a
+	if r then
+		color[1] = r
+		color[2] = g
+		color[3] = b
+		color[4] = a
+	else
+		r, g, b, a = unpack(color)
+	end
+	
 	if frame then
 		frame.north:SetTextColor(r, g, b, a)
 		frame.east:SetTextColor(r, g, b, a)
