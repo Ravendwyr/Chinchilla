@@ -2,6 +2,7 @@
 	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = "미니맵 확장 애드온 입니다.",
 	["Enable"] = "사용",
 	["Enable this module"] = "현재 모듈 사용",
+	["Lock"] = "고정",
 	["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."] = "미니맵의 모든 요소를 고정합니다. 실수로 이동하는 것을 방지합니다.",
 	
 	["Appearance"] = "미니맵 모양",
@@ -81,6 +82,17 @@
 	["Bottom, outside"] = "아래, 외부",
 	["Top, inside"] = "위, 내부",
 	["Top, outside"] = "위, 외부",
+	["Allow the coordinate indicator to be moved"] = "좌표 표시를 이동합니다.",
+	["Set the position on the x-axis for the coordinate indicator relative to the minimap."] = "좌표 표시의 가로 위치를 변경합니다.",
+	["Set the position on the y-axis for the coordinate indicator relative to the minimap."] = "좌표 표시의 세로 위치를 변경합니다.",
+	
+	["Location"] = "지역",
+	["Show zone information on or near minimap"] = "미니맵 근처에 지역 정보를 표시합니다.",
+	["Set the size of the location display."] = "지역정보의 크기를 설정합니다.",
+	["Set the position of the location indicator"] = "지역정보의 위치를 변경합니다.",
+	["Allow the location indicator to be moved"] = "지역정보를 이동합니다.",
+	["Set the position on the x-axis for the location indicator relative to the minimap."] = "지역정보의 가로 위치를 변경합니다.",
+	["Set the position on the y-axis for the location indicator relative to the minimap."] = "지역정보의 세로 위치를 변경합니다.",
 	
 	["Move Buttons"] = "버튼 이동",
 	["Move buttons around the minimap"] = "미니맵 주변 버튼의 위치를 이동합니다.",
@@ -109,6 +121,7 @@
 	["Angle on the minimap"] = "미니맵의 각도",
 	["Horizontal position of the button on-screen"] = "화면상의 버튼의 가로 위치",
 	["Vertical position of the button on-screen"] = "화면상의 버튼의 세로 위치",
+	["Set how far away from the center to place buttons on the minimap"] = "미니맵 중심에서의 거리를 변경합니다.",
 	
 	["Position"] = "위치",
 	["Allow for moving of the minimap and surrounding frames"] = "미니맵 주변의 프레임에 대한 위치를 변경합니다.",
@@ -154,8 +167,7 @@
 	["Point of the screen the capture bar is anchored to"] = "점령시간 바의 기준 위치를 선택합니다.",
 	["Set the position on the x-axis for the capture bar."] = "점령시간 바의 가로 위치를 변경합니다.",
 	["Set the position on the y-axis for the capture bar."] = "점령시간 바의 세로 위치를 변경합니다.",
-	["Lock"] = "고정",
-	["Lock the minimap so it cannot be mistakenly dragged"] = "미니맵의 위치를 고정합니다.",
+	["Allow the minimap to be movable so you can drag it where you want"] = "필요할 때 미니맵을 드래그로 이동할 수 있습니다.",
 	
 	["Show / Hide"] = "보기/숨기기",
 	["Show and hide interface elements of the minimap"] = "미니맵 버튼의 표시 여부를 선택합니다.",
