@@ -173,6 +173,7 @@ Chinchilla_Ping:AddChinchillaOption({
 			end,
 			set = function(value)
 				self.db.profile.scale = value
+				test()
 			end,
 			hidden = function()
 				return self.db.profile.chat
@@ -192,6 +193,7 @@ Chinchilla_Ping:AddChinchillaOption({
 				t[2] = g
 				t[3] = b
 				t[4] = a
+				test()
 			end,
 			hidden = function()
 				return self.db.profile.chat
@@ -211,6 +213,7 @@ Chinchilla_Ping:AddChinchillaOption({
 				t[2] = g
 				t[3] = b
 				t[4] = a
+				test()
 			end,
 			hidden = function()
 				return self.db.profile.chat
@@ -230,6 +233,7 @@ Chinchilla_Ping:AddChinchillaOption({
 				t[2] = g
 				t[3] = b
 				t[4] = a
+				test()
 			end,
 			hidden = function()
 				return self.db.profile.chat
