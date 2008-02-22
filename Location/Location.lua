@@ -24,12 +24,12 @@ function Chinchilla_Location:OnInitialize()
 			TOOLTIP_DEFAULT_COLOR.b,
 			1
 		},
-		textColor = {
+--[[		textColor = {
 			1,
 			0.82,
 			0,
 			1
-		}
+		}]]
 	})
 end
 
@@ -102,7 +102,6 @@ function Chinchilla_Location:Update()
 	end
 	frame:SetScale(self.db.profile.scale)
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+5)
-	frame.text:SetTextColor(unpack(self.db.profile.textColor))
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
 	frame:ClearAllPoints()
@@ -110,6 +109,21 @@ function Chinchilla_Location:Update()
 	frame.text:SetText(GetMinimapZoneText())
 	frame:SetWidth(frame.text:GetWidth() + 12)
 	frame:SetHeight(frame.text:GetHeight() + 12)
+	
+	local pvpType = GetZonePVPInfo()
+	if pvpType == "sanctuary" then
+		frame.text:SetTextColor(0.41, 0.8, 0.94)
+	elseif pvpType == "arena" then
+		frame.text:SetTextColor(1.0, 0.1, 0.1)
+	elseif pvpType == "friendly" then
+		frame.text:SetTextColor(0.1, 1.0, 0.1)
+	elseif pvpType == "hostile" then
+		frame.text:SetTextColor(1.0, 0.1, 0.1)
+	elseif pvpType == "contested" then
+		frame.text:SetTextColor(1.0, 0.7, 0.0)
+	else
+		frame.text:SetTextColor(1.0, 0.82, 0.0)
+	end
 end
 
 function Chinchilla_Location:SetMovable(value)
@@ -178,6 +192,7 @@ Chinchilla_Location:AddChinchillaOption({
 				self:Update()
 			end
 		},
+		--[[
 		textColor = {
 			name = L["Text"],
 			desc = L["Set the text color"],
@@ -195,6 +210,7 @@ Chinchilla_Location:AddChinchillaOption({
 				self:Update()
 			end
 		},
+		]]
 		position = {
 			name = L["Position"],
 			desc = L["Set the position of the location indicator"],
