@@ -202,4 +202,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Show who pinged in chat instead of in a frame on the minimap."] = "将标记人的名字发送到聊天频道而不是显示在小地图上",
 	["Set the size of the ping display."] = "设置标记框的大小",
 	["Set the position of the ping indicator"] = "设置标记指示器的位置",
+	["Allow the ping indicator to be moved"] = "允许移动地图标记指示框",
+	["Set the position on the x-axis for the ping indicator relative to the minimap."] = "地图标记指示框在屏幕的横向位置",
+	["Set the position on the y-axis for the ping indicator relative to the minimap."] = "地图标记指示框在屏幕的横向位置",
 } end)
