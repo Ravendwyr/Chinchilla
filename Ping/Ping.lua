@@ -11,8 +11,8 @@ function Chinchilla_Ping:OnInitialize()
 	Chinchilla:SetDatabaseNamespaceDefaults("Ping", "profile", {
 		chat = false,
 		scale = 1,
-		point = "TOP",
-		relpoint = "TOP",
+		positionX = 0,
+		positionY = 60,
 		background = {
 			TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
 			TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
@@ -56,6 +56,24 @@ function Chinchilla_Ping:OnEnable()
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
 		text:SetPoint("CENTER")
+		frame:SetScript("OnDragStart", function(this)
+			this:StartMoving()
+		end)
+		frame:SetScript("OnDragStop", function(this)
+			this:StopMovingOrSizing()
+			local cx, cy = this:GetCenter()
+			local scale = frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
+			cx, cy = cx*scale, cy*scale
+			local mx, my = Minimap:GetCenter()
+			local mscale = Minimap:GetEffectiveScale() / UIParent:GetEffectiveScale()
+			mx, my = mx*mscale, my*mscale
+			local x, y = cx - mx, cy - my
+			self.db.profile.positionX = x/scale
+			self.db.profile.positionY = y/scale
+			frame:ClearAllPoints()
+			frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
+			Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
+		end)
 	end
 	frame:Show()
 	self:AddEventListener("MINIMAP_PING")
@@ -95,7 +113,27 @@ function Chinchilla_Ping:MINIMAP_PING(ns, event, unit)
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
 	frame:ClearAllPoints()
-	frame:SetPoint(self.db.profile.point, Minimap, self.db.profile.relpoint)
+	frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
+end
+
+local function test()
+	allowNextPlayerPing = true
+	Minimap:PingLocation(0, 0)
+end
+
+function Chinchilla_Ping:SetMovable(value)
+	frame:SetMovable(value)
+	frame:EnableMouse(value)
+	if value then
+		frame:SetParent(Minimap)
+		frame:RegisterForDrag("LeftButton")
+		if not MiniMapPing:IsShown() then
+			test()
+		end
+	else
+		frame:SetParent(MiniMapPing)
+		frame:RegisterForDrag()
+	end
 end
 
 Chinchilla_Ping:AddChinchillaOption({
@@ -107,10 +145,7 @@ Chinchilla_Ping:AddChinchillaOption({
 			name = L["Test"],
 			desc = L["Show a test ping"],
 			type = 'execute',
-			func = function()
-				allowNextPlayerPing = true
-				Minimap:PingLocation(0, 0)
-			end,
+			func = test,
 			order = -1,
 		},
 		chat = {
@@ -203,26 +238,65 @@ Chinchilla_Ping:AddChinchillaOption({
 		position = {
 			name = L["Position"],
 			desc = L["Set the position of the ping indicator"],
-			type = 'choice',
-			choices = {
-				["BOTTOM;BOTTOM"] = L["Bottom, inside"],
-				["TOP;BOTTOM"] = L["Bottom, outside"],
-				["TOP;TOP"] = L["Top, inside"],
-				["BOTTOM;TOP"] = L["Top, outside"],
-				["TOPLEFT;TOPLEFT"] = L["Top-left"],
-				["BOTTOMLEFT;BOTTOMLEFT"] = L["Bottom-left"],
-				["TOPRIGHT;TOPRIGHT"] = L["Top-right"],
-				["BOTTOMRIGHT;BOTTOMRIGHT"] = L["Bottom-right"]
-			},
-			get = function()
-				return self.db.profile.point .. ";" .. self.db.profile.relpoint
-			end,
-			set = function(value)
-				self.db.profile.point, self.db.profile.relpoint = value:match("(.*);(.*)")
-			end,
-			hidden = function()
-				return self.db.profile.chat
-			end
-		}
+			type = 'group',
+			groupType = 'inline',
+			args = {
+				movable = {
+					name = L["Movable"],
+					desc = L["Allow the ping indicator to be moved"],
+					type = 'boolean',
+					get = function()
+						return frame and frame:IsMovable()
+					end,
+					set = "SetMovable",
+					order = 1,
+					disabled = function()
+						return not frame
+					end,
+				},
+				x = {
+					name = L["Horizontal position"],
+					desc = L["Set the position on the x-axis for the ping indicator relative to the minimap."],
+					type = 'number',
+					min = function()
+						return -math.floor(GetScreenWidth()/5 + 0.5)*5
+					end,
+					max = function()
+						return math.floor(GetScreenWidth()/5 + 0.5)*5
+					end,
+					step = 1,
+					bigStep = 5,
+					get = function()
+						return self.db.profile.positionX
+					end,
+					set = function(value)
+						self.db.profile.positionX = value
+						test()
+					end,
+					order = 2,
+				},
+				y = {
+					name = L["Vertical position"],
+					desc = L["Set the position on the y-axis for the ping indicator relative to the minimap."],
+					type = 'number',
+					min = function()
+						return -math.floor(GetScreenHeight()/5 + 0.5)*5
+					end,
+					max = function()
+						return math.floor(GetScreenHeight()/5 + 0.5)*5
+					end,
+					step = 1,
+					bigStep = 5,
+					get = function()
+						return self.db.profile.positionY
+					end,
+					set = function(value)
+						self.db.profile.positionY = value
+						test()
+					end,
+					order = 3,
+				},
+			}
+		},
 	}
 })

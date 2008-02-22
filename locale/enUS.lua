@@ -200,4 +200,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Show who pinged in chat instead of in a frame on the minimap."] = true,
 	["Set the size of the ping display."] = true,
 	["Set the position of the ping indicator"] = true,
+	["Allow the ping indicator to be moved"] = true,
+	["Set the position on the x-axis for the ping indicator relative to the minimap."] = true,
+	["Set the position on the y-axis for the ping indicator relative to the minimap."] = true,
 } end)
