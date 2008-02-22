@@ -2,6 +2,7 @@
 ..\FrameXML\UI.xsd">
 	<Script file="Appearance\Appearance.lua"/>
 	<Script file="AutoZoom\AutoZoom.lua"/>
+	<Script file="Blips\Blips.lua"/>
 	<Script file="Compass\Compass.lua"/>
 	<Script file="Coordinates\Coordinates.lua"/>
 	<Script file="Location\Location.lua"/>
