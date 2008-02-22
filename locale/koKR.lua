@@ -200,4 +200,7 @@
 	["Show who pinged in chat instead of in a frame on the minimap."] = "위치를 표시한 유저를 대화창에 표시합니다.",
 	["Set the size of the ping display."] = "핑 표시 크기를 변경합니다.",
 	["Set the position of the ping indicator"] = "핑 표시 위치를 변경합니다.",
+	["Allow the ping indicator to be moved"] = "핑 표시를 이동합니다.",
+	["Set the position on the x-axis for the ping indicator relative to the minimap."] = "핑 표시의 가로 위치를 변경합니다.",
+	["Set the position on the y-axis for the ping indicator relative to the minimap."] = "핑 표시의 세로 위치를 변경합니다.",
 } end)
