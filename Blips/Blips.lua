@@ -25,6 +25,9 @@ Chinchilla.AddBlipStyle = Chinchilla_Blips.AddBlipStyle
 
 Chinchilla_Blips:AddBlipStyle("Blizzard", L["Blizzard"], [[Interface\MiniMap\ObjectIcons]])
 Chinchilla_Blips:AddBlipStyle("Nandini", "Nandini", [[Interface\AddOns\Chinchilla\Blips\Blip-Nandini]])
+Chinchilla_Blips:AddBlipStyle("BlizzardBig", L["Big Blizzard"], [[Interface\AddOns\Chinchilla\Blips\Blip-BlizzardBig]])
+Chinchilla_Blips:AddBlipStyle("GlassSpheres", L["Glass Spheres"], [[Interface\AddOns\Chinchilla\Blips\Blip-GlassSpheres]])
+Chinchilla_Blips:AddBlipStyle("SolidSpheres", L["Solid Spheres"], [[Interface\AddOns\Chinchilla\Blips\Blip-SolidSpheres]])
 
 function Chinchilla_Blips:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Blips")

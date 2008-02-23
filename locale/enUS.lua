@@ -231,4 +231,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["See how the blips will look"] = true,
 	["Style"] = true,
 	["Set the style of how the blips should look."] = true,
+	["Big Blizzard"] = true,
+	["Solid Spheres"] = true,
+	["Glass Spheres"] = true,
 } end)
