@@ -152,3 +152,8 @@ function Chinchilla:SetCVar(key, value)
 		self:CallMethodOnAllModules(false, "OnRotateMinimapUpdate", value == "1")
 	end
 end
+
+function Chinchilla:AddBorderStyle()
+	-- blank method, to be replaced in Appearance module
+	-- if Appearance module does not exist, other addons should not break by calling this
+end
