@@ -8,6 +8,7 @@ Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
 
 Chinchilla:SetDatabase("ChinchillaDB")
 Chinchilla:SetDatabaseDefaults('profile', {
+	mouseButton = "RightButton"
 })
 
 function Chinchilla:ProvideVersion(revision, date)
@@ -69,7 +70,32 @@ Chinchilla.options = {
 			set = function(value)
 				SetCVar("rotateMinimap", value and "1" or "0")
 			end,
-		}
+		},
+		mouseButton = {
+			name = L["Preferences button"],
+			desc = L["Button to use on the minimap to open the preferences window.\nNote: you can always open with /chin"],
+			type = 'choice',
+			choices = {
+				RightButton = L["Right mouse button"],
+				MiddleButton = L["Middle mouse button"],
+				Button4 = L["Mouse button #4"],
+				Button5 = L["Mouse button #5"],
+				None = L["None"],
+			},
+			choiceOrder = {
+				"RightButton",
+				"MiddleButton",
+				"Button4",
+				"Button5",
+				"None",
+			},
+			get = function()
+				return Chinchilla.db.profile.mouseButton
+			end,
+			set = function(value)
+				Chinchilla.db.profile.mouseButton = value
+			end,
+		},
 	},
 }
 Chinchilla:SetConfigTable(Chinchilla.options)
@@ -114,7 +140,7 @@ function Chinchilla:OnDisable()
 end
 
 function Chinchilla:Minimap_OnMouseUp(this, button, ...)
-	if button == "RightButton" then
+	if button == self.db.profile.mouseButton then
 		self:OpenConfigMenu()
 	else
 		return self.hooks[this].OnMouseUp(this, button, ...)
