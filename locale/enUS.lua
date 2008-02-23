@@ -100,6 +100,8 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Allow the location indicator to be moved"] = true,
 	["Set the position on the x-axis for the location indicator relative to the minimap."] = true,
 	["Set the position on the y-axis for the location indicator relative to the minimap."] = true,
+	["Show close button"] = true,
+	["Show the button to hide the minimap"] = true,
 	
 	["Move Buttons"] = true,
 	["Move buttons around the minimap"] = true,

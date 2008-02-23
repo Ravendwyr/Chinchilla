@@ -12,6 +12,7 @@ function Chinchilla_Location:OnInitialize()
 		scale = 1.2,
 		positionX = 0,
 		positionY = 70,
+		showClose = true,
 		background = {
 			TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
 			TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
@@ -36,7 +37,7 @@ end
 local frame
 function Chinchilla_Location:OnEnable()
 	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_Location_Frame", Minimap)
+		frame = CreateFrame("Frame", "Chinchilla_Location_Frame", MinimapCluster)
 		frame:SetBackdrop({
 			bgFile = [[Interface\Tooltips\UI-Tooltip-Background]],
 			edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
@@ -72,8 +73,25 @@ function Chinchilla_Location:OnEnable()
 			self:Update()
 			Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
 		end)
+		
+		local closeButton = CreateFrame("Button", frame:GetName() .. "_CloseButton", frame)
+		frame.closeButton = closeButton
+		closeButton:SetWidth(27)
+		closeButton:SetHeight(27)
+		closeButton:SetPoint("LEFT", frame, "RIGHT", -6, 0)
+		closeButton:SetScript("OnClick", function(this, button)
+			_G.ToggleMinimap()
+		end)
+		closeButton:SetNormalTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Up]])
+		closeButton:SetPushedTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Down]])
+		closeButton:SetHighlightTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
 	end
 	frame:Show()
+	if self.db.profile.showClose then
+		frame.closeButton:Show()
+	else
+		frame.closeButton:Hide()
+	end
 	self:Update()
 	self:AddEventListener("ZONE_CHANGED", "Update")
 	self:AddEventListener("ZONE_CHANGED_INDOORS", "Update")
@@ -100,12 +118,14 @@ function Chinchilla_Location:Update()
 	if not Chinchilla:IsModuleActive(self) then
 		return
 	end
-	frame:SetScale(self.db.profile.scale)
+	local scale = self.db.profile.scale
+	frame:SetScale(scale)
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+5)
+	frame.closeButton:SetFrameLevel(MinimapCluster:GetFrameLevel()+5)
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
 	frame:ClearAllPoints()
-	frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
+	frame:SetPoint("CENTER", MinimapCluster, "CENTER", self.db.profile.positionX+9/scale, self.db.profile.positionY+4/scale)
 	frame.text:SetText(GetMinimapZoneText())
 	frame:SetWidth(frame.text:GetWidth() + 12)
 	frame:SetHeight(frame.text:GetHeight() + 12)
@@ -211,6 +231,24 @@ Chinchilla_Location:AddChinchillaOption({
 			end
 		},
 		]]
+		showClose = {
+			name = L["Show close button"],
+			desc = L["Show the button to hide the minimap"],
+			type = 'boolean',
+			get = function()
+				return self.db.profile.showClose
+			end,
+			set = function(value)
+				self.db.profile.showClose = value
+				if frame then
+					if value then
+						frame.closeButton:Show()
+					else
+						frame.closeButton:Hide()
+					end
+				end
+			end
+		},
 		position = {
 			name = L["Position"],
 			desc = L["Set the position of the location indicator"],
