@@ -8,16 +8,23 @@ Chinchilla_Blips.desc = L["Change how the blips look on the minimap."]
 
 local newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newDict", "unpackDictAndDel")
 
-local blipStyles = {
-	Blizzard = {
-		L["Blizzard"],
-		[[Interface\MiniMap\ObjectIcons]]
-	},
-	Nandini = {
-		"Nandini",
-		[[Interface\AddOns\Chinchilla\Blips\Blip-Nandini]]
-	},
-}
+local blipStyles = {}
+function Chinchilla_Blips:AddBlipStyle(english, localized, texture)
+	if type(english) ~= "string" then
+		error(("Bad argument #2 to `AddBlipStyle'. Expected %q, got %q"):format("string", type(english)), 2)
+	elseif blipStyles[english] then
+		error(("Bad argument #2 to `AddBlipStyle'. %q already provided"):format(english), 2)
+	elseif type(localized) ~= "string" then
+		error(("Bad argument #3 to `AddBlipStyle'. Expected %q, got %q"):format("string", type(localized)), 2)
+	elseif type(texture) ~= "string" then
+		error(("Bad argument #4 to `AddBlipStyle'. Expected %q, got %q"):format("string", type(texture)), 2)
+	end
+	blipStyles[english] = { localized, texture }
+end
+Chinchilla.AddBlipStyle = Chinchilla_Blips.AddBlipStyle
+
+Chinchilla_Blips:AddBlipStyle("Blizzard", L["Blizzard"], [[Interface\MiniMap\ObjectIcons]])
+Chinchilla_Blips:AddBlipStyle("Nandini", "Nandini", [[Interface\AddOns\Chinchilla\Blips\Blip-Nandini]])
 
 function Chinchilla_Blips:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Blips")
