@@ -24,36 +24,28 @@ function Chinchilla_Appearance:OnInitialize()
 	})
 end
 
-local borderStyles = {
-	Blizzard = {
-		L["Blizzard"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard]],
-	},
-	Thin = {
-		L["Thin"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Thin]],
-	},
-	Alliance = {
-		L["Alliance"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Alliance]],
-	},
-	Tooltip = {
-		L["Tooltip"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip]],
-	},
-	Tubular = {
-		L["Tubular"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Tubular]],
-	},
-	Flat = {
-		L["Flat"],
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Flat]],
-	},
-	Chinchilla = {
-		"Chinchilla",
-		[[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla]],
-	}
-}
+local borderStyles = {}
+function Chinchilla_Appearance:AddBorderStyle(english, localized, texture)
+	if type(english) ~= "string" then
+		error(("Bad argument #2 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(english)), 2)
+	elseif borderStyles[english] then
+		error(("Bad argument #2 to `AddBorderStyle'. %q already provided"):format(english), 2)
+	elseif type(localized) ~= "string" then
+		error(("Bad argument #3 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(localized)), 2)
+	elseif type(texture) ~= "string" then
+		error(("Bad argument #4 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(texture)), 2)
+	end
+	borderStyles[english] = { localized, texture }
+end
+Chinchilla.AddBorderStyle = Chinchilla_Appearance.AddBorderStyle
+
+Chinchilla_Appearance:AddBorderStyle("Blizzard",   L["Blizzard"], [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard]])
+Chinchilla_Appearance:AddBorderStyle("Thin",       L["Thin"],     [[Interface\AddOns\Chinchilla\Appearance\Border-Thin]])
+Chinchilla_Appearance:AddBorderStyle("Alliance",   L["Alliance"], [[Interface\AddOns\Chinchilla\Appearance\Border-Alliance]])
+Chinchilla_Appearance:AddBorderStyle("Tooltip",    L["Tooltip"],  [[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip]])
+Chinchilla_Appearance:AddBorderStyle("Tubular",    L["Tubular"],  [[Interface\AddOns\Chinchilla\Appearance\Border-Tubular]])
+Chinchilla_Appearance:AddBorderStyle("Flat",       L["Flat"],     [[Interface\AddOns\Chinchilla\Appearance\Border-Flat]])
+Chinchilla_Appearance:AddBorderStyle("Chinchilla", "Chinchilla",  [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla]])
 
 local cornerTextures = {}
 function Chinchilla_Appearance:OnEnable()
@@ -230,8 +222,9 @@ function Chinchilla_Appearance:SetShape(shape)
 	end
 	
 	local borderStyle = borderStyles[self.db.profile.borderStyle] or borderStyles.Blizzard
+	local texture = borderStyle and borderStyle[2] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard]]
 	for i,v in ipairs(cornerTextures) do
-		v:SetTexture(borderStyle[2])
+		v:SetTexture(texture)
 		local x_offset = tmp[i] and 0 or 0.5
 		v:SetTexCoord(((i-1) % 2) / 4 + x_offset, ((i-1) % 2) / 4 + 0.25 + x_offset, math.floor((i-1) / 2) / 2, math.floor((i-1) / 2) / 2 + 0.5)
 	end
