@@ -85,8 +85,8 @@ Chinchilla_Blips:AddChinchillaOption({
 			set = "SetBlipTexture",
 			order = 2,
 		},
-		look = {
-			name = L["Look"],
+		preview = {
+			name = L["Preview"],
 			desc = L["See how the blips will look"],
 			type = 'choice',
 			choices = {

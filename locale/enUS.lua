@@ -229,7 +229,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Available daily quest"] = true,
 	["Completed daily quest"] = true,
 	["New flight path"] = true,
-	["Look"] = true,
+	["Preview"] = true,
 	["See how the blips will look"] = true,
 	["Style"] = true,
 	["Set the style of how the blips should look."] = true,
