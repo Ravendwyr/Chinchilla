@@ -16,6 +16,9 @@ function Chinchilla_RangeCircle:OnInitialize()
 		range = 90,
 		color = { 1, 0.82, 0, 0.5 },
 		style = "Solid",
+		combatRange = 90,
+		combatColor = { 1, 0.82, 0, 0.25 },
+		combatStyle = "Solid",
 	})
 end
 
@@ -51,18 +54,17 @@ local minimapSize = { -- radius of minimap
 
 local texture
 local indoors
+local inCombat = not not InCombatLockdown()
 function Chinchilla_RangeCircle:OnEnable()
 	if not texture then
 		texture = Minimap:CreateTexture("Chinchilla_RangeCircle_Circle", "OVERLAY")
-		local style = styles[self.db.profile.style] or styles.Solid
-		local tex = style and style[2] or [[Interface\AddOns\Chinchilla\RangeCircle\Solid]]
-		texture:SetTexture(tex)
 		texture:SetPoint("CENTER")
-		texture:SetVertexColor(unpack(self.db.profile.color))
 	end
 	texture:Show()
 	
 	self:AddEventListener("MINIMAP_UPDATE_ZOOM")
+	self:AddEventListener("PLAYER_REGEN_ENABLED")
+	self:AddEventListener("PLAYER_REGEN_DISABLED")
 	self:Update()
 	
 	self:AddSecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
@@ -70,6 +72,16 @@ end
 
 function Chinchilla_RangeCircle:OnDisable()
 	texture:Hide()
+end
+
+function Chinchilla_RangeCircle:PLAYER_REGEN_ENABLED()
+	inCombat = false
+	self:Update()
+end
+
+function Chinchilla_RangeCircle:PLAYER_REGEN_DISABLED()
+	inCombat = true
+	self:Update()
 end
 
 function Chinchilla_RangeCircle:MINIMAP_UPDATE_ZOOM()
@@ -87,8 +99,13 @@ function Chinchilla_RangeCircle:Update()
 	if not self:IsActive() then
 		return
 	end
+	local style = styles[self.db.profile[inCombat and 'combatStyle' or 'style']] or styles.Solid
+	local tex = style and style[2] or [[Interface\AddOns\Chinchilla\RangeCircle\Solid]]
+	texture:SetTexture(tex)
+	texture:SetVertexColor(unpack(self.db.profile[inCombat and 'combatColor' or 'color']))
+	
 	local radius = minimapSize[indoors and "indoor" or "outdoor"][Minimap:GetZoom()]
-	local range = self.db.profile.range
+	local range = self.db.profile[inCombat and 'combatRange' or 'range']
 	local minimapWidth = Minimap:GetWidth()
 	local size = minimapWidth * range/radius
 	if size > minimapWidth then
@@ -107,68 +124,89 @@ function Chinchilla_RangeCircle:Minimap_SetZoom()
 	self:Update()
 end
 
+local args = {
+	range = {
+		type = 'number',
+		name = L["Radius"],
+		desc = L["The radius in yards of how large the radius of the circle should be"],
+		min = 5,
+		max = 250,
+		step = 1,
+		bigStep = 5,
+		get = function(combat)
+			return self.db.profile[combat and 'combatRange' or 'range']
+		end,
+		set = function(combat, value)
+			self.db.profile[combat and 'combatRange' or 'range'] = value
+			if not combat == not inCombat then
+				self:Update()
+			end
+		end
+	},
+	color = {
+		type = 'color',
+		name = L["Color"],
+		desc = L["Color of the circle"],
+		hasAlpha = true,
+		get = function(combat)
+			return unpack(self.db.profile[combat and 'combatColor' or 'color'])
+		end,
+		set = function(combat, r, g, b, a)
+			local data = self.db.profile[combat and 'combatColor' or 'color']
+			data[1] = r
+			data[2] = g
+			data[3] = b
+			data[4] = a
+			if not combat == not inCombat then
+				self:Update()
+			end
+		end
+	},
+	style = {
+		type = 'choice',
+		name = L["Style"],
+		desc = L["What texture style to use for the circle"],
+		choices = function()
+			local t = newDict()
+			for k,v in pairs(styles) do
+				t[k] = v[1]
+			end
+			return "@dict", unpackDictAndDel(t)
+		end,
+		get = function(combat)
+			return self.db.profile[combat and 'combatStyle' or 'style']
+		end,
+		set = function(combat, value)
+			self.db.profile[combat and 'combatStyle' or 'style'] = value
+			if not combat == not inCombat then
+				self:Update()
+			end
+		end
+	}
+}
+
 Chinchilla_RangeCircle:AddChinchillaOption({
 	name = L["Range circle"],
 	desc = Chinchilla_RangeCircle.desc,
 	type = 'group',
 	args = {
-		range = {
-			type = 'number',
-			name = L["Radius"],
-			desc = L["The radius in yards of how large the radius of the circle should be"],
-			min = 5,
-			max = 250,
-			step = 1,
-			bigStep = 5,
-			get = function()
-				return self.db.profile.range
-			end,
-			set = function(value)
-				self.db.profile.range = value
-				self:Update()
-			end
+		outCombat = {
+			type = 'group',
+			groupType = 'inline',
+			name = L["Out of combat"],
+			desc = L["These settings apply when out of combat"],
+			args = args,
+			child_passValue = false,
+			order = 2,
 		},
-		color = {
-			type = 'color',
-			name = L["Color"],
-			desc = L["Color of the circle"],
-			hasAlpha = true,
-			get = function()
-				return unpack(self.db.profile.color)
-			end,
-			set = function(r, g, b, a)
-				local data = self.db.profile.color
-				data[1] = r
-				data[2] = g
-				data[3] = b
-				data[4] = a
-				if texture then
-					texture:SetVertexColor(r, g, b, a)
-				end
-			end
-		},
-		style = {
-			type = 'choice',
-			name = L["Style"],
-			desc = L["What texture style to use for the circle"],
-			choices = function()
-				local t = newDict()
-				for k,v in pairs(styles) do
-					t[k] = v[1]
-				end
-				return "@dict", unpackDictAndDel(t)
-			end,
-			get = function()
-				return self.db.profile.style
-			end,
-			set = function(value)
-				self.db.profile.style = value
-				if texture then
-					local style = styles[value] or styles.Solid
-					local tex = style and style[2] or [[Interface\AddOns\Chinchilla\RangeCircle\Solid]]
-					texture:SetTexture(tex)
-				end
-			end
+		inCombat = {
+			type = 'group',
+			groupType = 'inline',
+			name = L["In combat"],
+			desc = L["These settings apply when in combat"],
+			args = args,
+			child_passValue = true,
+			order = 3,
 		}
 	}
 })

@@ -256,4 +256,8 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["What texture style to use for the circle"] = true,
 	["Solid"] = true,
 	["Outline"] = true,
+	["Out of combat"] = true,
+	["These settings apply when out of combat"] = true,
+	["In combat"] = true,
+	["These settings apply when in combat"] = true,
 } end)
