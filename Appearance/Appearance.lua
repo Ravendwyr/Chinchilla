@@ -51,6 +51,7 @@ Chinchilla_Appearance:AddBorderStyle("Flat",       L["Flat"],     [[Interface\Ad
 Chinchilla_Appearance:AddBorderStyle("Chinchilla", "Chinchilla",  [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla-Square]])
 
 local cornerTextures = {}
+local fullTexture
 function Chinchilla_Appearance:OnEnable()
 	self:SetScale(nil)
 	self:SetAlpha(nil)
@@ -61,8 +62,14 @@ function Chinchilla_Appearance:OnEnable()
 	self:SetButtonBorderAlpha(nil)
 	
 	MinimapBorder:Hide()
-	for i,v in ipairs(cornerTextures) do
-		v:Show()
+	if rotateMinimap then
+		if fullTexture then
+			fullTexture:Show()
+		end
+	else
+		for i,v in ipairs(cornerTextures) do
+			v:Show()
+		end
 	end
 	
 	self:AddEventListener("MINIMAP_UPDATE_ZOOM")
@@ -91,6 +98,9 @@ function Chinchilla_Appearance:OnDisable()
 	MinimapBorder:Show()
 	Minimap:SetMaskTexture([[Textures\MinimapMask]])
 	
+	if fullTexture then
+		fullTexture:Hide()
+	end
 	for i,v in ipairs(cornerTextures) do
 		v:Hide()
 	end
@@ -149,6 +159,21 @@ end
 
 function Chinchilla_Appearance:OnRotateMinimapUpdate(value)
 	rotateMinimap = value
+	if value then
+		if fullTexture then
+			fullTexture:Show()
+		end
+		for i,v in ipairs(cornerTextures) do
+			v:Hide()
+		end
+	else
+		if fullTexture then
+			fullTexture:Hide()
+		end
+		for i,v in ipairs(cornerTextures) do
+			v:Show()
+		end
+	end
 	self:SetShape(nil)
 	Minimap:SetFrameLevel(MinimapCluster:GetFrameLevel()+1)
 end
@@ -272,41 +297,56 @@ function Chinchilla_Appearance:SetShape(shape)
 		return
 	end
 	if rotateMinimap and shape ~= "SQUARE" then
+		self:AddRepeatingTimer("Chinchilla_Appearance-RotateBorder", 0, "RotateBorder")
 		shape = "ROUND"
+	else
+		self:RemoveTimer("Chinchilla_Appearance-RotateBorder")
 	end
 	
-	if not cornerTextures[1] then
-		local borderRadius = self.db.profile.borderRadius
-		for i = 1, 4 do
-			local tex = MinimapBackdrop:CreateTexture("Chinchilla_Appearance_MinimapCorner" .. i, "ARTWORK")
-			cornerTextures[i] = tex
-			cornerTextures[i]:SetWidth(borderRadius)
-			cornerTextures[i]:SetHeight(borderRadius)
+	if rotateMinimap then
+		if not fullTexture then
+			local borderRadius = self.db.profile.borderRadius
+			fullTexture = MinimapBackdrop:CreateTexture("Chinchilla_Appearance_MinimapFullTexture", "ARTWORK")
+			fullTexture:SetWidth(borderRadius*2 * 2^0.5)
+			fullTexture:SetHeight(borderRadius*2 * 2^0.5)
+			fullTexture:SetPoint("CENTER", Minimap, "CENTER")
 		end
+	else
+		if not cornerTextures[1] then
+			local borderRadius = self.db.profile.borderRadius
+			for i = 1, 4 do
+				local tex = MinimapBackdrop:CreateTexture("Chinchilla_Appearance_MinimapCorner" .. i, "ARTWORK")
+				cornerTextures[i] = tex
+				cornerTextures[i]:SetWidth(borderRadius)
+				cornerTextures[i]:SetHeight(borderRadius)
+			end
 		
-		cornerTextures[1]:SetPoint("BOTTOMRIGHT", Minimap, "CENTER")
-		cornerTextures[1]:SetTexCoord(0, 0.25, 0, 0.5)
+			cornerTextures[1]:SetPoint("BOTTOMRIGHT", Minimap, "CENTER")
+			cornerTextures[1]:SetTexCoord(0, 0.5, 0, 0.5)
 		
-		cornerTextures[2]:SetPoint("BOTTOMLEFT", Minimap, "CENTER")
-		cornerTextures[2]:SetTexCoord(0.25, 0.5, 0, 0.5)
+			cornerTextures[2]:SetPoint("BOTTOMLEFT", Minimap, "CENTER")
+			cornerTextures[2]:SetTexCoord(0.5, 1, 0, 0.5)
 		
-		cornerTextures[3]:SetPoint("TOPRIGHT", Minimap, "CENTER")
-		cornerTextures[3]:SetTexCoord(0, 0.25, 0.5, 1)
+			cornerTextures[3]:SetPoint("TOPRIGHT", Minimap, "CENTER")
+			cornerTextures[3]:SetTexCoord(0, 0.5, 0.5, 1)
 		
-		cornerTextures[4]:SetPoint("TOPLEFT", Minimap, "CENTER")
-		cornerTextures[4]:SetTexCoord(0.25, 0.5, 0.5, 1)
+			cornerTextures[4]:SetPoint("TOPLEFT", Minimap, "CENTER")
+			cornerTextures[4]:SetTexCoord(0.5, 1, 0.5, 1)
+		end
 	end
 	
 	local borderStyle = borderStyles[self.db.profile.borderStyle] or borderStyles.Blizzard
 	local round = borderStyle and borderStyle[2] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]]
 	local square = borderStyle and borderStyle[3] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]]
-	for i,v in ipairs(cornerTextures) do
-		if roundShapes[i][shape] then
-			v:SetTexture(round)
-		else
-			v:SetTexture(square)
+	if rotateMinimap then
+		fullTexture:SetTexture(shape ~= "SQUARE" and round or square)
+		if shape ~= "SQUARE" then
+			self:RotateBorder()
 		end
-		v:SetTexCoord(((i-1) % 2) / 2, ((i-1) % 2) / 2 + 0.5, math.floor((i-1) / 2) / 2, math.floor((i-1) / 2) / 2 + 0.5)
+	else
+		for i,v in ipairs(cornerTextures) do
+			v:SetTexture(roundShapes[i][shape] and round or square)
+		end
 	end
 	
 	Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Appearance\Masks\Mask-]] .. shape)
@@ -314,6 +354,19 @@ function Chinchilla_Appearance:SetShape(shape)
 	if Chinchilla:HasModule("MoveButtons") then
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
+end
+
+local math_pi = math.pi
+local math_cos = math.cos
+local math_sin = math.sin
+function Chinchilla_Appearance:RotateBorder()
+	local angle = -MiniMapCompassRing:GetFacing()
+	fullTexture:SetTexCoord(
+		math_cos(angle + math_pi*3/4) + 0.5, -math_sin(angle + math_pi*3/4) + 0.5,
+		math_cos(angle - math_pi*3/4) + 0.5, -math_sin(angle - math_pi*3/4) + 0.5,
+		math_cos(angle + math_pi*1/4) + 0.5, -math_sin(angle + math_pi*1/4) + 0.5,
+		math_cos(angle - math_pi*1/4) + 0.5, -math_sin(angle - math_pi*1/4) + 0.5
+	)
 end
 
 function Chinchilla_Appearance:SetBorderStyle(style)
@@ -337,6 +390,10 @@ function Chinchilla_Appearance:SetBorderRadius(value)
 			v:SetHeight(value)
 		end
 	end
+	if fullTexture then
+		fullTexture:SetWidth(value*2 * 2^0.5)
+		fullTexture:SetHeight(value*2 * 2^0.5)
+	end
 end
 
 function Chinchilla_Appearance:SetBorderColor(r, g, b, a)
@@ -357,6 +414,9 @@ function Chinchilla_Appearance:SetBorderColor(r, g, b, a)
 	
 	for i,v in ipairs(cornerTextures) do
 		v:SetVertexColor(r, g, b, a)
+	end
+	if fullTexture then
+		fullTexture:SetVertexColor(r, g, b, a)
 	end
 end
 
