@@ -26,27 +26,29 @@ function Chinchilla_Appearance:OnInitialize()
 end
 
 local borderStyles = {}
-function Chinchilla_Appearance:AddBorderStyle(english, localized, texture)
+function Chinchilla_Appearance:AddBorderStyle(english, localized, round, square)
 	if type(english) ~= "string" then
 		error(("Bad argument #2 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(english)), 2)
 	elseif borderStyles[english] then
 		error(("Bad argument #2 to `AddBorderStyle'. %q already provided"):format(english), 2)
 	elseif type(localized) ~= "string" then
 		error(("Bad argument #3 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(localized)), 2)
-	elseif type(texture) ~= "string" then
-		error(("Bad argument #4 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(texture)), 2)
+	elseif type(round) ~= "string" then
+		error(("Bad argument #4 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(round)), 2)
+	elseif type(square) ~= "string" then
+		error(("Bad argument #5 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(square)), 2)
 	end
-	borderStyles[english] = { localized, texture }
+	borderStyles[english] = { localized, round, square }
 end
 Chinchilla.AddBorderStyle = Chinchilla_Appearance.AddBorderStyle
 
-Chinchilla_Appearance:AddBorderStyle("Blizzard",   L["Blizzard"], [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard]])
-Chinchilla_Appearance:AddBorderStyle("Thin",       L["Thin"],     [[Interface\AddOns\Chinchilla\Appearance\Border-Thin]])
-Chinchilla_Appearance:AddBorderStyle("Alliance",   L["Alliance"], [[Interface\AddOns\Chinchilla\Appearance\Border-Alliance]])
-Chinchilla_Appearance:AddBorderStyle("Tooltip",    L["Tooltip"],  [[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip]])
-Chinchilla_Appearance:AddBorderStyle("Tubular",    L["Tubular"],  [[Interface\AddOns\Chinchilla\Appearance\Border-Tubular]])
-Chinchilla_Appearance:AddBorderStyle("Flat",       L["Flat"],     [[Interface\AddOns\Chinchilla\Appearance\Border-Flat]])
-Chinchilla_Appearance:AddBorderStyle("Chinchilla", "Chinchilla",  [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla]])
+Chinchilla_Appearance:AddBorderStyle("Blizzard",   L["Blizzard"], [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]])
+Chinchilla_Appearance:AddBorderStyle("Thin",       L["Thin"],     [[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Square]])
+Chinchilla_Appearance:AddBorderStyle("Alliance",   L["Alliance"], [[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Square]])
+Chinchilla_Appearance:AddBorderStyle("Tooltip",    L["Tooltip"],  [[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip-Square]])
+Chinchilla_Appearance:AddBorderStyle("Tubular",    L["Tubular"],  [[Interface\AddOns\Chinchilla\Appearance\Border-Tubular-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Tubular-Square]])
+Chinchilla_Appearance:AddBorderStyle("Flat",       L["Flat"],     [[Interface\AddOns\Chinchilla\Appearance\Border-Flat-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Flat-Square]])
+Chinchilla_Appearance:AddBorderStyle("Chinchilla", "Chinchilla",  [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla-Square]])
 
 local cornerTextures = {}
 function Chinchilla_Appearance:OnEnable()
@@ -296,11 +298,15 @@ function Chinchilla_Appearance:SetShape(shape)
 	end
 	
 	local borderStyle = borderStyles[self.db.profile.borderStyle] or borderStyles.Blizzard
-	local texture = borderStyle and borderStyle[2] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard]]
+	local round = borderStyle and borderStyle[2] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]]
+	local square = borderStyle and borderStyle[3] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]]
 	for i,v in ipairs(cornerTextures) do
-		v:SetTexture(texture)
-		local x_offset = roundShapes[i][shape] and 0 or 0.5
-		v:SetTexCoord(((i-1) % 2) / 4 + x_offset, ((i-1) % 2) / 4 + 0.25 + x_offset, math.floor((i-1) / 2) / 2, math.floor((i-1) / 2) / 2 + 0.5)
+		if roundShapes[i][shape] then
+			v:SetTexture(round)
+		else
+			v:SetTexture(square)
+		end
+		v:SetTexCoord(((i-1) % 2) / 2, ((i-1) % 2) / 2 + 0.5, math.floor((i-1) / 2) / 2, math.floor((i-1) / 2) / 2 + 0.5)
 	end
 	
 	Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Appearance\Masks\Mask-]] .. shape)
