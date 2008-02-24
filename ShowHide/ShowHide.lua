@@ -37,7 +37,6 @@ local frames = {
 }
 
 local framesShown = {}
-_G.framesShown = framesShown
 
 function Chinchilla_ShowHide:OnEnable()
 	for k,v in pairs(frames) do
@@ -45,6 +44,9 @@ function Chinchilla_ShowHide:OnEnable()
 		self:AddSecureHook(frames[k], "Show", "frame_Show")
 		self:AddSecureHook(frames[k], "Hide", "frame_Hide")
 	end
+	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown()
+	self:AddSecureHook(MinimapZoneTextButton, "Show", "MinimapZoneTextButton_Show")
+	self:AddSecureHook(MinimapZoneTextButton, "Hide", "MinimapZoneTextButton_Hide")
 	self:Update()
 end
 
@@ -53,6 +55,11 @@ function Chinchilla_ShowHide:OnDisable()
 		if framesShown[v] then
 			v:Show()
 		end
+	end
+	if framesShown[MinimapZoneTextButton] then
+		MinimapToggleButton:Show()
+		MinimapBorderTop:Show()
+		MinimapZoneTextButton:Show()
 	end
 end
 
@@ -122,6 +129,24 @@ function Chinchilla_ShowHide:frame_Show(object)
 end
 
 function Chinchilla_ShowHide:frame_Hide(object)
+	framesShown[object] = false
+end
+
+function Chinchilla_ShowHide:MinimapZoneTextButton_Show(object)
+	if not self.db.profile.locationText or (Chinchilla:HasModule("Location") and Chinchilla:IsModuleActive("Location")) then
+		if lastShow < GetTime() - 1e5 or lastShowObject ~= object then
+			lastShow = GetTime()
+			lastShowObject = object
+			MinimapToggleButton:Hide()
+			MinimapBorderTop:Hide()
+			MinimapZoneTextButton:Hide()
+		end
+	end
+	
+	framesShown[object] = true
+end
+
+function Chinchilla_ShowHide:MinimapZoneTextButton_Hide(object)
 	framesShown[object] = false
 end
 
