@@ -119,6 +119,38 @@ local function getAngle(x1, y1)
 	return math.floor(deg + 0.5)
 end
 
+local function getPointXY(frame, x, y)
+	local width, height = GetScreenWidth(), GetScreenHeight()
+	local uiscale = UIParent:GetEffectiveScale()
+	local scale = frame:GetEffectiveScale() / uiscale
+	x = x/uiscale
+	y = y/uiscale
+	
+	local point
+	if x < width/3 then
+		point = "LEFT"
+	elseif x < width*2/3 then
+		point = ""
+		x = x - width/2
+	else
+		point = "RIGHT"
+		x = x - width
+	end
+	if y < height/3 then
+		point = "BOTTOM" .. point
+	elseif y < height*2/3 then
+		if point == "" then
+			point = "CENTER"
+		end
+		y = y - height/2
+	else
+		point = "TOP" .. point
+		y = y - height
+	end
+	
+	return point, x/scale, y/scale
+end
+
 local function button_OnUpdate(this)
 	this:ClearAllPoints()
 	local x, y = GetCursorPosition()
@@ -145,12 +177,14 @@ local function button_OnUpdate(this)
 			end
 		end
 		assert(deg)
-		deg[1] = x / Minimap:GetEffectiveScale()
-		deg[2] = y / Minimap:GetEffectiveScale()
+		local point, x, y = getPointXY(this, x, y)
+		deg[1] = point
+		deg[2] = x
+		deg[3] = y
 	end
 	this:ClearAllPoints()
 	if type(deg) == "table" then
-		this:SetPoint("CENTER", UIParent, "BOTTOMLEFT", deg[1], deg[2])
+		this:SetPoint("CENTER", UIParent, deg[1], deg[2], deg[3])
 	else
 		this:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
 	end
@@ -180,6 +214,9 @@ function Chinchilla_MoveButtons:OnInitialize()
 	})
 	
 	for k,v in pairs(buttons) do
+		if type(self.db.profile[v]) == "table" and #self.db.profile[v] == 2 then
+			table.insert(self.db.profile[v], "BOTTOMLEFT")
+		end
 		buttonStarts[k] = getAngle(v:GetCenter())
 	end
 end
@@ -187,6 +224,9 @@ end
 function Chinchilla_MoveButtons:OnEnable()
 	self:SetLocked(nil)
 	self:Update()
+	for k,v in pairs(buttons) do
+		v:SetClampedToScreen(true)
+	end
 end
 
 function Chinchilla_MoveButtons:OnDisable()
@@ -195,6 +235,7 @@ function Chinchilla_MoveButtons:OnDisable()
 		local deg = buttonStarts[k]
 		v:ClearAllPoints()
 		v:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
+		v:SetClampedToScreen(false)
 	end
 end
 
@@ -206,7 +247,7 @@ function Chinchilla_MoveButtons:Update()
 		end
 		v:ClearAllPoints()
 		if type(deg) == "table" then
-			v:SetPoint("CENTER", UIParent, "BOTTOMLEFT", deg[1], deg[2])
+			v:SetPoint("CENTER", UIParent, deg[1], deg[2], deg[3])
 		else
 			v:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
 		end
@@ -247,29 +288,59 @@ local function attach_set(key, value)
 end
 
 local function x_get(key)
-	return self.db.profile[key][1]
-end
-
-local function x_set(key, value)
-	self.db.profile[key][1] = value
-	if not Chinchilla:IsModuleActive(self) then
-		return
+	local frame = buttons[key]
+	local point = self.db.profile[key][1]
+	local x = self.db.profile[key][2]
+	x = x * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
+	if point == "LEFT" or point == "BOTTOMLEFT" or point == "TOPLEFT" then
+		return x
+	elseif point == "CENTER" or point == "TOP" or point == "BOTTOM" then
+		return x + GetScreenWidth()/2
+	else
+		return x + GetScreenWidth()
 	end
-	buttons[key]:ClearAllPoints()
-	buttons[key]:SetPoint("CENTER", UIParent, "BOTTOMLEFT", unpack(self.db.profile[key]))
 end
 
 local function y_get(key)
-	return self.db.profile[key][2]
+	local frame = buttons[key]
+	local point = self.db.profile[key][1]
+	local y = self.db.profile[key][3]
+	y = y * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
+	if point == "BOTTOM" or point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
+		return y
+	elseif point == "CENTER" or point == "LEFT" or point == "RIGHT" then
+		return y + GetScreenHeight()/2
+	else
+		return y + GetScreenHeight()
+	end
 end
 
-local function y_set(key, value)
-	self.db.profile[key][2] = value
+local function x_set(key, value)
+	local data = self.db.profile[key]
+	local y = y_get(key)
+	local point, x, y = getPointXY(buttons[key], value, y)
+	data[1] = point
+	data[2] = x
+	data[3] = y
 	if not Chinchilla:IsModuleActive(self) then
 		return
 	end
 	buttons[key]:ClearAllPoints()
-	buttons[key]:SetPoint("CENTER", UIParent, "BOTTOMLEFT", unpack(self.db.profile[key]))
+	buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
+end
+
+local function y_set(key, value)
+	local data = self.db.profile[key]
+	local x = x_get(key)
+	local point, x, y = getPointXY(buttons[key], x, value)
+	data[1] = point
+	data[2] = x
+	data[3] = y
+	if not Chinchilla:IsModuleActive(self) then
+		return
+	end
+	buttons[key]:ClearAllPoints()
+	buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 end
 
 local function x_max()
