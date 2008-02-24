@@ -210,7 +210,7 @@ function Chinchilla_Appearance:SetShape(shape)
 	if not Chinchilla:IsModuleActive(self) then
 		return
 	end
-	if rotateMinimap then
+	if rotateMinimap and shape ~= "SQUARE" then
 		shape = "ROUND"
 	end
 	
@@ -321,6 +321,28 @@ function Chinchilla_Appearance:SetButtonBorderAlpha(alpha)
 	end
 end
 
+local shape_choices = {
+	["ROUND"] = L["Round"],
+	["SQUARE"] = L["Square"],
+	["CORNER-TOPRIGHT"] = L["Corner, top-right rounded"],
+	["CORNER-TOPLEFT"] = L["Corner, top-left rounded"],
+	["CORNER-BOTTOMRIGHT"] = L["Corner, bottom-right rounded"],
+	["CORNER-BOTTOMLEFT"] = L["Corner, bottom-left rounded"],
+	["SIDE-TOP"] = L["Side, top rounded"],
+	["SIDE-RIGHT"] = L["Side, right rounded"],
+	["SIDE-BOTTOM"] = L["Side, bottom rounded"],
+	["SIDE-LEFT"] = L["Side, left rounded"],
+	["TRICORNER-TOPRIGHT"] = L["Tri-corner, bottom-left square"],
+	["TRICORNER-BOTTOMRIGHT"] = L["Tri-corner, top-left square"],
+	["TRICORNER-BOTTOMLEFT"] = L["Tri-corner, top-right square"],
+	["TRICORNER-TOPLEFT"] = L["Tri-corner, bottom-right square"],
+}
+
+local shape_choices_alt = {
+	["ROUND"] = L["Round"],
+	["SQUARE"] = L["Square"],
+}
+
 Chinchilla_Appearance:AddChinchillaOption({
 	name = L["Appearance"],
 	desc = Chinchilla_Appearance.desc,
@@ -399,29 +421,22 @@ Chinchilla_Appearance:AddChinchillaOption({
 			name = L["Shape"],
 			desc = L["Set the shape of the minimap."],
 			type = 'choice',
-			choices = {
-				["ROUND"] = L["Round"],
-				["SQUARE"] = L["Square"],
-				["CORNER-TOPRIGHT"] = L["Corner, top-right rounded"],
-				["CORNER-TOPLEFT"] = L["Corner, top-left rounded"],
-				["CORNER-BOTTOMRIGHT"] = L["Corner, bottom-right rounded"],
-				["CORNER-BOTTOMLEFT"] = L["Corner, bottom-left rounded"],
-				["SIDE-TOP"] = L["Side, top rounded"],
-				["SIDE-RIGHT"] = L["Side, right rounded"],
-				["SIDE-BOTTOM"] = L["Side, bottom rounded"],
-				["SIDE-LEFT"] = L["Side, left rounded"],
-				["TRICORNER-TOPRIGHT"] = L["Tri-corner, bottom-left square"],
-				["TRICORNER-BOTTOMRIGHT"] = L["Tri-corner, top-left square"],
-				["TRICORNER-BOTTOMLEFT"] = L["Tri-corner, top-right square"],
-				["TRICORNER-TOPLEFT"] = L["Tri-corner, bottom-right square"],
-			},
+			choices = function()
+				return rotateMinimap and shape_choices_alt or shape_choices
+			end,
 			get = function()
-				return Chinchilla_Appearance.db.profile.shape
+				local shape = Chinchilla_Appearance.db.profile.shape
+				if rotateMinimap then
+					if shape == "SQUARE" then
+						return "SQUARE"
+					else
+						return "ROUND"
+					end
+				else
+					return shape
+				end
 			end,
 			set = "SetShape",
-			disabled = function()
-				return rotateMinimap
-			end,
 		},
 		borderAlpha = {
 			name = L["Border color"],
@@ -483,6 +498,10 @@ function _G.GetMinimapShape()
 	if Chinchilla_Appearance:IsActive() and not rotateMinimap then
 		return self.db.profile.shape
 	else
-		return "ROUND"
+		if self.db.profile.shape == "SQUARE" then
+			return "SQUARE"
+		else
+			return "ROUND"
+		end
 	end
 end
