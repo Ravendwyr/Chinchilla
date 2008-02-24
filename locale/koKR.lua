@@ -247,4 +247,13 @@
 	["Keybinding"] = "단축키 지정",
 --	["The key to press to show the expanded minimap"] = true,
 --	["The size of the expanded minimap"] = true,
+	
+	["Range circle"] = "거리 표시",
+	["Show a circle on the minimap at a prefered range"] = "미니맵에 미리 정한 사거리를 표시합니다.",
+	["Radius"] = "거리",
+	["The radius in yards of how large the radius of the circle should be"] = "표시하고 싶은 거리를 선택합니다.",
+	["Color of the circle"] = "색상",
+	["What texture style to use for the circle"] = "원의 모양을 변경합니다.",
+	["Solid"] = "채우기 원",
+	["Outline"] = "외곽선 원",
 } end)
