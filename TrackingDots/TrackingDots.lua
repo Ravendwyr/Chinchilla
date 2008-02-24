@@ -1,60 +1,60 @@
 local Chinchilla = Chinchilla
 Chinchilla:ProvideVersion("$Revision$", "$Date$")
-local Chinchilla_Blips = Chinchilla:NewModule("Blips")
-local self = Chinchilla_Blips
+local Chinchilla_TrackingDots = Chinchilla:NewModule("TrackingDots")
+local self = Chinchilla_TrackingDots
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
-Chinchilla_Blips.desc = L["Change how the blips look on the minimap."]
+Chinchilla_TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
 
 local newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newDict", "unpackDictAndDel")
 
-local blipStyles = {}
-function Chinchilla_Blips:AddBlipStyle(english, localized, texture)
+local trackingDotStyles = {}
+function Chinchilla_TrackingDots:AddTrackingDotStyle(english, localized, texture)
 	if type(english) ~= "string" then
-		error(("Bad argument #2 to `AddBlipStyle'. Expected %q, got %q"):format("string", type(english)), 2)
-	elseif blipStyles[english] then
-		error(("Bad argument #2 to `AddBlipStyle'. %q already provided"):format(english), 2)
+		error(("Bad argument #2 to `AddTrackingDotStyle'. Expected %q, got %q"):format("string", type(english)), 2)
+	elseif trackingDotStyles[english] then
+		error(("Bad argument #2 to `AddTrackingDotStyle'. %q already provided"):format(english), 2)
 	elseif type(localized) ~= "string" then
-		error(("Bad argument #3 to `AddBlipStyle'. Expected %q, got %q"):format("string", type(localized)), 2)
+		error(("Bad argument #3 to `AddTrackingDotStyle'. Expected %q, got %q"):format("string", type(localized)), 2)
 	elseif type(texture) ~= "string" then
-		error(("Bad argument #4 to `AddBlipStyle'. Expected %q, got %q"):format("string", type(texture)), 2)
+		error(("Bad argument #4 to `AddTrackingDotStyle'. Expected %q, got %q"):format("string", type(texture)), 2)
 	end
-	blipStyles[english] = { localized, texture }
+	trackingDotStyles[english] = { localized, texture }
 end
-Chinchilla.AddBlipStyle = Chinchilla_Blips.AddBlipStyle
+Chinchilla.AddTrackingDotStyle = Chinchilla_TrackingDots.AddTrackingDotStyle
 
-Chinchilla_Blips:AddBlipStyle("Blizzard", L["Blizzard"], [[Interface\MiniMap\ObjectIcons]])
-Chinchilla_Blips:AddBlipStyle("Nandini", "Nandini", [[Interface\AddOns\Chinchilla\Blips\Blip-Nandini]])
-Chinchilla_Blips:AddBlipStyle("BlizzardBig", L["Big Blizzard"], [[Interface\AddOns\Chinchilla\Blips\Blip-BlizzardBig]])
-Chinchilla_Blips:AddBlipStyle("GlassSpheres", L["Glass Spheres"], [[Interface\AddOns\Chinchilla\Blips\Blip-GlassSpheres]])
-Chinchilla_Blips:AddBlipStyle("SolidSpheres", L["Solid Spheres"], [[Interface\AddOns\Chinchilla\Blips\Blip-SolidSpheres]])
+Chinchilla_TrackingDots:AddTrackingDotStyle("Blizzard", L["Blizzard"], [[Interface\MiniMap\ObjectIcons]])
+Chinchilla_TrackingDots:AddTrackingDotStyle("Nandini", "Nandini", [[Interface\AddOns\Chinchilla\TrackingDots\Blip-Nandini]])
+Chinchilla_TrackingDots:AddTrackingDotStyle("BlizzardBig", L["Big Blizzard"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-BlizzardBig]])
+Chinchilla_TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-GlassSpheres]])
+Chinchilla_TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-SolidSpheres]])
 
-function Chinchilla_Blips:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("Blips")
-	Chinchilla:SetDatabaseNamespaceDefaults("Blips", "profile", {
-		blipStyle = "Nandini"
+function Chinchilla_TrackingDots:OnInitialize()
+	self.db = Chinchilla:GetDatabaseNamespace("TrackingDots")
+	Chinchilla:SetDatabaseNamespaceDefaults("TrackingDots", "profile", {
+		trackingDotStyle = "Nandini"
 	})
 end
 
-function Chinchilla_Blips:OnEnable()
+function Chinchilla_TrackingDots:OnEnable()
 	self:SetBlipTexture(nil)
 end
 
-function Chinchilla_Blips:OnDisable()
+function Chinchilla_TrackingDots:OnDisable()
 	self:SetBlipTexture(nil)
 end
 
 local function getBlipTexture(name)
-	local style = blipStyles[name] or blipStyles["Blizzard"]
+	local style = trackingDotStyles[name] or trackingDotStyles["Blizzard"]
 	local texture = style and style[2] or [[Interface\MiniMap\ObjectIcons]]
 	return texture
 end
 
-function Chinchilla_Blips:SetBlipTexture(name)
+function Chinchilla_TrackingDots:SetBlipTexture(name)
 	if not name then
-		name = self.db.profile.blipStyle
+		name = self.db.profile.trackingDotStyle
 	else
-		self.db.profile.blipStyle = name
+		self.db.profile.trackingDotStyle = name
 	end
 	local texture = getBlipTexture(name)
 	if not self:IsActive() then
@@ -63,31 +63,31 @@ function Chinchilla_Blips:SetBlipTexture(name)
 	Minimap:SetBlipTexture(texture)
 end
 
-Chinchilla_Blips:AddChinchillaOption({
-	name = L["Blips"],
-	desc = Chinchilla_Blips.desc,
+Chinchilla_TrackingDots:AddChinchillaOption({
+	name = L["Tracking dots"],
+	desc = Chinchilla_TrackingDots.desc,
 	type = 'group',
 	args = {
 		style = {
 			name = L["Style"],
-			desc = L["Set the style of how the blips should look."],
+			desc = L["Set the style of how the tracking dots should look."],
 			type = 'choice',
 			choices = function()
 				local t = newDict()
-				for k, v in pairs(blipStyles) do
+				for k, v in pairs(trackingDotStyles) do
 					t[k] = v[1]
 				end
 				return "@dict", unpackDictAndDel(t)
 			end,
 			get = function()
-				return self.db.profile.blipStyle
+				return self.db.profile.trackingDotStyle
 			end,
 			set = "SetBlipTexture",
 			order = 2,
 		},
 		preview = {
 			name = L["Preview"],
-			desc = L["See how the blips will look"],
+			desc = L["See how the tracking dots will look"],
 			type = 'choice',
 			choices = {
 				PARTY = L["Party member or pet"],
@@ -114,7 +114,7 @@ Chinchilla_Blips:AddChinchillaOption({
 			},
 			choiceIcons = function()
 				local t = newDict()
-				local tex = getBlipTexture(self.db.profile.blipStyle)
+				local tex = getBlipTexture(self.db.profile.trackingDotStyle)
 				t.PARTY = tex
 				t.RAID = tex
 				t.FRIEND = tex

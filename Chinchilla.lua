@@ -158,7 +158,7 @@ function Chinchilla:AddBorderStyle()
 	-- if Appearance module does not exist, other addons should not break by calling this
 end
 
-function Chinchilla:AddBlipStyle()
-	-- blank method, to be replaced in Blips module
+function Chinchilla:AddTrackingDotStyle()
+	-- blank method, to be replaced in TrackingDots module
 	-- if Blips module does not exist, other addons should not break by calling this
 end
