@@ -6,7 +6,7 @@ local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_Appearance.desc = L["Allow for a customized look of the minimap"]
 
-local newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newDict", "unpackDictAndDel")
+local newList, del, newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newList", "del", "newDict", "unpackDictAndDel")
 
 local rotateMinimap = GetCVar("rotateMinimap") == "1"
 function Chinchilla_Appearance:OnInitialize()
@@ -66,6 +66,7 @@ function Chinchilla_Appearance:OnEnable()
 	self:AddEventListener("MINIMAP_UPDATE_ZOOM")
 	self:AddEventListener("PLAYER_REGEN_ENABLED")
 	self:AddEventListener("PLAYER_REGEN_DISABLED")
+	self:AddTimer(1, "RecheckMinimapButtons")
 	
 	--[[ these issues seem to have been fixed with the custom mask textures
 	self:AddEventListener("CVAR_UPDATE", "CVAR_UPDATE", 0.05)
@@ -117,6 +118,31 @@ end
 function Chinchilla_Appearance:PLAYER_REGEN_DISABLED()
 	inCombat = true
 	self:SetCombatAlpha(nil)
+end
+
+local minimapButtons = {}
+function Chinchilla_Appearance:RecheckMinimapButtons()
+	local children = newList(Minimap:GetChildren())
+	local found = false
+	for _,v in ipairs(children) do
+		if minimapButtons[v] == nil then
+			if v:GetObjectType() == "Frame" or v:GetObjectType() == "Button" and v:GetName() then
+				local name = v:GetName()
+				if name:find("MinimapButton$") and _G[name .. "Overlay"] then
+					minimapButtons[v] = true
+					found = true
+				else
+					minimapButtons[v] = false
+				end
+			else
+				minimapButtons[v] = false
+			end
+		end
+	end
+	children = del(children)
+	if found then
+		self:SetButtonBorderAlpha(nil)
+	end
 end
 
 function Chinchilla_Appearance:OnRotateMinimapUpdate(value)
@@ -351,6 +377,12 @@ function Chinchilla_Appearance:SetButtonBorderAlpha(alpha)
 	
 	for i,v in ipairs(buttonBorderTextures) do
 		v:SetAlpha(alpha)
+	end
+	
+	for k,v in pairs(minimapButtons) do
+		if v then
+			_G[k:GetName() .. "Overlay"]:SetAlpha(alpha)
+		end
 	end
 end
 
