@@ -4,6 +4,7 @@
 	<Script file="AutoZoom\AutoZoom.lua"/>
 	<Script file="Compass\Compass.lua"/>
 	<Script file="Coordinates\Coordinates.lua"/>
+	<Script file="Expander\Expander.lua"/>
 	<Script file="Location\Location.lua"/>
 	<Script file="MoveButtons\MoveButtons.lua"/>
 	<Script file="Ping\Ping.lua"/>
