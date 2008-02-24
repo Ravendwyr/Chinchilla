@@ -241,4 +241,10 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Big Blizzard"] = true,
 	["Solid Spheres"] = true,
 	["Glass Spheres"] = true,
+	
+	["Expander"] = true,
+	["Show an expanded minimap on keypress"] = true,
+	["Keybinding"] = true,
+	["The key to press to show the expanded minimap"] = true,
+	["The size of the expanded minimap"] = true,
 } end)

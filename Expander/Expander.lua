@@ -5,10 +5,7 @@ local Chinchilla_Expander = Chinchilla:NewModule("Expander", "LibRockTimer-1.0")
 local self = Chinchilla_Expander
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
-Chinchilla_Expander.desc = L["Show direction indicators on the minimap"]
-
-BINDING_HEADER_CHINCHILLA = "Chinchilla"
-BINDING_NAME_CHINCHILLA_EXPANDMINIMAP = L["Expand minimap"]
+Chinchilla_Expander.desc = L["Show an expanded minimap on keypress"]
 
 function Chinchilla_Expander:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Expander")
