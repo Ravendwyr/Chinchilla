@@ -97,13 +97,13 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set the position on the x-axis for the coordinate indicator relative to the minimap."] = "设置坐标指示框相对于小地图的横向位置。",
 	["Set the position on the y-axis for the coordinate indicator relative to the minimap."] = "设置坐标指示框相对于小地图的纵向位置。",
 
-	["Location"] = "地图位置",
+	["Location"] = "当前区域",
 	["Show zone information on or near minimap"] = "在小地图附近显示区域信息",
-	["Set the size of the location display."] = "设置位置框的大小。",
-	["Set the position of the location indicator"] = "设置位置框的位置",
-	["Allow the location indicator to be moved"] = "允许移动位置框",
-	["Set the position on the x-axis for the location indicator relative to the minimap."] = "设置位置框相对于小地图的横向位置",
-	["Set the position on the y-axis for the location indicator relative to the minimap."] = "设置位置框相对于小地图的横向位置",
+	["Set the size of the location display."] = "设置区域名称的大小。",
+	["Set the position of the location indicator"] = "设置区域名称的位置",
+	["Allow the location indicator to be moved"] = "允许移动区域名称",
+	["Set the position on the x-axis for the location indicator relative to the minimap."] = "设置区域名称相对于小地图的横向位置",
+	["Set the position on the y-axis for the location indicator relative to the minimap."] = "设置区域名称相对于小地图的横向位置",
 	["Show close button"] = "显示关闭按钮",
 	["Show the button to hide the minimap"] = "显示关闭小地图的按钮",
 
@@ -127,6 +127,8 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set the position of the zoom in button"] = "设置小地图放大按钮的位置",
 	["Zoom out"] = "小地图缩小",
 	["Set the position of the zoom out button"] = "设置小地图缩小按钮的位置",
+	["Recording"] = "Recording",
+	["Set the position of the recording button"] = "Set the position of the recording button",
 	["Lock buttons in place so that they won't be mistakenly dragged"] = "锁定小地图按钮以防止被不小心移动",
 	["Attach to minimap"] = "附着在小地图",
 	["Whether to stay attached to the minimap or move freely.\nNote: If you hold Alt while dragging, it will automatically unattach."] = "设置按钮是否附着在小地图上，或者可以自由移动。\n注意：假如你按住Alt键再拖拽，则按钮会自动取消附着。",
@@ -199,6 +201,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Show the voice chat button"] = "显示语音聊天按钮",
 	["Zoom"] = "缩放按钮",
 	["Show the zoom in and out buttons"] = "显示小地图放大和缩小按钮",
+	["Show the recording button"] = true,
 	
 	["Wheel zoom"] = "滚轮缩放",
 	["Use the mouse wheel to zoom in and out on the minimap."] = "使用鼠标滚轮来放大或者缩小小地图",
@@ -240,4 +243,10 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Big Blizzard"] = "暴雪(大)",
 	["Solid Spheres"] = "单色球型",
 	["Glass Spheres"] = "玻璃球型",
+
+	["Expander"] = "放大器",
+	["Show an expanded minimap on keypress"] = "按下按键时显示一个放大的小地图",
+	["Keybinding"] = "按键绑定",
+	["The key to press to show the expanded minimap"] = "用于放大小地图的按键",
+	["The size of the expanded minimap"] = "小地图放大的大小",
 } end)
