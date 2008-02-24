@@ -279,7 +279,7 @@ end
 
 local function attach_set(key, value)
 	if not value then
-		self.db.profile[key] = { buttons[key]:GetCenter() }
+		self.db.profile[key] = { "BOTTOMLEFT", buttons[key]:GetCenter() }
 	else
 		self.db.profile[key] = getAngle(buttons[key]:GetCenter())
 		buttons[key]:ClearAllPoints()
@@ -291,6 +291,9 @@ local function x_get(key)
 	local frame = buttons[key]
 	local point = self.db.profile[key][1]
 	local x = self.db.profile[key][2]
+	if not x then
+		return 0
+	end
 	x = x * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
 	if point == "LEFT" or point == "BOTTOMLEFT" or point == "TOPLEFT" then
 		return x
@@ -305,6 +308,9 @@ local function y_get(key)
 	local frame = buttons[key]
 	local point = self.db.profile[key][1]
 	local y = self.db.profile[key][3]
+	if not y then
+		return 0
+	end
 	y = y * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
 	if point == "BOTTOM" or point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
 		return y
