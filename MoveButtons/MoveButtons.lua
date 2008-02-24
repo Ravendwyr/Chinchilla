@@ -65,19 +65,19 @@ local function getOffset(deg)
 			round = false
 		end
 	elseif minimapShape == "TRICORNER-TOPRIGHT" then
-		if cos < 0 and sin > 0 then
-			round = false
-		end
-	elseif minimapShape == "TRICORNER-TOPLEFT" then
-		if cos > 0 and sin > 0 then
-			round = false
-		end
-	elseif minimapShape == "TRICORNER-BOTTOMRIGHT" then
 		if cos < 0 and sin < 0 then
 			round = false
 		end
-	elseif minimapShape == "TRICORNER-BOTTOMLEFT" then
+	elseif minimapShape == "TRICORNER-TOPLEFT" then
 		if cos > 0 and sin < 0 then
+			round = false
+		end
+	elseif minimapShape == "TRICORNER-BOTTOMRIGHT" then
+		if cos < 0 and sin > 0 then
+			round = false
+		end
+	elseif minimapShape == "TRICORNER-BOTTOMLEFT" then
+		if cos > 0 and sin > 0 then
 			round = false
 		end
 	end
