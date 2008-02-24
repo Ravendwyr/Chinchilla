@@ -9,6 +9,7 @@
 	<Script file="MoveButtons\MoveButtons.lua"/>
 	<Script file="Ping\Ping.lua"/>
 	<Script file="Position\Position.lua"/>
+	<Script file="RangeCircle\RangeCircle.lua"/>
 	<Script file="ShowHide\ShowHide.lua"/>
 	<Script file="TrackingDots\TrackingDots.lua"/>
 	<Script file="WheelZoom\WheelZoom.lua"/>

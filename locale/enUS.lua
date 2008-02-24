@@ -247,4 +247,13 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Keybinding"] = true,
 	["The key to press to show the expanded minimap"] = true,
 	["The size of the expanded minimap"] = true,
+	
+	["Range circle"] = true,
+	["Show a circle on the minimap at a prefered range"] = true,
+	["Radius"] = true,
+	["The radius in yards of how large the radius of the circle should be"] = true, -- note to non-enUS, make this say meters, not yards
+	["Color of the circle"] = true,
+	["What texture style to use for the circle"] = true,
+	["Solid"] = true,
+	["Outline"] = true,
 } end)
