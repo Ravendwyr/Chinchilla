@@ -107,6 +107,7 @@ end
 local lastShow = 0
 local lastShowObject = nil
 function Chinchilla_ShowHide:frame_Show(object)
+	Rock("LibRockConsole-1.0"):Print(object, "Show")
 	local object_k
 	for k,v in pairs(frames) do
 		if v == object then
@@ -119,7 +120,7 @@ function Chinchilla_ShowHide:frame_Show(object)
 		end
 	end
 	if object_k and not self.db.profile[object_k] then
-		if lastShow < GetTime() - 1e5 or lastShowObject ~= object then
+		if lastShow < GetTime() - 1e-5 or lastShowObject ~= object then
 			-- don't want infinite loops
 			lastShow = GetTime()
 			lastShowObject = object
@@ -131,12 +132,13 @@ function Chinchilla_ShowHide:frame_Show(object)
 end
 
 function Chinchilla_ShowHide:frame_Hide(object)
+	Rock("LibRockConsole-1.0"):Print(object, "Hide")
 	framesShown[object] = false
 end
 
 function Chinchilla_ShowHide:MinimapZoneTextButton_Show(object)
 	if not self.db.profile.locationText or (Chinchilla:HasModule("Location") and Chinchilla:IsModuleActive("Location")) then
-		if lastShow < GetTime() - 1e5 or lastShowObject ~= object then
+		if lastShow < GetTime() - 1e-5 or lastShowObject ~= object then
 			lastShow = GetTime()
 			lastShowObject = object
 			MinimapToggleButton:Hide()
