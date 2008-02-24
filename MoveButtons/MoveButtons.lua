@@ -15,7 +15,8 @@ local buttons = {
 	track = MiniMapTracking,
 	voice = MiniMapVoiceChatFrame,
 	zoomIn = MinimapZoomIn,
-	zoomOut = MinimapZoomOut
+	zoomOut = MinimapZoomOut,
+	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
 local buttonStarts = {}
@@ -532,5 +533,13 @@ Chinchilla_MoveButtons:AddChinchillaOption({
 			child_passValue = 'zoomOut',
 			args = args,
 		},
+		record = IsMacClient() and {
+			name = L["Recording"],
+			desc = L["Set the position of the recording button"],
+			type = 'group',
+			groupType = 'inline',
+			child_passValue = 'record',
+			args = args,
+		} or nil,
 	}
 })

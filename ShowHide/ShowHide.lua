@@ -20,6 +20,7 @@ function Chinchilla_ShowHide:OnInitialize()
 		track = true,
 		voice = true,
 		zoom = true,
+		record = true,
 	})
 end
 
@@ -33,7 +34,8 @@ local frames = {
 	track = MiniMapTracking,
 	voice = MiniMapVoiceChatFrame,
 	zoomIn = MinimapZoomIn,
-	zoomOut = MinimapZoomOut
+	zoomOut = MinimapZoomOut,
+	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
 local framesShown = {}
@@ -253,5 +255,13 @@ Chinchilla_ShowHide:AddChinchillaOption({
 			get = get,
 			set = set,
 		},
+		record = IsMacClient() and {
+			name = L["Recording"],
+			desc = L["Show the recording button"],
+			type = 'boolean',
+			passValue = 'record',
+			get = get,
+			set = set,
+		} or nil,
 	}
 })

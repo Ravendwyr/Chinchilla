@@ -125,6 +125,8 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set the position of the zoom in button"] = true,
 	["Zoom out"] = true,
 	["Set the position of the zoom out button"] = true,
+	["Recording"] = true,
+	["Set the position of the recording button"] = true,
 	["Lock buttons in place so that they won't be mistakenly dragged"] = true,
 	["Attach to minimap"] = true,
 	["Whether to stay attached to the minimap or move freely.\nNote: If you hold Alt while dragging, it will automatically unattach."] = true,
@@ -197,6 +199,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Show the voice chat button"] = true,
 	["Zoom"] = true,
 	["Show the zoom in and out buttons"] = true,
+	["Show the recording button"] = true,
 	
 	["Wheel zoom"] = true,
 	["Use the mouse wheel to zoom in and out on the minimap."] = true,
