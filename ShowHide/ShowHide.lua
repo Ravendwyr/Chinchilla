@@ -107,7 +107,6 @@ end
 local lastShow = 0
 local lastShowObject = nil
 function Chinchilla_ShowHide:frame_Show(object)
-	Rock("LibRockConsole-1.0"):Print(object, "Show")
 	local object_k
 	for k,v in pairs(frames) do
 		if v == object then
@@ -132,7 +131,6 @@ function Chinchilla_ShowHide:frame_Show(object)
 end
 
 function Chinchilla_ShowHide:frame_Hide(object)
-	Rock("LibRockConsole-1.0"):Print(object, "Hide")
 	framesShown[object] = false
 end
 
