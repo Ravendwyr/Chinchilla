@@ -14,6 +14,7 @@ function Chinchilla_Appearance:OnInitialize()
 	Chinchilla:SetDatabaseNamespaceDefaults("Appearance", "profile", {
 		scale = 1,
 		alpha = 1,
+		combatAlpha = 1,
 		borderColor = {1, 1, 1, 1},
 		buttonBorderAlpha = 1,
 		strata = "BACKGROUND",
@@ -63,6 +64,8 @@ function Chinchilla_Appearance:OnEnable()
 	end
 	
 	self:AddEventListener("MINIMAP_UPDATE_ZOOM")
+	self:AddEventListener("PLAYER_REGEN_ENABLED")
+	self:AddEventListener("PLAYER_REGEN_DISABLED")
 	
 	--[[ these issues seem to have been fixed with the custom mask textures
 	self:AddEventListener("CVAR_UPDATE", "CVAR_UPDATE", 0.05)
@@ -105,6 +108,17 @@ function Chinchilla_Appearance:MINIMAP_UPDATE_ZOOM()
 	self:SetAlpha(nil)
 end
 
+local inCombat = InCombatLockdown()
+function Chinchilla_Appearance:PLAYER_REGEN_ENABLED()
+	inCombat = false
+	self:SetAlpha(nil)
+end
+
+function Chinchilla_Appearance:PLAYER_REGEN_DISABLED()
+	inCombat = true
+	self:SetCombatAlpha(nil)
+end
+
 function Chinchilla_Appearance:OnRotateMinimapUpdate(value)
 	rotateMinimap = value
 	self:SetShape(nil)
@@ -134,7 +148,26 @@ function Chinchilla_Appearance:SetAlpha(value)
 		value = 1
 	end
 	
-	MinimapCluster:SetAlpha(value)
+	if not inCombat then
+		MinimapCluster:SetAlpha(value)
+	else
+		MinimapCluster:SetAlpha(self.db.profile.combatAlpha)
+	end
+end
+
+function Chinchilla_Appearance:SetCombatAlpha(value)
+	if value then
+		self.db.profile.combatAlpha = value
+	else
+		value = self.db.profile.combatAlpha
+	end
+	if not Chinchilla:IsModuleActive(self) or indoors then
+		value = 1
+	end
+	
+	if inCombat then
+		MinimapCluster:SetAlpha(value)
+	end
 end
 
 function Chinchilla_Appearance:SetFrameStrata(value)
@@ -364,7 +397,7 @@ Chinchilla_Appearance:AddChinchillaOption({
 		},
 		alpha = {
 			name = L["Opacity"],
-			desc = L["Set how transparent or opaque the minimap is"],
+			desc = L["Set how transparent or opaque the minimap is when not in combat"],
 			type = 'number',
 			min = 0,
 			max = 1,
@@ -374,6 +407,20 @@ Chinchilla_Appearance:AddChinchillaOption({
 				return Chinchilla_Appearance.db.profile.alpha
 			end,
 			set = "SetAlpha",
+			isPercent = true,
+		},
+		combatAlpha = {
+			name = L["Combat opacity"],
+			desc = L["Set how transparent or opaque the minimap is when in combat"],
+			type = 'number',
+			min = 0,
+			max = 1,
+			step = 0.01,
+			bigStep = 0.05,
+			get = function()
+				return Chinchilla_Appearance.db.profile.combatAlpha
+			end,
+			set = "SetCombatAlpha",
 			isPercent = true,
 		},
 		strata = {
