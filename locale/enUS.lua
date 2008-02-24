@@ -181,6 +181,11 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set the position on the x-axis for the capture bar."] = true,
 	["Set the position on the y-axis for the capture bar."] = true,
 	["Allow the minimap to be movable so you can drag it where you want"] = true,
+	["World state"] = true,
+	["Position of the world state indicator on the screen"] = true,
+	["Show a frame that is movable to show where you want the world state indicator to be"] = true,
+	["Set the position on the x-axis for the world state indicator."] = true,
+	["Set the position on the y-axis for the world state indicator."] = true,
 	
 	["Show / Hide"] = true,
 	["Show and hide interface elements of the minimap"] = true,

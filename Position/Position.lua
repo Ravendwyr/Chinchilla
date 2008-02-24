@@ -15,6 +15,7 @@ function Chinchilla_Position:OnInitialize()
 		questWatch = { "TOPRIGHT", -183, -226 },
 		questTimer = { "TOPRIGHT", -173, -211 },
 		capture = { "TOPRIGHT", -9, -190 },
+		worldState = { "TOP", 0, -50 },
 	})
 end
 
@@ -22,16 +23,23 @@ local function Minimap_OnDragStart(this)
 	MinimapCluster:StartMoving()
 end
 
-local function getPointXY(frame)
-	local x, y = frame:GetCenter()
-	local scale = frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
-	x = x*scale
-	y = y*scale
+local function getPointXY(frame, newX, newY)
 	local width, height = GetScreenWidth(), GetScreenHeight()
-	local point
+	local uiscale = UIParent:GetEffectiveScale()
+	local scale = frame:GetEffectiveScale() / uiscale
+	local point, x, y
+	if newX then
+		x = newX/uiscale
+		y = newY/uiscale
+	else
+		x, y = frame:GetCenter()
+		x = x*scale
+		y = y*scale
+	end
 	if x < width/3 then
-		x = frame:GetLeft()*scale
+		x = x - frame:GetWidth()/2*scale
 		point = "LEFT"
+		
 		if frame == MinimapCluster then
 			if x < -35*scale then
 				x = -35*scale
@@ -42,11 +50,12 @@ local function getPointXY(frame)
 			end
 		end
 	elseif x < width*2/3 then
+		point = ""
 		x = x - width/2
-		point = "CENTER"
 	else
-		x = frame:GetRight()*scale - width
 		point = "RIGHT"
+		x = x - width + frame:GetWidth()/2*scale
+		
 		if frame == MinimapCluster then
 			if x > 17*scale then
 				x = 17*scale
@@ -59,8 +68,9 @@ local function getPointXY(frame)
 	end
 	
 	if y < height/3 then
-		point = "BOTTOM" .. (point == "CENTER" and "" or point)
-		y = frame:GetBottom()*scale
+		y = y - frame:GetHeight()/2*scale
+		point = "BOTTOM" .. point
+		
 		if frame == MinimapCluster then
 			if y < -30*scale then
 				y = -30*scale
@@ -71,10 +81,14 @@ local function getPointXY(frame)
 			end
 		end
 	elseif y < height*2/3 then
+		if point == "" then
+			point = "CENTER"
+		end
 		y = y - height/2
 	else
-		point = "TOP" .. (point == "CENTER" and "" or point)
-		y = frame:GetTop()*scale - height
+		point = "TOP" .. point
+		y = y - height + frame:GetHeight()/2*scale
+		
 		if frame == MinimapCluster then
 			if y > 22*scale then
 				y = 22*scale
@@ -85,6 +99,7 @@ local function getPointXY(frame)
 			end
 		end
 	end
+		
 	return point, x/scale, y/scale
 end
 
@@ -101,6 +116,9 @@ function Chinchilla_Position:OnEnable()
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
+	WorldStateAlwaysUpFrame:SetWidth(200)
+	WorldStateAlwaysUpFrame:SetHeight(60)
+	self:SetFramePosition('worldState', nil, nil, nil)
 	self:SetLocked(nil)
 	
 	Minimap:SetClampedToScreen(true)
@@ -113,6 +131,7 @@ function Chinchilla_Position:OnEnable()
 	self:AddSecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:AddSecureHook(QuestWatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
 	self:AddSecureHook(QuestTimerFrame, "SetPoint", "QuestTimerFrame_SetPoint")
+	self:AddSecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	
 	self:AddEventListener("UPDATE_WORLD_STATES")
 end
@@ -123,10 +142,14 @@ function Chinchilla_Position:OnDisable()
 	self:ShowFrameMover('questWatch', false)
 	self:ShowFrameMover('questTimer', false)
 	self:ShowFrameMover('capture', false)
+	WorldStateAlwaysUpFrame:SetWidth(10)
+	WorldStateAlwaysUpFrame:SetHeight(10)
+	self:ShowFrameMover('worldState', false)
 	self:SetFramePosition('durability', nil, nil, nil)
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
+	self:SetFramePosition('worldState', nil, nil, nil)
 	self:SetLocked(nil)
 	
 	Minimap:SetClampedToScreen(false)
@@ -251,10 +274,19 @@ function Chinchilla_Position:QuestTimerFrame_SetPoint(this)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 end
 
+function Chinchilla_Position:WorldStateAlwaysUpFrame_SetPoint(this)
+	if shouldntSetPoint then
+		return
+	end
+	self:SetFramePosition('worldState', nil, nil, nil)
+end
+
 local nameToFrame = {
+	minimap = MinimapCluster,
 	durability = DurabilityFrame,
 	questWatch = QuestWatchFrame,
 	questTimer = QuestTimerFrame,
+	worldState = WorldStateAlwaysUpFrame,
 }
 local movers = {}
 function Chinchilla_Position:SetFramePosition(frame, point, x, y)
@@ -310,15 +342,16 @@ local nameToNiceName = {
 	durability = L["Durability"],
 	questWatch = L["Quest tracker"],
 	questTimer = L["Quest timer"],
+	worldState = L["World state"],
 	capture = L["Capture bar"],
 }
 
-function Chinchilla_Position:ShowFrameMover(frame, value)
+function Chinchilla_Position:ShowFrameMover(frame, value, force)
 	local mover = movers[frame]
 	if value == not not (mover and mover:IsShown()) then
 		return
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not Chinchilla:IsModuleActive(self) and not force then
 		value = false
 	end
 	if value and not mover then
@@ -327,7 +360,7 @@ function Chinchilla_Position:ShowFrameMover(frame, value)
 		mover.name = frame
 		if frame ~= 'capture' then
 			mover:SetFrameStrata(nameToFrame[frame]:GetFrameStrata())
-			mover:SetFrameLevel(nameToFrame[frame]:GetFrameLevel())
+			mover:SetFrameLevel(nameToFrame[frame]:GetFrameLevel()+1)
 		end
 		mover:SetClampedToScreen(true)
 		mover:EnableMouse(true)
@@ -358,7 +391,9 @@ function Chinchilla_Position:ShowFrameMover(frame, value)
 		shouldntSetPoint = true
 		mover:Show()
 		mover:ClearAllPoints()
-		mover:SetPoint(self.db.profile[frame][1], UIParent, self.db.profile[frame][1], self.db.profile[frame][2], self.db.profile[frame][3])
+		local data = self.db.profile[frame]
+		local point, x, y = data[1], data[2], data[3]
+		mover:SetPoint(point, UIParent, point, x, y)
 		if frame == "capture" then
 			for i = 1, NUM_EXTENDED_UI_FRAMES do
 				_G["WorldStateCaptureBar" .. i]:ClearAllPoints()
@@ -372,18 +407,6 @@ function Chinchilla_Position:ShowFrameMover(frame, value)
 	end
 end
 
-local choices = {
-	TOP = L["Top"],	
-	LEFT = L["Left"],
-	RIGHT = L["Right"],
-	BOTTOM = L["Bottom"],
-	CENTER = L["Center"],
-	TOPLEFT = L["Top-left"],
-	TOPRIGHT = L["Top-right"],
-	BOTTOMLEFT = L["Bottom-left"],
-	BOTTOMRIGHT = L["Bottom-right"],
-}
-
 local function movable_get(frame)
 	return movers[frame] and movers[frame]:IsShown()
 end
@@ -396,24 +419,72 @@ local function point_set(frame, value)
 	self:SetFramePosition(frame, value, nil, nil)
 end
 
-local function x_get(frame)
-	return self.db.profile[frame][2]
+local function x_get(key)
+	local frame = movers[key] or nameToFrame[key]
+	if not frame then
+		self:ShowFrameMover(key, true, true)
+		self:ShowFrameMover(key, false, true)
+		frame = movers[key]
+	end
+	local point = self.db.profile[key][1]
+	local x = self.db.profile[key][2]
+	if not x or not frame then
+		return 0
+	end
+	x = x * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
+	if point == "LEFT" or point == "BOTTOMLEFT" or point == "TOPLEFT" then
+		return x + frame:GetWidth()/2
+	elseif point == "CENTER" or point == "TOP" or point == "BOTTOM" then
+		return x + GetScreenWidth()/2
+	else
+		return x + GetScreenWidth() - frame:GetWidth()/2
+	end
 end
 
-local function x_set(frame, value)
-	self:SetFramePosition(frame, nil, value, nil)
+local function y_get(key)
+	local frame = movers[key] or nameToFrame[key]
+	if not frame then
+		self:ShowFrameMover(key, true, true)
+		self:ShowFrameMover(key, false, true)
+		frame = movers[key]
+	end
+	local point = self.db.profile[key][1]
+	local y = self.db.profile[key][3]
+	if not y or not frame then
+		return 0
+	end
+	y = y * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
+	if point == "BOTTOM" or point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
+		return y + frame:GetHeight()/2
+	elseif point == "CENTER" or point == "LEFT" or point == "RIGHT" then
+		return y + GetScreenHeight()/2
+	else
+		return y + GetScreenHeight() - frame:GetHeight()/2
+	end
 end
 
-local function y_get(frame)
-	return self.db.profile[frame][3]
+local function x_set(key, value)
+	local y = y_get(key)
+	local point, x, y = getPointXY(movers[key] or nameToFrame[key], value, y)
+	if key == "minimap" then
+		Chinchilla_Position:SetMinimapPosition(point, x, y)
+	else
+		Chinchilla_Position:SetFramePosition(key, point, x, y)
+	end
 end
 
-local function y_set(frame, value)
-	self:SetFramePosition(frame, nil, nil, value)
+local function y_set(key, value)
+	local x = x_get(key)
+	local point, x, y = getPointXY(movers[key] or nameToFrame[key], x, value)
+	if key == "minimap" then
+		Chinchilla_Position:SetMinimapPosition(point, x, y)
+	else
+		Chinchilla_Position:SetFramePosition(key, point, x, y)
+	end
 end
 
 local function x_min()
-	return -math.floor(GetScreenWidth()/5 + 0.5)*5
+	return 0
 end
 
 local function x_max()
@@ -421,7 +492,7 @@ local function x_max()
 end
 
 local function y_min()
-	return -math.floor(GetScreenHeight()/5 + 0.5)*5
+	return 0
 end
 
 local function y_max()
@@ -449,58 +520,31 @@ Chinchilla_Position:AddChinchillaOption({
 						Chinchilla_Position:SetLocked(not value)
 					end
 				},
-				point = {
-					name = L["Point"],
-					desc = L["Point of the screen the minimap is anchored to"],
-					type = 'choice',
-					choices = choices,
-					order = 2,
-					get = function()
-						return self.db.profile.minimap[1]
-					end,
-					set = function(value)
-						self:SetMinimapPosition(value, nil, nil)
-					end
-				},
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the minimap."],
 					type = 'number',
-					min = function()
-						return -math.floor(GetScreenWidth()/5 + 0.5)*5
-					end,
-					max = function()
-						return math.floor(GetScreenWidth()/5 + 0.5)*5
-					end,
+					min = x_min,
+					max = x_max,
 					step = 1,
 					bigStep = 5,
-					get = function()
-						return self.db.profile.minimap[2]
-					end,
-					set = function(value)
-						self:SetMinimapPosition(nil, value, nil)
-					end,
+					get = x_get,
+					set = x_set,
+					passValue = 'minimap',
 					order = 3,
 				},
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the minimap."],
 					type = 'number',
-					min = function()
-						return -math.floor(GetScreenHeight()/5 + 0.5)*5
-					end,
-					max = function()
-						return math.floor(GetScreenHeight()/5 + 0.5)*5
-					end,
+					min = y_min,
+					max = y_max,
 					step = 1,
 					bigStep = 5,
 					stepBasis = 0,
-					get = function()
-						return self.db.profile.minimap[3]
-					end,
-					set = function(value)
-						self:SetMinimapPosition(nil, nil, value)
-					end,
+					get = y_get,
+					set = y_set,
+					passValue = 'minimap',
 					order = 4,
 				},
 			}
@@ -518,16 +562,6 @@ Chinchilla_Position:AddChinchillaOption({
 					order = 1,
 					get = movable_get,
 					set = "ShowFrameMover",
-					passValue = 'durability',
-				},
-				point = {
-					name = L["Point"],
-					desc = L["Point of the screen the durability man is anchored to"],
-					type = 'choice',
-					choices = choices,
-					order = 2,
-					get = point_get,
-					set = point_set,
 					passValue = 'durability',
 				},
 				x = {
@@ -574,16 +608,6 @@ Chinchilla_Position:AddChinchillaOption({
 					set = "ShowFrameMover",
 					passValue = 'questWatch',
 				},
-				point = {
-					name = L["Point"],
-					desc = L["Point of the screen the quest tracker is anchored to"],
-					type = 'choice',
-					choices = choices,
-					order = 2,
-					get = point_get,
-					set = point_set,
-					passValue = 'questWatch',
-				},
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the quest tracker."],
@@ -628,16 +652,6 @@ Chinchilla_Position:AddChinchillaOption({
 					set = "ShowFrameMover",
 					passValue = 'questTimer',
 				},
-				point = {
-					name = L["Point"],
-					desc = L["Point of the screen the quest timer is anchored to"],
-					type = 'choice',
-					choices = choices,
-					order = 2,
-					get = point_get,
-					set = point_set,
-					passValue = 'questTimer',
-				},
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the quest timer."],
@@ -667,6 +681,50 @@ Chinchilla_Position:AddChinchillaOption({
 				},
 			}
 		},
+		worldState = {
+			name = L["World state"],
+			desc = L["Position of the world state indicator on the screen"],
+			type = 'group',
+			groupType = 'inline',
+			args = {
+				movable = {
+					name = L["Movable"],
+					desc = L["Show a frame that is movable to show where you want the world state indicator to be"],
+					type = 'boolean',
+					order = 1,
+					get = movable_get,
+					set = "ShowFrameMover",
+					passValue = 'worldState',
+				},
+				x = {
+					name = L["Horizontal position"],
+					desc = L["Set the position on the x-axis for the world state indicator."],
+					type = 'number',
+					min = x_min,
+					max = x_max,
+					step = 1,
+					bigStep = 5,
+					get = x_get,
+					set = x_set,
+					order = 3,
+					passValue = 'worldState',
+				},
+				y = {
+					name = L["Vertical position"],
+					desc = L["Set the position on the y-axis for the world state indicator."],
+					type = 'number',
+					min = y_min,
+					max = y_max,
+					step = 1,
+					bigStep = 5,
+					stepBasis = 0,
+					get = y_get,
+					set = y_set,
+					order = 4,
+					passValue = 'worldState',
+				},
+			}
+		},
 		capture = {
 			name = L["Capture bar"],
 			desc = L["Position of the capture bar on the screen"],
@@ -680,16 +738,6 @@ Chinchilla_Position:AddChinchillaOption({
 					order = 1,
 					get = movable_get,
 					set = "ShowFrameMover",
-					passValue = 'capture',
-				},
-				point = {
-					name = L["Point"],
-					desc = L["Point of the screen the capture bar is anchored to"],
-					type = 'choice',
-					choices = choices,
-					order = 2,
-					get = point_get,
-					set = point_set,
 					passValue = 'capture',
 				},
 				x = {
