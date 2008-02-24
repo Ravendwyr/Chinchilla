@@ -85,7 +85,9 @@ Chinchilla_Expander:AddChinchillaOption({
 				return self.db.profile.key
 			end,
 			set = function(value)
-				SetBinding(self.db.profile.key)
+				if self.db.profile.key then
+					SetBinding(self.db.profile.key, nil)
+				end
 				self.db.profile.key = value
 				if frame and value then
 					SetBindingClick(value, "Chinchilla_Expander_Button")
