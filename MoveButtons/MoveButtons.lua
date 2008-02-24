@@ -224,9 +224,6 @@ end
 function Chinchilla_MoveButtons:OnEnable()
 	self:SetLocked(nil)
 	self:Update()
-	for k,v in pairs(buttons) do
-		v:SetClampedToScreen(true)
-	end
 end
 
 function Chinchilla_MoveButtons:OnDisable()
@@ -248,8 +245,10 @@ function Chinchilla_MoveButtons:Update()
 		v:ClearAllPoints()
 		if type(deg) == "table" then
 			v:SetPoint("CENTER", UIParent, deg[1], deg[2], deg[3])
+			v:SetClampedToScreen(true)
 		else
 			v:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
+			v:SetClampedToScreen(false)
 		end
 	end
 end
