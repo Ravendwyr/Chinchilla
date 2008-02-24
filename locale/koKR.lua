@@ -225,7 +225,7 @@
 	["Friendly npc"] = "우호적인 NPC",
 	["Neutral npc"] = "중립 NPC",
 	["Enemy npc"] = "적대적 NPC",
-	["Tracked resource"] = "추적 자원(광맥, 약초 등등),
+	["Tracked resource"] = "추적 자원(광맥, 약초 등등)",
 	["Available quest"] = "가능한 퀘스트",
 	["Completed quest"] = "완료 퀘스트",
 	["Available daily quest"] = "가능한 일일 퀘스트",
