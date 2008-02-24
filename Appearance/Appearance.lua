@@ -126,7 +126,7 @@ function Chinchilla_Appearance:RecheckMinimapButtons()
 	local found = false
 	for _,v in ipairs(children) do
 		if minimapButtons[v] == nil then
-			if v:GetObjectType() == "Frame" or v:GetObjectType() == "Button" and v:GetName() then
+			if (v:GetObjectType() == "Frame" or v:GetObjectType() == "Button") and v:GetName() then
 				local name = v:GetName()
 				if name:find("MinimapButton$") and _G[name .. "Overlay"] then
 					minimapButtons[v] = true
