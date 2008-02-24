@@ -249,4 +249,13 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Keybinding"] = "按键绑定",
 	["The key to press to show the expanded minimap"] = "用于放大小地图的按键",
 	["The size of the expanded minimap"] = "小地图放大的大小",
+
+	["Range circle"] = "距离指示",
+	["Show a circle on the minimap at a prefered range"] = "显示一个半径为指定距离的圆圈",
+	["Radius"] = "半径",
+	["The radius in yards of how large the radius of the circle should be"] = "设置圆圈的半径为多少码",
+	["Color of the circle"] = "圆圈颜色",
+	["What texture style to use for the circle"] = "圆圈所用的贴图样式",
+	["Solid"] = "实心",
+	["Outline"] = "空心",
 } end)
