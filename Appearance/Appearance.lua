@@ -163,20 +163,44 @@ function Chinchilla_Appearance:SetFrameLevel(value)
 	MinimapCluster:SetFrameLevel(value)
 end
 
-local shapeToMask = {
-	["ROUND"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Round]],
-	["SQUARE"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Square]],
-	["CORNER-TOPLEFT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Corner-TopLeft]],
-	["CORNER-TOPRIGHT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Corner-TopRight]],
-	["CORNER-BOTTOMLEFT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Corner-BottomLeft]],
-	["CORNER-BOTTOMRIGHT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Corner-BottomRight]],
-	["SIDE-TOP"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Side-Top]],
-	["SIDE-RIGHT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Side-Right]],
-	["SIDE-BOTTOM"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Side-Bottom]],
-	["SIDE-LEFT"] = [[Interface\AddOns\Chinchilla\Appearance\Mask-Side-Left]],
+local roundShapes = {
+	{
+		["ROUND"] = true,
+		["CORNER-TOPLEFT"] = true,
+		["SIDE-LEFT"] = true,
+		["SIDE-TOP"] = true,
+		["TRICORNER-TOPRIGHT"] = true,
+		["TRICORNER-TOPLEFT"] = true,
+		["TRICORNER-BOTTOMLEFT"] = true,
+	},
+	{
+		["ROUND"] = true,
+		["CORNER-TOPRIGHT"] = true,
+		["SIDE-RIGHT"] = true,
+		["SIDE-TOP"] = true,
+		["TRICORNER-BOTTOMRIGHT"] = true,
+		["TRICORNER-TOPRIGHT"] = true,
+		["TRICORNER-TOPLEFT"] = true,
+	},
+	{
+		["ROUND"] = true,
+		["CORNER-BOTTOMLEFT"] = true,
+		["SIDE-LEFT"] = true,
+		["SIDE-BOTTOM"] = true,
+		["TRICORNER-TOPLEFT"] = true,
+		["TRICORNER-BOTTOMLEFT"] = true,
+		["TRICORNER-BOTTOMRIGHT"] = true,
+	},
+	{
+		["ROUND"] = true,
+		["CORNER-BOTTOMRIGHT"] = true,
+		["SIDE-RIGHT"] = true,
+		["SIDE-BOTTOM"] = true,
+		["TRICORNER-BOTTOMLEFT"] = true,
+		["TRICORNER-BOTTOMRIGHT"] = true,
+		["TRICORNER-TOPRIGHT"] = true,
+	},
 }
-
-local tmp = {}
 function Chinchilla_Appearance:SetShape(shape)
 	if shape then
 		self.db.profile.shape = shape
@@ -189,15 +213,6 @@ function Chinchilla_Appearance:SetShape(shape)
 	if rotateMinimap then
 		shape = "ROUND"
 	end
-	
-	-- topleft round?
-	tmp[1] = shape == "ROUND" or shape == "CORNER-TOPLEFT" or shape == "SIDE-LEFT" or shape == "SIDE-TOP"
-	-- topright round?
-	tmp[2] = shape == "ROUND" or shape == "CORNER-TOPRIGHT" or shape == "SIDE-RIGHT" or shape == "SIDE-TOP"
-	-- bottomleft round?
-	tmp[3] = shape == "ROUND" or shape == "CORNER-BOTTOMLEFT" or shape == "SIDE-LEFT" or shape == "SIDE-BOTTOM"
-	-- bottomright round?
-	tmp[4] = shape == "ROUND" or shape == "CORNER-BOTTOMRIGHT" or shape == "SIDE-RIGHT" or shape == "SIDE-BOTTOM"
 	
 	if not cornerTextures[1] then
 		local borderRadius = self.db.profile.borderRadius
@@ -225,11 +240,11 @@ function Chinchilla_Appearance:SetShape(shape)
 	local texture = borderStyle and borderStyle[2] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard]]
 	for i,v in ipairs(cornerTextures) do
 		v:SetTexture(texture)
-		local x_offset = tmp[i] and 0 or 0.5
+		local x_offset = roundShapes[i][shape] and 0 or 0.5
 		v:SetTexCoord(((i-1) % 2) / 4 + x_offset, ((i-1) % 2) / 4 + 0.25 + x_offset, math.floor((i-1) / 2) / 2, math.floor((i-1) / 2) / 2 + 0.5)
 	end
 	
-	Minimap:SetMaskTexture(shapeToMask[shape])
+	Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Appearance\Masks\Mask-]] .. shape)
 	
 	if Chinchilla:HasModule("MoveButtons") then
 		Chinchilla:GetModule("MoveButtons"):Update()
@@ -395,6 +410,10 @@ Chinchilla_Appearance:AddChinchillaOption({
 				["SIDE-RIGHT"] = L["Side, right rounded"],
 				["SIDE-BOTTOM"] = L["Side, bottom rounded"],
 				["SIDE-LEFT"] = L["Side, left rounded"],
+				["TRICORNER-TOPRIGHT"] = L["Tri-corner, bottom-left square"],
+				["TRICORNER-BOTTOMRIGHT"] = L["Tri-corner, top-left square"],
+				["TRICORNER-BOTTOMLEFT"] = L["Tri-corner, top-right square"],
+				["TRICORNER-TOPLEFT"] = L["Tri-corner, bottom-right square"],
 			},
 			get = function()
 				return Chinchilla_Appearance.db.profile.shape
