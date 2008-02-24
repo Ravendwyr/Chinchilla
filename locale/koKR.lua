@@ -68,7 +68,7 @@
 	["Time to zoom"] = "시간",
 	["Set the time it takes between manually zooming in and automatically zooming out"] = "설정된 시간이 지나면 자동으로 축소됩니다.",
 	
-	["Compass"] = "방향",
+	["Compass"] = "방향 표시",
 	["Show direction indicators on the minimap"] = "미니맵에 방향 표시합니다.",
 	["Radius"] = "거리",
 	["The distance from the center of the minimap to show the indicators."] = "미니맵의 중앙에서의 거리를 표시합니다.",
@@ -79,7 +79,7 @@
 	["Non-north size"] = "북방향 이외의 크기",
 	["Size of the east, west, and south indicators relative to the north indicator"] = "북쪽 방향 표시이외의 동/서/남의 크기를 변경합니다.",
 	
-	["Coordinates"] = "좌표",
+	["Coordinates"] = "좌표 표시",
 	["Show coordinates on or near the minimap"] = "미니맵 근처에 현재 캐릭터의 좌표를 표시합니다.",
 	["Precision"] = "정확도",
 	["Set the amount of numbers past the decimal place to show."] = "좌표 표시의 소수점 자릿수를 선택합니다.",
@@ -95,7 +95,7 @@
 	["Set the position on the x-axis for the coordinate indicator relative to the minimap."] = "좌표 표시의 가로 위치를 변경합니다.",
 	["Set the position on the y-axis for the coordinate indicator relative to the minimap."] = "좌표 표시의 세로 위치를 변경합니다.",
 	
-	["Location"] = "지역",
+	["Location"] = "지역정보 표시",
 	["Show zone information on or near minimap"] = "미니맵 근처에 지역 정보를 표시합니다.",
 	["Set the size of the location display."] = "지역정보의 크기를 설정합니다.",
 	["Set the position of the location indicator"] = "지역정보의 위치를 변경합니다.",
@@ -105,7 +105,7 @@
 	["Show close button"] = "닫기 버튼 표시",
 	["Show the button to hide the minimap"] = "미니맵의 닫기 버튼을 표시합니다.",
 	
-	["Move Buttons"] = "버튼 이동",
+	["Move Buttons"] = "미니맵 버튼 이동",
 	["Move buttons around the minimap"] = "미니맵 주변 버튼의 위치를 이동합니다.",
 	["Battleground"] = "전장",
 	["Set the position of the battleground indicator"] = "전장 버튼의 위치를 변경합니다.",
@@ -125,6 +125,8 @@
 	["Set the position of the zoom in button"] = "확대 버튼의 위치를 변경합니다.",
 	["Zoom out"] = "축소",
 	["Set the position of the zoom out button"] = "축소 버튼의 위치를 변경합니다.",
+--	["Recording"] = true,
+--	["Set the position of the recording button"] = true,
 	["Lock buttons in place so that they won't be mistakenly dragged"] = "미니맵 버튼을 고정합니다.",
 	["Attach to minimap"] = "간격",
 	["Whether to stay attached to the minimap or move freely.\nNote: If you hold Alt while dragging, it will automatically unattach."] = "미니맵과의 버튼 간격을 조절합니다. 버튼을 이동하면 그자리에 고정됩니다.",
@@ -134,7 +136,7 @@
 	["Vertical position of the button on-screen"] = "화면상의 버튼의 세로 위치",
 	["Set how far away from the center to place buttons on the minimap"] = "미니맵 중심에서의 거리를 변경합니다.",
 	
-	["Position"] = "위치",
+	["Position"] = "미니맵 주변 프레임",
 	["Allow for moving of the minimap and surrounding frames"] = "미니맵 주변의 프레임에 대한 위치를 변경합니다.",
 	["Durability"] = "내구도",
 	["Quest tracker"] = "퀘스트 알림창",
@@ -180,7 +182,7 @@
 	["Set the position on the y-axis for the capture bar."] = "점령시간 바의 세로 위치를 변경합니다.",
 	["Allow the minimap to be movable so you can drag it where you want"] = "필요할 때 미니맵을 드래그로 이동할 수 있습니다.",
 	
-	["Show / Hide"] = "보기/숨기기",
+	["Show / Hide"] = "미니맵 버튼 표시",
 	["Show and hide interface elements of the minimap"] = "미니맵 버튼의 표시 여부를 선택합니다.",
 	["Show the battleground indicator"] = "전장 버튼 보기",
 	["North"] = "북 방향 표시",
@@ -197,8 +199,9 @@
 	["Show the voice chat button"] = "음성대화 버튼을 표시합니다.",
 	["Zoom"] = "확대/축소",
 	["Show the zoom in and out buttons"] = "확대/축소 버튼을 표시합니다.",
+--	["Show the recording button"] = true,
 	
-	["Wheel zoom"] = "휠로 확대/축소",
+	["Wheel zoom"] = "미니맵 확대/축소",
 	["Use the mouse wheel to zoom in and out on the minimap."] = "미니맵의 확대/축소를 마우스 휠로 가능하게 합니다.",
 	
 	["Ping"] = "핑",
@@ -215,7 +218,7 @@
 	["Set the position on the x-axis for the ping indicator relative to the minimap."] = "핑 표시의 가로 위치를 변경합니다.",
 	["Set the position on the y-axis for the ping indicator relative to the minimap."] = "핑 표시의 세로 위치를 변경합니다.",
 	
-	["Tracking dots"] = "추적 버튼",
+	["Tracking dots"] = "미니맵 추적 아이콘",
 	["Change how the tracking dots look on the minimap."] = "미니맵위의 각종 추적 버튼에 대한 설정입니다.",
 	["Party member or pet"] = "파티원 또는 소환수",
 	["Raid member"] = "공격대원",
@@ -238,4 +241,10 @@
 --	["Big Blizzard"] = true,
 --	["Solid Spheres"] = true,
 --	["Glass Spheres"] = true,
+	
+--	["Expander"] = true,
+--	["Show an expanded minimap on keypress"] = true,
+	["Keybinding"] = "단축키 지정",
+--	["The key to press to show the expanded minimap"] = true,
+--	["The size of the expanded minimap"] = true,
 } end)
