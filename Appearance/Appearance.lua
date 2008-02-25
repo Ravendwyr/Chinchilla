@@ -342,8 +342,8 @@ function Chinchilla_Appearance:SetShape(shape)
 		fullTexture:SetTexture(shape ~= "SQUARE" and round or square)
 		fullTexture:SetTexCoord(
 			0.5 - 0.5^0.5, 0.5 - 0.5^0.5,
-			0.5 + 0.5^0.5, 0.5 - 0.5^0.5,
 			0.5 - 0.5^0.5, 0.5 + 0.5^0.5,
+			0.5 + 0.5^0.5, 0.5 - 0.5^0.5,
 			0.5 + 0.5^0.5, 0.5 + 0.5^0.5
 		)
 		if shape ~= "SQUARE" then
