@@ -124,8 +124,6 @@ local function getPointXY(frame, x, y)
 	local width, height = GetScreenWidth(), GetScreenHeight()
 	local uiscale = UIParent:GetEffectiveScale()
 	local scale = frame:GetEffectiveScale() / uiscale
-	x = x/uiscale
-	y = y/uiscale
 	
 	local point
 	if x < width/3 then
@@ -157,8 +155,8 @@ local function button_OnUpdate(this)
 	local x, y = GetCursorPosition()
 	local scale = UIParent:GetEffectiveScale()
 	local deg
+	x, y = x / scale, y / scale
 	if not IsAltKeyDown() then
-		x, y = x / scale, y / scale
 		deg = math.floor(getAngle(x, y) + 0.5)
 		for k,v in pairs(buttons) do
 			if v == this then
