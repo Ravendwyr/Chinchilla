@@ -29,8 +29,8 @@ local function getPointXY(frame, newX, newY)
 	local scale = frame:GetEffectiveScale() / uiscale
 	local point, x, y
 	if newX then
-		x = newX/uiscale
-		y = newY/uiscale
+		x = newX
+		y = newY
 	else
 		x, y = frame:GetCenter()
 		x = x*scale
