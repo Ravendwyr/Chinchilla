@@ -340,6 +340,12 @@ function Chinchilla_Appearance:SetShape(shape)
 	local square = borderStyle and borderStyle[3] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]]
 	if rotateMinimap then
 		fullTexture:SetTexture(shape ~= "SQUARE" and round or square)
+		fullTexture:SetTexCoord(
+			0.5 - 0.5^0.5, 0.5 - 0.5^0.5,
+			0.5 + 0.5^0.5, 0.5 - 0.5^0.5,
+			0.5 - 0.5^0.5, 0.5 + 0.5^0.5,
+			0.5 + 0.5^0.5, 0.5 + 0.5^0.5
+		)
 		if shape ~= "SQUARE" then
 			self:RotateBorder()
 		end
