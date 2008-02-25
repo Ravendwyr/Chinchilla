@@ -19,6 +19,11 @@ local buttons = {
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
+local buttonReverse = {}
+for k,v in pairs(buttons) do
+	buttonReverse[v] = k
+end
+
 local buttonStarts = {}
 
 local function getOffset(deg)
@@ -158,24 +163,15 @@ local function button_OnUpdate(this)
 	x, y = x / scale, y / scale
 	if not IsAltKeyDown() then
 		deg = math.floor(getAngle(x, y) + 0.5)
-		for k,v in pairs(buttons) do
-			if v == this then
-				self.db.profile[k] = deg
-				break
-			end
-		end
+		local k = buttonReverse[this]
+		self.db.profile[k] = deg
 	else
-		for k,v in pairs(buttons) do
-			if v == this then
-				deg = self.db.profile[k]
-				if type(deg) == "number" then
-					deg = {}
-					self.db.profile[k] = deg
-				end
-				break
-			end
+		local k = buttonReverse[this]
+		deg = self.db.profile[k]
+		if type(deg) ~= "table" then
+			deg = {}
+			self.db.profile[k] = deg
 		end
-		assert(deg)
 		local point, x, y = getPointXY(this, x, y)
 		deg[1] = point
 		deg[2] = x
