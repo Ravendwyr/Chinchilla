@@ -72,7 +72,7 @@ function Chinchilla_Expander:OnDisable()
 end
 
 
-Chinchilla_Expander:AddChinchillaOption({
+Chinchilla_Expander:AddChinchillaOption(function() return {
 	name = L["Expander"],
 	desc = Chinchilla_Expander.desc,
 	type = 'group',
@@ -114,4 +114,4 @@ Chinchilla_Expander:AddChinchillaOption({
 			end
 		}
 	}
-})
+} end)

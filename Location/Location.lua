@@ -156,7 +156,7 @@ function Chinchilla_Location:SetMovable(value)
 	end
 end
 
-Chinchilla_Location:AddChinchillaOption({
+Chinchilla_Location:AddChinchillaOption(function() return {
 	name = L["Location"],
 	desc = Chinchilla_Location.desc,
 	type = 'group',
@@ -313,4 +313,4 @@ Chinchilla_Location:AddChinchillaOption({
 			}
 		},
 	}
-})
+} end)

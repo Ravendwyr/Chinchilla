@@ -136,7 +136,7 @@ function Chinchilla_Ping:SetMovable(value)
 	end
 end
 
-Chinchilla_Ping:AddChinchillaOption({
+Chinchilla_Ping:AddChinchillaOption(function() return {
 	name = L["Ping"],
 	desc = Chinchilla_Ping.desc,
 	type = 'group',
@@ -303,4 +303,4 @@ Chinchilla_Ping:AddChinchillaOption({
 			}
 		},
 	}
-})
+} end)

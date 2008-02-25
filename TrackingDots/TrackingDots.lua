@@ -63,7 +63,7 @@ function Chinchilla_TrackingDots:SetBlipTexture(name)
 	Minimap:SetBlipTexture(texture)
 end
 
-Chinchilla_TrackingDots:AddChinchillaOption({
+Chinchilla_TrackingDots:AddChinchillaOption(function() return {
 	name = L["Tracking dots"],
 	desc = Chinchilla_TrackingDots.desc,
 	type = 'group',
@@ -156,4 +156,4 @@ Chinchilla_TrackingDots:AddChinchillaOption({
 			order = 3,
 		},
 	}
-})
+} end)

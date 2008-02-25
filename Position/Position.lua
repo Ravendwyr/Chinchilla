@@ -409,367 +409,369 @@ function Chinchilla_Position:ShowFrameMover(frame, value, force)
 	end
 end
 
-local function movable_get(frame)
-	return movers[frame] and movers[frame]:IsShown()
-end
-
-local function point_get(frame)
-	return self.db.profile[frame][1]
-end
-
-local function point_set(frame, value)
-	self:SetFramePosition(frame, value, nil, nil)
-end
-
-local function x_get(key)
-	local frame = movers[key] or nameToFrame[key]
-	if not frame then
-		self:ShowFrameMover(key, true, true)
-		self:ShowFrameMover(key, false, true)
-		frame = movers[key]
+Chinchilla_Position:AddChinchillaOption(function()
+	local function movable_get(frame)
+		return movers[frame] and movers[frame]:IsShown()
 	end
-	local point = self.db.profile[key][1]
-	local x = self.db.profile[key][2]
-	if not x or not frame then
-		return 0
+
+	local function point_get(frame)
+		return self.db.profile[frame][1]
 	end
-	x = x * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
-	if point == "LEFT" or point == "BOTTOMLEFT" or point == "TOPLEFT" then
-		return x - GetScreenWidth()/2 + frame:GetWidth()/2
-	elseif point == "CENTER" or point == "TOP" or point == "BOTTOM" then
-		return x
-	else
-		return x + GetScreenWidth()/2 - frame:GetWidth()/2
+
+	local function point_set(frame, value)
+		self:SetFramePosition(frame, value, nil, nil)
 	end
-end
 
-local function y_get(key)
-	local frame = movers[key] or nameToFrame[key]
-	if not frame then
-		self:ShowFrameMover(key, true, true)
-		self:ShowFrameMover(key, false, true)
-		frame = movers[key]
+	local function x_get(key)
+		local frame = movers[key] or nameToFrame[key]
+		if not frame then
+			self:ShowFrameMover(key, true, true)
+			self:ShowFrameMover(key, false, true)
+			frame = movers[key]
+		end
+		local point = self.db.profile[key][1]
+		local x = self.db.profile[key][2]
+		if not x or not frame then
+			return 0
+		end
+		x = x * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
+		if point == "LEFT" or point == "BOTTOMLEFT" or point == "TOPLEFT" then
+			return x - GetScreenWidth()/2 + frame:GetWidth()/2
+		elseif point == "CENTER" or point == "TOP" or point == "BOTTOM" then
+			return x
+		else
+			return x + GetScreenWidth()/2 - frame:GetWidth()/2
+		end
 	end
-	local point = self.db.profile[key][1]
-	local y = self.db.profile[key][3]
-	if not y or not frame then
-		return 0
+
+	local function y_get(key)
+		local frame = movers[key] or nameToFrame[key]
+		if not frame then
+			self:ShowFrameMover(key, true, true)
+			self:ShowFrameMover(key, false, true)
+			frame = movers[key]
+		end
+		local point = self.db.profile[key][1]
+		local y = self.db.profile[key][3]
+		if not y or not frame then
+			return 0
+		end
+		y = y * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
+		if point == "BOTTOM" or point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
+			return y - GetScreenHeight()/2 + frame:GetHeight()/2
+		elseif point == "CENTER" or point == "LEFT" or point == "RIGHT" then
+			return y
+		else
+			return y + GetScreenHeight()/2 - frame:GetHeight()/2
+		end
 	end
-	y = y * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
-	if point == "BOTTOM" or point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
-		return y - GetScreenHeight()/2 + frame:GetHeight()/2
-	elseif point == "CENTER" or point == "LEFT" or point == "RIGHT" then
-		return y
-	else
-		return y + GetScreenHeight()/2 - frame:GetHeight()/2
+
+	local function x_set(key, value)
+		local y = y_get(key)
+		local point, x, y = getPointXY(movers[key] or nameToFrame[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
+		if key == "minimap" then
+			Chinchilla_Position:SetMinimapPosition(point, x, y)
+		else
+			Chinchilla_Position:SetFramePosition(key, point, x, y)
+		end
 	end
-end
 
-local function x_set(key, value)
-	local y = y_get(key)
-	local point, x, y = getPointXY(movers[key] or nameToFrame[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
-	if key == "minimap" then
-		Chinchilla_Position:SetMinimapPosition(point, x, y)
-	else
-		Chinchilla_Position:SetFramePosition(key, point, x, y)
+	local function y_set(key, value)
+		local x = x_get(key)
+		local point, x, y = getPointXY(movers[key] or nameToFrame[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
+		if key == "minimap" then
+			Chinchilla_Position:SetMinimapPosition(point, x, y)
+		else
+			Chinchilla_Position:SetFramePosition(key, point, x, y)
+		end
 	end
-end
-
-local function y_set(key, value)
-	local x = x_get(key)
-	local point, x, y = getPointXY(movers[key] or nameToFrame[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
-	if key == "minimap" then
-		Chinchilla_Position:SetMinimapPosition(point, x, y)
-	else
-		Chinchilla_Position:SetFramePosition(key, point, x, y)
+	
+	local function x_min()
+		return -math.floor(GetScreenWidth()/10 + 0.5)*5
 	end
-end
 
-local function x_min()
-	return -math.floor(GetScreenWidth()/10 + 0.5)*5
-end
+	local function x_max()
+		return math.floor(GetScreenWidth()/10 + 0.5)*5
+	end
 
-local function x_max()
-	return math.floor(GetScreenWidth()/10 + 0.5)*5
-end
+	local function y_min()
+		return -math.floor(GetScreenHeight()/10 + 0.5)*5
+	end
 
-local function y_min()
-	return -math.floor(GetScreenHeight()/10 + 0.5)*5
-end
-
-local function y_max()
-	return math.floor(GetScreenHeight()/10 + 0.5)*5
-end
-
-Chinchilla_Position:AddChinchillaOption({
-	name = L["Position"],
-	desc = Chinchilla_Position.desc,
-	type = 'group',
-	args = {
-		minimap = {
-			name = L["Minimap"],
-			desc = L["Position of the minimap on the screen"],
-			type = 'group',
-			groupType = 'inline',
-			args = {
-				lock = {
-					name = L["Movable"],
-					desc = L["Allow the minimap to be movable so you can drag it where you want"],
-					type = 'boolean',
-					order = 1,
-					get = "~IsLocked",
-					set = function(value)
-						Chinchilla_Position:SetLocked(not value)
-					end
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the minimap."],
-					type = 'number',
-					min = x_min,
-					max = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					passValue = 'minimap',
-					order = 3,
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the minimap."],
-					type = 'number',
-					min = y_min,
-					max = y_max,
-					step = 1,
-					bigStep = 5,
-					stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					passValue = 'minimap',
-					order = 4,
-				},
-			}
-		},
-		durability = {
-			name = L["Durability"],
-			desc = L["Position of the metal durability man on the screen"],
-			type = 'group',
-			groupType = 'inline',
-			args = {
-				movable = {
-					name = L["Movable"],
-					desc = L["Show a frame that is movable to show where you want the durability man to be"],
-					type = 'boolean',
-					order = 1,
-					get = movable_get,
-					set = "ShowFrameMover",
-					passValue = 'durability',
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the durability man."],
-					type = 'number',
-					min = x_min,
-					max = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					order = 3,
-					passValue = 'durability',
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the durability man."],
-					type = 'number',
-					min = y_min,
-					max = y_max,
-					step = 1,
-					bigStep = 5,
-					stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					order = 4,
-					passValue = 'durability',
-				},
-			}
-		},
-		questWatch = {
-			name = L["Quest tracker"],
-			desc = L["Position of the quest tracker on the screen"],
-			type = 'group',
-			groupType = 'inline',
-			args = {
-				movable = {
-					name = L["Movable"],
-					desc = L["Show a frame that is movable to show where you want the quest tracker to be"],
-					type = 'boolean',
-					order = 1,
-					get = movable_get,
-					set = "ShowFrameMover",
-					passValue = 'questWatch',
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the quest tracker."],
-					type = 'number',
-					min = x_min,
-					max = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					order = 3,
-					passValue = 'questWatch',
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the quest tracker."],
-					type = 'number',
-					min = y_min,
-					max = y_max,
-					step = 1,
-					bigStep = 5,
-					stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					order = 4,
-					passValue = 'questWatch',
-				},
-			}
-		},
-		questTimer = {
-			name = L["Quest timer"],
-			desc = L["Position of the quest timer on the screen"],
-			type = 'group',
-			groupType = 'inline',
-			args = {
-				movable = {
-					name = L["Movable"],
-					desc = L["Show a frame that is movable to show where you want the quest timer to be"],
-					type = 'boolean',
-					order = 1,
-					get = movable_get,
-					set = "ShowFrameMover",
-					passValue = 'questTimer',
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the quest timer."],
-					type = 'number',
-					min = x_min,
-					max = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					order = 3,
-					passValue = 'questTimer',
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the quest timer."],
-					type = 'number',
-					min = y_min,
-					max = y_max,
-					step = 1,
-					bigStep = 5,
-					stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					order = 4,
-					passValue = 'questTimer',
-				},
-			}
-		},
-		worldState = {
-			name = L["World state"],
-			desc = L["Position of the world state indicator on the screen"],
-			type = 'group',
-			groupType = 'inline',
-			args = {
-				movable = {
-					name = L["Movable"],
-					desc = L["Show a frame that is movable to show where you want the world state indicator to be"],
-					type = 'boolean',
-					order = 1,
-					get = movable_get,
-					set = "ShowFrameMover",
-					passValue = 'worldState',
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the world state indicator."],
-					type = 'number',
-					min = x_min,
-					max = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					order = 3,
-					passValue = 'worldState',
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the world state indicator."],
-					type = 'number',
-					min = y_min,
-					max = y_max,
-					step = 1,
-					bigStep = 5,
-					stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					order = 4,
-					passValue = 'worldState',
-				},
-			}
-		},
-		capture = {
-			name = L["Capture bar"],
-			desc = L["Position of the capture bar on the screen"],
-			type = 'group',
-			groupType = 'inline',
-			args = {
-				movable = {
-					name = L["Movable"],
-					desc = L["Show a frame that is movable to show where you want the capture bar to be"],
-					type = 'boolean',
-					order = 1,
-					get = movable_get,
-					set = "ShowFrameMover",
-					passValue = 'capture',
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the capture bar."],
-					type = 'number',
-					min = x_min,
-					max = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					order = 3,
-					passValue = 'capture',
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the capture bar."],
-					type = 'number',
-					min = y_min,
-					max = y_max,
-					step = 1,
-					bigStep = 5,
-					stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					order = 4,
-					passValue = 'capture',
-				},
-			}
-		},
+	local function y_max()
+		return math.floor(GetScreenHeight()/10 + 0.5)*5
+	end
+	
+	return {
+		name = L["Position"],
+		desc = Chinchilla_Position.desc,
+		type = 'group',
+		args = {
+			minimap = {
+				name = L["Minimap"],
+				desc = L["Position of the minimap on the screen"],
+				type = 'group',
+				groupType = 'inline',
+				args = {
+					lock = {
+						name = L["Movable"],
+						desc = L["Allow the minimap to be movable so you can drag it where you want"],
+						type = 'boolean',
+						order = 1,
+						get = "~IsLocked",
+						set = function(value)
+							Chinchilla_Position:SetLocked(not value)
+						end
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the minimap."],
+						type = 'number',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						passValue = 'minimap',
+						order = 3,
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the minimap."],
+						type = 'number',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						passValue = 'minimap',
+						order = 4,
+					},
+				}
+			},
+			durability = {
+				name = L["Durability"],
+				desc = L["Position of the metal durability man on the screen"],
+				type = 'group',
+				groupType = 'inline',
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the durability man to be"],
+						type = 'boolean',
+						order = 1,
+						get = movable_get,
+						set = "ShowFrameMover",
+						passValue = 'durability',
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the durability man."],
+						type = 'number',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+						passValue = 'durability',
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the durability man."],
+						type = 'number',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+						passValue = 'durability',
+					},
+				}
+			},
+			questWatch = {
+				name = L["Quest tracker"],
+				desc = L["Position of the quest tracker on the screen"],
+				type = 'group',
+				groupType = 'inline',
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the quest tracker to be"],
+						type = 'boolean',
+						order = 1,
+						get = movable_get,
+						set = "ShowFrameMover",
+						passValue = 'questWatch',
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the quest tracker."],
+						type = 'number',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+						passValue = 'questWatch',
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the quest tracker."],
+						type = 'number',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+						passValue = 'questWatch',
+					},
+				}
+			},
+			questTimer = {
+				name = L["Quest timer"],
+				desc = L["Position of the quest timer on the screen"],
+				type = 'group',
+				groupType = 'inline',
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the quest timer to be"],
+						type = 'boolean',
+						order = 1,
+						get = movable_get,
+						set = "ShowFrameMover",
+						passValue = 'questTimer',
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the quest timer."],
+						type = 'number',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+						passValue = 'questTimer',
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the quest timer."],
+						type = 'number',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+						passValue = 'questTimer',
+					},
+				}
+			},
+			worldState = {
+				name = L["World state"],
+				desc = L["Position of the world state indicator on the screen"],
+				type = 'group',
+				groupType = 'inline',
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the world state indicator to be"],
+						type = 'boolean',
+						order = 1,
+						get = movable_get,
+						set = "ShowFrameMover",
+						passValue = 'worldState',
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the world state indicator."],
+						type = 'number',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+						passValue = 'worldState',
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the world state indicator."],
+						type = 'number',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+						passValue = 'worldState',
+					},
+				}
+			},
+			capture = {
+				name = L["Capture bar"],
+				desc = L["Position of the capture bar on the screen"],
+				type = 'group',
+				groupType = 'inline',
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the capture bar to be"],
+						type = 'boolean',
+						order = 1,
+						get = movable_get,
+						set = "ShowFrameMover",
+						passValue = 'capture',
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the capture bar."],
+						type = 'number',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+						passValue = 'capture',
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the capture bar."],
+						type = 'number',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+						passValue = 'capture',
+					},
+				}
+			},
+		}
 	}
-})
+end)

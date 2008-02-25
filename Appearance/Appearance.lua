@@ -458,192 +458,194 @@ function Chinchilla_Appearance:SetButtonBorderAlpha(alpha)
 	end
 end
 
-local shape_choices = {
-	["ROUND"] = L["Round"],
-	["SQUARE"] = L["Square"],
-	["CORNER-TOPRIGHT"] = L["Corner, top-right rounded"],
-	["CORNER-TOPLEFT"] = L["Corner, top-left rounded"],
-	["CORNER-BOTTOMRIGHT"] = L["Corner, bottom-right rounded"],
-	["CORNER-BOTTOMLEFT"] = L["Corner, bottom-left rounded"],
-	["SIDE-TOP"] = L["Side, top rounded"],
-	["SIDE-RIGHT"] = L["Side, right rounded"],
-	["SIDE-BOTTOM"] = L["Side, bottom rounded"],
-	["SIDE-LEFT"] = L["Side, left rounded"],
-	["TRICORNER-TOPRIGHT"] = L["Tri-corner, bottom-left square"],
-	["TRICORNER-BOTTOMRIGHT"] = L["Tri-corner, top-left square"],
-	["TRICORNER-BOTTOMLEFT"] = L["Tri-corner, top-right square"],
-	["TRICORNER-TOPLEFT"] = L["Tri-corner, bottom-right square"],
-}
+Chinchilla_Appearance:AddChinchillaOption(function()
+	local shape_choices = {
+		["ROUND"] = L["Round"],
+		["SQUARE"] = L["Square"],
+		["CORNER-TOPRIGHT"] = L["Corner, top-right rounded"],
+		["CORNER-TOPLEFT"] = L["Corner, top-left rounded"],
+		["CORNER-BOTTOMRIGHT"] = L["Corner, bottom-right rounded"],
+		["CORNER-BOTTOMLEFT"] = L["Corner, bottom-left rounded"],
+		["SIDE-TOP"] = L["Side, top rounded"],
+		["SIDE-RIGHT"] = L["Side, right rounded"],
+		["SIDE-BOTTOM"] = L["Side, bottom rounded"],
+		["SIDE-LEFT"] = L["Side, left rounded"],
+		["TRICORNER-TOPRIGHT"] = L["Tri-corner, bottom-left square"],
+		["TRICORNER-BOTTOMRIGHT"] = L["Tri-corner, top-left square"],
+		["TRICORNER-BOTTOMLEFT"] = L["Tri-corner, top-right square"],
+		["TRICORNER-TOPLEFT"] = L["Tri-corner, bottom-right square"],
+	}
 
-local shape_choices_alt = {
-	["ROUND"] = L["Round"],
-	["SQUARE"] = L["Square"],
-}
+	local shape_choices_alt = {
+		["ROUND"] = L["Round"],
+		["SQUARE"] = L["Square"],
+	}
 
-Chinchilla_Appearance:AddChinchillaOption({
-	name = L["Appearance"],
-	desc = Chinchilla_Appearance.desc,
-	type = 'group',
-	args = {
-		scale = {
-			name = L["Size"],
-			desc = L["Set how large the minimap is"],
-			type = 'number',
-			min = 0.25,
-			max = 4,
-			step = 0.01,
-			bigStep = 0.05,
-			get = function()
-				return Chinchilla_Appearance.db.profile.scale
-			end,
-			set = "SetScale",
-			isPercent = true,
-		},
-		alpha = {
-			name = L["Opacity"],
-			desc = L["Set how transparent or opaque the minimap is when not in combat"],
-			type = 'number',
-			min = 0,
-			max = 1,
-			step = 0.01,
-			bigStep = 0.05,
-			get = function()
-				return Chinchilla_Appearance.db.profile.alpha
-			end,
-			set = "SetAlpha",
-			isPercent = true,
-		},
-		combatAlpha = {
-			name = L["Combat opacity"],
-			desc = L["Set how transparent or opaque the minimap is when in combat"],
-			type = 'number',
-			min = 0,
-			max = 1,
-			step = 0.01,
-			bigStep = 0.05,
-			get = function()
-				return Chinchilla_Appearance.db.profile.combatAlpha
-			end,
-			set = "SetCombatAlpha",
-			isPercent = true,
-		},
-		strata = {
-			name = L["Strata"],
-			desc = L["Set which layer the minimap is layered on in relation to others in your interface."],
-			type = 'choice',
-			choices = {
-				BACKGROUND = L["Background"],
-				LOW = L["Low"],
-				MEDIUM = L["Medium"],
-				HIGH = L["High"],
-				DIALOG = L["Dialog"],
-				FULLSCREEN = L["Fullscreen"],
-				FULLSCREEN_DIALOG = L["Fullscreen-dialog"],
-				TOOLTIP = L["Tooltip"]
+	return {
+		name = L["Appearance"],
+		desc = Chinchilla_Appearance.desc,
+		type = 'group',
+		args = {
+			scale = {
+				name = L["Size"],
+				desc = L["Set how large the minimap is"],
+				type = 'number',
+				min = 0.25,
+				max = 4,
+				step = 0.01,
+				bigStep = 0.05,
+				get = function()
+					return Chinchilla_Appearance.db.profile.scale
+				end,
+				set = "SetScale",
+				isPercent = true,
 			},
-			choiceOrder = {
-				"BACKGROUND",
-				"LOW",
-				"MEDIUM",
-				"HIGH",
-				"DIALOG",
-				"FULLSCREEN",
-				"FULLSCREEN_DIALOG",
-				"TOOLTIP"
+			alpha = {
+				name = L["Opacity"],
+				desc = L["Set how transparent or opaque the minimap is when not in combat"],
+				type = 'number',
+				min = 0,
+				max = 1,
+				step = 0.01,
+				bigStep = 0.05,
+				get = function()
+					return Chinchilla_Appearance.db.profile.alpha
+				end,
+				set = "SetAlpha",
+				isPercent = true,
 			},
-			get = function()
-				return Chinchilla_Appearance.db.profile.strata
-			end,
-			set = "SetFrameStrata",
-		},
-		frameLevel = {
-			name = L["Frame level"],
-			desc = L["Set which frame level the minimap is layered on in relation to others in your interface."],
-			type = 'number',
-			min = 0,
-			max = 50,
-			step = 1,
-			get = function()
-				return Chinchilla_Appearance.db.profile.frameLevel
-			end,
-			set = "SetFrameLevel",
-		},
-		shape = {
-			name = L["Shape"],
-			desc = L["Set the shape of the minimap."],
-			type = 'choice',
-			choices = function()
-				return rotateMinimap and shape_choices_alt or shape_choices
-			end,
-			get = function()
-				local shape = Chinchilla_Appearance.db.profile.shape
-				if rotateMinimap then
-					if shape == "SQUARE" then
-						return "SQUARE"
+			combatAlpha = {
+				name = L["Combat opacity"],
+				desc = L["Set how transparent or opaque the minimap is when in combat"],
+				type = 'number',
+				min = 0,
+				max = 1,
+				step = 0.01,
+				bigStep = 0.05,
+				get = function()
+					return Chinchilla_Appearance.db.profile.combatAlpha
+				end,
+				set = "SetCombatAlpha",
+				isPercent = true,
+			},
+			strata = {
+				name = L["Strata"],
+				desc = L["Set which layer the minimap is layered on in relation to others in your interface."],
+				type = 'choice',
+				choices = {
+					BACKGROUND = L["Background"],
+					LOW = L["Low"],
+					MEDIUM = L["Medium"],
+					HIGH = L["High"],
+					DIALOG = L["Dialog"],
+					FULLSCREEN = L["Fullscreen"],
+					FULLSCREEN_DIALOG = L["Fullscreen-dialog"],
+					TOOLTIP = L["Tooltip"]
+				},
+				choiceOrder = {
+					"BACKGROUND",
+					"LOW",
+					"MEDIUM",
+					"HIGH",
+					"DIALOG",
+					"FULLSCREEN",
+					"FULLSCREEN_DIALOG",
+					"TOOLTIP"
+				},
+				get = function()
+					return Chinchilla_Appearance.db.profile.strata
+				end,
+				set = "SetFrameStrata",
+			},
+			frameLevel = {
+				name = L["Frame level"],
+				desc = L["Set which frame level the minimap is layered on in relation to others in your interface."],
+				type = 'number',
+				min = 0,
+				max = 50,
+				step = 1,
+				get = function()
+					return Chinchilla_Appearance.db.profile.frameLevel
+				end,
+				set = "SetFrameLevel",
+			},
+			shape = {
+				name = L["Shape"],
+				desc = L["Set the shape of the minimap."],
+				type = 'choice',
+				choices = function()
+					return rotateMinimap and shape_choices_alt or shape_choices
+				end,
+				get = function()
+					local shape = Chinchilla_Appearance.db.profile.shape
+					if rotateMinimap then
+						if shape == "SQUARE" then
+							return "SQUARE"
+						else
+							return "ROUND"
+						end
 					else
-						return "ROUND"
+						return shape
 					end
-				else
-					return shape
-				end
-			end,
-			set = "SetShape",
-		},
-		borderAlpha = {
-			name = L["Border color"],
-			desc = L["Set the color the minimap border is."],
-			type = 'color',
-			hasAlpha = true,
-			get = function()
-				return unpack(Chinchilla_Appearance.db.profile.borderColor)
-			end,
-			set = "SetBorderColor",
-		},
-		borderStyle = {
-			name = L["Border style"],
-			desc = L["Set what texture style you want the minimap border to use."],
-			type = 'choice',
-			choices = function()
-				local t = newDict()
-				for k,v in pairs(borderStyles) do
-					t[k] = v[1]
-				end
-				return "@dict", unpackDictAndDel(t)
-			end,
-			get = function()
-				return Chinchilla_Appearance.db.profile.borderStyle
-			end,
-			set = "SetBorderStyle",
-		},
-		borderRadius = {
-			name = L["Border radius"],
-			desc = L["Set how large the border texture is."],
-			type = 'number',
-			min = 50,
-			max = 200,
-			step = 1,
-			bigStep = 5,
-			get = function()
-				return Chinchilla_Appearance.db.profile.borderRadius
-			end,
-			set = "SetBorderRadius",
-		},
-		buttonBorderAlpha = {
-			name = L["Button border opacity"],
-			desc = L["Set how transparent or opaque the minimap button borders are."],
-			type = 'number',
-			min = 0,
-			max = 1,
-			step = 0.01,
-			bigStep = 0.05,
-			get = function()
-				return Chinchilla_Appearance.db.profile.buttonBorderAlpha
-			end,
-			set = "SetButtonBorderAlpha",
-			isPercent = true,
+				end,
+				set = "SetShape",
+			},
+			borderAlpha = {
+				name = L["Border color"],
+				desc = L["Set the color the minimap border is."],
+				type = 'color',
+				hasAlpha = true,
+				get = function()
+					return unpack(Chinchilla_Appearance.db.profile.borderColor)
+				end,
+				set = "SetBorderColor",
+			},
+			borderStyle = {
+				name = L["Border style"],
+				desc = L["Set what texture style you want the minimap border to use."],
+				type = 'choice',
+				choices = function()
+					local t = newDict()
+					for k,v in pairs(borderStyles) do
+						t[k] = v[1]
+					end
+					return "@dict", unpackDictAndDel(t)
+				end,
+				get = function()
+					return Chinchilla_Appearance.db.profile.borderStyle
+				end,
+				set = "SetBorderStyle",
+			},
+			borderRadius = {
+				name = L["Border radius"],
+				desc = L["Set how large the border texture is."],
+				type = 'number',
+				min = 50,
+				max = 200,
+				step = 1,
+				bigStep = 5,
+				get = function()
+					return Chinchilla_Appearance.db.profile.borderRadius
+				end,
+				set = "SetBorderRadius",
+			},
+			buttonBorderAlpha = {
+				name = L["Button border opacity"],
+				desc = L["Set how transparent or opaque the minimap button borders are."],
+				type = 'number',
+				min = 0,
+				max = 1,
+				step = 0.01,
+				bigStep = 0.05,
+				get = function()
+					return Chinchilla_Appearance.db.profile.buttonBorderAlpha
+				end,
+				set = "SetButtonBorderAlpha",
+				isPercent = true,
+			}
 		}
 	}
-})
+end)
 
 function _G.GetMinimapShape()
 	if Chinchilla_Appearance:IsActive() and not rotateMinimap then

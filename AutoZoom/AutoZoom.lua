@@ -43,7 +43,7 @@ function Chinchilla_AutoZoom:Minimap_SetZoom(...)
 	nextZoomOutTime = GetTime() + self.db.profile.time
 end
 
-Chinchilla_AutoZoom:AddChinchillaOption({
+Chinchilla_AutoZoom:AddChinchillaOption(function() return {
 	name = L["Auto zoom"],
 	desc = Chinchilla_AutoZoom.desc,
 	type = 'group',
@@ -64,4 +64,4 @@ Chinchilla_AutoZoom:AddChinchillaOption({
 			end
 		}
 	}
-})
+} end)

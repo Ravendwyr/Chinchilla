@@ -137,7 +137,7 @@ function Chinchilla_Coordinates:SetMovable(value)
 	end
 end
 
-Chinchilla_Coordinates:AddChinchillaOption({
+Chinchilla_Coordinates:AddChinchillaOption(function() return {
 	name = L["Coordinates"],
 	desc = Chinchilla_Coordinates.desc,
 	type = 'group',
@@ -313,4 +313,4 @@ Chinchilla_Coordinates:AddChinchillaOption({
 		},
 		]]
 	}
-})
+} end)

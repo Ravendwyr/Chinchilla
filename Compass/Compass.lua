@@ -134,7 +134,7 @@ function Chinchilla_Compass:SetNonNorthSize(value)
 	self:SetFontSize(nil)
 end
 
-Chinchilla_Compass:AddChinchillaOption({
+Chinchilla_Compass:AddChinchillaOption(function() return {
 	name = L["Compass"],
 	desc = Chinchilla_Compass.desc,
 	type = 'group',
@@ -188,4 +188,4 @@ Chinchilla_Compass:AddChinchillaOption({
 			set = "SetNonNorthSize",
 		},
 	}
-})
+} end)

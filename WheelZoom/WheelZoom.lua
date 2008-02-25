@@ -32,10 +32,10 @@ function Chinchilla_WheelZoom:OnDisable()
 	frame:EnableMouseWheel(false)
 end
 
-Chinchilla_WheelZoom:AddChinchillaOption({
+Chinchilla_WheelZoom:AddChinchillaOption(function() return {
 	name = L["Wheel zoom"],
 	desc = Chinchilla_WheelZoom.desc,
 	type = 'group',
 	args = {
 	}
-})
+} end)

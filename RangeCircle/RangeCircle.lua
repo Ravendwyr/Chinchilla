@@ -124,89 +124,92 @@ function Chinchilla_RangeCircle:Minimap_SetZoom()
 	self:Update()
 end
 
-local args = {
-	range = {
-		type = 'number',
-		name = L["Radius"],
-		desc = L["The radius in yards of how large the radius of the circle should be"],
-		min = 5,
-		max = 250,
-		step = 1,
-		bigStep = 5,
-		get = function(combat)
-			return self.db.profile[combat and 'combatRange' or 'range']
-		end,
-		set = function(combat, value)
-			self.db.profile[combat and 'combatRange' or 'range'] = value
-			if not combat == not inCombat then
-				self:Update()
-			end
-		end
-	},
-	color = {
-		type = 'color',
-		name = L["Color"],
-		desc = L["Color of the circle"],
-		hasAlpha = true,
-		get = function(combat)
-			return unpack(self.db.profile[combat and 'combatColor' or 'color'])
-		end,
-		set = function(combat, r, g, b, a)
-			local data = self.db.profile[combat and 'combatColor' or 'color']
-			data[1] = r
-			data[2] = g
-			data[3] = b
-			data[4] = a
-			if not combat == not inCombat then
-				self:Update()
-			end
-		end
-	},
-	style = {
-		type = 'choice',
-		name = L["Style"],
-		desc = L["What texture style to use for the circle"],
-		choices = function()
-			local t = newDict()
-			for k,v in pairs(styles) do
-				t[k] = v[1]
-			end
-			return "@dict", unpackDictAndDel(t)
-		end,
-		get = function(combat)
-			return self.db.profile[combat and 'combatStyle' or 'style']
-		end,
-		set = function(combat, value)
-			self.db.profile[combat and 'combatStyle' or 'style'] = value
-			if not combat == not inCombat then
-				self:Update()
-			end
-		end
-	}
-}
 
-Chinchilla_RangeCircle:AddChinchillaOption({
-	name = L["Range circle"],
-	desc = Chinchilla_RangeCircle.desc,
-	type = 'group',
-	args = {
-		outCombat = {
-			type = 'group',
-			groupType = 'inline',
-			name = L["Out of combat"],
-			desc = L["These settings apply when out of combat"],
-			args = args,
-			child_passValue = false,
-			order = 2,
+Chinchilla_RangeCircle:AddChinchillaOption(function()
+	local args = {
+		range = {
+			type = 'number',
+			name = L["Radius"],
+			desc = L["The radius in yards of how large the radius of the circle should be"],
+			min = 5,
+			max = 250,
+			step = 1,
+			bigStep = 5,
+			get = function(combat)
+				return self.db.profile[combat and 'combatRange' or 'range']
+			end,
+			set = function(combat, value)
+				self.db.profile[combat and 'combatRange' or 'range'] = value
+				if not combat == not inCombat then
+					self:Update()
+				end
+			end
 		},
-		inCombat = {
-			type = 'group',
-			groupType = 'inline',
-			name = L["In combat"],
-			desc = L["These settings apply when in combat"],
-			args = args,
-			child_passValue = true,
-			order = 3,
+		color = {
+			type = 'color',
+			name = L["Color"],
+			desc = L["Color of the circle"],
+			hasAlpha = true,
+			get = function(combat)
+				return unpack(self.db.profile[combat and 'combatColor' or 'color'])
+			end,
+			set = function(combat, r, g, b, a)
+				local data = self.db.profile[combat and 'combatColor' or 'color']
+				data[1] = r
+				data[2] = g
+				data[3] = b
+				data[4] = a
+				if not combat == not inCombat then
+					self:Update()
+				end
+			end
+		},
+		style = {
+			type = 'choice',
+			name = L["Style"],
+			desc = L["What texture style to use for the circle"],
+			choices = function()
+				local t = newDict()
+				for k,v in pairs(styles) do
+					t[k] = v[1]
+				end
+				return "@dict", unpackDictAndDel(t)
+			end,
+			get = function(combat)
+				return self.db.profile[combat and 'combatStyle' or 'style']
+			end,
+			set = function(combat, value)
+				self.db.profile[combat and 'combatStyle' or 'style'] = value
+				if not combat == not inCombat then
+					self:Update()
+				end
+			end
 		}
 	}
-})
+	
+	return {
+		name = L["Range circle"],
+		desc = Chinchilla_RangeCircle.desc,
+		type = 'group',
+		args = {
+			outCombat = {
+				type = 'group',
+				groupType = 'inline',
+				name = L["Out of combat"],
+				desc = L["These settings apply when out of combat"],
+				args = args,
+				child_passValue = false,
+				order = 2,
+			},
+			inCombat = {
+				type = 'group',
+				groupType = 'inline',
+				name = L["In combat"],
+				desc = L["These settings apply when in combat"],
+				args = args,
+				child_passValue = true,
+				order = 3,
+			}
+		}
+	}
+end)
