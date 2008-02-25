@@ -433,11 +433,11 @@ local function x_get(key)
 	end
 	x = x * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
 	if point == "LEFT" or point == "BOTTOMLEFT" or point == "TOPLEFT" then
-		return x + frame:GetWidth()/2
+		return x - GetScreenWidth()/2 + frame:GetWidth()/2
 	elseif point == "CENTER" or point == "TOP" or point == "BOTTOM" then
-		return x + GetScreenWidth()/2
+		return x
 	else
-		return x + GetScreenWidth() - frame:GetWidth()/2
+		return x + GetScreenWidth()/2 - frame:GetWidth()/2
 	end
 end
 
@@ -455,17 +455,17 @@ local function y_get(key)
 	end
 	y = y * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
 	if point == "BOTTOM" or point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
-		return y + frame:GetHeight()/2
+		return y - GetScreenHeight()/2 + frame:GetHeight()/2
 	elseif point == "CENTER" or point == "LEFT" or point == "RIGHT" then
-		return y + GetScreenHeight()/2
+		return y
 	else
-		return y + GetScreenHeight() - frame:GetHeight()/2
+		return y + GetScreenHeight()/2 - frame:GetHeight()/2
 	end
 end
 
 local function x_set(key, value)
 	local y = y_get(key)
-	local point, x, y = getPointXY(movers[key] or nameToFrame[key], value, y)
+	local point, x, y = getPointXY(movers[key] or nameToFrame[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
 	if key == "minimap" then
 		Chinchilla_Position:SetMinimapPosition(point, x, y)
 	else
@@ -475,7 +475,7 @@ end
 
 local function y_set(key, value)
 	local x = x_get(key)
-	local point, x, y = getPointXY(movers[key] or nameToFrame[key], x, value)
+	local point, x, y = getPointXY(movers[key] or nameToFrame[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
 	if key == "minimap" then
 		Chinchilla_Position:SetMinimapPosition(point, x, y)
 	else
@@ -484,19 +484,19 @@ local function y_set(key, value)
 end
 
 local function x_min()
-	return 0
+	return -math.floor(GetScreenWidth()/10 + 0.5)*5
 end
 
 local function x_max()
-	return math.floor(GetScreenWidth()/5 + 0.5)*5
+	return math.floor(GetScreenWidth()/10 + 0.5)*5
 end
 
 local function y_min()
-	return 0
+	return -math.floor(GetScreenHeight()/10 + 0.5)*5
 end
 
 local function y_max()
-	return math.floor(GetScreenHeight()/5 + 0.5)*5
+	return math.floor(GetScreenHeight()/10 + 0.5)*5
 end
 
 Chinchilla_Position:AddChinchillaOption({

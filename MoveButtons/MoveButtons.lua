@@ -296,11 +296,11 @@ local function x_get(key)
 	end
 	x = x * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
 	if point == "LEFT" or point == "BOTTOMLEFT" or point == "TOPLEFT" then
-		return x
+		return x - GetScreenWidth()/2
 	elseif point == "CENTER" or point == "TOP" or point == "BOTTOM" then
-		return x + GetScreenWidth()/2
+		return x
 	else
-		return x + GetScreenWidth()
+		return x + GetScreenWidth()/2
 	end
 end
 
@@ -313,18 +313,18 @@ local function y_get(key)
 	end
 	y = y * frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
 	if point == "BOTTOM" or point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
-		return y
+		return y - GetScreenHeight()/2
 	elseif point == "CENTER" or point == "LEFT" or point == "RIGHT" then
-		return y + GetScreenHeight()/2
+		return y
 	else
-		return y + GetScreenHeight()
+		return y + GetScreenHeight()/2
 	end
 end
 
 local function x_set(key, value)
 	local data = self.db.profile[key]
 	local y = y_get(key)
-	local point, x, y = getPointXY(buttons[key], value, y)
+	local point, x, y = getPointXY(buttons[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
 	data[1] = point
 	data[2] = x
 	data[3] = y
@@ -338,7 +338,7 @@ end
 local function y_set(key, value)
 	local data = self.db.profile[key]
 	local x = x_get(key)
-	local point, x, y = getPointXY(buttons[key], x, value)
+	local point, x, y = getPointXY(buttons[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
 	data[1] = point
 	data[2] = x
 	data[3] = y
@@ -349,12 +349,20 @@ local function y_set(key, value)
 	buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 end
 
+local function x_min()
+	return -math.floor(GetScreenWidth()/10 + 0.5) * 5
+end
+
 local function x_max()
-	return math.floor(GetScreenWidth()/10 + 0.5) * 10
+	return math.floor(GetScreenWidth()/10 + 0.5) * 5
+end
+
+local function y_min()
+	return -math.floor(GetScreenHeight()/10 + 0.5) * 5
 end
 
 local function y_max()
-	return math.floor(GetScreenHeight()/10 + 0.5) * 10
+	return math.floor(GetScreenHeight()/10 + 0.5) * 5
 end
 
 function Chinchilla_MoveButtons:IsLocked()
@@ -419,7 +427,7 @@ local args = {
 		name = L["Horizontal position"],
 		desc = L["Horizontal position of the button on-screen"],
 		type = 'range',
-		min = 0,
+		min = x_min,
 		max = x_max,
 		step = 1,
 		bigStep = 5,
@@ -431,7 +439,7 @@ local args = {
 		name = L["Vertical position"],
 		desc = L["Vertical position of the button on-screen"],
 		type = 'range',
-		min = 0,
+		min = y_min,
 		max = y_max,
 		step = 1,
 		bigStep = 5,
