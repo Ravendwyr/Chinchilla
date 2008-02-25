@@ -32,7 +32,7 @@ Chinchilla_TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"], 
 function Chinchilla_TrackingDots:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("TrackingDots")
 	Chinchilla:SetDatabaseNamespaceDefaults("TrackingDots", "profile", {
-		trackingDotStyle = "Nandini"
+		trackingDotStyle = "Blizzard"
 	})
 end
 
