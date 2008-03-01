@@ -1,6 +1,6 @@
 local Chinchilla = Chinchilla
 Chinchilla:ProvideVersion("$Revision$", "$Date$")
-local Chinchilla_Ping = Chinchilla:NewModule("Ping", "LibRockEvent-1.0")
+local Chinchilla_Ping = Chinchilla:NewModule("Ping", "LibRockEvent-1.0", "LibRockHook-1.0")
 local self = Chinchilla_Ping
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
@@ -77,6 +77,9 @@ function Chinchilla_Ping:OnEnable()
 	end
 	frame:Show()
 	self:AddEventListener("MINIMAP_PING")
+	
+	self:AddHook("Minimap_SetPing")
+	self:AddHook("Minimap_OnClick")
 end
 
 function Chinchilla_Ping:OnDisable()
@@ -134,6 +137,76 @@ function Chinchilla_Ping:SetMovable(value)
 		frame:SetParent(MiniMapPing)
 		frame:RegisterForDrag()
 	end
+end
+
+local function isCornerRound(x, y)
+	local minimapShape = GetMinimapShape and GetMinimapShape() or "ROUND"
+	
+	if minimapShape == "ROUND" then
+		return true
+	elseif minimapShape == "SQUARE" then
+		return false
+	elseif minimapShape == "CORNER-TOPRIGHT" then
+		return x > 0 and y > 0
+	elseif minimapShape == "CORNER-TOPLEFT" then
+		return x < 0 and y > 0
+	elseif minimapShape == "CORNER-BOTTOMRIGHT" then
+		return x > 0 and y < 0
+	elseif minimapShape == "CORNER-BOTTOMLEFT" then
+		return x < 0 and y < 0
+	elseif minimapShape == "SIDE-LEFT" then
+		return x < 0
+	elseif minimapShape == "SIDE-RIGHT" then
+		return x > 0
+	elseif minimapShape == "SIDE-TOP" then
+		return y > 0
+	elseif minimapShape == "SIDE-BOTTOM" then
+		return y < 0
+	elseif minimapShape == "TRICORNER-TOPRIGHT" then
+		return x > 0 or y > 0
+	elseif minimapShape == "TRICORNER-TOPLEFT" then
+		return x < 0 or y > 0
+	elseif minimapShape == "TRICORNER-BOTTOMRIGHT" then
+		return x > 0 or y < 0
+	elseif minimapShape == "TRICORNER-BOTTOMLEFT" then
+		return x < 0 or y < 0
+	end
+	return true
+end
+
+function Chinchilla_Ping:Minimap_SetPing(x, y, playSound)
+	x = x * Minimap:GetWidth()
+	y = y * Minimap:GetHeight()
+	local radius = Minimap:GetWidth()/2
+	
+	if x > radius or x < -radius or y > radius or y < -radius or (x^2 + y^2 > radius^2 and isCornerRound(x, y)) then
+		MiniMapPing:Hide()
+		return
+	end
+	
+	MiniMapPing:SetPoint("CENTER", "Minimap", "CENTER", x, y)
+	MiniMapPing:SetAlpha(1)
+	MiniMapPing:Show()
+	if playSound then
+		PlaySound("MapPing")
+	end
+end
+
+function Chinchilla_Ping:Minimap_OnClick()
+	local x, y = GetCursorPosition()
+	x = x / Minimap:GetEffectiveScale()
+	y = y / Minimap:GetEffectiveScale()
+
+	local cx, cy = Minimap:GetCenter()
+	x = x - cx
+	y = y - cy
+	
+	local radius = Minimap:GetWidth()/2
+	
+	if x > radius or x < -radius or y > radius or y < -radius or (x^2 + y^2 > radius^2 and isCornerRound(x, y)) then
+		return
+	end
+	Minimap:PingLocation(x, y)
 end
 
 Chinchilla_Ping:AddChinchillaOption(function() return {
