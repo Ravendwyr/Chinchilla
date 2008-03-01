@@ -116,7 +116,7 @@ function Chinchilla_Ping:MINIMAP_PING(ns, event, unit)
 	
 	frame.text:SetText(L["Ping by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)))
 	frame:SetScale(self.db.profile.scale)
-	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+5)
+	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
 	frame:SetWidth(frame.text:GetWidth() + 12)
 	frame:SetHeight(frame.text:GetHeight() + 12)
 	frame.text:SetTextColor(unpack(self.db.profile.textColor))

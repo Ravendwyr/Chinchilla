@@ -120,8 +120,8 @@ function Chinchilla_Location:Update()
 	end
 	local scale = self.db.profile.scale
 	frame:SetScale(scale)
-	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+5)
-	frame.closeButton:SetFrameLevel(MinimapCluster:GetFrameLevel()+5)
+	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
+	frame.closeButton:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
 	frame:ClearAllPoints()
