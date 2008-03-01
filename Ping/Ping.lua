@@ -30,7 +30,9 @@ function Chinchilla_Ping:OnInitialize()
 			0.8,
 			0.6,
 			1
-		}
+		},
+		MINIMAPPING_TIMER = 5,
+		MINIMAPPING_FADE_TIMER = 0.5,
 	})
 end
 
@@ -78,12 +80,17 @@ function Chinchilla_Ping:OnEnable()
 	frame:Show()
 	self:AddEventListener("MINIMAP_PING")
 	
+	self:AddHook("Minimap_OnUpdate")
 	self:AddHook("Minimap_SetPing")
 	self:AddHook("Minimap_OnClick")
+	_G.MINIMAPPING_TIMER = self.db.profile.MINIMAPPING_TIMER
+	_G.MINIMAPPING_FADE_TIMER = self.db.profile.MINIMAPPING_FADE_TIMER
 end
 
 function Chinchilla_Ping:OnDisable()
 	frame:Hide()
+	_G.MINIMAPPING_TIMER = 5
+	_G.MINIMAPPING_FADE_TIMER = 0.5
 end
 
 local allowNextPlayerPing = false
@@ -139,8 +146,30 @@ function Chinchilla_Ping:SetMovable(value)
 	end
 end
 
+function Chinchilla_Ping:Minimap_OnUpdate(elapsed)
+	if Minimap.timer > 0 then
+		local t = Minimap.timer - elapsed
+		Minimap.timer = t
+		if t <= 0 then
+			MiniMapPing_FadeOut()
+		else
+			Minimap_SetPing(Minimap:GetPingPosition())
+		end
+	elseif MiniMapPing.fadeOutTimer then
+		local t = MiniMapPing.fadeOutTimer - elapsed
+		MiniMapPing.fadeOutTimer = t
+		if t > 0 then
+			Minimap_SetPing(Minimap:GetPingPosition())
+			MiniMapPing:SetAlpha(t / _G.MINIMAPPING_FADE_TIMER)
+		else
+			MiniMapPing.fadeOut = nil
+			MiniMapPing:Hide()
+		end
+	end
+end
+
 local function isCornerRound(x, y)
-	local minimapShape = GetMinimapShape and GetMinimapShape() or "ROUND"
+	local minimapShape = _G.GetMinimapShape and _G.GetMinimapShape() or "ROUND"
 	
 	if minimapShape == "ROUND" then
 		return true
@@ -374,6 +403,40 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 					order = 3,
 				},
 			}
+		},
+		pingTime = {
+			name = L["Ping time"],
+			desc = L["How long the ping will show on the minimap"],
+			type = 'number',
+			min = 1,
+			max = 30,
+			step = 0.1,
+			bigStep = 1,
+			get = function()
+				return self.db.profile.MINIMAPPING_TIMER
+			end,
+			set = function(value)
+				self.db.profile.MINIMAPPING_TIMER = value
+				_G.MINIMAPPING_TIMER = value
+				test()
+			end,
+		},
+		fadeoutTime = {
+			name = L["Fadeout time"],
+			desc = L["How long will it take for the ping to fade"],
+			type = 'number',
+			min = 0,
+			max = 5,
+			step = 0.1,
+			bigStep = 0.5,
+			get = function()
+				return self.db.profile.MINIMAPPING_FADE_TIMER
+			end,
+			set = function(value)
+				self.db.profile.MINIMAPPING_FADE_TIMER = value
+				_G.MINIMAPPING_FADE_TIMER = value
+				test()
+			end,
 		},
 	}
 } end)

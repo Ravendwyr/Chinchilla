@@ -222,6 +222,10 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Allow the ping indicator to be moved"] = true,
 	["Set the position on the x-axis for the ping indicator relative to the minimap."] = true,
 	["Set the position on the y-axis for the ping indicator relative to the minimap."] = true,
+	["Ping time"] = true,
+	["How long the ping will show on the minimap"] = true,
+	["Fadeout time"] = true,
+	["How long will it take for the ping to fade"] = true,
 	
 	["Tracking dots"] = true,
 	["Change how the tracking dots look on the minimap."] = true,
