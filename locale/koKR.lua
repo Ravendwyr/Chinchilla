@@ -222,6 +222,10 @@
 	["Allow the ping indicator to be moved"] = "핑 표시를 이동합니다.",
 	["Set the position on the x-axis for the ping indicator relative to the minimap."] = "핑 표시의 가로 위치를 변경합니다.",
 	["Set the position on the y-axis for the ping indicator relative to the minimap."] = "핑 표시의 세로 위치를 변경합니다.",
+	["Ping time"] = "핑 표시 시간",
+	["How long the ping will show on the minimap"] = "핑 표시 지속 시간을 설정합니다.",
+	["Fadeout time"] = "핑 사라짐 시간",
+	["How long will it take for the ping to fade"] = "핑 표시의 사라짐 시간을 설정합니다.",
 	
 	["Tracking dots"] = "미니맵 추적 아이콘",
 	["Change how the tracking dots look on the minimap."] = "미니맵위의 각종 추적 버튼에 대한 설정입니다.",
