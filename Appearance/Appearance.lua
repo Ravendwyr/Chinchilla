@@ -75,7 +75,7 @@ function Chinchilla_Appearance:OnEnable()
 	self:AddEventListener("MINIMAP_UPDATE_ZOOM")
 	self:AddEventListener("PLAYER_REGEN_ENABLED")
 	self:AddEventListener("PLAYER_REGEN_DISABLED")
-	self:AddTimer(1, "RecheckMinimapButtons")
+	self:AddRepeatingTimer(1, "RecheckMinimapButtons")
 	
 	--[[ these issues seem to have been fixed with the custom mask textures
 	self:AddEventListener("CVAR_UPDATE", "CVAR_UPDATE", 0.05)
