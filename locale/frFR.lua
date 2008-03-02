@@ -222,6 +222,10 @@
 	["Allow the ping indicator to be moved"] = "Permet à l'indicateur du ping d'être déplacé.",
 	["Set the position on the x-axis for the ping indicator relative to the minimap."] = "Détermine la position sur l'axe des X de l'indicateur de ping par rapport à la minicarte.",
 	["Set the position on the y-axis for the ping indicator relative to the minimap."] = "Détermine la position sur l'axe des Y de l'indicateur de ping par rapport à la minicarte.",
+	["Ping time"] = "Durée du ping",
+	["How long the ping will show on the minimap"] = "Combien de temps le ping sera affiché sur la minicarte.",
+	["Fadeout time"] = "Durée d'estompe",
+	["How long will it take for the ping to fade"] = "Combien de temps il faut au ping pour qu'il s'estompe.",
 
 	["Tracking dots"] = "Points de pistage",
 	["Change how the tracking dots look on the minimap."] = "Change les points de pistage (les points représentant des personnages) affichés sur la minicarte.",
