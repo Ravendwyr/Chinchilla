@@ -62,9 +62,14 @@ function Chinchilla_Expander:OnEnable()
 		end)
 	end
 	if self.db.profile.key then
-		self:AddTimer(0, function()
+		local function func()
+			if InCombatLockdown() then
+				self:AddTimer(0, func)
+				return
+			end
 			SetBindingClick(self.db.profile.key, "Chinchilla_Expander_Button")
-		end)
+		end
+		self:AddTimer(0, func)
 	end
 end
 
@@ -93,6 +98,7 @@ Chinchilla_Expander:AddChinchillaOption(function() return {
 					SetBindingClick(value, "Chinchilla_Expander_Button")
 				end
 			end,
+			disabled = InCombatLockdown,
 		},
 		scale = {
 			name = L["Size"],
