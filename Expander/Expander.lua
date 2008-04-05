@@ -44,6 +44,7 @@ function Chinchilla_Expander:OnEnable()
 				minimap:SetZoom(z+1)
 			end
 			minimap:SetZoom(z)
+			if GatherMate then GatherMate:GetModule("Display"):ReparentMinimapPins(minimap) end
 		end)
 		frame:SetScript("OnMouseUp", function(this, button)
 			if not self:IsActive() then
@@ -59,6 +60,7 @@ function Chinchilla_Expander:OnEnable()
 				Minimap:SetZoom(z+1)
 			end
 			Minimap:SetZoom(z)
+			if GatherMate then GatherMate:GetModule("Display"):ReparentMinimapPins(Minimap) end
 		end)
 	end
 	if self.db.profile.key then
