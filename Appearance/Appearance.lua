@@ -648,6 +648,9 @@ Chinchilla_Appearance:AddChinchillaOption(function()
 end)
 
 function _G.GetMinimapShape()
+	if not self.db then
+		return "ROUND"
+	end
 	if Chinchilla_Appearance:IsActive() and not rotateMinimap then
 		return self.db.profile.shape
 	else
