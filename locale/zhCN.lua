@@ -1,6 +1,4 @@
-﻿-- Localized by Kurax Kuang (gmmgmm at gmail.com)
--- $Rev$
-Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("zhCN", function() return {
+﻿Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("zhCN", function() return {
 	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = "很龙猫的小地图插件。*嚼嚼嚼*这龙猫嚼了你的干草球～",
 	["Enable"] = "启用",
 	["Enable this module"] = "启用此模块",
@@ -206,7 +204,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Show the voice chat button"] = "显示语音聊天按钮",
 	["Zoom"] = "缩放按钮",
 	["Show the zoom in and out buttons"] = "显示小地图放大和缩小按钮",
-	["Show the recording button"] = true,
+	["Show the recording button"] = "显示记录按钮",
 	
 	["Wheel zoom"] = "滚轮缩放",
 	["Use the mouse wheel to zoom in and out on the minimap."] = "使用鼠标滚轮来放大或者缩小小地图",
@@ -224,7 +222,11 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Allow the ping indicator to be moved"] = "允许移动地图信号指示框",
 	["Set the position on the x-axis for the ping indicator relative to the minimap."] = "地图信号指示框在屏幕的横向位置",
 	["Set the position on the y-axis for the ping indicator relative to the minimap."] = "地图信号指示框在屏幕的纵向位置",
-
+	["Ping time"] = "持续时间",
+	["How long the ping will show on the minimap"] = "信号在小地图上显示多久",
+	["Fadeout time"] = "淡出时间",
+	["How long will it take for the ping to fade"] = "信号淡出所花费的时间",
+	
 	["Tracking dots"] = "地图标志",
 	["Change how the tracking dots look on the minimap."] = "设置小地图标志所显示的方式",
 	["Party member or pet"] = "队伍成员及宠物",
