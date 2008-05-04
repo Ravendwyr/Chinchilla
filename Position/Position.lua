@@ -6,6 +6,8 @@ local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
+local numHookedCaptureFrames = 0
+
 function Chinchilla_Position:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Position")
 	Chinchilla:SetDatabaseNamespaceDefaults("Position", "profile", {
@@ -133,8 +135,7 @@ function Chinchilla_Position:OnEnable()
 	self:AddSecureHook(QuestWatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
 	self:AddSecureHook(QuestTimerFrame, "SetPoint", "QuestTimerFrame_SetPoint")
 	self:AddSecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
-	
-	self:AddEventListener("UPDATE_WORLD_STATES")
+	self:AddSecureHook("WorldStateAlwaysUpFrame_Update")
 end
 
 function Chinchilla_Position:OnDisable()
@@ -155,10 +156,6 @@ function Chinchilla_Position:OnDisable()
 	self:SetLocked(nil)
 	
 	Minimap:SetClampedToScreen(false)
-end
-
-function Chinchilla_Position:UPDATE_WORLD_STATES()
-	self:SetFramePosition('capture', nil, nil, nil)
 end
 
 local quadrantToShape = {
@@ -281,6 +278,21 @@ function Chinchilla_Position:WorldStateAlwaysUpFrame_SetPoint(this)
 		return
 	end
 	self:SetFramePosition('worldState', nil, nil, nil)
+end
+
+function Chinchilla_Position:WorldStateCaptureBar_SetPoint(this)
+	if shouldntSetPoint then
+		return
+	end
+	self:SetFramePosition('capture', nil, nil, nil)
+end
+
+function Chinchilla_Position:WorldStateAlwaysUpFrame_Update(this)
+	while numHookedCaptureFrames < NUM_EXTENDED_UI_FRAMES do
+		numHookedCaptureFrames = numHookedCaptureFrames + 1
+		self:AddSecureHook(_G["WorldStateCaptureBar" .. numHookedCaptureFrames], "SetPoint", "WorldStateCaptureBar_SetPoint")
+		self:WorldStateCaptureBar_SetPoint()
+	end
 end
 
 local nameToFrame = {
