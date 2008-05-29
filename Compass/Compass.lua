@@ -26,6 +26,7 @@ end
 
 local frame
 local function repositionCompass()
+	self:AddTimer(0, hideBlizzDirections)
 	local angle = 0
 	if rotateMinimap then
 		angle = MiniMapCompassRing:GetFacing()
@@ -76,7 +77,6 @@ end
 function Chinchilla_Compass:OnRotateMinimapUpdate(value)
 	rotateMinimap = value
 	if self:IsActive() then
-		self:AddTimer(0, hideBlizzDirections)
 		if value then
 			frame:SetScript("OnUpdate", repositionCompass)
 		else
