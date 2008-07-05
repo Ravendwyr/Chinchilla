@@ -104,8 +104,6 @@ function Chinchilla_ShowHide:Update()
 	end
 end
 
-local lastShow = 0
-local lastShowObject = nil
 function Chinchilla_ShowHide:frame_Show(object)
 	local object_k
 	for k,v in pairs(frames) do
@@ -119,12 +117,7 @@ function Chinchilla_ShowHide:frame_Show(object)
 		end
 	end
 	if object_k and not self.db.profile[object_k] then
-		if lastShow < GetTime() - 1e-5 or lastShowObject ~= object then
-			-- don't want infinite loops
-			lastShow = GetTime()
-			lastShowObject = object
-			object:Hide()
-		end
+		object:Hide()
 	end
 	
 	framesShown[object] = true
@@ -136,13 +129,9 @@ end
 
 function Chinchilla_ShowHide:MinimapZoneTextButton_Show(object)
 	if not self.db.profile.locationText or (Chinchilla:HasModule("Location") and Chinchilla:IsModuleActive("Location")) then
-		if lastShow < GetTime() - 1e-5 or lastShowObject ~= object then
-			lastShow = GetTime()
-			lastShowObject = object
-			MinimapToggleButton:Hide()
-			MinimapBorderTop:Hide()
-			MinimapZoneTextButton:Hide()
-		end
+		MinimapToggleButton:Hide()
+		MinimapBorderTop:Hide()
+		MinimapZoneTextButton:Hide()
 	end
 	
 	framesShown[object] = true
