@@ -1,4 +1,4 @@
-﻿Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("koKR", function() return {
+Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("koKR", function() return {
 	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = "미니맵 확장 애드온 입니다.",
 	["Enable"] = "사용",
 	["Enable this module"] = "현재 모듈 사용",

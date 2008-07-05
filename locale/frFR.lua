@@ -1,4 +1,4 @@
-﻿Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("frFR", function() return {
+Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("frFR", function() return {
 	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = "Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.",
 	["Enable"] = "Activer",
 	["Enable this module"] = "Active ce module.",

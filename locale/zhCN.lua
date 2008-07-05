@@ -1,4 +1,4 @@
-﻿Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("zhCN", function() return {
+Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("zhCN", function() return {
 	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = "很龙猫的小地图插件。*嚼嚼嚼*这龙猫嚼了你的干草球～",
 	["Enable"] = "启用",
 	["Enable this module"] = "启用此模块",

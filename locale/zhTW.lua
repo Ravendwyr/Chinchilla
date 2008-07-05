@@ -1,4 +1,4 @@
-﻿-- Localized by Kurax Kuang (gmmgmm at gmail.com)
+-- Localized by Kurax Kuang (gmmgmm at gmail.com)
 -- $Rev$
 Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("zhTW", function() return {
 	["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."] = "很龍貓的小地圖插件。*嚼嚼嚼*這龍貓嚼了你的乾草球～",

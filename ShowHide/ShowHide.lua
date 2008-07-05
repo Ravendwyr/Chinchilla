@@ -16,12 +16,13 @@ function Chinchilla_ShowHide:OnInitialize()
 		map = true,
 		mail = true,
 		lfg = true,
-		clock = true,
+		dayNight = true,
 		track = true,
 		voice = true,
 		zoom = true,
 		record = true,
-	})
+		clock = true,
+	}) 
 end
 
 local frames = {
@@ -30,7 +31,8 @@ local frames = {
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
 	lfg = MiniMapMeetingStoneFrame,
-	clock = GameTimeFrame,
+	dayNight = GameTimeFrame,
+	clock = TimeManagerClockButton,
 	track = MiniMapTracking,
 	voice = MiniMapVoiceChatFrame,
 	zoomIn = MinimapZoomIn,
@@ -42,7 +44,7 @@ local framesShown = {}
 
 function Chinchilla_ShowHide:OnEnable()
 	for k,v in pairs(frames) do
-		framesShown[v] = not not v:IsShown()
+		framesShown[v] = v:IsShown()
 		self:AddSecureHook(frames[k], "Show", "frame_Show")
 		self:AddSecureHook(frames[k], "Hide", "frame_Hide")
 	end
@@ -154,22 +156,22 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 		desc = Chinchilla_ShowHide.desc,
 		type = 'group',
 		args = {
-			battleground = {
+			battleground = frames.battleground and {
 				name = L["Battleground"],
 				desc = L["Show the battleground indicator"],
 				type = 'boolean',
 				passValue = 'battleground',
 				get = get,
 				set = set,
-			},
-			north = {
+			} or nil,
+			north = frames.north and {
 				name = L["North"],
 				desc = L["Show the north symbol on the minimap"],
 				type = 'boolean',
 				passValue = 'north',
 				get = get,
 				set = set,
-			},
+			} or nil,
 			locationBar = {
 				name = L["Location bar"],
 				desc = L["Show the location bar above the minimap"],
@@ -189,63 +191,71 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 					return self.db.profile.locationBar
 				end
 			},
-			map = {
+			map = frames.map and {
 				name = L["World map"],
 				desc = L["Show the world map button"],
 				type = 'boolean',
 				passValue = 'map',
 				get = get,
 				set = set,
-			},
-			mail = {
+			} or nil,
+			mail = frames.mail and {
 				name = L["Mail"],
 				desc = L["Show the mail indicator"],
 				type = 'boolean',
 				passValue = 'mail',
 				get = get,
 				set = set,
-			},
-			lfg = {
+			} or nil,
+			lfg = frames.lfg and {
 				name = L["LFG"],
 				desc = L["Show the looking for group indicator"],
 				type = 'boolean',
 				passValue = 'lfg',
 				get = get,
 				set = set,
-			},
-			clock = {
+			} or nil,
+			dayNight = frames.dayNight and {
+				name = L["Day Night Indicator"],
+				desc = L["Show the day night indicator"],
+				type = 'boolean',
+				passValue = 'dayNight',
+				get = get,
+				set = set,
+			} or nil,
+			clock = frames.clock and {
 				name = L["Clock"],
 				desc = L["Show the clock"],
 				type = 'boolean',
 				passValue = 'clock',
 				get = get,
 				set = set,
-			},
-			track = {
+			} or nil,
+			track = frames.track and {
 				name = L["Tracking"],
 				desc = L["Show the tracking indicator"],
 				type = 'boolean',
 				passValue = 'track',
 				get = get,
 				set = set,
-			},
-			voice = {
+			} or nil,
+			voice = frames.voice and {
 				name = L["Voice chat"],
 				desc = L["Show the voice chat button"],
 				type = 'boolean',
 				passValue = 'voice',
 				get = get,
 				set = set,
-			},
-			zoom = {
+			} or nil,
+			zoom = frames.zoomIn and frames.zoomOut and {
 				name = L["Zoom"],
 				desc = L["Show the zoom in and out buttons"],
 				type = 'boolean',
 				passValue = 'zoom',
 				get = get,
 				set = set,
-			},
-			record = IsMacClient() and {
+			} or nil,
+			record = frames.record and {
 				name = L["Recording"],
 				desc = L["Show the recording button"],
 				type = 'boolean',

@@ -11,7 +11,8 @@ local buttons = {
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
 	lfg = MiniMapMeetingStoneFrame,
-	clock = GameTimeFrame,
+	dayNight = GameTimeFrame,
+	clock = TimeManagerClockButton,
 	track = MiniMapTracking,
 	voice = MiniMapVoiceChatFrame,
 	zoomIn = MinimapZoomIn,
@@ -470,79 +471,87 @@ Chinchilla_MoveButtons:AddChinchillaOption(function()
 				end,
 				set = "SetRadius",
 			},
-			battleground = {
+			battleground = buttons.battleground and {
 				name = L["Battleground"],
 				desc = L["Set the position of the battleground indicator"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'battleground',
 				args = args,
-			},
-			map = {
+			} or nil,
+			map = buttons.map and {
 				name = L["World map"],
 				desc = L["Set the position of the world map button"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'map',
 				args = args,
-			},
-			mail = {
+			} or nil,
+			mail = buttons.mail and {
 				name = L["Mail"],
 				desc = L["Set the position of the mail indicator"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'mail',
 				args = args,
-			},
-			lfg = {
+			} or nil,
+			lfg = buttons.lfg and {
 				name = L["LFG"],
 				desc = L["Set the position of the looking for group indicator"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'lfg',
 				args = args,
-			},
-			clock = {
+			} or nil,
+			dayNight = buttons.dayNight and {
+				name = L["Day Night Indicator"],
+				desc = L["Set the position of the day night indicator"],
+				type = 'group',
+				groupType = 'inline',
+				child_passValue = 'dayNight',
+				args = args,
+			} or nil,
+			clock = buttons.clock and {
 				name = L["Clock"],
 				desc = L["Set the position of the clock"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'clock',
 				args = args,
-			},
-			track = {
+			} or nil,
+			track = buttons.track and {
 				name = L["Tracking"],
 				desc = L["Set the position of the tracking indicator"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'track',
 				args = args,
-			},
-			voice = {
+			} or nil,
+			voice = buttons.voice and {
 				name = L["Voice chat"],
 				desc = L["Set the position of the voice chat button"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'voice',
 				args = args,
-			},
-			zoomIn = {
+			} or nil,
+			zoomIn = buttons.zoomIn and {
 				name = L["Zoom in"],
 				desc = L["Set the position of the zoom in button"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'zoomIn',
 				args = args,
-			},
-			zoomOut = {
+			} or nil,
+			zoomOut = buttons.zoomOut and {
 				name = L["Zoom out"],
 				desc = L["Set the position of the zoom out button"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'zoomOut',
 				args = args,
-			},
-			record = IsMacClient() and {
+			} or nil,
+			record = buttons.record and {
 				name = L["Recording"],
 				desc = L["Set the position of the recording button"],
 				type = 'group',
