@@ -117,6 +117,8 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Set the position of the looking for group indicator"] = "파티찾기 버튼의 위치를 변경합니다.",
 	["Clock"] = "시계",
 	["Set the position of the clock"] = "시계 버튼의 위치를 변경합니다.",
+	["Day Night Indicator"] = "낮 / 밤 지시기",
+	["Set the position of the day night indicator"] = "낮 / 밤 표시기의 위치를 변경합니다.",
 	["Tracking"] = "찾기",
 	["Set the position of the tracking indicator"] = "찾기 버튼의 위치를 변경합니다.",
 	["Voice chat"] = "음성대화",
