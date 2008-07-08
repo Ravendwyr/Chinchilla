@@ -201,6 +201,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Show the world map button"] = true,
 	["Show the mail indicator"] = true,
 	["Show the looking for group indicator"] = true,
+	["Show the day night indicator"] = true,
 	["Show the clock"] = true,
 	["Show the day night indicator"] = true,
 	["Show the tracking indicator"] = true,
