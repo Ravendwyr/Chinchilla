@@ -146,7 +146,12 @@ function Chinchilla_Ping:SetMovable(value)
 	end
 end
 
-function Chinchilla_Ping:Minimap_OnUpdate(elapsed)
+function Chinchilla_Ping:Minimap_OnUpdate(...)
+	local elapsed = (...)
+	if type(elapsed) == "table" then
+		local _
+		_, elapsed = ...
+	end
 	if Minimap.timer > 0 then
 		local t = Minimap.timer - elapsed
 		Minimap.timer = t
