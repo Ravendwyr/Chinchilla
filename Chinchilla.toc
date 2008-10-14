@@ -1,4 +1,4 @@
-## Interface: 20400
+## Interface: 30000
 ## Title: Chinchilla 1.0
 ## Notes: Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets.
 ## Notes-frFR: Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.
@@ -8,13 +8,14 @@
 ## X-Category: Map
 ## SavedVariables: ChinchillaDB
 ## OptionalDeps: LibRock-1.0, Blizzard_TimeManager
-## X-Embeds: LibRock-1.0, LibRockDB-1.0, LibRockEvent-1.0, LibRockHook-1.0, LibRockTimer-1.0, LibRockModuleCore-1.0, LibRockConfig-1.0, LibRockLocale-1.0
 ## X-WoWIPortal: ckknight
 ## X-License: GPL v2 or later
 ## X-Donate: PayPal:ckknight AT gmail DOT com
 ## X-IssueTracker: Wowace:10063
 
+#@no-lib-strip@
 embeds.xml
+#@end-no-lib-strip@
 
 locale\enUS.lua
 locale\deDE.lua
