@@ -143,6 +143,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Durability"] = true,
 	["Quest tracker"] = true,
 	["Quest timer"] = true,
+	["Achievements tracker"] = true,
 	["Capture bar"] = true,
 	["Top-left"] = true,
 	["Bottom-left"] = true,
@@ -188,6 +189,10 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Show a frame that is movable to show where you want the world state indicator to be"] = true,
 	["Set the position on the x-axis for the world state indicator."] = true,
 	["Set the position on the y-axis for the world state indicator."] = true,
+	["Position of the achievements tracker on the screen"] = true,
+	["Show a frame that is movable to show where you want the achievements tracker to be"] = true,
+	["Set the position on the x-axis for the achievements tracker."] = true,
+	["Set the position on the y-axis for the achievements tracker."] = true,
 	
 	["Show / Hide"] = true,
 	["Show and hide interface elements of the minimap"] = true,

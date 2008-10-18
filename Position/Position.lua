@@ -18,6 +18,7 @@ function Chinchilla_Position:OnInitialize()
 		questTimer = { "TOPRIGHT", -173, -211 },
 		capture = { "TOPRIGHT", -9, -190 },
 		worldState = { "TOP", 0, -50 },
+		achievements = { "TOPRIGHT", -183, -485 },
 	})
 end
 
@@ -118,6 +119,7 @@ function Chinchilla_Position:OnEnable()
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
+	self:SetFramePosition('achievements', nil, nil, nil)
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
 	WorldStateAlwaysUpFrame:EnableMouse(false)
@@ -135,12 +137,14 @@ function Chinchilla_Position:OnEnable()
 	self:AddSecureHook(QuestWatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
 	self:AddSecureHook(QuestTimerFrame, "SetPoint", "QuestTimerFrame_SetPoint")
 	self:AddSecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
+	self:AddSecureHook(AchievementWatchFrame, "SetPoint", "AchievementWatchFrame_SetPoint")
 	self:AddSecureHook("WorldStateAlwaysUpFrame_Update")
 end
 
 function Chinchilla_Position:OnDisable()
 	self:SetMinimapPosition(nil, nil, nil)
 	self:ShowFrameMover('durability', false)
+	self:ShowFrameMover('achievements', false)
 	self:ShowFrameMover('questWatch', false)
 	self:ShowFrameMover('questTimer', false)
 	self:ShowFrameMover('capture', false)
@@ -153,6 +157,7 @@ function Chinchilla_Position:OnDisable()
 	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('worldState', nil, nil, nil)
+	self:SetFramePosition('achievements', nil, nil, nil)
 	self:SetLocked(nil)
 	
 	Minimap:SetClampedToScreen(false)
@@ -273,6 +278,13 @@ function Chinchilla_Position:QuestTimerFrame_SetPoint(this)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 end
 
+function Chinchilla_Position:AchievementWatchFrame_SetPoint(this)
+	if shouldntSetPoint then
+		return
+	end
+	self:SetFramePosition('achievements', nil, nil, nil)
+end
+
 function Chinchilla_Position:WorldStateAlwaysUpFrame_SetPoint(this)
 	if shouldntSetPoint then
 		return
@@ -301,6 +313,7 @@ local nameToFrame = {
 	questWatch = QuestWatchFrame,
 	questTimer = QuestTimerFrame,
 	worldState = WorldStateAlwaysUpFrame,
+	achievements = AchievementWatchFrame,
 }
 local movers = {}
 function Chinchilla_Position:SetFramePosition(frame, point, x, y)
@@ -354,6 +367,7 @@ end
 
 local nameToNiceName = {
 	durability = L["Durability"],
+	achievements = L["Achievements tracker"],
 	questWatch = L["Quest tracker"],
 	questTimer = L["Quest timer"],
 	worldState = L["World state"],
@@ -605,6 +619,50 @@ Chinchilla_Position:AddChinchillaOption(function()
 						set = y_set,
 						order = 4,
 						passValue = 'durability',
+					},
+				}
+			},
+			achievements = {
+				name = L["Achievements tracker"],
+				desc = L["Position of the achievements tracker on the screen"],
+				type = 'group',
+				groupType = 'inline',
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the achievements tracker to be"],
+						type = 'boolean',
+						order = 1,
+						get = movable_get,
+						set = "ShowFrameMover",
+						passValue = 'achievements',
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the achievements tracker."],
+						type = 'number',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+						passValue = 'achievements',
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the achievements tracker."],
+						type = 'number',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+						passValue = 'achievements',
 					},
 				}
 			},
