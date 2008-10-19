@@ -504,8 +504,8 @@ Chinchilla_MoveButtons:AddChinchillaOption(function()
 				args = args,
 			} or nil,
 			dayNight = buttons.dayNight and {
-				name = L["Day Night Indicator"],
-				desc = L["Set the position of the day night indicator"],
+				name = L["Calendar"],
+				desc = L["Set the position of the calendar"],
 				type = 'group',
 				groupType = 'inline',
 				child_passValue = 'dayNight',

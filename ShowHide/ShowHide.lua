@@ -216,8 +216,8 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 				set = set,
 			} or nil,
 			dayNight = frames.dayNight and {
-				name = L["Day Night Indicator"],
-				desc = L["Show the day night indicator"],
+				name = L["Calendar"],
+				desc = L["Show the calendar"],
 				type = 'boolean',
 				passValue = 'dayNight',
 				get = get,
