@@ -143,6 +143,7 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Durability"] = "내구도",
 	["Quest tracker"] = "퀘스트 알림창",
 	["Quest timer"] = "퀘스트 시간",
+	["Achievements tracker"] = "업적 알림창",
 	["Capture bar"] = "점령시간 바",
 	["Top-left"] = "왼쪽 상단",
 	["Bottom-left"] = "왼쪽 하단",
@@ -188,6 +189,10 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Show a frame that is movable to show where you want the world state indicator to be"] = "가상 프레임을 표시하여 쉽게 이동할 수 있게 합니다.",
 	["Set the position on the x-axis for the world state indicator."] = "지역 상태의 가로 위치를 변경합니다.",
 	["Set the position on the y-axis for the world state indicator."] = "지역 상태의 세로 위치를 변경합니다.",
+	["Position of the achievements tracker on the screen"] = "업적 알림창의 위치를 변경합니다.",
+	["Show a frame that is movable to show where you want the achievements tracker to be"] = "가상 프레임을 표시하여 쉽게 이동할 수 있게 합니다.",
+	["Set the position on the x-axis for the achievements tracker."] = "업적 알림창의 가로 위치를 변경합니다.",
+	["Set the position on the y-axis for the achievements tracker."] = "업적 알림창의 세로 위치를 변경합니다.",
 	
 	["Show / Hide"] = "미니맵 버튼 표시",
 	["Show and hide interface elements of the minimap"] = "미니맵 버튼의 표시 여부를 선택합니다.",
