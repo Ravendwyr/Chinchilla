@@ -3,6 +3,7 @@ Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_Position = Chinchilla:NewModule("Position", "LibRockHook-1.0", "LibRockEvent-1.0")
 local self = Chinchilla_Position
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local wrath_310 = select(4,GetBuildInfo()) >= 30100
 
 Chinchilla_Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
@@ -117,9 +118,11 @@ function Chinchilla_Position:OnEnable()
 	self:SetMinimapPosition(nil, nil, nil)
 	self:SetFramePosition('durability', nil, nil, nil)
 	self:SetFramePosition('questWatch', nil, nil, nil)
-	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
-	self:SetFramePosition('achievements', nil, nil, nil)
+	if not wrath_310 then
+		self:SetFramePosition('questTimer', nil, nil, nil)
+		self:SetFramePosition('achievements', nil, nil, nil)
+	end
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
 	WorldStateAlwaysUpFrame:EnableMouse(false)
@@ -134,19 +137,25 @@ function Chinchilla_Position:OnEnable()
   	MinimapCluster:StopMovingOrSizing()
 	
 	self:AddSecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
-	self:AddSecureHook(QuestWatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
-	self:AddSecureHook(QuestTimerFrame, "SetPoint", "QuestTimerFrame_SetPoint")
+	if wrath_310 then
+		self:AddSecureHook(WatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
+	else
+		self:AddSecureHook(QuestWatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
+		self:AddSecureHook(QuestTimerFrame, "SetPoint", "QuestTimerFrame_SetPoint")
+		self:AddSecureHook(AchievementWatchFrame, "SetPoint", "AchievementWatchFrame_SetPoint")
+	end
 	self:AddSecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
-	self:AddSecureHook(AchievementWatchFrame, "SetPoint", "AchievementWatchFrame_SetPoint")
 	self:AddSecureHook("WorldStateAlwaysUpFrame_Update")
 end
 
 function Chinchilla_Position:OnDisable()
 	self:SetMinimapPosition(nil, nil, nil)
 	self:ShowFrameMover('durability', false)
-	self:ShowFrameMover('achievements', false)
+	if not wrath_310 then
+		self:ShowFrameMover('questTimer', false)
+		self:ShowFrameMover('achievements', false)
+	end
 	self:ShowFrameMover('questWatch', false)
-	self:ShowFrameMover('questTimer', false)
 	self:ShowFrameMover('capture', false)
 	WorldStateAlwaysUpFrame:SetWidth(10)
 	WorldStateAlwaysUpFrame:SetHeight(10)
@@ -154,10 +163,12 @@ function Chinchilla_Position:OnDisable()
 	self:ShowFrameMover('worldState', false)
 	self:SetFramePosition('durability', nil, nil, nil)
 	self:SetFramePosition('questWatch', nil, nil, nil)
-	self:SetFramePosition('questTimer', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('worldState', nil, nil, nil)
-	self:SetFramePosition('achievements', nil, nil, nil)
+	if not wrath_310 then
+		self:SetFramePosition('questTimer', nil, nil, nil)
+		self:SetFramePosition('achievements', nil, nil, nil)
+	end
 	self:SetLocked(nil)
 	
 	Minimap:SetClampedToScreen(false)
@@ -272,6 +283,9 @@ function Chinchilla_Position:QuestWatchFrame_SetPoint(this)
 end
 
 function Chinchilla_Position:QuestTimerFrame_SetPoint(this)
+	if wrath_310 then
+		return
+	end
 	if shouldntSetPoint then
 		return
 	end
@@ -279,6 +293,9 @@ function Chinchilla_Position:QuestTimerFrame_SetPoint(this)
 end
 
 function Chinchilla_Position:AchievementWatchFrame_SetPoint(this)
+	if wrath_310 then
+		return
+	end
 	if shouldntSetPoint then
 		return
 	end
@@ -310,11 +327,12 @@ end
 local nameToFrame = {
 	minimap = MinimapCluster,
 	durability = DurabilityFrame,
-	questWatch = QuestWatchFrame,
-	questTimer = QuestTimerFrame,
+	questWatch = wrath_310 and WatchFrame or QuestWatchFrame,
+	questTimer = not wrath_310 and QuestTimerFrame or nil,
 	worldState = WorldStateAlwaysUpFrame,
 	achievements = AchievementWatchFrame,
 }
+
 local movers = {}
 function Chinchilla_Position:SetFramePosition(frame, point, x, y)
 	if point then
@@ -627,6 +645,7 @@ Chinchilla_Position:AddChinchillaOption(function()
 				desc = L["Position of the achievements tracker on the screen"],
 				type = 'group',
 				groupType = 'inline',
+				hidden = wrath_310,
 				args = {
 					movable = {
 						name = L["Movable"],
@@ -667,8 +686,8 @@ Chinchilla_Position:AddChinchillaOption(function()
 				}
 			},
 			questWatch = {
-				name = L["Quest tracker"],
-				desc = L["Position of the quest tracker on the screen"],
+				name = wrath_310 and L["Quest and achievement tracker"] or L["Quest tracker"],
+				desc = wrath_310 and L["Position of the quest/achievement tracker on the screen"] or L["Position of the quest tracker on the screen"],
 				type = 'group',
 				groupType = 'inline',
 				args = {
@@ -715,6 +734,7 @@ Chinchilla_Position:AddChinchillaOption(function()
 				desc = L["Position of the quest timer on the screen"],
 				type = 'group',
 				groupType = 'inline',
+				hidden = wrath_310,
 				args = {
 					movable = {
 						name = L["Movable"],

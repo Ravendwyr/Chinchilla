@@ -4,6 +4,7 @@ Chinchilla:SetModuleDefaultState("Compass", false)
 local Chinchilla_Compass = Chinchilla:NewModule("Compass", "LibRockTimer-1.0")
 local self = Chinchilla_Compass
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local wrath_310 = select(4,GetBuildInfo()) >= 30100
 
 Chinchilla_Compass.desc = L["Show direction indicators on the minimap"]
 
@@ -20,7 +21,11 @@ end
 local rotateMinimap = GetCVar("rotateMinimap") == "1"
 
 local function hideBlizzDirections()
-	MiniMapCompassRing:Hide()
+	if wrath_310 then
+		MinimapCompassTexture:Hide()
+	else
+		MiniMapCompassRing:Hide()
+	end
 	MinimapNorthTag:Hide()
 end
 
@@ -29,7 +34,11 @@ local function repositionCompass()
 	self:AddTimer(0, hideBlizzDirections)
 	local angle = 0
 	if rotateMinimap then
-		angle = MiniMapCompassRing:GetFacing()
+		if wrath_310 then
+			angle = MinimapCompassTexture:GetFacing()
+		else
+			angle = MiniMapCompassRing:GetFacing()
+		end
 	end
 	local radius = Chinchilla_Compass.db.profile.radius
 	frame.east:SetPoint("CENTER", Minimap, "CENTER", radius*math.cos(angle), radius*math.sin(angle))
@@ -68,7 +77,11 @@ end
 function Chinchilla_Compass:OnDisable()
 	frame:Hide()
 	if rotateMinimap then
-		MiniMapCompassRing:Show()
+		if wrath_310 then
+			MinimapCompassTexture:Show()
+		else
+			MiniMapCompassRing:Show()
+		end
 	else
 		MinimapNorthTag:Show()
 	end
