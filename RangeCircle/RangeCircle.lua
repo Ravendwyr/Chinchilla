@@ -57,7 +57,7 @@ local indoors
 local inCombat = not not InCombatLockdown()
 function Chinchilla_RangeCircle:OnEnable()
 	if not texture then
-		texture = Minimap:CreateTexture("Chinchilla_RangeCircle_Circle", "OVERLAY")
+		texture = Minimap:CreateTexture("Chinchilla_RangeCircle_Circle", "BORDER")
 		texture:SetPoint("CENTER")
 	end
 	texture:Show()
