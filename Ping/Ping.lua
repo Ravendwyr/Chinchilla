@@ -6,6 +6,16 @@ local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 Chinchilla_Ping.desc = L["Show who last pinged the minimap"]
 
+-- Backwards compatability for pre 3.1.0 clients 
+local MinimapPing = MinimapPing
+if not MinimapPing then 
+	MinimapPing = MiniMapPing
+end
+local MinimapPing_FadeOut = MinimapPing_FadeOut
+if not MinimapPing_FadeOut then
+	MinimapPing_FadeOut = MiniMapPing_FadeOut
+end
+
 function Chinchilla_Ping:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Ping")
 	Chinchilla:SetDatabaseNamespaceDefaults("Ping", "profile", {
@@ -39,7 +49,7 @@ end
 local frame
 function Chinchilla_Ping:OnEnable()
 	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_Ping_Frame", MiniMapPing) -- anchor to MiniMapPing so that it hides/shows based on MiniMapPing
+		frame = CreateFrame("Frame", "Chinchilla_Ping_Frame", MinimapPing) -- anchor to MinimapPing so that it hides/shows based on MinimapPing
 		frame:SetBackdrop({
 			bgFile = [[Interface\Tooltips\UI-Tooltip-Background]],
 			edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
@@ -137,11 +147,11 @@ function Chinchilla_Ping:SetMovable(value)
 	if value then
 		frame:SetParent(Minimap)
 		frame:RegisterForDrag("LeftButton")
-		if not MiniMapPing:IsShown() then
+		if not MinimapPing:IsShown() then
 			test()
 		end
 	else
-		frame:SetParent(MiniMapPing)
+		frame:SetParent(MinimapPing)
 		frame:RegisterForDrag()
 	end
 end
@@ -156,19 +166,19 @@ function Chinchilla_Ping:Minimap_OnUpdate(...)
 		local t = Minimap.timer - elapsed
 		Minimap.timer = t
 		if t <= 0 then
-			MiniMapPing_FadeOut()
+			MinimapPing_FadeOut()
 		else
 			Minimap_SetPing(Minimap:GetPingPosition())
 		end
-	elseif MiniMapPing.fadeOutTimer then
-		local t = MiniMapPing.fadeOutTimer - elapsed
-		MiniMapPing.fadeOutTimer = t
+	elseif MinimapPing.fadeOutTimer then
+		local t = MinimapPing.fadeOutTimer - elapsed
+		MinimapPing.fadeOutTimer = t
 		if t > 0 then
 			Minimap_SetPing(Minimap:GetPingPosition())
-			MiniMapPing:SetAlpha(t / _G.MINIMAPPING_FADE_TIMER)
+			MinimapPing:SetAlpha(t / _G.MINIMAPPING_FADE_TIMER)
 		else
-			MiniMapPing.fadeOut = nil
-			MiniMapPing:Hide()
+			MinimapPing.fadeOut = nil
+			MinimapPing:Hide()
 		end
 	end
 end
@@ -214,13 +224,13 @@ function Chinchilla_Ping:Minimap_SetPing(x, y, playSound)
 	local radius = Minimap:GetWidth()/2
 	
 	if x > radius or x < -radius or y > radius or y < -radius or (x^2 + y^2 > radius^2 and isCornerRound(x, y)) then
-		MiniMapPing:Hide()
+		MinimapPing:Hide()
 		return
 	end
 	
-	MiniMapPing:SetPoint("CENTER", "Minimap", "CENTER", x, y)
-	MiniMapPing:SetAlpha(1)
-	MiniMapPing:Show()
+	MinimapPing:SetPoint("CENTER", "Minimap", "CENTER", x, y)
+	MinimapPing:SetAlpha(1)
+	MinimapPing:Show()
 	if playSound then
 		PlaySound("MapPing")
 	end
