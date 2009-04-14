@@ -20,6 +20,7 @@ function Chinchilla_Position:OnInitialize()
 		capture = { "TOPRIGHT", -9, -190 },
 		worldState = { "TOP", 0, -50 },
 		achievements = { "TOPRIGHT", -183, -485 },
+		vehicleSeats = { "TOPRIGHT", -50, -250},
 	})
 end
 
@@ -122,6 +123,8 @@ function Chinchilla_Position:OnEnable()
 	if not wrath_310 then
 		self:SetFramePosition('questTimer', nil, nil, nil)
 		self:SetFramePosition('achievements', nil, nil, nil)
+	else
+		self:SetFramePosition('vehicleSeats', nil, nil, nil)
 	end
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
@@ -139,6 +142,7 @@ function Chinchilla_Position:OnEnable()
 	self:AddSecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	if wrath_310 then
 		self:AddSecureHook(WatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
+		self:AddSecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
 	else
 		self:AddSecureHook(QuestWatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
 		self:AddSecureHook(QuestTimerFrame, "SetPoint", "QuestTimerFrame_SetPoint")
@@ -154,6 +158,8 @@ function Chinchilla_Position:OnDisable()
 	if not wrath_310 then
 		self:ShowFrameMover('questTimer', false)
 		self:ShowFrameMover('achievements', false)
+	else
+		self:ShowFrameMover('vehicleSeats', false)
 	end
 	self:ShowFrameMover('questWatch', false)
 	self:ShowFrameMover('capture', false)
@@ -168,6 +174,8 @@ function Chinchilla_Position:OnDisable()
 	if not wrath_310 then
 		self:SetFramePosition('questTimer', nil, nil, nil)
 		self:SetFramePosition('achievements', nil, nil, nil)
+	else
+		self:SetFramePosition('vehicleSeats', nil, nil, nil)
 	end
 	self:SetLocked(nil)
 	
@@ -292,6 +300,16 @@ function Chinchilla_Position:QuestTimerFrame_SetPoint(this)
 	self:SetFramePosition('questTimer', nil, nil, nil)
 end
 
+function Chinchilla_Position:VehicleSeatIndicator_SetPoint(this)
+	if not wrath_310 then
+		return
+	end
+	if shouldntSetPoint then
+		return
+	end
+	self:SetFramePosition('vehicleSeats', nil, nil, nil)
+end
+
 function Chinchilla_Position:AchievementWatchFrame_SetPoint(this)
 	if wrath_310 then
 		return
@@ -331,6 +349,7 @@ local nameToFrame = {
 	questTimer = not wrath_310 and QuestTimerFrame or nil,
 	worldState = WorldStateAlwaysUpFrame,
 	achievements = AchievementWatchFrame,
+	vehicleSeats = VehicleSeatIndicator,
 }
 
 local movers = {}
@@ -390,6 +409,7 @@ local nameToNiceName = {
 	questTimer = L["Quest timer"],
 	worldState = L["World state"],
 	capture = L["Capture bar"],
+	vehicleSeats = L["Vehicle seats"],
 }
 
 function Chinchilla_Position:ShowFrameMover(frame, value, force)
@@ -771,6 +791,51 @@ Chinchilla_Position:AddChinchillaOption(function()
 						set = y_set,
 						order = 4,
 						passValue = 'questTimer',
+					},
+				}
+			},
+			vehicleSeats = {
+				name = L["Vehicle seats"],
+				desc = L["Position of the vehicle seat indicator on the screen"],
+				type = 'group',
+				groupType = 'inline',
+				hidden = not wrath_310,
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the vehicle seat indicator to be"],
+						type = 'boolean',
+						order = 1,
+						get = movable_get,
+						set = "ShowFrameMover",
+						passValue = 'vehicleSeats',
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the vehicle seat indicator."],
+						type = 'number',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+						passValue = 'vehicleSeats',
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the vehicle seat indicator."],
+						type = 'number',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+						passValue = 'vehicleSeats',
 					},
 				}
 			},
