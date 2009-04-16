@@ -9,11 +9,19 @@ Chinchilla_Appearance.desc = L["Allow for a customized look of the minimap"]
 
 local newList, del, newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newList", "del", "newDict", "unpackDictAndDel")
 
+local DEFAULT_MINIMAP_WIDTH = Minimap:GetWidth()
+local DEFAULT_MINIMAP_HEIGHT = Minimap:GetHeight()
+local MINIMAP_POINTS = {}
+for i = 1, Minimap:GetNumPoints() do
+	MINIMAP_POINTS[i] = {Minimap:GetPoint(i)}
+end
+
 local rotateMinimap = GetCVar("rotateMinimap") == "1"
 function Chinchilla_Appearance:OnInitialize()
 	self.db = Chinchilla:GetDatabaseNamespace("Appearance")
 	Chinchilla:SetDatabaseNamespaceDefaults("Appearance", "profile", {
 		scale = 1,
+		blipScale = 1,
 		alpha = 1,
 		combatAlpha = 1,
 		borderColor = {1, 1, 1, 1},
@@ -185,11 +193,34 @@ function Chinchilla_Appearance:SetScale(value)
 	else
 		value = self.db.profile.scale
 	end
+	local blipScale = self.db.profile.blipScale
 	if not Chinchilla:IsModuleActive(self) then
 		value = 1
+		blipScale = 1
 	end
 	
+	Minimap:SetWidth(DEFAULT_MINIMAP_WIDTH / blipScale)
+	Minimap:SetHeight(DEFAULT_MINIMAP_HEIGHT / blipScale)
+	Minimap:SetScale(blipScale)
+	for _, v in ipairs { Minimap:GetChildren() } do
+		v:SetScale(1 / blipScale)
+	end
+	for _, v in ipairs(MINIMAP_POINTS) do
+		Minimap:SetPoint(v[1], v[2], v[3], v[4]/blipScale, v[5]/blipScale)
+	end
 	MinimapCluster:SetScale(value)
+	
+	local zoom = Minimap:GetZoom()
+	Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
+	Minimap:SetZoom(zoom)
+end
+
+function Chinchilla_Appearance:SetBlipScale(value)
+	if value then
+		self.db.profile.blipScale = value
+		
+		self:SetScale(nil)
+	end
 end
 
 function Chinchilla_Appearance:SetAlpha(value)
@@ -499,6 +530,20 @@ Chinchilla_Appearance:AddChinchillaOption(function()
 					return Chinchilla_Appearance.db.profile.scale
 				end,
 				set = "SetScale",
+				isPercent = true,
+			},
+			blipScale = {
+				name = L["Blip size"],
+				desc = L["Set how large the blips on the minimap are"],
+				type = 'number',
+				min = 0.25,
+				max = 4,
+				step = 0.01,
+				bigStep = 0.05,
+				get = function()
+					return Chinchilla_Appearance.db.profile.blipScale
+				end,
+				set = "SetBlipScale",
 				isPercent = true,
 			},
 			alpha = {

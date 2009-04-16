@@ -62,6 +62,9 @@ Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations(
 	["Tooltip"] = true,
 	["Tubular"] = true,
 	["Flat"] = true,
+	["Blip size"] = true,
+	["Set how large the blips on the minimap are"] = true,
+	
 	
 	["Auto zoom"] = true,
 	["Automatically zoom out after a specified time."] = true,
