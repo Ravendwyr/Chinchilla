@@ -37,7 +37,7 @@ local function repositionCompass()
 		if wrath_310 then
 			angle = MinimapCompassTexture:GetFacing()
 		else
-			angle = MiniMapCompassRing:GetFacing()
+			angle = GetPlayerFacing()
 		end
 	end
 	local radius = Chinchilla_Compass.db.profile.radius

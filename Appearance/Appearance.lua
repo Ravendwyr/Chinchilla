@@ -398,7 +398,7 @@ local math_pi = math.pi
 local math_cos = math.cos
 local math_sin = math.sin
 function Chinchilla_Appearance:RotateBorder()
-	local angle = wrath_310 and -MiniMapCompassRing:GetFacing() or -MinimapCompassTexture:GetFacing()
+	local angle = wrath_310 and GetPlayerFacing() or -MinimapCompassTexture:GetFacing()
 	fullTexture:SetTexCoord(
 		math_cos(angle + math_pi*3/4) + 0.5, -math_sin(angle + math_pi*3/4) + 0.5,
 		math_cos(angle - math_pi*3/4) + 0.5, -math_sin(angle - math_pi*3/4) + 0.5,
