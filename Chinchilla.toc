@@ -10,8 +10,6 @@
 ## SavedVariables: ChinchillaDB
 ## OptionalDeps: LibRock-1.0, Blizzard_TimeManager
 ## X-WoWIPortal: ckknight
-## X-Donate: PayPal:ckknight AT gmail DOT com
-## X-IssueTracker: Wowace:10063
 
 #@no-lib-strip@
 embeds.xml
@@ -21,7 +19,9 @@ locale\enUS.lua
 locale\deDE.lua
 locale\frFR.lua
 locale\esES.lua
+locale\esMX.lua
 locale\koKR.lua
+locale\ruRU.lua
 locale\zhCN.lua
 locale\zhTW.lua
 
