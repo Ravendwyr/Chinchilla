@@ -2,7 +2,6 @@ local Chinchilla = Chinchilla
 local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "LibRockEvent-1.0", "LibRockTimer-1.0")
 local self = Chinchilla_Appearance
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
-local wrath_310 = select(4, GetBuildInfo()) >= 30100
 
 Chinchilla_Appearance.desc = L["Allow for a customized look of the minimap"]
 
@@ -397,7 +396,7 @@ local math_pi = math.pi
 local math_cos = math.cos
 local math_sin = math.sin
 function Chinchilla_Appearance:RotateBorder()
-	local angle = wrath_310 and GetPlayerFacing() or -MinimapCompassTexture:GetFacing()
+	local angle = GetPlayerFacing()
 	fullTexture:SetTexCoord(
 		math_cos(angle + math_pi*3/4) + 0.5, -math_sin(angle + math_pi*3/4) + 0.5,
 		math_cos(angle - math_pi*3/4) + 0.5, -math_sin(angle - math_pi*3/4) + 0.5,

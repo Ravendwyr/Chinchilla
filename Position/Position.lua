@@ -2,7 +2,6 @@ local Chinchilla = Chinchilla
 local Chinchilla_Position = Chinchilla:NewModule("Position", "LibRockHook-1.0", "LibRockEvent-1.0")
 local self = Chinchilla_Position
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
-local wrath_310 = select(4,GetBuildInfo()) >= 30100
 
 Chinchilla_Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
@@ -119,12 +118,7 @@ function Chinchilla_Position:OnEnable()
 	self:SetFramePosition('durability', nil, nil, nil)
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
-	if not wrath_310 then
-		self:SetFramePosition('questTimer', nil, nil, nil)
-		self:SetFramePosition('achievements', nil, nil, nil)
-	else
-		self:SetFramePosition('vehicleSeats', nil, nil, nil)
-	end
+	self:SetFramePosition('vehicleSeats', nil, nil, nil)
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
 	WorldStateAlwaysUpFrame:EnableMouse(false)
@@ -139,15 +133,9 @@ function Chinchilla_Position:OnEnable()
   	MinimapCluster:StopMovingOrSizing()
 	
 	self:AddSecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
-	if wrath_310 then
-		self:AddSecureHook(WatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
-		self:AddSecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
-		self:AddHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace")
-	else
-		self:AddSecureHook(QuestWatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
-		self:AddSecureHook(QuestTimerFrame, "SetPoint", "QuestTimerFrame_SetPoint")
-		self:AddSecureHook(AchievementWatchFrame, "SetPoint", "AchievementWatchFrame_SetPoint")
-	end
+	self:AddSecureHook(WatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
+	self:AddSecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
+	self:AddHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace")
 	self:AddSecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	self:AddSecureHook("WorldStateAlwaysUpFrame_Update")
 end
@@ -155,12 +143,7 @@ end
 function Chinchilla_Position:OnDisable()
 	self:SetMinimapPosition(nil, nil, nil)
 	self:ShowFrameMover('durability', false)
-	if not wrath_310 then
-		self:ShowFrameMover('questTimer', false)
-		self:ShowFrameMover('achievements', false)
-	else
-		self:ShowFrameMover('vehicleSeats', false)
-	end
+	self:ShowFrameMover('vehicleSeats', false)
 	self:ShowFrameMover('questWatch', false)
 	self:ShowFrameMover('capture', false)
 	WorldStateAlwaysUpFrame:SetWidth(10)
@@ -171,12 +154,7 @@ function Chinchilla_Position:OnDisable()
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('worldState', nil, nil, nil)
-	if not wrath_310 then
-		self:SetFramePosition('questTimer', nil, nil, nil)
-		self:SetFramePosition('achievements', nil, nil, nil)
-	else
-		self:SetFramePosition('vehicleSeats', nil, nil, nil)
-	end
+	self:SetFramePosition('vehicleSeats', nil, nil, nil)
 	self:SetLocked(nil)
 	
 	Minimap:SetClampedToScreen(false)
@@ -297,34 +275,11 @@ function Chinchilla_Position:QuestWatchFrame_SetPoint(this)
 	self:SetFramePosition('questWatch', nil, nil, nil)
 end
 
-function Chinchilla_Position:QuestTimerFrame_SetPoint(this)
-	if wrath_310 then
-		return
-	end
-	if shouldntSetPoint then
-		return
-	end
-	self:SetFramePosition('questTimer', nil, nil, nil)
-end
-
 function Chinchilla_Position:VehicleSeatIndicator_SetPoint(this)
-	if not wrath_310 then
-		return
-	end
 	if shouldntSetPoint then
 		return
 	end
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
-end
-
-function Chinchilla_Position:AchievementWatchFrame_SetPoint(this)
-	if wrath_310 then
-		return
-	end
-	if shouldntSetPoint then
-		return
-	end
-	self:SetFramePosition('achievements', nil, nil, nil)
 end
 
 function Chinchilla_Position:WorldStateAlwaysUpFrame_SetPoint(this)
@@ -352,8 +307,7 @@ end
 local nameToFrame = {
 	minimap = MinimapCluster,
 	durability = DurabilityFrame,
-	questWatch = wrath_310 and WatchFrame or QuestWatchFrame,
-	questTimer = not wrath_310 and QuestTimerFrame or nil,
+	questWatch = WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,
 	achievements = AchievementWatchFrame,
 	vehicleSeats = VehicleSeatIndicator,
@@ -667,54 +621,9 @@ Chinchilla_Position:AddChinchillaOption(function()
 					},
 				}
 			},
-			achievements = {
-				name = L["Achievements tracker"],
-				desc = L["Position of the achievements tracker on the screen"],
-				type = 'group',
-				groupType = 'inline',
-				hidden = wrath_310,
-				args = {
-					movable = {
-						name = L["Movable"],
-						desc = L["Show a frame that is movable to show where you want the achievements tracker to be"],
-						type = 'boolean',
-						order = 1,
-						get = movable_get,
-						set = "ShowFrameMover",
-						passValue = 'achievements',
-					},
-					x = {
-						name = L["Horizontal position"],
-						desc = L["Set the position on the x-axis for the achievements tracker."],
-						type = 'number',
-						min = x_min,
-						max = x_max,
-						step = 1,
-						bigStep = 5,
-						get = x_get,
-						set = x_set,
-						order = 3,
-						passValue = 'achievements',
-					},
-					y = {
-						name = L["Vertical position"],
-						desc = L["Set the position on the y-axis for the achievements tracker."],
-						type = 'number',
-						min = y_min,
-						max = y_max,
-						step = 1,
-						bigStep = 5,
-						stepBasis = 0,
-						get = y_get,
-						set = y_set,
-						order = 4,
-						passValue = 'achievements',
-					},
-				}
-			},
 			questWatch = {
-				name = wrath_310 and L["Quest and achievement tracker"] or L["Quest tracker"],
-				desc = wrath_310 and L["Position of the quest/achievement tracker on the screen"] or L["Position of the quest tracker on the screen"],
+				name = L["Quest and achievement tracker"],
+				desc = L["Position of the quest/achievement tracker on the screen"],
 				type = 'group',
 				groupType = 'inline',
 				args = {
@@ -756,57 +665,11 @@ Chinchilla_Position:AddChinchillaOption(function()
 					},
 				}
 			},
-			questTimer = {
-				name = L["Quest timer"],
-				desc = L["Position of the quest timer on the screen"],
-				type = 'group',
-				groupType = 'inline',
-				hidden = wrath_310,
-				args = {
-					movable = {
-						name = L["Movable"],
-						desc = L["Show a frame that is movable to show where you want the quest timer to be"],
-						type = 'boolean',
-						order = 1,
-						get = movable_get,
-						set = "ShowFrameMover",
-						passValue = 'questTimer',
-					},
-					x = {
-						name = L["Horizontal position"],
-						desc = L["Set the position on the x-axis for the quest timer."],
-						type = 'number',
-						min = x_min,
-						max = x_max,
-						step = 1,
-						bigStep = 5,
-						get = x_get,
-						set = x_set,
-						order = 3,
-						passValue = 'questTimer',
-					},
-					y = {
-						name = L["Vertical position"],
-						desc = L["Set the position on the y-axis for the quest timer."],
-						type = 'number',
-						min = y_min,
-						max = y_max,
-						step = 1,
-						bigStep = 5,
-						stepBasis = 0,
-						get = y_get,
-						set = y_set,
-						order = 4,
-						passValue = 'questTimer',
-					},
-				}
-			},
 			vehicleSeats = {
 				name = L["Vehicle seats"],
 				desc = L["Position of the vehicle seat indicator on the screen"],
 				type = 'group',
 				groupType = 'inline',
-				hidden = not wrath_310,
 				args = {
 					movable = {
 						name = L["Movable"],
