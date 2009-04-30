@@ -1,24 +1,14 @@
-local VERSION = tonumber(("$Revision$"):match("%d+"))
-
 Chinchilla = Rock:NewAddon("Chinchilla", "LibRockDB-1.0", "LibRockModuleCore-1.0", "LibRockHook-1.0", "LibRockConfig-1.0")
 local Chinchilla, self = Chinchilla, Chinchilla
-Chinchilla.version = "1.0r" .. VERSION
-Chinchilla.revision = VERSION
-Chinchilla.date = ("$Date$"):match("%d%d%d%d%-%d%d%-%d%d")
+Chinchilla.version = "@project-version@"
+if Chinchilla.version:match("@") then
+	Chinchilla.version = "Development"
+end
 
 Chinchilla:SetDatabase("ChinchillaDB")
 Chinchilla:SetDatabaseDefaults('profile', {
 	mouseButton = "RightButton"
 })
-
-function Chinchilla:ProvideVersion(revision, date)
-	revision = tonumber(revision:match("%d+"))
-	if Chinchilla.revision < revision then
-		Chinchilla.version = "1.0r" .. revision
-		Chinchilla.revision = revision
-		Chinchilla.date = date:match("%d%d%d%d%-%d%d%-%d%d")
-	end
-end
 
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 

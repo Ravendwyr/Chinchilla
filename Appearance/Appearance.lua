@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "LibRockEvent-1.0", "LibRockTimer-1.0")
 local self = Chinchilla_Appearance
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")

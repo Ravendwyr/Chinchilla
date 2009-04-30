@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_ShowHide = Chinchilla:NewModule("ShowHide", "LibRockHook-1.0")
 local self = Chinchilla_ShowHide
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")

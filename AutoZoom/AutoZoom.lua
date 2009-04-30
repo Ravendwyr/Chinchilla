@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_AutoZoom = Chinchilla:NewModule("AutoZoom", "LibRockTimer-1.0", "LibRockHook-1.0")
 local self = Chinchilla_AutoZoom
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")

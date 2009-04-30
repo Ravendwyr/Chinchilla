@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_Ping = Chinchilla:NewModule("Ping", "LibRockEvent-1.0", "LibRockHook-1.0")
 local self = Chinchilla_Ping
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")

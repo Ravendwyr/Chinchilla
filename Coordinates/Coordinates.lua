@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_Coordinates = Chinchilla:NewModule("Coordinates", "LibRockTimer-1.0")
 local self = Chinchilla_Coordinates
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")

@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 Chinchilla:SetModuleDefaultState("RangeCircle", false)
 local Chinchilla_RangeCircle = Chinchilla:NewModule("RangeCircle", "LibRockEvent-1.0", "LibRockHook-1.0")
 local self = Chinchilla_RangeCircle

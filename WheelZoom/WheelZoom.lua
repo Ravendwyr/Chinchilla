@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_WheelZoom = Chinchilla:NewModule("WheelZoom")
 local self = Chinchilla_WheelZoom
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")

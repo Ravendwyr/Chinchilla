@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 Chinchilla:SetModuleDefaultState("Compass", false)
 local Chinchilla_Compass = Chinchilla:NewModule("Compass", "LibRockTimer-1.0")
 local self = Chinchilla_Compass

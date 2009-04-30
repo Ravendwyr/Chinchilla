@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_TrackingDots = Chinchilla:NewModule("TrackingDots")
 local self = Chinchilla_TrackingDots
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")

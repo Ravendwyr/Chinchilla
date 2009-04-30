@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:ProvideVersion("$Revision$", "$Date$")
 local Chinchilla_Location = Chinchilla:NewModule("Location", "LibRockEvent-1.0")
 local self = Chinchilla_Location
 local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
