@@ -1,7 +1,7 @@
 local Chinchilla = Chinchilla
 local Chinchilla_Position = Chinchilla:NewModule("Position", "LibRockHook-1.0", "LibRockEvent-1.0")
 local self = Chinchilla_Position
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local L = Chinchilla.L
 
 Chinchilla_Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 

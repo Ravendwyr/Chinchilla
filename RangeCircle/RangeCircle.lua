@@ -2,7 +2,7 @@ local Chinchilla = Chinchilla
 Chinchilla:SetModuleDefaultState("RangeCircle", false)
 local Chinchilla_RangeCircle = Chinchilla:NewModule("RangeCircle", "LibRockEvent-1.0", "LibRockHook-1.0")
 local self = Chinchilla_RangeCircle
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local L = Chinchilla.L
 
 Chinchilla_RangeCircle.desc = L["Show a circle on the minimap at a prefered range"]
 

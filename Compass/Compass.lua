@@ -2,7 +2,7 @@ local Chinchilla = Chinchilla
 Chinchilla:SetModuleDefaultState("Compass", false)
 local Chinchilla_Compass = Chinchilla:NewModule("Compass", "LibRockTimer-1.0")
 local self = Chinchilla_Compass
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local L = Chinchilla.L
 
 Chinchilla_Compass.desc = L["Show direction indicators on the minimap"]
 

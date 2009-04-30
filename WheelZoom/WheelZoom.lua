@@ -1,7 +1,7 @@
 local Chinchilla = Chinchilla
 local Chinchilla_WheelZoom = Chinchilla:NewModule("WheelZoom")
 local self = Chinchilla_WheelZoom
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local L = Chinchilla.L
 
 Chinchilla_WheelZoom.desc = L["Use the mouse wheel to zoom in and out on the minimap."]
 

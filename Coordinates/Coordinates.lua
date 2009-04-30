@@ -1,7 +1,7 @@
 local Chinchilla = Chinchilla
 local Chinchilla_Coordinates = Chinchilla:NewModule("Coordinates", "LibRockTimer-1.0")
 local self = Chinchilla_Coordinates
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local L = Chinchilla.L
 
 Chinchilla_Coordinates.desc = L["Show coordinates on or near the minimap"]
 

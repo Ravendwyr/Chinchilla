@@ -8,7 +8,7 @@
 ## X-Website: http://www.wowace.com/
 ## X-Category: Map
 ## SavedVariables: ChinchillaDB
-## OptionalDeps: LibRock-1.0, Blizzard_TimeManager
+## OptionalDeps: LibRock-1.0, Ace3, Blizzard_TimeManager
 ## X-WoWIPortal: ckknight
 
 #@no-lib-strip@

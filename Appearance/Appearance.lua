@@ -1,7 +1,7 @@
 local Chinchilla = Chinchilla
 local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "LibRockEvent-1.0", "LibRockTimer-1.0")
 local self = Chinchilla_Appearance
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local L = Chinchilla.L
 
 Chinchilla_Appearance.desc = L["Allow for a customized look of the minimap"]
 

@@ -1,8 +1,6 @@
-Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("deDE", function() return
+local L = LibStub("AceLocale-3.0"):NewLocale("Chinchilla", "deDE")
+if not L then return end
+
 --[===[@non-debug@
-@localization(locale="deDE", format="lua_table")@
+@localization(locale="deDE", format="lua_additive_table")@
 --@end-non-debug@]===]
---@debug@
-{}
---@end-debug@
-end)

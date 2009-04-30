@@ -1,7 +1,7 @@
 local Chinchilla = Chinchilla
 local Chinchilla_TrackingDots = Chinchilla:NewModule("TrackingDots")
 local self = Chinchilla_TrackingDots
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local L = Chinchilla.L
 
 Chinchilla_TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
 

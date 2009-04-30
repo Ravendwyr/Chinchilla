@@ -1,5 +1,11 @@
+--@debug@
+LibStub("AceLocale-3.0"):NewLocale("Chinchilla", "enUS", true, true)
+--@end-debug@
+local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
+
 Chinchilla = Rock:NewAddon("Chinchilla", "LibRockDB-1.0", "LibRockModuleCore-1.0", "LibRockHook-1.0", "LibRockConfig-1.0")
 local Chinchilla, self = Chinchilla, Chinchilla
+Chinchilla.L = L
 Chinchilla.version = "@project-version@"
 if Chinchilla.version:match("@") then
 	Chinchilla.version = "Development"
@@ -9,8 +15,6 @@ Chinchilla:SetDatabase("ChinchillaDB")
 Chinchilla:SetDatabaseDefaults('profile', {
 	mouseButton = "RightButton"
 })
-
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
 
 local opts = {}
 Chinchilla.options = {

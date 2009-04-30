@@ -1,9 +1,5 @@
-Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):SetDebug(true)
-Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla"):AddTranslations("enUS", function() return
+local L = LibStub("AceLocale-3.0"):NewLocale("Chinchilla", "enUS", true, true)
+
 --[===[@non-debug@
-@localization(locale="enUS", format="lua_table", same-key-is-true=true)@
+@localization(locale="enUS", format="lua_additive_table", same-key-is-true=true)@
 --@end-non-debug@]===]
---@debug@
-{}
---@end-debug@
-end)

@@ -1,7 +1,7 @@
 local Chinchilla = Chinchilla
 local Chinchilla_Location = Chinchilla:NewModule("Location", "LibRockEvent-1.0")
 local self = Chinchilla_Location
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local L = Chinchilla.L
 
 Chinchilla_Location.desc = L["Show zone information on or near minimap"]
 

@@ -1,7 +1,7 @@
 local Chinchilla = Chinchilla
 local Chinchilla_MoveButtons = Chinchilla:NewModule("MoveButtons", "LibRockHook-1.0")
 local self = Chinchilla_MoveButtons
-local L = Rock("LibRockLocale-1.0"):GetTranslationNamespace("Chinchilla")
+local L = Chinchilla.L
 
 Chinchilla_MoveButtons.desc = L["Move buttons around the minimap"]
 
