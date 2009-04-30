@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_Location = Chinchilla:NewModule("Location", "LibRockEvent-1.0")
+local Chinchilla_Location = Chinchilla:NewModule("Location", "AceEvent-3.0")
 local self = Chinchilla_Location
 local L = Chinchilla.L
 
@@ -92,9 +92,9 @@ function Chinchilla_Location:OnEnable()
 		frame.closeButton:Hide()
 	end
 	self:Update()
-	self:AddEventListener("ZONE_CHANGED", "Update")
-	self:AddEventListener("ZONE_CHANGED_INDOORS", "Update")
-	self:AddEventListener("ZONE_CHANGED_NEW_AREA", "Update")
+	self:RegisterEvent("ZONE_CHANGED", "Update")
+	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update")
+	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update")
 	MinimapToggleButton:Hide()
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()

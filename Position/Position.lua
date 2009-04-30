@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_Position = Chinchilla:NewModule("Position", "LibRockHook-1.0", "LibRockEvent-1.0")
+local Chinchilla_Position = Chinchilla:NewModule("Position", "LibRockHook-1.0")
 local self = Chinchilla_Position
 local L = Chinchilla.L
 

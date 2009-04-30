@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_Ping = Chinchilla:NewModule("Ping", "LibRockEvent-1.0", "LibRockHook-1.0")
+local Chinchilla_Ping = Chinchilla:NewModule("Ping", "AceEvent-3.0", "LibRockHook-1.0")
 local self = Chinchilla_Ping
 local L = Chinchilla.L
 
@@ -87,7 +87,7 @@ function Chinchilla_Ping:OnEnable()
 		end)
 	end
 	frame:Show()
-	self:AddEventListener("MINIMAP_PING")
+	self:RegisterEvent("MINIMAP_PING")
 	
 	self:AddHook("Minimap_OnUpdate")
 	self:AddHook("Minimap_SetPing")
@@ -103,7 +103,7 @@ function Chinchilla_Ping:OnDisable()
 end
 
 local allowNextPlayerPing = false
-function Chinchilla_Ping:MINIMAP_PING(ns, event, unit)
+function Chinchilla_Ping:MINIMAP_PING(event, unit)
 	if UnitIsUnit("player", unit) and not allowNextPlayerPing then
 		frame:Hide()
 		return

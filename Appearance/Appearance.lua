@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "LibRockEvent-1.0", "LibRockTimer-1.0")
+local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "AceEvent-3.0", "LibRockTimer-1.0")
 local self = Chinchilla_Appearance
 local L = Chinchilla.L
 
@@ -79,9 +79,9 @@ function Chinchilla_Appearance:OnEnable()
 		end
 	end
 	
-	self:AddEventListener("MINIMAP_UPDATE_ZOOM")
-	self:AddEventListener("PLAYER_REGEN_ENABLED")
-	self:AddEventListener("PLAYER_REGEN_DISABLED")
+	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
+	self:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:AddRepeatingTimer(1, "RecheckMinimapButtons")
 	
 	--[[ these issues seem to have been fixed with the custom mask textures
