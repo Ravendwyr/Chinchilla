@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_ShowHide = Chinchilla:NewModule("ShowHide", "LibRockHook-1.0")
+local Chinchilla_ShowHide = Chinchilla:NewModule("ShowHide", "AceHook-3.0")
 local self = Chinchilla_ShowHide
 local L = Chinchilla.L
 
@@ -44,12 +44,12 @@ local framesShown = {}
 function Chinchilla_ShowHide:OnEnable()
 	for k,v in pairs(frames) do
 		framesShown[v] = v:IsShown()
-		self:AddSecureHook(frames[k], "Show", "frame_Show")
-		self:AddSecureHook(frames[k], "Hide", "frame_Hide")
+		self:SecureHook(frames[k], "Show", "frame_Show")
+		self:SecureHook(frames[k], "Hide", "frame_Hide")
 	end
 	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown()
-	self:AddSecureHook(MinimapZoneTextButton, "Show", "MinimapZoneTextButton_Show")
-	self:AddSecureHook(MinimapZoneTextButton, "Hide", "MinimapZoneTextButton_Hide")
+	self:SecureHook(MinimapZoneTextButton, "Show", "MinimapZoneTextButton_Show")
+	self:SecureHook(MinimapZoneTextButton, "Hide", "MinimapZoneTextButton_Hide")
 	self:Update()
 end
 

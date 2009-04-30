@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_AutoZoom = Chinchilla:NewModule("AutoZoom", "LibRockTimer-1.0", "LibRockHook-1.0")
+local Chinchilla_AutoZoom = Chinchilla:NewModule("AutoZoom", "LibRockTimer-1.0", "AceHook-3.0")
 local self = Chinchilla_AutoZoom
 local L = Chinchilla.L
 
@@ -30,7 +30,7 @@ function Chinchilla_AutoZoom:OnEnable()
 		end)
 	end
 	frame:Show()
-	self:AddSecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
+	self:SecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
 end
 
 function Chinchilla_AutoZoom:OnDisable()

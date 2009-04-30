@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_Position = Chinchilla:NewModule("Position", "LibRockHook-1.0")
+local Chinchilla_Position = Chinchilla:NewModule("Position", "AceHook-3.0")
 local self = Chinchilla_Position
 local L = Chinchilla.L
 
@@ -132,12 +132,12 @@ function Chinchilla_Position:OnEnable()
 	MinimapCluster:StartMoving()
   	MinimapCluster:StopMovingOrSizing()
 	
-	self:AddSecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
-	self:AddSecureHook(WatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
-	self:AddSecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
-	self:AddHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace")
-	self:AddSecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
-	self:AddSecureHook("WorldStateAlwaysUpFrame_Update")
+	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
+	self:SecureHook(WatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
+	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
+	self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
+	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
+	self:SecureHook("WorldStateAlwaysUpFrame_Update")
 end
 
 function Chinchilla_Position:OnDisable()
@@ -299,7 +299,7 @@ end
 function Chinchilla_Position:WorldStateAlwaysUpFrame_Update(this)
 	while numHookedCaptureFrames < NUM_EXTENDED_UI_FRAMES do
 		numHookedCaptureFrames = numHookedCaptureFrames + 1
-		self:AddSecureHook(_G["WorldStateCaptureBar" .. numHookedCaptureFrames], "SetPoint", "WorldStateCaptureBar_SetPoint")
+		self:SecureHook(_G["WorldStateCaptureBar" .. numHookedCaptureFrames], "SetPoint", "WorldStateCaptureBar_SetPoint")
 		self:WorldStateCaptureBar_SetPoint()
 	end
 end

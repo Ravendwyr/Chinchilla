@@ -1,6 +1,6 @@
 local Chinchilla = Chinchilla
 Chinchilla:SetModuleDefaultState("RangeCircle", false)
-local Chinchilla_RangeCircle = Chinchilla:NewModule("RangeCircle", "AceEvent-3.0", "LibRockHook-1.0")
+local Chinchilla_RangeCircle = Chinchilla:NewModule("RangeCircle", "AceEvent-3.0", "AceHook-3.0")
 local self = Chinchilla_RangeCircle
 local L = Chinchilla.L
 
@@ -66,7 +66,7 @@ function Chinchilla_RangeCircle:OnEnable()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:Update()
 	
-	self:AddSecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
+	self:SecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
 end
 
 function Chinchilla_RangeCircle:OnDisable()

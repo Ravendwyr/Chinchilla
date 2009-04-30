@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_Ping = Chinchilla:NewModule("Ping", "AceEvent-3.0", "LibRockHook-1.0")
+local Chinchilla_Ping = Chinchilla:NewModule("Ping", "AceEvent-3.0", "AceHook-3.0")
 local self = Chinchilla_Ping
 local L = Chinchilla.L
 
@@ -13,6 +13,12 @@ end
 local MinimapPing_FadeOut = MinimapPing_FadeOut
 if not MinimapPing_FadeOut then
 	MinimapPing_FadeOut = MiniMapPing_FadeOut
+end
+
+if Minimap:GetScript("OnMouseUp") == _G.Minimap_OnClick then
+	Minimap:SetScript("OnMouseUp", function(...)
+		return _G.Minimap_OnClick(...)
+	end)
 end
 
 function Chinchilla_Ping:OnInitialize()
@@ -89,9 +95,8 @@ function Chinchilla_Ping:OnEnable()
 	frame:Show()
 	self:RegisterEvent("MINIMAP_PING")
 	
-	self:AddHook("Minimap_OnUpdate")
-	self:AddHook("Minimap_SetPing")
-	self:AddHook("Minimap_OnClick")
+	self:RawHook("Minimap_SetPing", true)
+	self:RawHook("Minimap_OnClick", true)
 	_G.MINIMAPPING_TIMER = self.db.profile.MINIMAPPING_TIMER
 	_G.MINIMAPPING_FADE_TIMER = self.db.profile.MINIMAPPING_FADE_TIMER
 end
@@ -152,33 +157,6 @@ function Chinchilla_Ping:SetMovable(value)
 	else
 		frame:SetParent(MinimapPing)
 		frame:RegisterForDrag()
-	end
-end
-
-function Chinchilla_Ping:Minimap_OnUpdate(...)
-	local elapsed = (...)
-	if type(elapsed) == "table" then
-		local _
-		_, elapsed = ...
-	end
-	if Minimap.timer > 0 then
-		local t = Minimap.timer - elapsed
-		Minimap.timer = t
-		if t <= 0 then
-			MinimapPing_FadeOut()
-		else
-			Minimap_SetPing(Minimap:GetPingPosition())
-		end
-	elseif MinimapPing.fadeOutTimer then
-		local t = MinimapPing.fadeOutTimer - elapsed
-		MinimapPing.fadeOutTimer = t
-		if t > 0 then
-			Minimap_SetPing(Minimap:GetPingPosition())
-			MinimapPing:SetAlpha(t / _G.MINIMAPPING_FADE_TIMER)
-		else
-			MinimapPing.fadeOut = nil
-			MinimapPing:Hide()
-		end
 	end
 end
 

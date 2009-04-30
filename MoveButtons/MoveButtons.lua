@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_MoveButtons = Chinchilla:NewModule("MoveButtons", "LibRockHook-1.0")
+local Chinchilla_MoveButtons = Chinchilla:NewModule("MoveButtons")
 local self = Chinchilla_MoveButtons
 local L = Chinchilla.L
 
