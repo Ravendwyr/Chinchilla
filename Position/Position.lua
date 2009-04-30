@@ -143,6 +143,7 @@ function Chinchilla_Position:OnEnable()
 	if wrath_310 then
 		self:AddSecureHook(WatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
 		self:AddSecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
+		self:AddHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace")
 	else
 		self:AddSecureHook(QuestWatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
 		self:AddSecureHook(QuestTimerFrame, "SetPoint", "QuestTimerFrame_SetPoint")
@@ -281,6 +282,13 @@ function Chinchilla_Position:DurabilityFrame_SetPoint(this)
 		return
 	end
 	self:SetFramePosition('durability', nil, nil, nil)
+end
+
+function Chinchilla_Position:WatchFrame_GetRemainingSpace(...)
+	if shouldntSetPoint then
+		return self.hooks.WatchFrame_GetRemainingSpace(...)
+	end
+	return 500
 end
 
 function Chinchilla_Position:QuestWatchFrame_SetPoint(this)
