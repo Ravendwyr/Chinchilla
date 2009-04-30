@@ -1,6 +1,6 @@
 local Chinchilla = Chinchilla
 Chinchilla:SetModuleDefaultState("Compass", false)
-local Chinchilla_Compass = Chinchilla:NewModule("Compass", "LibRockTimer-1.0")
+local Chinchilla_Compass = Chinchilla:NewModule("Compass")
 local self = Chinchilla_Compass
 local L = Chinchilla.L
 
@@ -23,9 +23,16 @@ local function hideBlizzDirections()
 	MinimapNorthTag:Hide()
 end
 
+local hideBlizzDirections_frame = CreateFrame("Frame")
+hideBlizzDirections_frame:Hide()
+hideBlizzDirections_frame:SetScript("OnUpdate", function(self)
+	self:Hide()
+	hideBlizzDirections()
+end)
+
 local frame
 local function repositionCompass()
-	self:AddTimer(0, hideBlizzDirections)
+	hideBlizzDirections_frame:Show()
 	local angle = 0
 	if rotateMinimap then
 		angle = GetPlayerFacing()

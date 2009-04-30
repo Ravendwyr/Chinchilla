@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_Expander = Chinchilla:NewModule("Expander", "LibRockTimer-1.0")
+local Chinchilla_Expander = Chinchilla:NewModule("Expander")
 local self = Chinchilla_Expander
 local L = Chinchilla.L
 
@@ -65,14 +65,14 @@ function Chinchilla_Expander:OnEnable()
 		end)
 	end
 	if self.db.profile.key then
-		local function func()
+		local f = CreateFrame("Frame")
+		f:SetScript("OnUpdate", function(this)
 			if InCombatLockdown() then
-				self:AddTimer(0, func)
 				return
 			end
 			SetBindingClick(self.db.profile.key, "Chinchilla_Expander_Button")
-		end
-		self:AddTimer(0, func)
+			this:Hide()
+		end)
 	end
 end
 

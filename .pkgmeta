@@ -7,7 +7,6 @@ externals:
   libs/LibRockDB-1.0: svn://svn.wowace.com/wow/librockdb-1-0/mainline/trunk
   libs/LibRockConfig-1.0: svn://svn.wowace.com/wow/librockconfig-1-0/mainline/trunk
   libs/LibRockModuleCore-1.0: svn://svn.wowace.com/wow/librockmodulecore-1-0/mainline/trunk
-  libs/LibRockTimer-1.0: svn://svn.wowace.com/wow/librocktimer-1-0/mainline/trunk
   libs/LibRockEvent-1.0: svn://svn.wowace.com/wow/librockevent-1-0/mainline/trunk
   libs/LibStub:
       url: svn://svn.wowace.com/wow/libstub/mainline/trunk
@@ -23,4 +22,7 @@ externals:
       tag: latest
   libs/AceLocale-3.0:
       url: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceLocale-3.0
+      tag: latest
+  libs/AceTimer-3.0:
+      url: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceTimer-3.0
       tag: latest

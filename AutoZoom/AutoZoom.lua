@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_AutoZoom = Chinchilla:NewModule("AutoZoom", "LibRockTimer-1.0", "AceHook-3.0")
+local Chinchilla_AutoZoom = Chinchilla:NewModule("AutoZoom", "AceHook-3.0")
 local self = Chinchilla_AutoZoom
 local L = Chinchilla.L
 

@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_Coordinates = Chinchilla:NewModule("Coordinates", "LibRockTimer-1.0")
+local Chinchilla_Coordinates = Chinchilla:NewModule("Coordinates", "AceTimer-3.0")
 local self = Chinchilla_Coordinates
 local L = Chinchilla.L
 
@@ -101,7 +101,7 @@ function Chinchilla_Coordinates:OnEnable()
 	end
 	frame:Show()
 	self:Update()
-	self:AddRepeatingTimer(0.1, frame.Update, frame)
+	self:ScheduleRepeatingTimer(frame.Update, 0.1, frame)
 end
 
 function Chinchilla_Coordinates:OnDisable()

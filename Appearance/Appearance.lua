@@ -1,5 +1,5 @@
 local Chinchilla = Chinchilla
-local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "AceEvent-3.0", "LibRockTimer-1.0")
+local Chinchilla_Appearance = Chinchilla:NewModule("Appearance", "AceEvent-3.0", "AceTimer-3.0")
 local self = Chinchilla_Appearance
 local L = Chinchilla.L
 
@@ -57,6 +57,12 @@ Chinchilla_Appearance:AddBorderStyle("Tubular",    L["Tubular"],  [[Interface\Ad
 Chinchilla_Appearance:AddBorderStyle("Flat",       L["Flat"],     [[Interface\AddOns\Chinchilla\Appearance\Border-Flat-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Flat-Square]])
 Chinchilla_Appearance:AddBorderStyle("Chinchilla", "Chinchilla",  [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla-Square]])
 
+local RotateBorder_frame = CreateFrame("Frame")
+RotateBorder_frame:Hide()
+RotateBorder_frame:SetScript("OnUpdate", function()
+	Chinchilla_Appearance:RotateBorder()
+end)
+
 local cornerTextures = {}
 local fullTexture
 function Chinchilla_Appearance:OnEnable()
@@ -82,7 +88,7 @@ function Chinchilla_Appearance:OnEnable()
 	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
-	self:AddRepeatingTimer(1, "RecheckMinimapButtons")
+	self:ScheduleRepeatingTimer("RecheckMinimapButtons", 1)
 	
 	--[[ these issues seem to have been fixed with the custom mask textures
 	self:AddEventListener("CVAR_UPDATE", "CVAR_UPDATE", 0.05)
@@ -327,10 +333,10 @@ function Chinchilla_Appearance:SetShape(shape)
 		return
 	end
 	if rotateMinimap and shape ~= "SQUARE" then
-		self:AddRepeatingTimer("Chinchilla_Appearance-RotateBorder", 0, "RotateBorder")
+		RotateBorder_frame:Show()
 		shape = "ROUND"
 	else
-		self:RemoveTimer("Chinchilla_Appearance-RotateBorder")
+		RotateBorder_frame:Hide()
 	end
 	
 	if rotateMinimap then
