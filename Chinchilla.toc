@@ -1,5 +1,6 @@
 ## Interface: 30100
-## Title: Chinchilla 1.0
+## Title: Chinchilla Minimap @project-version@
+## Version: @project-version@
 ## Notes: Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets.
 ## Notes-frFR: Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.
 ## Author: ckknight
@@ -9,7 +10,6 @@
 ## SavedVariables: ChinchillaDB
 ## OptionalDeps: LibRock-1.0, Blizzard_TimeManager
 ## X-WoWIPortal: ckknight
-## X-License: GPL v2 or later
 ## X-Donate: PayPal:ckknight AT gmail DOT com
 ## X-IssueTracker: Wowace:10063
 

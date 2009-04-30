@@ -1,5 +1,7 @@
 package-as: Chinchilla
 
+license-output: LICENSE.txt
+
 externals:
   libs/LibRock-1.0: svn://svn.wowace.com/wow/librock-1-0/mainline/trunk
   libs/LibRockDB-1.0: svn://svn.wowace.com/wow/librockdb-1-0/mainline/trunk
