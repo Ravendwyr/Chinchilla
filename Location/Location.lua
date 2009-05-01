@@ -6,31 +6,36 @@ local L = Chinchilla.L
 Chinchilla_Location.desc = L["Show zone information on or near minimap"]
 
 function Chinchilla_Location:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("Location")
-	Chinchilla:SetDatabaseNamespaceDefaults("Location", "profile", {
-		scale = 1.2,
-		positionX = 0,
-		positionY = 70,
-		showClose = true,
-		background = {
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
-			1
-		},
-		border = {
-			TOOLTIP_DEFAULT_COLOR.r,
-			TOOLTIP_DEFAULT_COLOR.g,
-			TOOLTIP_DEFAULT_COLOR.b,
-			1
-		},
---[[		textColor = {
-			1,
-			0.82,
-			0,
-			1
-		}]]
+	self.db = Chinchilla.db:RegisterNamespace("Location", {
+		profile = {
+			scale = 1.2,
+			positionX = 0,
+			positionY = 70,
+			showClose = true,
+			background = {
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
+				1
+			},
+			border = {
+				TOOLTIP_DEFAULT_COLOR.r,
+				TOOLTIP_DEFAULT_COLOR.g,
+				TOOLTIP_DEFAULT_COLOR.b,
+				1
+			},
+	--[[		textColor = {
+				1,
+				0.82,
+				0,
+				1
+			}]]
+			enabled = true,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local frame
@@ -98,7 +103,7 @@ function Chinchilla_Location:OnEnable()
 	MinimapToggleButton:Hide()
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()
-	if Chinchilla:HasModule("ShowHide") then
+	if Chinchilla:GetModule("ShowHide", true) then
 		Chinchilla:GetModule("ShowHide"):Update()
 	end
 end
@@ -108,13 +113,13 @@ function Chinchilla_Location:OnDisable()
 	MinimapToggleButton:Show()
 	MinimapBorderTop:Show()
 	MinimapZoneTextButton:Show()
-	if Chinchilla:HasModule("ShowHide") then
+	if Chinchilla:GetModule("ShowHide", true) then
 		Chinchilla:GetModule("ShowHide"):Update()
 	end
 end
 
 function Chinchilla_Location:Update()
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		return
 	end
 	local scale = self.db.profile.scale

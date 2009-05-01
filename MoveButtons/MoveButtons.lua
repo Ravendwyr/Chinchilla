@@ -202,11 +202,16 @@ local function button_OnDragStop(this)
 end
 
 function Chinchilla_MoveButtons:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("MoveButtons")
-	Chinchilla:SetDatabaseNamespaceDefaults("MoveButtons", "profile", {
-		lock = false,
-		radius = 80,
+	self.db = Chinchilla.db:RegisterNamespace("MoveButtons", {
+		profile = {
+			lock = false,
+			radius = 80,
+			enabled = true,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 	
 	for k,v in pairs(buttons) do
 		if type(self.db.profile[v]) == "table" and #self.db.profile[v] == 2 then
@@ -257,7 +262,7 @@ local angle_get = get
 local function set(info, value)
 	local key = info[#info - 1]
 	self.db.profile[key] = value
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		return
 	end
 	buttons[key]:ClearAllPoints()
@@ -330,7 +335,7 @@ local function x_set(info, value)
 	data[1] = point
 	data[2] = x
 	data[3] = y
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		return
 	end
 	buttons[key]:ClearAllPoints()
@@ -345,7 +350,7 @@ local function y_set(info, value)
 	data[1] = point
 	data[2] = x
 	data[3] = y
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		return
 	end
 	buttons[key]:ClearAllPoints()
@@ -370,7 +375,7 @@ function Chinchilla_MoveButtons:SetLocked(value)
 	else
 		value = self.db.profile.lock
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		value = true
 	end
 	if value then

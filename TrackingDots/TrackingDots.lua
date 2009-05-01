@@ -29,10 +29,15 @@ Chinchilla_TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"], 
 Chinchilla_TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-SolidSpheres]])
 
 function Chinchilla_TrackingDots:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("TrackingDots")
-	Chinchilla:SetDatabaseNamespaceDefaults("TrackingDots", "profile", {
-		trackingDotStyle = "Blizzard"
+	self.db = Chinchilla.db:RegisterNamespace("TrackingDots", {
+		profile = {
+			trackingDotStyle = "Blizzard",
+			enabled = true,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 function Chinchilla_TrackingDots:OnEnable()
@@ -56,7 +61,7 @@ function Chinchilla_TrackingDots:SetBlipTexture(name)
 		self.db.profile.trackingDotStyle = name
 	end
 	local texture = getBlipTexture(name)
-	if not self:IsActive() then
+	if not self:IsEnabled() then
 		texture = [[Interface\MiniMap\ObjectIcons]]
 	end
 	Minimap:SetBlipTexture(texture)

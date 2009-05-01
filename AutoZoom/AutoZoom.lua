@@ -6,10 +6,15 @@ local L = Chinchilla.L
 Chinchilla_AutoZoom.desc = L["Automatically zoom out after a specified time."]
 
 function Chinchilla_AutoZoom:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("AutoZoom")
-	Chinchilla:SetDatabaseNamespaceDefaults("AutoZoom", "profile", {
-		time = 20,
+	self.db = Chinchilla.db:RegisterNamespace("AutoZoom", {
+		profile = {
+			time = 20,
+			enabled = true,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local frame

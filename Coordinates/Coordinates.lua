@@ -18,31 +18,36 @@ local function recalculateCoordString()
 end
 
 function Chinchilla_Coordinates:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("Coordinates")
-	Chinchilla:SetDatabaseNamespaceDefaults("Coordinates", "profile", {
-		precision = 1,
-		scale = 1,
-		positionX = -30,
-		positionY = -50,
-		background = {
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
-			1
-		},
-		border = {
-			TOOLTIP_DEFAULT_COLOR.r,
-			TOOLTIP_DEFAULT_COLOR.g,
-			TOOLTIP_DEFAULT_COLOR.b,
-			1
-		},
-		textColor = {
-			0.8,
-			0.8,
-			0.6,
-			1
+	self.db = Chinchilla.db:RegisterNamespace("Coordinates", {
+		profile = {
+			precision = 1,
+			scale = 1,
+			positionX = -30,
+			positionY = -50,
+			background = {
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
+				1
+			},
+			border = {
+				TOOLTIP_DEFAULT_COLOR.r,
+				TOOLTIP_DEFAULT_COLOR.g,
+				TOOLTIP_DEFAULT_COLOR.b,
+				1
+			},
+			textColor = {
+				0.8,
+				0.8,
+				0.6,
+				1
+			},
+			enabled = true
 		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local frame
@@ -109,7 +114,7 @@ function Chinchilla_Coordinates:OnDisable()
 end
 
 function Chinchilla_Coordinates:Update()
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		return
 	end
 	recalculateCoordString()

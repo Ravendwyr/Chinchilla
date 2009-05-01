@@ -8,18 +8,23 @@ Chinchilla_Position.desc = L["Allow for moving of the minimap and surrounding fr
 local numHookedCaptureFrames = 0
 
 function Chinchilla_Position:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("Position")
-	Chinchilla:SetDatabaseNamespaceDefaults("Position", "profile", {
-		minimap = { "TOPRIGHT", 0, 0 },
-		minimapLock = false,
-		durability = { "TOPRIGHT", -143, -221 },
-		questWatch = { "TOPRIGHT", -183, -226 },
-		questTimer = { "TOPRIGHT", -173, -211 },
-		capture = { "TOPRIGHT", -9, -190 },
-		worldState = { "TOP", 0, -50 },
-		achievements = { "TOPRIGHT", -183, -485 },
-		vehicleSeats = { "TOPRIGHT", -50, -250},
+	self.db = Chinchilla.db:RegisterNamespace("Position", {
+		profile = {
+			minimap = { "TOPRIGHT", 0, 0 },
+			minimapLock = false,
+			durability = { "TOPRIGHT", -143, -221 },
+			questWatch = { "TOPRIGHT", -183, -226 },
+			questTimer = { "TOPRIGHT", -173, -211 },
+			capture = { "TOPRIGHT", -9, -190 },
+			worldState = { "TOP", 0, -50 },
+			achievements = { "TOPRIGHT", -183, -485 },
+			vehicleSeats = { "TOPRIGHT", -50, -250},
+			enabled = true,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local function Minimap_OnDragStart(this)
@@ -182,7 +187,7 @@ function Chinchilla_Position:SetLocked(value)
 	else
 		value = self.db.profile.minimapLock
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		value = true
 	end
 	if value then
@@ -221,7 +226,7 @@ function Chinchilla_Position:SetMinimapPosition(point, x, y)
 	else
 		y = self.db.profile.minimap[3]
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		point, x, y = "TOPRIGHT", 0, 0
 	end
 	MinimapCluster:ClearAllPoints()
@@ -247,7 +252,7 @@ function Chinchilla_Position:SetMinimapPosition(point, x, y)
 	else
 		quadrant = quadrant + 6
 	end
-	if lastQuadrant and lastQuadrant ~= quadrant and Chinchilla:HasModule("Appearance") and Chinchilla:IsModuleActive("Appearance") and Chinchilla:GetModule("Appearance").db and Chinchilla:GetModule("Appearance").db.profile.shape == quadrantToShape[lastQuadrant] then
+	if lastQuadrant and lastQuadrant ~= quadrant and Chinchilla:GetModule("Appearance", true) and Chinchilla:GetModule("Appearance"):IsEnabled() and Chinchilla:GetModule("Appearance").db and Chinchilla:GetModule("Appearance").db.profile.shape == quadrantToShape[lastQuadrant] then
 		Chinchilla:GetModule("Appearance"):SetShape(quadrantToShape[quadrant])
 	end
 	lastQuadrant = quadrant
@@ -330,7 +335,7 @@ function Chinchilla_Position:SetFramePosition(frame, point, x, y)
 	else
 		y = self.db.profile[frame][3]
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		-- TODO: get defaults for each frame
 		point, x, y = "TOPRIGHT", -143, -221
 	end
@@ -378,7 +383,7 @@ function Chinchilla_Position:ShowFrameMover(frame, value, force)
 	if value == not not (mover and mover:IsShown()) then
 		return
 	end
-	if not Chinchilla:IsModuleActive(self) and not force then
+	if not self:IsEnabled() and not force then
 		value = false
 	end
 	if value and not mover then

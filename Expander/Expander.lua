@@ -6,11 +6,16 @@ local L = Chinchilla.L
 Chinchilla_Expander.desc = L["Show an expanded minimap on keypress"]
 
 function Chinchilla_Expander:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("Expander")
-	Chinchilla:SetDatabaseNamespaceDefaults("Expander", "profile", {
-		key = false,
-		scale = 3,
+	self.db = Chinchilla.db:RegisterNamespace("Expander", {
+		profile = {
+			key = false,
+			scale = 3,
+			enabled = true,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local frame
@@ -19,7 +24,7 @@ function Chinchilla_Expander:OnEnable()
 	if not frame then
 		frame = CreateFrame("Button", "Chinchilla_Expander_Button")
 		frame:SetScript("OnMouseDown", function(this, button)
-			if not self:IsActive() then
+			if not self:IsEnabled() then
 				return
 			end
 			
@@ -47,7 +52,7 @@ function Chinchilla_Expander:OnEnable()
 			if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(minimap) end
 		end)
 		frame:SetScript("OnMouseUp", function(this, button)
-			if not self:IsActive() then
+			if not self:IsEnabled() then
 				return
 			end
 			

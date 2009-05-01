@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:SetModuleDefaultState("RangeCircle", false)
 local Chinchilla_RangeCircle = Chinchilla:NewModule("RangeCircle", "AceEvent-3.0", "AceHook-3.0")
 local self = Chinchilla_RangeCircle
 local L = Chinchilla.L
@@ -10,15 +9,20 @@ local newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newD
 
 
 function Chinchilla_RangeCircle:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("RangeCircle")
-	Chinchilla:SetDatabaseNamespaceDefaults("RangeCircle", "profile", {
-		range = 90,
-		color = { 1, 0.82, 0, 0.5 },
-		style = "Solid",
-		combatRange = 90,
-		combatColor = { 1, 0.82, 0, 0.25 },
-		combatStyle = "Solid",
+	self.db = Chinchilla.db:RegisterNamespace("RangeCircle", {
+		profile = {
+			range = 90,
+			color = { 1, 0.82, 0, 0.5 },
+			style = "Solid",
+			combatRange = 90,
+			combatColor = { 1, 0.82, 0, 0.25 },
+			combatStyle = "Solid",
+			enabled = false,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local styles = {
@@ -95,7 +99,7 @@ function Chinchilla_RangeCircle:MINIMAP_UPDATE_ZOOM()
 end
 
 function Chinchilla_RangeCircle:Update()
-	if not self:IsActive() then
+	if not self:IsEnabled() then
 		return
 	end
 	local style = styles[self.db.profile[inCombat and 'combatStyle' or 'style']] or styles.Solid

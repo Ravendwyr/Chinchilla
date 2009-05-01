@@ -6,9 +6,14 @@ local L = Chinchilla.L
 Chinchilla_WheelZoom.desc = L["Use the mouse wheel to zoom in and out on the minimap."]
 
 function Chinchilla_WheelZoom:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("WheelZoom")
-	Chinchilla:SetDatabaseNamespaceDefaults("WheelZoom", "profile", {
+	self.db = Chinchilla.db:RegisterNamespace("WheelZoom", {
+		profile = {
+			enabled = true,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local frame

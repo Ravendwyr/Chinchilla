@@ -3,7 +3,7 @@ LibStub("AceLocale-3.0"):NewLocale("Chinchilla", "enUS", true, true)
 --@end-debug@
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-Chinchilla = Rock:NewAddon("Chinchilla", "LibRockDB-1.0", "LibRockModuleCore-1.0", "AceHook-3.0")
+Chinchilla = LibStub("AceAddon-3.0"):NewAddon("Chinchilla", "AceHook-3.0")
 local Chinchilla, self = Chinchilla, Chinchilla
 Chinchilla.L = L
 Chinchilla.version = "@project-version@"
@@ -11,16 +11,22 @@ if Chinchilla.version:match("@") then
 	Chinchilla.version = "Development"
 end
 
-Chinchilla:SetDatabase("ChinchillaDB")
-Chinchilla:SetDatabaseDefaults('profile', {
-	mouseButton = "RightButton"
-})
-
 local opts = {}
-function Chinchilla.modulePrototype:AddChinchillaOption(data)
+local module = {}
+function module:AddChinchillaOption(data)
 	assert(type(data) == "function")
 	
 	opts[self] = data
+end
+Chinchilla:SetDefaultModulePrototype(module)
+
+function Chinchilla:OnInitialize()
+	local db = LibStub("AceDB-3.0"):New("Chinchilla2DB", {
+		profile = {
+			mouseButton = "RightButton"
+		}
+	}, 'Default')
+	self.db = db
 end
 
 function Chinchilla:OnEnable()
@@ -99,7 +105,7 @@ end
 
 function Chinchilla:OpenConfig()
 	-- redefine it so that we just open up the pane next time
-	function Chinchilla:OpenConfig()
+	function self:OpenConfig()
 		AceConfigDialog:Open("Chinchilla")
 	end
 	
@@ -185,10 +191,15 @@ function Chinchilla:OpenConfig()
 				name = L["Enable"],
 				desc = L["Enable this module"],
 				get = function(info)
-					return Chinchilla:IsModuleActive(module)
+					return module:IsEnabled()
 				end,
 				set = function(info, value)
-					return Chinchilla:ToggleModuleActive(module, value)
+					module.db.profile.enabled = not not value
+					if value then
+						return module:Enable()
+					else
+						return module:Disable()
+					end
 				end,
 				order = 1,
 			}
@@ -197,8 +208,10 @@ function Chinchilla:OpenConfig()
 	end
 	opts = nil
 	
+	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	
 	AceConfig:RegisterOptionsTable("Chinchilla", options)
 	AceConfigDialog:SetDefaultSize("Chinchilla", 835, 550)
 	
-	return Chinchilla:OpenConfig()
+	return self:OpenConfig()
 end

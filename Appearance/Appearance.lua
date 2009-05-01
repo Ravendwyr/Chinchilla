@@ -16,20 +16,25 @@ end
 
 local rotateMinimap = GetCVar("rotateMinimap") == "1"
 function Chinchilla_Appearance:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("Appearance")
-	Chinchilla:SetDatabaseNamespaceDefaults("Appearance", "profile", {
-		scale = 1,
-		blipScale = 1,
-		alpha = 1,
-		combatAlpha = 1,
-		borderColor = {1, 1, 1, 1},
-		buttonBorderAlpha = 1,
-		strata = "BACKGROUND",
-		frameLevel = 1,
-		shape = "CORNER-BOTTOMLEFT",
-		borderStyle = "Blizzard",
-		borderRadius = 80,
+	self.db = Chinchilla.db:RegisterNamespace("Appearance", {
+		profile = {
+			scale = 1,
+			blipScale = 1,
+			alpha = 1,
+			combatAlpha = 1,
+			borderColor = {1, 1, 1, 1},
+			buttonBorderAlpha = 1,
+			strata = "BACKGROUND",
+			frameLevel = 1,
+			shape = "CORNER-BOTTOMLEFT",
+			borderStyle = "Blizzard",
+			borderRadius = 80,
+			enabled = true,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local borderStyles = {}
@@ -117,7 +122,7 @@ function Chinchilla_Appearance:OnDisable()
 	for i,v in ipairs(cornerTextures) do
 		v:Hide()
 	end
-	if Chinchilla:HasModule("MoveButtons") then
+	if Chinchilla:GetModule("MoveButtons", true) then
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
 end
@@ -198,7 +203,7 @@ function Chinchilla_Appearance:SetScale(value)
 		value = self.db.profile.scale
 	end
 	local blipScale = self.db.profile.blipScale
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		value = 1
 		blipScale = 1
 	end
@@ -233,7 +238,7 @@ function Chinchilla_Appearance:SetAlpha(value)
 	else
 		value = self.db.profile.alpha
 	end
-	if not Chinchilla:IsModuleActive(self) or indoors then
+	if not self:IsEnabled() or indoors then
 		value = 1
 	end
 	
@@ -250,7 +255,7 @@ function Chinchilla_Appearance:SetCombatAlpha(value)
 	else
 		value = self.db.profile.combatAlpha
 	end
-	if not Chinchilla:IsModuleActive(self) or indoors then
+	if not self:IsEnabled() or indoors then
 		value = 1
 	end
 	
@@ -265,7 +270,7 @@ function Chinchilla_Appearance:SetFrameStrata(value)
 	else
 		value = self.db.profile.strata
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		value = "BACKGROUND"
 	end
 
@@ -278,7 +283,7 @@ function Chinchilla_Appearance:SetFrameLevel(value)
 	else
 		value = self.db.profile.frameLevel
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		value = 1
 	end
 	
@@ -329,7 +334,7 @@ function Chinchilla_Appearance:SetShape(shape)
 	else
 		shape = self.db.profile.shape
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		return
 	end
 	if rotateMinimap and shape ~= "SQUARE" then
@@ -393,7 +398,7 @@ function Chinchilla_Appearance:SetShape(shape)
 	
 	Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Appearance\Masks\Mask-]] .. shape)
 	
-	if Chinchilla:HasModule("MoveButtons") then
+	if Chinchilla:GetModule("MoveButtons", true) then
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
 end
@@ -450,7 +455,7 @@ function Chinchilla_Appearance:SetBorderColor(r, g, b, a)
 		b = self.db.profile.borderColor[3]
 		a = self.db.profile.borderColor[4]
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		return
 	end
 	
@@ -479,7 +484,7 @@ function Chinchilla_Appearance:SetButtonBorderAlpha(alpha)
 	else
 		alpha = self.db.profile.buttonBorderAlpha
 	end
-	if not Chinchilla:IsModuleActive(self) then
+	if not self:IsEnabled() then
 		alpha = 1
 	end
 	
@@ -723,7 +728,7 @@ function _G.GetMinimapShape()
 	if not self.db then
 		return "ROUND"
 	end
-	if Chinchilla_Appearance:IsActive() and not rotateMinimap then
+	if Chinchilla_Appearance:IsEnabled() and not rotateMinimap then
 		return self.db.profile.shape
 	else
 		if self.db.profile.shape == "SQUARE" then

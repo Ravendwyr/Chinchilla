@@ -22,33 +22,38 @@ if Minimap:GetScript("OnMouseUp") == _G.Minimap_OnClick then
 end
 
 function Chinchilla_Ping:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("Ping")
-	Chinchilla:SetDatabaseNamespaceDefaults("Ping", "profile", {
-		chat = false,
-		scale = 1,
-		positionX = 0,
-		positionY = 60,
-		background = {
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
-			1
-		},
-		border = {
-			TOOLTIP_DEFAULT_COLOR.r,
-			TOOLTIP_DEFAULT_COLOR.g,
-			TOOLTIP_DEFAULT_COLOR.b,
-			1
-		},
-		textColor = {
-			0.8,
-			0.8,
-			0.6,
-			1
-		},
-		MINIMAPPING_TIMER = 5,
-		MINIMAPPING_FADE_TIMER = 0.5,
+	self.db = Chinchilla.db:RegisterNamespace("Ping", {
+		profile = {
+			chat = false,
+			scale = 1,
+			positionX = 0,
+			positionY = 60,
+			background = {
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
+				1
+			},
+			border = {
+				TOOLTIP_DEFAULT_COLOR.r,
+				TOOLTIP_DEFAULT_COLOR.g,
+				TOOLTIP_DEFAULT_COLOR.b,
+				1
+			},
+			textColor = {
+				0.8,
+				0.8,
+				0.6,
+				1
+			},
+			MINIMAPPING_TIMER = 5,
+			MINIMAPPING_FADE_TIMER = 0.5,
+			enabled = true
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local frame

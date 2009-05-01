@@ -6,22 +6,28 @@ local L = Chinchilla.L
 Chinchilla_ShowHide.desc = L["Show and hide interface elements of the minimap"]
 
 function Chinchilla_ShowHide:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("ShowHide")
-	Chinchilla:SetDatabaseNamespaceDefaults("ShowHide", "profile", {
-		battleground = true,
-		north = true,
-		locationBar = true,
-		locationText = true,
-		map = true,
-		mail = true,
-		lfg = true,
-		dayNight = true,
-		track = true,
-		voice = true,
-		zoom = true,
-		record = true,
-		clock = true,
-	}) 
+	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
+		profile = {
+			battleground = true,
+			north = true,
+			locationBar = true,
+			locationText = true,
+			map = true,
+			mail = true,
+			lfg = true,
+			dayNight = true,
+			track = true,
+			voice = true,
+			zoom = true,
+			record = true,
+			clock = true,
+			
+			enabled = true,
+		}
+	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local frames = {
@@ -67,7 +73,7 @@ function Chinchilla_ShowHide:OnDisable()
 end
 
 function Chinchilla_ShowHide:Update()
-	if Chinchilla:IsModuleActive(self) then
+	if self:IsEnabled() then
 		for k,v in pairs(frames) do
 			local key = k
 			if key == "zoomOut" or key == "zoomIn" then
@@ -85,7 +91,7 @@ function Chinchilla_ShowHide:Update()
 				end
 			end
 		end
-		if Chinchilla:HasModule("Location") and Chinchilla:IsModuleActive("Location") then
+		if Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled() then
 			MinimapToggleButton:Hide()
 			MinimapBorderTop:Hide()
 			MinimapZoneTextButton:Hide()
@@ -129,7 +135,7 @@ function Chinchilla_ShowHide:frame_Hide(object)
 end
 
 function Chinchilla_ShowHide:MinimapZoneTextButton_Show(object)
-	if not self.db.profile.locationText or (Chinchilla:HasModule("Location") and Chinchilla:IsModuleActive("Location")) then
+	if not self.db.profile.locationText or (Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled()) then
 		MinimapToggleButton:Hide()
 		MinimapBorderTop:Hide()
 		MinimapZoneTextButton:Hide()

@@ -1,5 +1,4 @@
 local Chinchilla = Chinchilla
-Chinchilla:SetModuleDefaultState("Compass", false)
 local Chinchilla_Compass = Chinchilla:NewModule("Compass")
 local self = Chinchilla_Compass
 local L = Chinchilla.L
@@ -7,13 +6,18 @@ local L = Chinchilla.L
 Chinchilla_Compass.desc = L["Show direction indicators on the minimap"]
 
 function Chinchilla_Compass:OnInitialize()
-	self.db = Chinchilla:GetDatabaseNamespace("Compass")
-	Chinchilla:SetDatabaseNamespaceDefaults("Compass", "profile", {
-		radius = 61,
-		color = { 1, 0.82, 0, 1 },
-		fontSize = 12,
-		nonNorthSize = 0.8,
+	self.db = Chinchilla.db:RegisterNamespace("Compass", {
+		profile = {
+			radius = 61,
+			color = { 1, 0.82, 0, 1 },
+			fontSize = 12,
+			nonNorthSize = 0.8,
+			enabled = false,
+		}
 	})
+	if not self.db.profile.enabled then
+		self:SetEnabledState(false)
+	end
 end
 
 local rotateMinimap = GetCVar("rotateMinimap") == "1"
@@ -82,7 +86,7 @@ end
 
 function Chinchilla_Compass:OnRotateMinimapUpdate(value)
 	rotateMinimap = value
-	if self:IsActive() then
+	if self:IsEnabled() then
 		if value then
 			frame:SetScript("OnUpdate", repositionCompass)
 		else
@@ -94,7 +98,7 @@ end
 
 function Chinchilla_Compass:SetRadius(value)
 	Chinchilla_Compass.db.profile.radius = value
-	if Chinchilla_Compass:IsActive() then
+	if self:IsEnabled() then
 		repositionCompass()
 	end
 end
