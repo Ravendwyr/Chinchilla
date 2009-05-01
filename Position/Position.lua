@@ -498,7 +498,7 @@ Chinchilla_Position:AddChinchillaOption(function()
 
 	local function x_set(info, value)
 		local key = info[#info - 1]
-		local y = y_get(key)
+		local y = y_get(info)
 		local point, x, y = getPointXY(movers[key] or nameToFrame[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
 		if key == "minimap" then
 			Chinchilla_Position:SetMinimapPosition(point, x, y)
@@ -509,7 +509,7 @@ Chinchilla_Position:AddChinchillaOption(function()
 
 	local function y_set(info, value)
 		local key = info[#info - 1]
-		local x = x_get(key)
+		local x = x_get(info)
 		local point, x, y = getPointXY(movers[key] or nameToFrame[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
 		if key == "minimap" then
 			Chinchilla_Position:SetMinimapPosition(point, x, y)
