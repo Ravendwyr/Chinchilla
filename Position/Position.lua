@@ -13,11 +13,9 @@ function Chinchilla_Position:OnInitialize()
 			minimap = { "TOPRIGHT", 0, 0 },
 			minimapLock = false,
 			durability = { "TOPRIGHT", -143, -221 },
-			questWatch = { "TOPRIGHT", -183, -226 },
 			questTimer = { "TOPRIGHT", -173, -211 },
 			capture = { "TOPRIGHT", -9, -190 },
 			worldState = { "TOP", 0, -50 },
-			achievements = { "TOPRIGHT", -183, -485 },
 			vehicleSeats = { "TOPRIGHT", -50, -250},
 			enabled = true,
 		}
@@ -121,7 +119,6 @@ end
 function Chinchilla_Position:OnEnable()
 	self:SetMinimapPosition(nil, nil, nil)
 	self:SetFramePosition('durability', nil, nil, nil)
-	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
 	WorldStateAlwaysUpFrame:SetWidth(200)
@@ -138,9 +135,8 @@ function Chinchilla_Position:OnEnable()
   	MinimapCluster:StopMovingOrSizing()
 	
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
-	self:SecureHook(WatchFrame, "SetPoint", "QuestWatchFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
-	self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
+	-- self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	self:SecureHook("WorldStateAlwaysUpFrame_Update")
 end
@@ -149,19 +145,17 @@ function Chinchilla_Position:OnDisable()
 	self:SetMinimapPosition(nil, nil, nil)
 	self:ShowFrameMover('durability', false)
 	self:ShowFrameMover('vehicleSeats', false)
-	self:ShowFrameMover('questWatch', false)
 	self:ShowFrameMover('capture', false)
 	WorldStateAlwaysUpFrame:SetWidth(10)
 	WorldStateAlwaysUpFrame:SetHeight(10)
 	WorldStateAlwaysUpFrame:EnableMouse(true)
 	self:ShowFrameMover('worldState', false)
 	self:SetFramePosition('durability', nil, nil, nil)
-	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('worldState', nil, nil, nil)
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
 	self:SetLocked(nil)
-	self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
+	-- self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 	
 	Minimap:SetClampedToScreen(false)
 end
@@ -267,19 +261,9 @@ function Chinchilla_Position:DurabilityFrame_SetPoint(this)
 	self:SetFramePosition('durability', nil, nil, nil)
 end
 
-function Chinchilla_Position:WatchFrame_GetRemainingSpace(...)
-	if shouldntSetPoint then
-		return self.hooks.WatchFrame_GetRemainingSpace(...)
-	end
-	return 500
-end
-
-function Chinchilla_Position:QuestWatchFrame_SetPoint(this)
-	if shouldntSetPoint then
-		return
-	end
-	self:SetFramePosition('questWatch', nil, nil, nil)
-end
+-- function Chinchilla_Position:WatchFrame_GetRemainingSpace(...)
+-- 	return 500
+-- end
 
 function Chinchilla_Position:VehicleSeatIndicator_SetPoint(this)
 	if shouldntSetPoint then
@@ -313,9 +297,7 @@ end
 local nameToFrame = {
 	minimap = MinimapCluster,
 	durability = DurabilityFrame,
-	questWatch = WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,
-	achievements = AchievementWatchFrame,
 	vehicleSeats = VehicleSeatIndicator,
 }
 
@@ -371,8 +353,6 @@ end
 
 local nameToNiceName = {
 	durability = L["Durability"],
-	achievements = L["Achievements tracker"],
-	questWatch = L["Quest tracker"],
 	questTimer = L["Quest timer"],
 	worldState = L["World state"],
 	capture = L["Capture bar"],
@@ -606,47 +586,6 @@ Chinchilla_Position:AddChinchillaOption(function()
 					y = {
 						name = L["Vertical position"],
 						desc = L["Set the position on the y-axis for the durability man."],
-						type = 'range',
-						min = y_min,
-						max = y_max,
-						step = 1,
-						bigStep = 5,
-						-- stepBasis = 0,
-						get = y_get,
-						set = y_set,
-						order = 4,
-					},
-				}
-			},
-			questWatch = {
-				name = L["Quest and achievement tracker"],
-				desc = L["Position of the quest/achievement tracker on the screen"],
-				type = 'group',
-				inline = true,
-				args = {
-					movable = {
-						name = L["Movable"],
-						desc = L["Show a frame that is movable to show where you want the quest tracker to be"],
-						type = 'toggle',
-						order = 1,
-						get = movable_get,
-						set = movable_set,
-					},
-					x = {
-						name = L["Horizontal position"],
-						desc = L["Set the position on the x-axis for the quest tracker."],
-						type = 'range',
-						min = x_min,
-						max = x_max,
-						step = 1,
-						bigStep = 5,
-						get = x_get,
-						set = x_set,
-						order = 3,
-					},
-					y = {
-						name = L["Vertical position"],
-						desc = L["Set the position on the y-axis for the quest tracker."],
 						type = 'range',
 						min = y_min,
 						max = y_max,
