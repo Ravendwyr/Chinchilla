@@ -21,6 +21,7 @@ function Chinchilla_ShowHide:OnInitialize()
 			zoom = true,
 			record = true,
 			clock = true,
+			vehicleSeats = true,
 			
 			enabled = true,
 		}
@@ -42,6 +43,7 @@ local frames = {
 	voice = MiniMapVoiceChatFrame,
 	zoomIn = MinimapZoomIn,
 	zoomOut = MinimapZoomOut,
+	vehicleSeats = VehicleSeatIndicator,
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
@@ -253,6 +255,13 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 			record = frames.record and {
 				name = L["Recording"],
 				desc = L["Show the recording button"],
+				type = 'toggle',
+				get = get,
+				set = set,
+			} or nil,
+			vehicleSeats = frames.vehicleSeats and {
+				name = L["Vehicle seats"],
+				desc = L["Show the vehicle seats indicator"],
 				type = 'toggle',
 				get = get,
 				set = set,
