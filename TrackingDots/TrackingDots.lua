@@ -67,7 +67,133 @@ function Chinchilla_TrackingDots:SetBlipTexture(name)
 	Minimap:SetBlipTexture(texture)
 end
 
-Chinchilla_TrackingDots:AddChinchillaOption(function() return {
+Chinchilla_TrackingDots:AddChinchillaOption(function()
+	local AceGUI = LibStub("AceGUI-3.0")
+	
+	local previewValues = {
+		PARTY = L["Party member or pet"],
+		RAID = L["Raid member"],
+		FRIEND = L["Friendly player"],
+		NEUTRAL = L["Neutral player"],
+		ENEMY = L["Enemy player"],
+		
+		FRIENDNPC = L["Friendly npc"],
+		NEUTRALNPC = L["Neutral npc"],
+		ENEMYNPC = L["Enemy npc"],
+		TRACK = L["Tracked resource"],
+	
+		AVAIL = L["Available quest"],
+		COMPLETE = L["Completed quest"],
+		AVAILDAILY = L["Available daily quest"],
+		COMPLETEDAILY = L["Completed daily quest"],
+		FLIGHT = L["New flight path"],
+	}
+	do
+		local texCoords = {
+			RAID = { 0, 0.125, 0, 0.5 },
+			PARTY = { 0.125, 0.25, 0, 0.5 },
+			FRIEND = { 0.5, 0.625, 0, 0.5 },
+			NEUTRAL = { 0.375, 0.5, 0, 0.5 },
+			ENEMY = { 0.25, 0.375, 0, 0.5 },
+			
+			FRIENDNPC = { 0.875, 1, 0, 0.5 },
+			NEUTRALNPC = { 0.75, 0.875, 0, 0.5 },
+			ENEMYNPC = { 0.625, 0.75, 0, 0.5 },
+			TRACK = { 0, 0.125, 0.5, 1 },
+		
+			AVAIL = { 0.125, 0.25, 0.5, 1 },
+			COMPLETE = { 0.25, 0.375, 0.5, 1 },
+			AVAILDAILY = { 0.375, 0.5, 0.5, 1 },
+			COMPLETEDAILY = { 0.5, 0.625, 0.5, 1 },
+			FLIGHT = { 0.625, 0.75, 0.5, 1 },
+		}
+		local min, max, floor = math.min, math.max, math.floor
+		local fixlevels = AceGUISharedMediaWidgets.fixlevels
+		local OnItemValueChanged = AceGUISharedMediaWidgets.OnItemValueChanged
+
+		do
+			local widgetType = "Chinchilla_TrackingDots_Item_Select"
+			local widgetVersion = 1
+
+			local function SetText(self, text, ...)
+				if text and text ~= '' then
+					self.texture:SetTexture(getBlipTexture(Chinchilla_TrackingDots.db.profile.trackingDotStyle))
+					self.texture:SetTexCoord(unpack(texCoords[text]))
+				end
+				self.text:SetText(previewValues[text] or "")
+			end
+
+			local function Constructor()
+				local self = AceGUI:Create("Dropdown-Item-Toggle")
+				self.type = widgetType
+				self.SetText = SetText
+				local texture = self.frame:CreateTexture(nil, "BACKGROUND")
+				texture:SetTexture(0,0,0,0)
+				texture:SetPoint("BOTTOMRIGHT",self.frame,"TOPLEFT",22,-17)
+				texture:SetPoint("TOPLEFT",self.frame,"TOPLEFT",6,-1)
+				self.texture = texture
+				return self
+			end
+			AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
+		end
+
+		do 
+			local widgetType = "Chinchilla_TrackingDots_Select"
+			local widgetVersion = 1
+
+			local function SetText(self, text)
+				self.text:SetText(text or "")
+			end
+
+			local function AddListItem(self, value, text)
+				local item = AceGUI:Create("Chinchilla_TrackingDots_Item_Select")
+				item:SetText(text)
+				item.userdata.obj = self
+				item.userdata.value = value
+				item:SetCallback("OnValueChanged", OnItemValueChanged)
+				self.pullout:AddItem(item)
+			end
+
+			local sortlist = {}
+			local function SetList(self, list)
+				self.list = list or Media:HashTable("statusbar")
+				self.pullout:Clear()
+				for v in pairs(self.list) do
+					sortlist[#sortlist + 1] = v
+				end
+				table.sort(sortlist)
+				for i, value in pairs(sortlist) do
+					AddListItem(self, value, value)
+					sortlist[i] = nil
+				end
+				if self.multiselect then
+					AddCloseButton()
+				end
+			end
+
+			local function Constructor()
+				local self = AceGUI:Create("Dropdown")
+				self.type = widgetType
+				self.SetText = SetText
+				self.SetList = SetList
+				self.SetValue = AceGUISharedMediaWidgets.SetValue
+
+				local left = _G[self.dropdown:GetName() .. "Left"]
+				local middle = _G[self.dropdown:GetName() .. "Middle"]
+				local right = _G[self.dropdown:GetName() .. "Right"]
+
+				local texture = self.dropdown:CreateTexture(nil, "ARTWORK")
+				texture:SetPoint("BOTTOMRIGHT", right, "BOTTOMRIGHT" ,-39, 26)
+				texture:SetPoint("TOPLEFT", left, "TOPLEFT", 24, -24)
+				self.texture = texture
+				return self
+			end
+			AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
+		end
+	end
+	
+	
+	return {
 	name = L["Tracking dots"],
 	desc = Chinchilla_TrackingDots.desc,
 	type = 'group',
@@ -95,24 +221,7 @@ Chinchilla_TrackingDots:AddChinchillaOption(function() return {
 			name = L["Preview"],
 			desc = L["See how the tracking dots will look"],
 			type = 'select',
-			values = {
-				PARTY = L["Party member or pet"],
-				RAID = L["Raid member"],
-				FRIEND = L["Friendly player"],
-				NEUTRAL = L["Neutral player"],
-				ENEMY = L["Enemy player"],
-				
-				FRIENDNPC = L["Friendly npc"],
-				NEUTRALNPC = L["Neutral npc"],
-				ENEMYNPC = L["Enemy npc"],
-				TRACK = L["Tracked resource"],
-			
-				AVAIL = L["Available quest"],
-				COMPLETE = L["Completed quest"],
-				AVAILDAILY = L["Available daily quest"],
-				COMPLETEDAILY = L["Completed daily quest"],
-				FLIGHT = L["New flight path"],
-			},
+			values = previewValues,
 			-- TODO: reproduce the following with AceConfig-3.0 somehow
 			-- choiceOrder = {
 			-- 	"PARTY", "RAID", "FRIEND", "NEUTRAL", "ENEMY",
@@ -161,6 +270,7 @@ Chinchilla_TrackingDots:AddChinchillaOption(function() return {
 			get = function(info) end,
 			set = function(info, value) end,
 			order = 3,
+			dialogControl = "Chinchilla_TrackingDots_Select",
 		},
 	}
 } end)
