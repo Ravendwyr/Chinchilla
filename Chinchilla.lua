@@ -216,6 +216,7 @@ function Chinchilla:OpenConfig()
 					end
 				end,
 				order = 1,
+				width = "full",
 			}
 		end
 		options.args[module.name] = t
