@@ -161,6 +161,7 @@ function Chinchilla_Position:OnDisable()
 	self:SetFramePosition('worldState', nil, nil, nil)
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
 	self:SetLocked(nil)
+	self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 	
 	Minimap:SetClampedToScreen(false)
 end
