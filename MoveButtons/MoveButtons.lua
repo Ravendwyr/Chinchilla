@@ -330,7 +330,7 @@ end
 local function x_set(info, value)
 	local key = info[#info - 1]
 	local data = self.db.profile[key]
-	local y = y_get(key)
+	local y = y_get(info)
 	local point, x, y = getPointXY(buttons[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
 	data[1] = point
 	data[2] = x
@@ -345,7 +345,7 @@ end
 local function y_set(info, value)
 	local key = info[#info - 1]
 	local data = self.db.profile[key]
-	local x = x_get(key)
+	local x = x_get(info)
 	local point, x, y = getPointXY(buttons[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
 	data[1] = point
 	data[2] = x
