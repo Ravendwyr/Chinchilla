@@ -47,9 +47,17 @@ function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 	end
 end
 
+function Chinchilla:CallMethodOnAllModules(method, ...)
+	for name, module in self:IterateModules() do
+		if type(module[method]) == "function" then
+			module[method](module, ...)
+		end
+	end
+end
+
 function Chinchilla:SetCVar(key, value)
 	if key == "rotateMinimap" then
-		self:CallMethodOnAllModules(false, "OnRotateMinimapUpdate", value == "1")
+		self:CallMethodOnAllModules("OnRotateMinimapUpdate", value == "1")
 	end
 end
 
@@ -145,7 +153,7 @@ function Chinchilla:OpenConfig()
 					end
 				end,
 				set = function(info, value)
-					Chinchilla:CallMethodOnAllModules(false, "SetLocked", not not value)
+					Chinchilla:CallMethodOnAllModules("SetLocked", not not value)
 				end
 			},
 			rotateMinimap = {
