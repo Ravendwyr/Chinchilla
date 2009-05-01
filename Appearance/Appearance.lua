@@ -525,64 +525,72 @@ Chinchilla_Appearance:AddChinchillaOption(function()
 			scale = {
 				name = L["Size"],
 				desc = L["Set how large the minimap is"],
-				type = 'number',
+				type = 'range',
 				min = 0.25,
 				max = 4,
 				step = 0.01,
 				bigStep = 0.05,
-				get = function()
+				get = function(info)
 					return Chinchilla_Appearance.db.profile.scale
 				end,
-				set = "SetScale",
+				set = function(info, value)
+					Chinchilla_Appearance:SetScale(value)
+				end,
 				isPercent = true,
 			},
 			blipScale = {
 				name = L["Blip size"],
 				desc = L["Set how large the blips on the minimap are"],
-				type = 'number',
+				type = 'range',
 				min = 0.25,
 				max = 4,
 				step = 0.01,
 				bigStep = 0.05,
-				get = function()
+				get = function(info)
 					return Chinchilla_Appearance.db.profile.blipScale
 				end,
-				set = "SetBlipScale",
+				set = function(info, value)
+					Chinchilla_Appearance:SetBlipScale(value)
+				end,
 				isPercent = true,
 			},
 			alpha = {
 				name = L["Opacity"],
 				desc = L["Set how transparent or opaque the minimap is when not in combat"],
-				type = 'number',
+				type = 'range',
 				min = 0,
 				max = 1,
 				step = 0.01,
 				bigStep = 0.05,
-				get = function()
+				get = function(info)
 					return Chinchilla_Appearance.db.profile.alpha
 				end,
-				set = "SetAlpha",
+				set = function(info, value)
+					Chinchilla_Appearance:SetAlpha(value)
+				end,
 				isPercent = true,
 			},
 			combatAlpha = {
 				name = L["Combat opacity"],
 				desc = L["Set how transparent or opaque the minimap is when in combat"],
-				type = 'number',
+				type = 'range',
 				min = 0,
 				max = 1,
 				step = 0.01,
 				bigStep = 0.05,
-				get = function()
+				get = function(info)
 					return Chinchilla_Appearance.db.profile.combatAlpha
 				end,
-				set = "SetCombatAlpha",
+				set = function(info, value)
+					Chinchilla_Appearance:SetCombatAlpha(value)
+				end,
 				isPercent = true,
 			},
 			strata = {
 				name = L["Strata"],
 				desc = L["Set which layer the minimap is layered on in relation to others in your interface."],
-				type = 'choice',
-				choices = {
+				type = 'select',
+				values = {
 					BACKGROUND = L["Background"],
 					LOW = L["Low"],
 					MEDIUM = L["Medium"],
@@ -592,41 +600,45 @@ Chinchilla_Appearance:AddChinchillaOption(function()
 					FULLSCREEN_DIALOG = L["Fullscreen-dialog"],
 					TOOLTIP = L["Tooltip"]
 				},
-				choiceOrder = {
-					"BACKGROUND",
-					"LOW",
-					"MEDIUM",
-					"HIGH",
-					"DIALOG",
-					"FULLSCREEN",
-					"FULLSCREEN_DIALOG",
-					"TOOLTIP"
-				},
-				get = function()
+				-- choiceOrder = {
+				-- 	"BACKGROUND",
+				-- 	"LOW",
+				-- 	"MEDIUM",
+				-- 	"HIGH",
+				-- 	"DIALOG",
+				-- 	"FULLSCREEN",
+				-- 	"FULLSCREEN_DIALOG",
+				-- 	"TOOLTIP"
+				-- },
+				get = function(info)
 					return Chinchilla_Appearance.db.profile.strata
 				end,
-				set = "SetFrameStrata",
+				set = function(info, value)
+					Chinchilla_Appearance:SetFrameStrata(value)
+				end
 			},
 			frameLevel = {
 				name = L["Frame level"],
 				desc = L["Set which frame level the minimap is layered on in relation to others in your interface."],
-				type = 'number',
+				type = 'range',
 				min = 0,
 				max = 50,
 				step = 1,
-				get = function()
+				get = function(info)
 					return Chinchilla_Appearance.db.profile.frameLevel
 				end,
-				set = "SetFrameLevel",
+				set = function(info, value)
+					Chinchilla_Appearance:SetFrameLevel(value)
+				end,
 			},
 			shape = {
 				name = L["Shape"],
 				desc = L["Set the shape of the minimap."],
-				type = 'choice',
-				choices = function()
+				type = 'select',
+				values = function(info)
 					return rotateMinimap and shape_choices_alt or shape_choices
 				end,
-				get = function()
+				get = function(info)
 					local shape = Chinchilla_Appearance.db.profile.shape
 					if rotateMinimap then
 						if shape == "SQUARE" then
@@ -638,59 +650,69 @@ Chinchilla_Appearance:AddChinchillaOption(function()
 						return shape
 					end
 				end,
-				set = "SetShape",
+				set = function(info, value)
+					Chinchilla_Appearance:SetShape(value)
+				end,
 			},
 			borderAlpha = {
 				name = L["Border color"],
 				desc = L["Set the color the minimap border is."],
 				type = 'color',
 				hasAlpha = true,
-				get = function()
+				get = function(info)
 					return unpack(Chinchilla_Appearance.db.profile.borderColor)
 				end,
-				set = "SetBorderColor",
+				set = function(info, ...)
+					Chinchilla_Appearance:SetBorderColor(...)
+				end,
 			},
 			borderStyle = {
 				name = L["Border style"],
 				desc = L["Set what texture style you want the minimap border to use."],
-				type = 'choice',
-				choices = function()
-					local t = newDict()
+				type = 'select',
+				values = function(info)
+					local t = {}
 					for k,v in pairs(borderStyles) do
 						t[k] = v[1]
 					end
-					return "@dict", unpackDictAndDel(t)
+					return t
 				end,
-				get = function()
+				get = function(info)
 					return Chinchilla_Appearance.db.profile.borderStyle
 				end,
-				set = "SetBorderStyle",
+				set = function(info, value)
+					Chinchilla_Appearance:SetBorderStyle(value)
+				end,
 			},
 			borderRadius = {
 				name = L["Border radius"],
 				desc = L["Set how large the border texture is."],
-				type = 'number',
+				type = 'range',
 				min = 50,
 				max = 200,
 				step = 1,
 				bigStep = 5,
-				get = function()
+				get = function(info)
 					return Chinchilla_Appearance.db.profile.borderRadius
 				end,
-				set = "SetBorderRadius",
+				set = function(info, value)
+					Chinchilla_Appearance:SetBorderRadius(value)
+				end,
 			},
 			buttonBorderAlpha = {
 				name = L["Button border opacity"],
 				desc = L["Set how transparent or opaque the minimap button borders are."],
-				type = 'number',
+				type = 'range',
 				min = 0,
 				max = 1,
 				step = 0.01,
 				bigStep = 0.05,
-				get = function()
+				get = function(info)
 					return Chinchilla_Appearance.db.profile.buttonBorderAlpha
 				end,
-				set = "SetButtonBorderAlpha",
+				set = function(info, value)
+					Chinchilla_Appearance:SetButtonBorderAlpha(value)
+				end,
 				isPercent = true,
 			}
 		}

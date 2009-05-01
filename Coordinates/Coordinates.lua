@@ -96,7 +96,7 @@ function Chinchilla_Coordinates:OnEnable()
 			self.db.profile.positionX = x/scale
 			self.db.profile.positionY = y/scale
 			self:Update()
-			Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
+			LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 		end)
 	end
 	frame:Show()
@@ -144,14 +144,14 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 		precision = {
 			name = L["Precision"],
 			desc = L["Set the amount of numbers past the decimal place to show."],
-			type = 'number',
+			type = 'range',
 			min = 0,
 			max = 3,
 			step = 1,
-			get = function()
+			get = function(info)
 				return self.db.profile.precision
 			end,
-			set = function(value)
+			set = function(info, value)
 				self.db.profile.precision = value
 				self:Update()
 			end,
@@ -159,16 +159,16 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 		scale = {
 			name = L["Size"],
 			desc = L["Set the size of the coordinate display."],
-			type = 'number',
+			type = 'range',
 			min = 0.25,
 			max = 4,
 			step = 0.01,
 			bigStep = 0.05,
 			isPercent = true,
-			get = function()
+			get = function(info)
 				return self.db.profile.scale
 			end,
-			set = function(value)
+			set = function(info, value)
 				self.db.profile.scale = value
 				self:Update()
 			end,
@@ -178,10 +178,10 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 			desc = L["Set the background color"],
 			type = 'color',
 			hasAlpha = true,
-			get = function()
+			get = function(info)
 				return unpack(self.db.profile.background)
 			end,
-			set = function(r, g, b, a)
+			set = function(info, r, g, b, a)
 				local t = self.db.profile.background
 				t[1] = r
 				t[2] = g
@@ -195,10 +195,10 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 			desc = L["Set the border color"],
 			type = 'color',
 			hasAlpha = true,
-			get = function()
+			get = function(info)
 				return unpack(self.db.profile.border)
 			end,
-			set = function(r, g, b, a)
+			set = function(info, r, g, b, a)
 				local t = self.db.profile.border
 				t[1] = r
 				t[2] = g
@@ -212,10 +212,10 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 			desc = L["Set the text color"],
 			type = 'color',
 			hasAlpha = true,
-			get = function()
+			get = function(info)
 				return unpack(self.db.profile.textColor)
 			end,
-			set = function(r, g, b, a)
+			set = function(info, r, g, b, a)
 				local t = self.db.profile.textColor
 				t[1] = r
 				t[2] = g
@@ -228,16 +228,18 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 			name = L["Position"],
 			desc = L["Set the position of the coordinate indicator"],
 			type = 'group',
-			groupType = 'inline',
+			inline = true,
 			args = {
 				movable = {
 					name = L["Movable"],
 					desc = L["Allow the coordinate indicator to be moved"],
-					type = 'boolean',
-					get = function()
+					type = 'toggle',
+					get = function(info)
 						return frame and frame:IsMovable()
 					end,
-					set = "SetMovable",
+					set = function(info, value)
+						self:SetMovable(value)
+					end,
 					order = 1,
 					disabled = function()
 						return not frame
@@ -246,19 +248,15 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the coordinate indicator relative to the minimap."],
-					type = 'number',
-					min = function()
-						return -math.floor(GetScreenWidth()/5 + 0.5)*5
-					end,
-					max = function()
-						return math.floor(GetScreenWidth()/5 + 0.5)*5
-					end,
+					type = 'range',
+					min = -math.floor(GetScreenWidth()/5 + 0.5)*5,
+					max = math.floor(GetScreenWidth()/5 + 0.5)*5,
 					step = 1,
 					bigStep = 5,
-					get = function()
+					get = function(info)
 						return self.db.profile.positionX
 					end,
-					set = function(value)
+					set = function(info, value)
 						self.db.profile.positionX = value
 						self:Update()
 					end,
@@ -267,19 +265,15 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the coordinate indicator relative to the minimap."],
-					type = 'number',
-					min = function()
-						return -math.floor(GetScreenHeight()/5 + 0.5)*5
-					end,
-					max = function()
-						return math.floor(GetScreenHeight()/5 + 0.5)*5
-					end,
+					type = 'range',
+					min = -math.floor(GetScreenHeight()/5 + 0.5)*5,
+					max = math.floor(GetScreenHeight()/5 + 0.5)*5,
 					step = 1,
 					bigStep = 5,
-					get = function()
+					get = function(info)
 						return self.db.profile.positionY
 					end,
-					set = function(value)
+					set = function(info, value)
 						self.db.profile.positionY = value
 						self:Update()
 					end,

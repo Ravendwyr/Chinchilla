@@ -148,50 +148,58 @@ Chinchilla_Compass:AddChinchillaOption(function() return {
 		radius = {
 			name = L["Radius"],
 			desc = L["The distance from the center of the minimap to show the indicators."],
-			type = 'number',
+			type = 'range',
 			min = 50,
 			max = 100,
 			step = 1,
-			get = function()
+			get = function(info)
 				return Chinchilla_Compass.db.profile.radius
 			end,
-			set = "SetRadius",
+			set = function(info, value)
+				Chinchilla_Compass:SetRadius(value)
+			end,
 		},
 		color = {
 			name = L["Color"],
 			desc = L["Color of the indicators"],
 			type = 'color',
 			hasAlpha = true,
-			get = function()
+			get = function(info)
 				return unpack(Chinchilla_Compass.db.profile.color)
 			end,
-			set = "SetColor",
+			set = function(info, value)
+				Chinchilla_Compass:SetColor(value)
+			end,
 		},
 		fontSize = {
 			name = L["Size"],
 			desc = L["Size of the indicators"],
-			type = 'number',
+			type = 'range',
 			min = 6,
 			max = 24,
 			step = 1,
-			get = function()
+			get = function(info)
 				return Chinchilla_Compass.db.profile.fontSize
 			end,
-			set = "SetFontSize",
+			set = function(info, value)
+				Chinchilla_Compass:SetFontSize(value)
+			end,
 		},
 		nonNorthSize = {
 			name = L["Non-north size"],
 			desc = L["Size of the east, west, and south indicators relative to the north indicator"],
-			type = 'number',
+			type = 'range',
 			min = 0.5,
 			max = 1,
 			step = 0.01,
 			bigStep = 0.05,
 			isPercent = true,
-			get = function()
+			get = function(info)
 				return Chinchilla_Compass.db.profile.nonNorthSize
 			end,
-			set = "SetNonNorthSize",
+			set = function(info, value)
+				Chinchilla_Compass:SetNonNorthSize(value)
+			end,
 		},
 	}
 } end)

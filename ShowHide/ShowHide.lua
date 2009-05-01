@@ -143,10 +143,12 @@ function Chinchilla_ShowHide:MinimapZoneTextButton_Hide(object)
 end
 
 Chinchilla_ShowHide:AddChinchillaOption(function()
-	local function get(key)
+	local function get(info)
+		local key = info[#info]
 		return self.db.profile[key]
 	end
-	local function set(key, value)
+	local function set(info, value)
+		local key = info[#info]
 		self.db.profile[key] = value
 		Chinchilla_ShowHide:Update(key, value)
 	end
@@ -158,32 +160,28 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 			battleground = frames.battleground and {
 				name = L["Battleground"],
 				desc = L["Show the battleground indicator"],
-				type = 'boolean',
-				passValue = 'battleground',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			north = frames.north and {
 				name = L["North"],
 				desc = L["Show the north symbol on the minimap"],
-				type = 'boolean',
-				passValue = 'north',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			locationBar = {
 				name = L["Location bar"],
 				desc = L["Show the location bar above the minimap"],
-				type = 'boolean',
-				passValue = 'locationBar',
+				type = 'toggle',
 				get = get,
 				set = set,
 			},
 			locationText = {
 				name = L["Location text"],
 				desc = L["Show the location text above the minimap"],
-				type = 'boolean',
-				passValue = 'locationText',
+				type = 'toggle',
 				get = get,
 				set = set,
 				disabled = function()
@@ -193,72 +191,63 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 			map = frames.map and {
 				name = L["World map"],
 				desc = L["Show the world map button"],
-				type = 'boolean',
-				passValue = 'map',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			mail = frames.mail and {
 				name = L["Mail"],
 				desc = L["Show the mail indicator"],
-				type = 'boolean',
-				passValue = 'mail',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			lfg = frames.lfg and {
 				name = L["LFG"],
 				desc = L["Show the looking for group indicator"],
-				type = 'boolean',
-				passValue = 'lfg',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			dayNight = frames.dayNight and {
 				name = L["Calendar"],
 				desc = L["Show the calendar"],
-				type = 'boolean',
-				passValue = 'dayNight',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			clock = frames.clock and {
 				name = L["Clock"],
 				desc = L["Show the clock"],
-				type = 'boolean',
-				passValue = 'clock',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			track = frames.track and {
 				name = L["Tracking"],
 				desc = L["Show the tracking indicator"],
-				type = 'boolean',
-				passValue = 'track',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			voice = frames.voice and {
 				name = L["Voice chat"],
 				desc = L["Show the voice chat button"],
-				type = 'boolean',
-				passValue = 'voice',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			zoom = frames.zoomIn and frames.zoomOut and {
 				name = L["Zoom"],
 				desc = L["Show the zoom in and out buttons"],
-				type = 'boolean',
-				passValue = 'zoom',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
 			record = frames.record and {
 				name = L["Recording"],
 				desc = L["Show the recording button"],
-				type = 'boolean',
-				passValue = 'record',
+				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,

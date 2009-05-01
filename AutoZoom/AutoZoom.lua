@@ -50,15 +50,15 @@ Chinchilla_AutoZoom:AddChinchillaOption(function() return {
 		time = {
 			name = L["Time to zoom"],
 			desc = L["Set the time it takes between manually zooming in and automatically zooming out"],
-			type = 'number',
+			type = 'range',
 			min = 1,
 			max = 60,
 			step = 0.1,
 			bigStep = 1,
-			get = function()
+			get = function(info)
 				return self.db.profile.time
 			end,
-			set = function(value)
+			set = function(info, value)
 				self.db.profile.time = value
 			end
 		}

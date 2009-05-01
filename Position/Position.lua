@@ -110,7 +110,7 @@ local function Minimap_OnDragStop(this)
 	MinimapCluster:StopMovingOrSizing()
 	local point, x, y = getPointXY(MinimapCluster)
 	self:SetMinimapPosition(point, x, y)
-	Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
+	LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 end
 
 function Chinchilla_Position:OnEnable()
@@ -360,7 +360,7 @@ local function mover_OnDragStop(this)
 	this:StopMovingOrSizing()
 	local point, x, y = getPointXY(this)
 	self:SetFramePosition(this.name, point, x, y)
-	Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
+	LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 end
 
 local nameToNiceName = {
@@ -435,19 +435,18 @@ function Chinchilla_Position:ShowFrameMover(frame, value, force)
 end
 
 Chinchilla_Position:AddChinchillaOption(function()
-	local function movable_get(frame)
+	local function movable_get(info)
+		local frame = info[#info - 1]
 		return movers[frame] and movers[frame]:IsShown()
 	end
-
-	local function point_get(frame)
-		return self.db.profile[frame][1]
+	
+	local function movable_set(info, value)
+		local frame = info[#info - 1]
+		self:ShowFrameMover(frame, not not value)
 	end
 
-	local function point_set(frame, value)
-		self:SetFramePosition(frame, value, nil, nil)
-	end
-
-	local function x_get(key)
+	local function x_get(info)
+		local key = info[#info - 1]
 		local frame = movers[key] or nameToFrame[key]
 		if not frame then
 			self:ShowFrameMover(key, true, true)
@@ -469,7 +468,8 @@ Chinchilla_Position:AddChinchillaOption(function()
 		end
 	end
 
-	local function y_get(key)
+	local function y_get(info)
+		local key = info[#info - 1]
 		local frame = movers[key] or nameToFrame[key]
 		if not frame then
 			self:ShowFrameMover(key, true, true)
@@ -491,7 +491,8 @@ Chinchilla_Position:AddChinchillaOption(function()
 		end
 	end
 
-	local function x_set(key, value)
+	local function x_set(info, value)
+		local key = info[#info - 1]
 		local y = y_get(key)
 		local point, x, y = getPointXY(movers[key] or nameToFrame[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
 		if key == "minimap" then
@@ -501,7 +502,8 @@ Chinchilla_Position:AddChinchillaOption(function()
 		end
 	end
 
-	local function y_set(key, value)
+	local function y_set(info, value)
+		local key = info[#info - 1]
 		local x = x_get(key)
 		local point, x, y = getPointXY(movers[key] or nameToFrame[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
 		if key == "minimap" then
@@ -511,21 +513,13 @@ Chinchilla_Position:AddChinchillaOption(function()
 		end
 	end
 	
-	local function x_min()
-		return -math.floor(GetScreenWidth()/10 + 0.5)*5
-	end
+	local x_min = -math.floor(GetScreenWidth()/10 + 0.5)*5
 
-	local function x_max()
-		return math.floor(GetScreenWidth()/10 + 0.5)*5
-	end
+	local x_max = math.floor(GetScreenWidth()/10 + 0.5)*5
 
-	local function y_min()
-		return -math.floor(GetScreenHeight()/10 + 0.5)*5
-	end
+	local y_min = -math.floor(GetScreenHeight()/10 + 0.5)*5
 
-	local function y_max()
-		return math.floor(GetScreenHeight()/10 + 0.5)*5
-	end
+	local y_max = math.floor(GetScreenHeight()/10 + 0.5)*5
 	
 	return {
 		name = L["Position"],
@@ -536,43 +530,43 @@ Chinchilla_Position:AddChinchillaOption(function()
 				name = L["Minimap"],
 				desc = L["Position of the minimap on the screen"],
 				type = 'group',
-				groupType = 'inline',
+				inline = true,
 				args = {
 					lock = {
 						name = L["Movable"],
 						desc = L["Allow the minimap to be movable so you can drag it where you want"],
-						type = 'boolean',
+						type = 'toggle',
 						order = 1,
-						get = "~IsLocked",
-						set = function(value)
+						get = function(info)
+							return not Chinchilla_Position:IsLocked()
+						end,
+						set = function(info, value)
 							Chinchilla_Position:SetLocked(not value)
 						end
 					},
 					x = {
 						name = L["Horizontal position"],
 						desc = L["Set the position on the x-axis for the minimap."],
-						type = 'number',
+						type = 'range',
 						min = x_min,
 						max = x_max,
 						step = 1,
 						bigStep = 5,
 						get = x_get,
 						set = x_set,
-						passValue = 'minimap',
 						order = 3,
 					},
 					y = {
 						name = L["Vertical position"],
 						desc = L["Set the position on the y-axis for the minimap."],
-						type = 'number',
+						type = 'range',
 						min = y_min,
 						max = y_max,
 						step = 1,
 						bigStep = 5,
-						stepBasis = 0,
+						-- stepBasis = 0,
 						get = y_get,
 						set = y_set,
-						passValue = 'minimap',
 						order = 4,
 					},
 				}
@@ -581,21 +575,20 @@ Chinchilla_Position:AddChinchillaOption(function()
 				name = L["Durability"],
 				desc = L["Position of the metal durability man on the screen"],
 				type = 'group',
-				groupType = 'inline',
+				inline = true,
 				args = {
 					movable = {
 						name = L["Movable"],
 						desc = L["Show a frame that is movable to show where you want the durability man to be"],
-						type = 'boolean',
+						type = 'toggle',
 						order = 1,
 						get = movable_get,
-						set = "ShowFrameMover",
-						passValue = 'durability',
+						set = movable_set,
 					},
 					x = {
 						name = L["Horizontal position"],
 						desc = L["Set the position on the x-axis for the durability man."],
-						type = 'number',
+						type = 'range',
 						min = x_min,
 						max = x_max,
 						step = 1,
@@ -603,21 +596,19 @@ Chinchilla_Position:AddChinchillaOption(function()
 						get = x_get,
 						set = x_set,
 						order = 3,
-						passValue = 'durability',
 					},
 					y = {
 						name = L["Vertical position"],
 						desc = L["Set the position on the y-axis for the durability man."],
-						type = 'number',
+						type = 'range',
 						min = y_min,
 						max = y_max,
 						step = 1,
 						bigStep = 5,
-						stepBasis = 0,
+						-- stepBasis = 0,
 						get = y_get,
 						set = y_set,
 						order = 4,
-						passValue = 'durability',
 					},
 				}
 			},
@@ -625,21 +616,20 @@ Chinchilla_Position:AddChinchillaOption(function()
 				name = L["Quest and achievement tracker"],
 				desc = L["Position of the quest/achievement tracker on the screen"],
 				type = 'group',
-				groupType = 'inline',
+				inline = true,
 				args = {
 					movable = {
 						name = L["Movable"],
 						desc = L["Show a frame that is movable to show where you want the quest tracker to be"],
-						type = 'boolean',
+						type = 'toggle',
 						order = 1,
 						get = movable_get,
-						set = "ShowFrameMover",
-						passValue = 'questWatch',
+						set = movable_set,
 					},
 					x = {
 						name = L["Horizontal position"],
 						desc = L["Set the position on the x-axis for the quest tracker."],
-						type = 'number',
+						type = 'range',
 						min = x_min,
 						max = x_max,
 						step = 1,
@@ -647,21 +637,19 @@ Chinchilla_Position:AddChinchillaOption(function()
 						get = x_get,
 						set = x_set,
 						order = 3,
-						passValue = 'questWatch',
 					},
 					y = {
 						name = L["Vertical position"],
 						desc = L["Set the position on the y-axis for the quest tracker."],
-						type = 'number',
+						type = 'range',
 						min = y_min,
 						max = y_max,
 						step = 1,
 						bigStep = 5,
-						stepBasis = 0,
+						-- stepBasis = 0,
 						get = y_get,
 						set = y_set,
 						order = 4,
-						passValue = 'questWatch',
 					},
 				}
 			},
@@ -669,21 +657,20 @@ Chinchilla_Position:AddChinchillaOption(function()
 				name = L["Vehicle seats"],
 				desc = L["Position of the vehicle seat indicator on the screen"],
 				type = 'group',
-				groupType = 'inline',
+				inline = true,
 				args = {
 					movable = {
 						name = L["Movable"],
 						desc = L["Show a frame that is movable to show where you want the vehicle seat indicator to be"],
-						type = 'boolean',
+						type = 'toggle',
 						order = 1,
 						get = movable_get,
-						set = "ShowFrameMover",
-						passValue = 'vehicleSeats',
+						set = movable_set,
 					},
 					x = {
 						name = L["Horizontal position"],
 						desc = L["Set the position on the x-axis for the vehicle seat indicator."],
-						type = 'number',
+						type = 'range',
 						min = x_min,
 						max = x_max,
 						step = 1,
@@ -691,21 +678,19 @@ Chinchilla_Position:AddChinchillaOption(function()
 						get = x_get,
 						set = x_set,
 						order = 3,
-						passValue = 'vehicleSeats',
 					},
 					y = {
 						name = L["Vertical position"],
 						desc = L["Set the position on the y-axis for the vehicle seat indicator."],
-						type = 'number',
+						type = 'range',
 						min = y_min,
 						max = y_max,
 						step = 1,
 						bigStep = 5,
-						stepBasis = 0,
+						-- stepBasis = 0,
 						get = y_get,
 						set = y_set,
 						order = 4,
-						passValue = 'vehicleSeats',
 					},
 				}
 			},
@@ -713,21 +698,20 @@ Chinchilla_Position:AddChinchillaOption(function()
 				name = L["World state"],
 				desc = L["Position of the world state indicator on the screen"],
 				type = 'group',
-				groupType = 'inline',
+				inline = true,
 				args = {
 					movable = {
 						name = L["Movable"],
 						desc = L["Show a frame that is movable to show where you want the world state indicator to be"],
-						type = 'boolean',
+						type = 'toggle',
 						order = 1,
 						get = movable_get,
-						set = "ShowFrameMover",
-						passValue = 'worldState',
+						set = movable_set,
 					},
 					x = {
 						name = L["Horizontal position"],
 						desc = L["Set the position on the x-axis for the world state indicator."],
-						type = 'number',
+						type = 'range',
 						min = x_min,
 						max = x_max,
 						step = 1,
@@ -735,21 +719,19 @@ Chinchilla_Position:AddChinchillaOption(function()
 						get = x_get,
 						set = x_set,
 						order = 3,
-						passValue = 'worldState',
 					},
 					y = {
 						name = L["Vertical position"],
 						desc = L["Set the position on the y-axis for the world state indicator."],
-						type = 'number',
+						type = 'range',
 						min = y_min,
 						max = y_max,
 						step = 1,
 						bigStep = 5,
-						stepBasis = 0,
+						-- stepBasis = 0,
 						get = y_get,
 						set = y_set,
 						order = 4,
-						passValue = 'worldState',
 					},
 				}
 			},
@@ -757,21 +739,20 @@ Chinchilla_Position:AddChinchillaOption(function()
 				name = L["Capture bar"],
 				desc = L["Position of the capture bar on the screen"],
 				type = 'group',
-				groupType = 'inline',
+				inline = true,
 				args = {
 					movable = {
 						name = L["Movable"],
 						desc = L["Show a frame that is movable to show where you want the capture bar to be"],
-						type = 'boolean',
+						type = 'toggle',
 						order = 1,
 						get = movable_get,
-						set = "ShowFrameMover",
-						passValue = 'capture',
+						set = movable_set,
 					},
 					x = {
 						name = L["Horizontal position"],
 						desc = L["Set the position on the x-axis for the capture bar."],
-						type = 'number',
+						type = 'range',
 						min = x_min,
 						max = x_max,
 						step = 1,
@@ -779,21 +760,19 @@ Chinchilla_Position:AddChinchillaOption(function()
 						get = x_get,
 						set = x_set,
 						order = 3,
-						passValue = 'capture',
 					},
 					y = {
 						name = L["Vertical position"],
 						desc = L["Set the position on the y-axis for the capture bar."],
-						type = 'number',
+						type = 'range',
 						min = y_min,
 						max = y_max,
 						step = 1,
 						bigStep = 5,
-						stepBasis = 0,
+						-- stepBasis = 0,
 						get = y_get,
 						set = y_set,
 						order = 4,
-						passValue = 'capture',
 					},
 				}
 			},

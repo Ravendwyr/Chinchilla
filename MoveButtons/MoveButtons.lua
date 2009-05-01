@@ -184,7 +184,7 @@ local function button_OnUpdate(this)
 		this:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
 	end
 	
-	Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
+	LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 end
 local function button_OnDragStart(this)
 	this.isMoving = true
@@ -248,12 +248,14 @@ function Chinchilla_MoveButtons:Update()
 	end
 end
 
-local function get(key)
+local function get(info)
+	local key = info[#info - 1]
 	return self.db.profile[key] or getAngle(buttons[key]:GetCenter())
 end
 local angle_get = get
 
-local function set(key, value)
+local function set(info, value)
+	local key = info[#info - 1]
 	self.db.profile[key] = value
 	if not Chinchilla:IsModuleActive(self) then
 		return
@@ -263,15 +265,18 @@ local function set(key, value)
 end
 local angle_set = set
 
-local function attach_get(key)
+local function attach_get(info)
+	local key = info[#info - 1]
 	return not self.db.profile[key] or type(self.db.profile[key]) == "number"
 end
 
-local function not_attach_get(key)
+local function not_attach_get(info)
+	local key = info[#info - 1]
 	return not attach_get(key)
 end
 
-local function attach_set(key, value)
+local function attach_set(info, value)
+	local key = info[#info - 1]
 	if not value then
 		self.db.profile[key] = { "BOTTOMLEFT", buttons[key]:GetCenter() }
 	else
@@ -281,7 +286,8 @@ local function attach_set(key, value)
 	end
 end
 
-local function x_get(key)
+local function x_get(info)
+	local key = info[#info - 1]
 	local frame = buttons[key]
 	local point = self.db.profile[key][1]
 	local x = self.db.profile[key][2]
@@ -298,7 +304,8 @@ local function x_get(key)
 	end
 end
 
-local function y_get(key)
+local function y_get(info)
+	local key = info[#info - 1]
 	local frame = buttons[key]
 	local point = self.db.profile[key][1]
 	local y = self.db.profile[key][3]
@@ -315,7 +322,8 @@ local function y_get(key)
 	end
 end
 
-local function x_set(key, value)
+local function x_set(info, value)
+	local key = info[#info - 1]
 	local data = self.db.profile[key]
 	local y = y_get(key)
 	local point, x, y = getPointXY(buttons[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
@@ -329,7 +337,8 @@ local function x_set(key, value)
 	buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 end
 
-local function y_set(key, value)
+local function y_set(info, value)
+	local key = info[#info - 1]
 	local data = self.db.profile[key]
 	local x = x_get(key)
 	local point, x, y = getPointXY(buttons[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
@@ -343,21 +352,13 @@ local function y_set(key, value)
 	buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 end
 
-local function x_min()
-	return -math.floor(GetScreenWidth()/10 + 0.5) * 5
-end
+local x_min = -math.floor(GetScreenWidth()/10 + 0.5) * 5
 
-local function x_max()
-	return math.floor(GetScreenWidth()/10 + 0.5) * 5
-end
+local x_max = math.floor(GetScreenWidth()/10 + 0.5) * 5
 
-local function y_min()
-	return -math.floor(GetScreenHeight()/10 + 0.5) * 5
-end
+local y_min = -math.floor(GetScreenHeight()/10 + 0.5) * 5
 
-local function y_max()
-	return math.floor(GetScreenHeight()/10 + 0.5) * 5
-end
+local y_max = math.floor(GetScreenHeight()/10 + 0.5) * 5
 
 function Chinchilla_MoveButtons:IsLocked()
 	return self.db.profile.lock
@@ -401,7 +402,7 @@ Chinchilla_MoveButtons:AddChinchillaOption(function()
 		attach = {
 			name = L["Attach to minimap"],
 			desc = L["Whether to stay attached to the minimap or move freely.\nNote: If you hold Alt while dragging, it will automatically unattach."],
-			type = 'boolean',
+			type = 'toggle',
 			get = attach_get,
 			set = attach_set,
 			order = 1,
@@ -409,7 +410,7 @@ Chinchilla_MoveButtons:AddChinchillaOption(function()
 		angle = {
 			name = L["Angle"],
 			desc = L["Angle on the minimap"],
-			type = 'number',
+			type = 'range',
 			min = 0,
 			max = 360,
 			step = 1,
@@ -452,110 +453,105 @@ Chinchilla_MoveButtons:AddChinchillaOption(function()
 			lock = {
 				name = L["Lock"],
 				desc = L["Lock buttons in place so that they won't be mistakenly dragged"],
-				type = 'boolean',
+				type = 'toggle',
 				order = 2,
-				get = "IsLocked",
-				set = "SetLocked",
+				get = function(info)
+					self:IsLocked()
+				end,
+				set = function(info, value)
+					self:SetLocked(value)
+				end,
 			},
 			radius = {
 				name = L["Radius"],
 				desc = L["Set how far away from the center to place buttons on the minimap"],
-				type = 'number',
+				type = 'range',
 				order = 3,
 				min = 60,
 				max = 100,
 				step = 1,
-				get = function()
+				get = function(info)
 					return Chinchilla_MoveButtons.db.profile.radius
 				end,
-				set = "SetRadius",
+				set = function(info, value)
+					self:SetRadius(value)
+				end,
 			},
 			battleground = buttons.battleground and {
 				name = L["Battleground"],
 				desc = L["Set the position of the battleground indicator"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'battleground',
+				inline = true,
 				args = args,
 			} or nil,
 			map = buttons.map and {
 				name = L["World map"],
 				desc = L["Set the position of the world map button"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'map',
+				inline = true,
 				args = args,
 			} or nil,
 			mail = buttons.mail and {
 				name = L["Mail"],
 				desc = L["Set the position of the mail indicator"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'mail',
+				inline = true,
 				args = args,
 			} or nil,
 			lfg = buttons.lfg and {
 				name = L["LFG"],
 				desc = L["Set the position of the looking for group indicator"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'lfg',
+				inline = true,
 				args = args,
 			} or nil,
 			dayNight = buttons.dayNight and {
 				name = L["Calendar"],
 				desc = L["Set the position of the calendar"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'dayNight',
+				inline = true,
 				args = args,
 			} or nil,
 			clock = buttons.clock and {
 				name = L["Clock"],
 				desc = L["Set the position of the clock"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'clock',
+				inline = true,
 				args = args,
 			} or nil,
 			track = buttons.track and {
 				name = L["Tracking"],
 				desc = L["Set the position of the tracking indicator"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'track',
+				inline = true,
 				args = args,
 			} or nil,
 			voice = buttons.voice and {
 				name = L["Voice chat"],
 				desc = L["Set the position of the voice chat button"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'voice',
+				inline = true,
 				args = args,
 			} or nil,
 			zoomIn = buttons.zoomIn and {
 				name = L["Zoom in"],
 				desc = L["Set the position of the zoom in button"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'zoomIn',
+				inline = true,
 				args = args,
 			} or nil,
 			zoomOut = buttons.zoomOut and {
 				name = L["Zoom out"],
 				desc = L["Set the position of the zoom out button"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'zoomOut',
+				inline = true,
 				args = args,
 			} or nil,
 			record = buttons.record and {
 				name = L["Recording"],
 				desc = L["Set the position of the recording button"],
 				type = 'group',
-				groupType = 'inline',
-				child_passValue = 'record',
+				inline = true,
 				args = args,
 			} or nil,
 		}

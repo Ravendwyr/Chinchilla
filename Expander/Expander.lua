@@ -89,10 +89,10 @@ Chinchilla_Expander:AddChinchillaOption(function() return {
 			name = L["Keybinding"],
 			desc = L["The key to press to show the expanded minimap"],
 			type = 'keybinding',
-			get = function()
+			get = function(info)
 				return self.db.profile.key
 			end,
-			set = function(value)
+			set = function(info, value)
 				if self.db.profile.key then
 					SetBinding(self.db.profile.key, nil)
 				end
@@ -106,16 +106,16 @@ Chinchilla_Expander:AddChinchillaOption(function() return {
 		scale = {
 			name = L["Size"],
 			desc = L["The size of the expanded minimap"],
-			type = 'number',
+			type = 'range',
 			min = 0.5,
 			max = 8,
 			step = 0.01,
 			bigStep = 0.05,
 			isPercent = true,
-			get = function()
+			get = function(info)
 				return self.db.profile.scale
 			end,
-			set = function(value)
+			set = function(info, value)
 				self.db.profile.scale = value
 				if minimap then
 					minimap:SetScale(value)

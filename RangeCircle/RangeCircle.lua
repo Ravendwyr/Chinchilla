@@ -127,17 +127,19 @@ end
 Chinchilla_RangeCircle:AddChinchillaOption(function()
 	local args = {
 		range = {
-			type = 'number',
+			type = 'range',
 			name = L["Radius"],
 			desc = L["The radius in yards of how large the radius of the circle should be"],
 			min = 5,
 			max = 250,
 			step = 1,
 			bigStep = 5,
-			get = function(combat)
+			get = function(info)
+				local combat = info[#info - 1] == "inCombat"
 				return self.db.profile[combat and 'combatRange' or 'range']
 			end,
-			set = function(combat, value)
+			set = function(info, value)
+				local combat = info[#info - 1] == "inCombat"
 				self.db.profile[combat and 'combatRange' or 'range'] = value
 				if not combat == not inCombat then
 					self:Update()
@@ -149,10 +151,12 @@ Chinchilla_RangeCircle:AddChinchillaOption(function()
 			name = L["Color"],
 			desc = L["Color of the circle"],
 			hasAlpha = true,
-			get = function(combat)
+			get = function(info)
+				local combat = info[#info - 1] == "inCombat"
 				return unpack(self.db.profile[combat and 'combatColor' or 'color'])
 			end,
-			set = function(combat, r, g, b, a)
+			set = function(info, r, g, b, a)
+				local combat = info[#info - 1] == "inCombat"
 				local data = self.db.profile[combat and 'combatColor' or 'color']
 				data[1] = r
 				data[2] = g
@@ -164,20 +168,22 @@ Chinchilla_RangeCircle:AddChinchillaOption(function()
 			end
 		},
 		style = {
-			type = 'choice',
+			type = 'select',
 			name = L["Style"],
 			desc = L["What texture style to use for the circle"],
-			choices = function()
+			values = function(info)
 				local t = newDict()
 				for k,v in pairs(styles) do
 					t[k] = v[1]
 				end
-				return "@dict", unpackDictAndDel(t)
+				return t
 			end,
-			get = function(combat)
+			get = function(info)
+				local combat = info[#info - 1] == "inCombat"
 				return self.db.profile[combat and 'combatStyle' or 'style']
 			end,
-			set = function(combat, value)
+			set = function(info, value)
+				local combat = info[#info - 1] == "inCombat"
 				self.db.profile[combat and 'combatStyle' or 'style'] = value
 				if not combat == not inCombat then
 					self:Update()
@@ -193,20 +199,18 @@ Chinchilla_RangeCircle:AddChinchillaOption(function()
 		args = {
 			outCombat = {
 				type = 'group',
-				groupType = 'inline',
+				inline = true,
 				name = L["Out of combat"],
 				desc = L["These settings apply when out of combat"],
 				args = args,
-				child_passValue = false,
 				order = 2,
 			},
 			inCombat = {
 				type = 'group',
-				groupType = 'inline',
+				inline = true,
 				name = L["In combat"],
 				desc = L["These settings apply when in combat"],
 				args = args,
-				child_passValue = true,
 				order = 3,
 			}
 		}

@@ -89,7 +89,7 @@ function Chinchilla_Ping:OnEnable()
 			self.db.profile.positionY = y/scale
 			frame:ClearAllPoints()
 			frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
-			Rock("LibRockConfig-1.0"):RefreshConfigMenu(Chinchilla)
+			LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 		end)
 	end
 	frame:Show()
@@ -245,31 +245,31 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 		chat = {
 			name = L["Show in chat"],
 			desc = L["Show who pinged in chat instead of in a frame on the minimap."],
-			type = 'boolean',
-			get = function()
+			type = 'toggle',
+			get = function(info)
 				return self.db.profile.chat
 			end,
-			set = function(value)
+			set = function(info, value)
 				self.db.profile.chat = value
 			end
 		},
 		scale = {
 			name = L["Size"],
 			desc = L["Set the size of the ping display."],
-			type = 'number',
+			type = 'range',
 			min = 0.25,
 			max = 4,
 			step = 0.01,
 			bigStep = 0.05,
 			isPercent = true,
-			get = function()
+			get = function(info)
 				return self.db.profile.scale
 			end,
-			set = function(value)
+			set = function(info, value)
 				self.db.profile.scale = value
 				test()
 			end,
-			hidden = function()
+			hidden = function(info)
 				return self.db.profile.chat
 			end
 		},
@@ -278,10 +278,10 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			desc = L["Set the background color"],
 			type = 'color',
 			hasAlpha = true,
-			get = function()
+			get = function(info)
 				return unpack(self.db.profile.background)
 			end,
-			set = function(r, g, b, a)
+			set = function(info, r, g, b, a)
 				local t = self.db.profile.background
 				t[1] = r
 				t[2] = g
@@ -289,7 +289,7 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 				t[4] = a
 				test()
 			end,
-			hidden = function()
+			hidden = function(info)
 				return self.db.profile.chat
 			end
 		},
@@ -298,10 +298,10 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			desc = L["Set the border color"],
 			type = 'color',
 			hasAlpha = true,
-			get = function()
+			get = function(info)
 				return unpack(self.db.profile.border)
 			end,
-			set = function(r, g, b, a)
+			set = function(info, r, g, b, a)
 				local t = self.db.profile.border
 				t[1] = r
 				t[2] = g
@@ -309,7 +309,7 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 				t[4] = a
 				test()
 			end,
-			hidden = function()
+			hidden = function(info)
 				return self.db.profile.chat
 			end
 		},
@@ -318,10 +318,10 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			desc = L["Set the text color"],
 			type = 'color',
 			hasAlpha = true,
-			get = function()
+			get = function(info)
 				return unpack(self.db.profile.textColor)
 			end,
-			set = function(r, g, b, a)
+			set = function(info, r, g, b, a)
 				local t = self.db.profile.textColor
 				t[1] = r
 				t[2] = g
@@ -329,7 +329,7 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 				t[4] = a
 				test()
 			end,
-			hidden = function()
+			hidden = function(info)
 				return self.db.profile.chat
 			end
 		},
@@ -337,37 +337,35 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			name = L["Position"],
 			desc = L["Set the position of the ping indicator"],
 			type = 'group',
-			groupType = 'inline',
+			inline = true,
 			args = {
 				movable = {
 					name = L["Movable"],
 					desc = L["Allow the ping indicator to be moved"],
-					type = 'boolean',
-					get = function()
+					type = 'toggle',
+					get = function(info)
 						return frame and frame:IsMovable()
 					end,
-					set = "SetMovable",
+					set = function(info, value)
+						self:SetMovable(value)
+					end,
 					order = 1,
-					disabled = function()
+					disabled = function(info)
 						return not frame
 					end,
 				},
 				x = {
 					name = L["Horizontal position"],
 					desc = L["Set the position on the x-axis for the ping indicator relative to the minimap."],
-					type = 'number',
-					min = function()
-						return -math.floor(GetScreenWidth()/5 + 0.5)*5
-					end,
-					max = function()
-						return math.floor(GetScreenWidth()/5 + 0.5)*5
-					end,
+					type = 'range',
+					min = -math.floor(GetScreenWidth()/5 + 0.5)*5,
+					max = math.floor(GetScreenWidth()/5 + 0.5)*5,
 					step = 1,
 					bigStep = 5,
-					get = function()
+					get = function(info)
 						return self.db.profile.positionX
 					end,
-					set = function(value)
+					set = function(info, value)
 						self.db.profile.positionX = value
 						test()
 					end,
@@ -376,19 +374,15 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the ping indicator relative to the minimap."],
-					type = 'number',
-					min = function()
-						return -math.floor(GetScreenHeight()/5 + 0.5)*5
-					end,
-					max = function()
-						return math.floor(GetScreenHeight()/5 + 0.5)*5
-					end,
+					type = 'range',
+					min = -math.floor(GetScreenHeight()/5 + 0.5)*5,
+					max = math.floor(GetScreenHeight()/5 + 0.5)*5,
 					step = 1,
 					bigStep = 5,
-					get = function()
+					get = function(info)
 						return self.db.profile.positionY
 					end,
-					set = function(value)
+					set = function(info, value)
 						self.db.profile.positionY = value
 						test()
 					end,
@@ -399,15 +393,15 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 		pingTime = {
 			name = L["Ping time"],
 			desc = L["How long the ping will show on the minimap"],
-			type = 'number',
+			type = 'range',
 			min = 1,
 			max = 30,
 			step = 0.1,
 			bigStep = 1,
-			get = function()
+			get = function(info)
 				return self.db.profile.MINIMAPPING_TIMER
 			end,
-			set = function(value)
+			set = function(info, value)
 				self.db.profile.MINIMAPPING_TIMER = value
 				_G.MINIMAPPING_TIMER = value
 				test()
@@ -416,15 +410,15 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 		fadeoutTime = {
 			name = L["Fadeout time"],
 			desc = L["How long will it take for the ping to fade"],
-			type = 'number',
+			type = 'range',
 			min = 0,
 			max = 5,
 			step = 0.1,
 			bigStep = 0.5,
-			get = function()
+			get = function(info)
 				return self.db.profile.MINIMAPPING_FADE_TIMER
 			end,
-			set = function(value)
+			set = function(info, value)
 				self.db.profile.MINIMAPPING_FADE_TIMER = value
 				_G.MINIMAPPING_FADE_TIMER = value
 				test()
