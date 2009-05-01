@@ -185,6 +185,12 @@ function Chinchilla:OpenConfig()
 					Chinchilla.db.profile.mouseButton = value
 				end,
 			},
+			version = {
+				name = L["Version: %s"]:format(Chinchilla.version),
+				type = 'description',
+				order = -1,
+				width = 'normal',
+			}
 		}
 	}
 		
