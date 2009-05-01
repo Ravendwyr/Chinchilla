@@ -5,9 +5,6 @@ local L = Chinchilla.L
 
 Chinchilla_RangeCircle.desc = L["Show a circle on the minimap at a prefered range"]
 
-local newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newDict", "unpackDictAndDel")
-
-
 function Chinchilla_RangeCircle:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("RangeCircle", {
 		profile = {
@@ -176,7 +173,7 @@ Chinchilla_RangeCircle:AddChinchillaOption(function()
 			name = L["Style"],
 			desc = L["What texture style to use for the circle"],
 			values = function(info)
-				local t = newDict()
+				local t = {}
 				for k,v in pairs(styles) do
 					t[k] = v[1]
 				end

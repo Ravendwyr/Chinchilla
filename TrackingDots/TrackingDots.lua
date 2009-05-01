@@ -5,8 +5,6 @@ local L = Chinchilla.L
 
 Chinchilla_TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
 
-local newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newDict", "unpackDictAndDel")
-
 local trackingDotStyles = {}
 function Chinchilla_TrackingDots:AddTrackingDotStyle(english, localized, texture)
 	if type(english) ~= "string" then
@@ -203,7 +201,7 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 			desc = L["Set the style of how the tracking dots should look."],
 			type = 'select',
 			values = function()
-				local t = newDict()
+				local t = {}
 				for k, v in pairs(trackingDotStyles) do
 					t[k] = v[1]
 				end
@@ -222,51 +220,6 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 			desc = L["See how the tracking dots will look"],
 			type = 'select',
 			values = previewValues,
-			-- TODO: reproduce the following with AceConfig-3.0 somehow
-			-- choiceOrder = {
-			-- 	"PARTY", "RAID", "FRIEND", "NEUTRAL", "ENEMY",
-			-- 	"FRIENDNPC", "NEUTRALNPC", "ENEMYNPC", "TRACK",
-			-- 	"AVAIL", "COMPLETE", "AVAILDAILY", "COMPLETEDAILY", "FLIGHT"
-			-- },
-			-- choiceIcons = function()
-			-- 	local t = newDict()
-			-- 	local tex = getBlipTexture(self.db.profile.trackingDotStyle)
-			-- 	t.PARTY = tex
-			-- 	t.RAID = tex
-			-- 	t.FRIEND = tex
-			-- 	t.NEUTRAL = tex
-			-- 	t.ENEMY = tex
-			-- 	
-			-- 	t.FRIENDNPC = tex
-			-- 	t.NEUTRALNPC = tex
-			-- 	t.ENEMYNPC = tex
-			-- 	t.TRACK = tex
-			-- 	
-			-- 	t.AVAIL = tex
-			-- 	t.COMPLETE = tex
-			-- 	t.AVAILDAILY = tex
-			-- 	t.COMPLETEDAILY = tex
-			-- 	t.FLIGHT = tex
-			-- 	return "@dict", unpackDictAndDel(t)
-			-- end,
-			-- choiceIconTexCoords = {
-			-- 	RAID = { 0, 0.125, 0, 0.5 },
-			-- 	PARTY = { 0.125, 0.25, 0, 0.5 },
-			-- 	FRIEND = { 0.5, 0.625, 0, 0.5 },
-			-- 	NEUTRAL = { 0.375, 0.5, 0, 0.5 },
-			-- 	ENEMY = { 0.25, 0.375, 0, 0.5 },
-			-- 	
-			-- 	FRIENDNPC = { 0.875, 1, 0, 0.5 },
-			-- 	NEUTRALNPC = { 0.75, 0.875, 0, 0.5 },
-			-- 	ENEMYNPC = { 0.625, 0.75, 0, 0.5 },
-			-- 	TRACK = { 0, 0.125, 0.5, 1 },
-			-- 
-			-- 	AVAIL = { 0.125, 0.25, 0.5, 1 },
-			-- 	COMPLETE = { 0.25, 0.375, 0.5, 1 },
-			-- 	AVAILDAILY = { 0.375, 0.5, 0.5, 1 },
-			-- 	COMPLETEDAILY = { 0.5, 0.625, 0.5, 1 },
-			-- 	FLIGHT = { 0.625, 0.75, 0.5, 1 },
-			-- },
 			get = function(info) end,
 			set = function(info, value) end,
 			order = 3,

@@ -5,8 +5,6 @@ local L = Chinchilla.L
 
 Chinchilla_Appearance.desc = L["Allow for a customized look of the minimap"]
 
-local newList, del, newDict, unpackDictAndDel = Rock:GetRecyclingFunctions("Chinchilla", "newList", "del", "newDict", "unpackDictAndDel")
-
 local DEFAULT_MINIMAP_WIDTH = Minimap:GetWidth()
 local DEFAULT_MINIMAP_HEIGHT = Minimap:GetHeight()
 local MINIMAP_POINTS = {}
@@ -151,27 +149,35 @@ function Chinchilla_Appearance:PLAYER_REGEN_DISABLED()
 end
 
 local minimapButtons = {}
-function Chinchilla_Appearance:RecheckMinimapButtons()
-	local children = newList(Minimap:GetChildren())
-	local found = false
-	for _,v in ipairs(children) do
-		if minimapButtons[v] == nil then
-			if (v:GetObjectType() == "Frame" or v:GetObjectType() == "Button") and v:GetName() then
-				local name = v:GetName()
-				if name:find("MinimapButton$") and _G[name .. "Overlay"] then
-					minimapButtons[v] = true
-					found = true
+do
+	local tmp = {}
+	local function fillTmp(...)
+		for i = 1, select('#', ...) do
+			tmp[i] = select(i, ...)
+		end
+	end
+	function Chinchilla_Appearance:RecheckMinimapButtons()
+		fillTmp(Minimap:GetChildren())
+		local found = false
+		for _,v in ipairs(tmp) do
+			if minimapButtons[v] == nil then
+				if (v:GetObjectType() == "Frame" or v:GetObjectType() == "Button") and v:GetName() then
+					local name = v:GetName()
+					if name:find("MinimapButton$") and _G[name .. "Overlay"] then
+						minimapButtons[v] = true
+						found = true
+					else
+						minimapButtons[v] = false
+					end
 				else
 					minimapButtons[v] = false
 				end
-			else
-				minimapButtons[v] = false
 			end
 		end
-	end
-	children = del(children)
-	if found then
-		self:SetButtonBorderAlpha(nil)
+		wipe(tmp)
+		if found then
+			self:SetButtonBorderAlpha(nil)
+		end
 	end
 end
 
