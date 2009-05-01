@@ -224,6 +224,7 @@ function Chinchilla:OpenConfig()
 	opts = nil
 	
 	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	options.args.profile.order = -1
 	
 	AceConfig:RegisterOptionsTable("Chinchilla", options)
 	AceConfigDialog:SetDefaultSize("Chinchilla", 835, 550)
