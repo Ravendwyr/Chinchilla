@@ -106,8 +106,6 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 			FLIGHT = { 0.625, 0.75, 0.5, 1 },
 		}
 		local min, max, floor = math.min, math.max, math.floor
-		local fixlevels = AceGUISharedMediaWidgets.fixlevels
-		local OnItemValueChanged = AceGUISharedMediaWidgets.OnItemValueChanged
 
 		do
 			local widgetType = "Chinchilla_TrackingDots_Item_Select"
@@ -148,13 +146,12 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 				item:SetText(text)
 				item.userdata.obj = self
 				item.userdata.value = value
-				item:SetCallback("OnValueChanged", OnItemValueChanged)
 				self.pullout:AddItem(item)
 			end
 
 			local sortlist = {}
 			local function SetList(self, list)
-				self.list = list or Media:HashTable("statusbar")
+				self.list = list
 				self.pullout:Clear()
 				for v in pairs(self.list) do
 					sortlist[#sortlist + 1] = v
@@ -174,7 +171,6 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 				self.type = widgetType
 				self.SetText = SetText
 				self.SetList = SetList
-				self.SetValue = AceGUISharedMediaWidgets.SetValue
 
 				local left = _G[self.dropdown:GetName() .. "Left"]
 				local middle = _G[self.dropdown:GetName() .. "Middle"]
