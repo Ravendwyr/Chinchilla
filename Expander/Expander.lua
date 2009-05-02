@@ -31,12 +31,12 @@ function Chinchilla_Expander:OnEnable()
 			MinimapCluster:Hide()
 			if not minimap then
 				minimap = CreateFrame("Minimap", "Chinchilla_Expander_Minimap", UIParent)
-				minimap:SetWidth(140)
-				minimap:SetHeight(140)
-				minimap:SetScale(self.db.profile.scale)
+				minimap:SetWidth(140 * self.db.profile.scale)
+				minimap:SetHeight(140 * self.db.profile.scale)
+				minimap:SetScale(1.2)
 				minimap:SetPoint("CENTER")
 				minimap:SetFrameStrata("TOOLTIP")
-				minimap:EnableMouse(false)
+				minimap:EnableMouse(true)
 				minimap:EnableMouseWheel(false)
 				minimap:EnableKeyboard(false)
 			end
@@ -123,7 +123,8 @@ Chinchilla_Expander:AddChinchillaOption(function() return {
 			set = function(info, value)
 				self.db.profile.scale = value
 				if minimap then
-					minimap:SetScale(value)
+					minimap:SetWidth(140 * self.db.profile.scale)
+					minimap:SetHeight(140 * self.db.profile.scale)
 				end
 			end
 		}
