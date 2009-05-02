@@ -39,7 +39,7 @@ local function repositionCompass()
 	hideBlizzDirections_frame:Show()
 	local angle = 0
 	if rotateMinimap then
-		angle = GetPlayerFacing()
+		angle = -GetPlayerFacing()
 	end
 	local radius = Chinchilla_Compass.db.profile.radius
 	frame.east:SetPoint("CENTER", Minimap, "CENTER", radius*math.cos(angle), radius*math.sin(angle))
