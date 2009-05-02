@@ -16,7 +16,8 @@ function Chinchilla_Position:OnInitialize()
 			questTimer = { "TOPRIGHT", -173, -211 },
 			capture = { "TOPRIGHT", -9, -190 },
 			worldState = { "TOP", 0, -50 },
-			vehicleSeats = { "TOPRIGHT", -50, -250},
+			vehicleSeats = { "TOPRIGHT", -50, -250 },
+			ticketStatus = { "TOPRIGHT", -180, 0 },
 			enabled = true,
 		}
 	})
@@ -299,6 +300,7 @@ local nameToFrame = {
 	durability = DurabilityFrame,
 	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
+	ticketStatus = TicketStatusFrame,
 }
 
 local movers = {}
@@ -638,6 +640,47 @@ Chinchilla_Position:AddChinchillaOption(function()
 						order = 4,
 					},
 				}
+			},
+			ticketStatus = {
+				name = L["Ticket status"],
+				desc = L["Position of the ticket status indicator on the screen"],
+				type = 'group',
+				inline = true,
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the ticket status indicator to be"],
+						type = 'toggle',
+						order = 1,
+						get = movable_get,
+						set = movable_set,
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the ticket status indicator."],
+						type = 'range',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the ticket status indicator."],
+						type = 'range',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						-- stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+					},
+				},
 			},
 			worldState = {
 				name = L["World state"],
