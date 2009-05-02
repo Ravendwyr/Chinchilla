@@ -198,6 +198,7 @@ function Chinchilla_Appearance:OnRotateMinimapUpdate(value)
 			v:Show()
 		end
 	end
+	self:SetBorderColor(unpack(self.db.profile.borderColor)) -- hack to prevent border reverting to white, not sure if there's a way around this
 	self:SetShape(nil)
 	Minimap:SetFrameLevel(MinimapCluster:GetFrameLevel()+1)
 end
