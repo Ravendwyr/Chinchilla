@@ -1,0 +1,22 @@
+Version 2.0.4
+- Add options to show and hide the Ticket Status frame.
+- Add options to reposition the Ticket Status frame.
+- Add options to show/hide the vehicle seats.
+- Tweak the Expander module to shrink the player arrow (fixes ticket #3).
+- Fix the border changing to white when enabling/disabling Rotating Minimap.
+- Fix compass rotating the wrong way round.
+- Load libraries and modules from the .toc.
+- The "Profiles" section now appears at the bottom of the modules list instead of in the middle of it.
+- Set the width of the "Enable" option to "full" to force other options onto a new line (which looks nicer imo).
+
+Version 2.0.3
+- Remove all references to the Watch Frame, since the user can move and resize it manually.
+
+Version 2.0.2
+- Fix another bug, this one involving broken concatenations.
+
+Version 2.0.1
+- Fix a bug in the MoveButtons module.
+
+Version 2.0
+- Completely re-written, now using Ace-3.0 instead of LibRock.
