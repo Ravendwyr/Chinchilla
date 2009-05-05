@@ -45,7 +45,6 @@ local frames = {
 	zoomIn = MinimapZoomIn,
 	zoomOut = MinimapZoomOut,
 	vehicleSeats = VehicleSeatIndicator,
-	ticketStatus = TicketStatusFrame,
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
@@ -264,13 +263,6 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 			vehicleSeats = frames.vehicleSeats and {
 				name = L["Vehicle seats"],
 				desc = L["Show the vehicle seats indicator"],
-				type = 'toggle',
-				get = get,
-				set = set,
-			} or nil,
-			ticketStatus = frames.ticketStatus and {
-				name = L["Ticket status"],
-				desc = L["Show the ticket status indicator"],
 				type = 'toggle',
 				get = get,
 				set = set,
