@@ -13,7 +13,6 @@ function Chinchilla_Position:OnInitialize()
 			minimap = { "TOPRIGHT", 0, 0 },
 			minimapLock = false,
 			durability = { "TOPRIGHT", -143, -221 },
-			questTimer = { "TOPRIGHT", -173, -211 },
 			capture = { "TOPRIGHT", -9, -190 },
 			worldState = { "TOP", 0, -50 },
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
@@ -355,7 +354,6 @@ end
 
 local nameToNiceName = {
 	durability = L["Durability"],
-	questTimer = L["Quest timer"],
 	worldState = L["World state"],
 	capture = L["Capture bar"],
 	vehicleSeats = L["Vehicle seats"],
