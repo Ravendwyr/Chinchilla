@@ -1,5 +1,10 @@
+Version 2.0.5
+- Fixed a bug causing the co-ordinates block not to be scaled on login.
+- Fixed a bug causing the GM Ticket Status frame to move back to it's default location on login.
+- Removed all leftover references to the Quest Timer frame, as it was merged into the Watch Frame in Patch 3.1.
+
 Version 2.0.4
-- Added options to reposition the Ticket Status frame.
+- Added options to reposition the GM Ticket Status frame.
 - Added options to show/hide the vehicle seats.
 - Fixed the border changing to white when enabling/disabling Rotating Minimap.
 - Fixed compass rotating the wrong way round.
