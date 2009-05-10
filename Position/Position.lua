@@ -125,6 +125,7 @@ function Chinchilla_Position:OnEnable()
 	WorldStateAlwaysUpFrame:SetHeight(60)
 	WorldStateAlwaysUpFrame:EnableMouse(false)
 	self:SetFramePosition('worldState', nil, nil, nil)
+	self:SetFramePosition('ticketStatus', nil, nil, nil)
 	self:SetLocked(nil)
 	
 	Minimap:SetClampedToScreen(true)
@@ -154,6 +155,7 @@ function Chinchilla_Position:OnDisable()
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('worldState', nil, nil, nil)
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
+	self:SetFramePosition('ticketStatus', nil, nil, nil)
 	self:SetLocked(nil)
 	-- self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 	
@@ -357,6 +359,7 @@ local nameToNiceName = {
 	worldState = L["World state"],
 	capture = L["Capture bar"],
 	vehicleSeats = L["Vehicle seats"],
+	ticketStatus = L["Ticket status"],
 }
 
 function Chinchilla_Position:ShowFrameMover(frame, value, force)
@@ -373,7 +376,7 @@ function Chinchilla_Position:ShowFrameMover(frame, value, force)
 		mover.name = frame
 		if frame ~= 'capture' then
 			mover:SetFrameStrata(nameToFrame[frame]:GetFrameStrata())
-			mover:SetFrameLevel(nameToFrame[frame]:GetFrameLevel()+1)
+			mover:SetFrameLevel(nameToFrame[frame]:GetFrameLevel()+5)
 		end
 		mover:SetClampedToScreen(true)
 		mover:EnableMouse(true)
