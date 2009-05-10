@@ -50,7 +50,7 @@ function Chinchilla_Coordinates:OnInitialize()
 	end
 end
 
-local frame
+local frame, timerID
 function Chinchilla_Coordinates:OnEnable()
 	if not frame then
 		frame = CreateFrame("Frame", "Chinchilla_Coordinates_Frame", Minimap)
@@ -104,12 +104,18 @@ function Chinchilla_Coordinates:OnEnable()
 			LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 		end)
 	end
+
 	frame:Show()
-	self:Update()
-	self:ScheduleRepeatingTimer(frame.Update, 0.1, frame)
+
+	 -- need these otherwise the frame won't scale on login
+	recalculateCoordString()
+	self:ScheduleTimer("Update", 0)
+
+	timerID = self:ScheduleRepeatingTimer(frame.Update, 0.1, frame)
 end
 
 function Chinchilla_Coordinates:OnDisable()
+	self:CancelTimer(timerID)
 	frame:Hide()
 end
 
