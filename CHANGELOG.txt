@@ -1,3 +1,8 @@
+Version 2.0.6
+- Fixed compass points reverting to red everytime you tried to change their colour.
+- Fixed compass points not rotating after exitting WoW with Rotate Minimap enabled.
+- Fixed the border changing to white when enabling Rotate Minimap for the first time since login.
+
 Version 2.0.5
 - Fixed a bug causing the co-ordinates block not to be scaled on login.
 - Fixed a bug causing the GM Ticket Status frame to move back to it's default location on login.
