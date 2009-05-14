@@ -183,6 +183,7 @@ end
 
 function Chinchilla_Appearance:OnRotateMinimapUpdate(value)
 	rotateMinimap = value
+
 	if value then
 		if fullTexture then
 			fullTexture:Show()
@@ -198,7 +199,7 @@ function Chinchilla_Appearance:OnRotateMinimapUpdate(value)
 			v:Show()
 		end
 	end
-	self:SetBorderColor(unpack(self.db.profile.borderColor)) -- hack to prevent border reverting to white, not sure if there's a way around this
+
 	self:SetShape(nil)
 	Minimap:SetFrameLevel(MinimapCluster:GetFrameLevel()+1)
 end
@@ -402,7 +403,8 @@ function Chinchilla_Appearance:SetShape(shape)
 			v:SetTexture(roundShapes[i][shape] and round or square)
 		end
 	end
-	
+
+	self:SetBorderColor() -- prevent border reverting to white, not sure if there's a way around this
 	Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Appearance\Masks\Mask-]] .. shape)
 	
 	if Chinchilla:GetModule("MoveButtons", true) then
