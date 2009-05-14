@@ -20,7 +20,7 @@ function Chinchilla_Compass:OnInitialize()
 	end
 end
 
-local rotateMinimap = GetCVar("rotateMinimap") == "1"
+local rotateMinimap
 
 local function hideBlizzDirections()
 	MinimapCompassTexture:Hide()
@@ -65,8 +65,11 @@ function Chinchilla_Compass:OnEnable()
 		frame.west = west
 		west:SetText("W")
 	end
+
 	hideBlizzDirections()
 	frame:Show()
+
+	rotateMinimap = GetCVar("rotateMinimap") == "1" -- delay CVar check otherwise compass won't rotate after exitting
 	repositionCompass()
 	if rotateMinimap then
 		frame:SetScript("OnUpdate", repositionCompass)
