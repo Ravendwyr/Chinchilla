@@ -105,6 +105,7 @@ end
 
 function Chinchilla_Compass:SetColor(r, g, b, a)
 	local color = Chinchilla_Compass.db.profile.color
+
 	if r then
 		color[1] = r
 		color[2] = g
@@ -171,8 +172,8 @@ Chinchilla_Compass:AddChinchillaOption(function() return {
 			get = function(info)
 				return unpack(Chinchilla_Compass.db.profile.color)
 			end,
-			set = function(info, value)
-				Chinchilla_Compass:SetColor(value)
+			set = function(info, r, g, b, a)
+				Chinchilla_Compass:SetColor(r, g, b, a)
 			end,
 		},
 		fontSize = {
