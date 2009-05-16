@@ -146,6 +146,7 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 				item:SetText(text)
 				item.userdata.obj = self
 				item.userdata.value = value
+				item.disabled = true
 				self.pullout:AddItem(item)
 			end
 
