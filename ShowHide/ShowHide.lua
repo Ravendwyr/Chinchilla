@@ -20,7 +20,6 @@ function Chinchilla_ShowHide:OnInitialize()
 			voice = true,
 			zoom = true,
 			record = true,
-			clock = true,
 			vehicleSeats = true,
 			ticketStatus = true,
 			
@@ -39,7 +38,6 @@ local frames = {
 	mail = MiniMapMailFrame,
 	lfg = MiniMapMeetingStoneFrame,
 	dayNight = GameTimeFrame,
-	clock = TimeManagerClockButton,
 	track = MiniMapTracking,
 	voice = MiniMapVoiceChatFrame,
 	zoomIn = MinimapZoomIn,
@@ -166,20 +164,20 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 		desc = Chinchilla_ShowHide.desc,
 		type = 'group',
 		args = {
-			battleground = frames.battleground and {
+			battleground = {
 				name = L["Battleground"],
 				desc = L["Show the battleground indicator"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
-			north = frames.north and {
+			},
+			north = {
 				name = L["North"],
 				desc = L["Show the north symbol on the minimap"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
+			},
 			locationBar = {
 				name = L["Location bar"],
 				desc = L["Show the location bar above the minimap"],
@@ -197,76 +195,81 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 					return self.db.profile.locationBar
 				end
 			},
-			map = frames.map and {
+			map = {
 				name = L["World map"],
 				desc = L["Show the world map button"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
-			mail = frames.mail and {
+			},
+			mail = {
 				name = L["Mail"],
 				desc = L["Show the mail indicator"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
-			lfg = frames.lfg and {
+			},
+			lfg = {
 				name = L["LFG"],
 				desc = L["Show the looking for group indicator"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
-			dayNight = frames.dayNight and {
+			},
+			dayNight = {
 				name = L["Calendar"],
 				desc = L["Show the calendar"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
-			clock = frames.clock and {
+			},
+			clock = {
 				name = L["Clock"],
 				desc = L["Show the clock"],
 				type = 'toggle',
-				get = get,
-				set = set,
-			} or nil,
-			track = frames.track and {
+				get = function(info)
+					return GetCVar("showClock") == "1"
+				end,
+				set = function(info, value)
+					SetCVar("showClock", value and "1" or "0")
+					InterfaceOptionsDisplayPanelShowClock_SetFunc(value and "1" or "0")
+				end,
+			},
+			track = {
 				name = L["Tracking"],
 				desc = L["Show the tracking indicator"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
-			voice = frames.voice and {
+			},
+			voice = {
 				name = L["Voice chat"],
 				desc = L["Show the voice chat button"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
-			zoom = frames.zoomIn and frames.zoomOut and {
+			},
+			zoom = {
 				name = L["Zoom"],
 				desc = L["Show the zoom in and out buttons"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
-			record = frames.record and {
+			},
+			record = IsMacClient() and {
 				name = L["Recording"],
 				desc = L["Show the recording button"],
 				type = 'toggle',
 				get = get,
 				set = set,
 			} or nil,
-			vehicleSeats = frames.vehicleSeats and {
+			vehicleSeats = {
 				name = L["Vehicle seats"],
 				desc = L["Show the vehicle seats indicator"],
 				type = 'toggle',
 				get = get,
 				set = set,
-			} or nil,
+			},
 		}
 	}
 end)
