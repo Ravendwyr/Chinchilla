@@ -165,6 +165,7 @@ function Chinchilla:OpenConfig()
 				end,
 				set = function(info, value)
 					SetCVar("rotateMinimap", value and "1" or "0")
+					Minimap_UpdateRotationSetting()
 				end,
 			},
 			mouseButton = {
