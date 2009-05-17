@@ -1,3 +1,8 @@
+Version 2.0.7
+- Updated tracking dot images to the new 3.1 layout. Nandini blip users rejoice!
+- Fix a bug causing the compass texture to remain shown when enabling "Rotate Minimap" in Blizzard's options and disabling it in Chinchilla's options.
+- Use Blizzard's "showClock" CVar instead of our SavedVariables for saving the hidden status of the minimap clock.
+
 Version 2.0.6
 - Fixed compass points reverting to red everytime you tried to change their colour.
 - Fixed compass points not rotating after exitting WoW with Rotate Minimap enabled.
