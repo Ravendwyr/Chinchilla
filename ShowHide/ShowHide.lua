@@ -67,7 +67,9 @@ function Chinchilla_ShowHide:OnDisable()
 		end
 	end
 	if framesShown[MinimapZoneTextButton] then
-		MinimapToggleButton:Show()
+		if MinimapToggleButton then
+			MinimapToggleButton:Show()
+		end
 		MinimapBorderTop:Show()
 		MinimapZoneTextButton:Show()
 	end
@@ -93,11 +95,15 @@ function Chinchilla_ShowHide:Update()
 			end
 		end
 		if Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled() then
-			MinimapToggleButton:Hide()
+			if MinimapToggleButton then
+				MinimapToggleButton:Hide()
+			end
 			MinimapBorderTop:Hide()
 			MinimapZoneTextButton:Hide()
 		elseif not self.db.profile.locationBar then
-			MinimapToggleButton:Hide()
+			if MinimapToggleButton then
+				MinimapToggleButton:Hide()
+			end
 			MinimapBorderTop:Hide()
 			if not self.db.profile.locationText then
 				MinimapZoneTextButton:Hide()
@@ -105,7 +111,9 @@ function Chinchilla_ShowHide:Update()
 				MinimapZoneTextButton:Show()
 			end
 		else
-			MinimapToggleButton:Show()
+			if MinimapToggleButton then
+				MinimapToggleButton:Show()
+			end
 			MinimapBorderTop:Show()
 			MinimapZoneTextButton:Show()
 		end
@@ -137,7 +145,9 @@ end
 
 function Chinchilla_ShowHide:MinimapZoneTextButton_Show(object)
 	if not self.db.profile.locationText or (Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled()) then
-		MinimapToggleButton:Hide()
+		if MinimapToggleButton then
+			MinimapToggleButton:Hide()
+		end
 		MinimapBorderTop:Hide()
 		MinimapZoneTextButton:Hide()
 	end
