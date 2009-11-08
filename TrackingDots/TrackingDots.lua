@@ -70,39 +70,39 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 	local AceGUI = LibStub("AceGUI-3.0")
 
 	local previewValues = {
-		PARTY = L["Party member or pet"],
-		FRIEND = L["Friendly player"],
-		NEUTRAL = L["Neutral player"],
-		ENEMY = L["Enemy player"],
+		L["Party member or pet"],
+		L["Friendly player"],
+		L["Neutral player"],
+		L["Enemy player"],
 
-		FRIENDNPC = L["Friendly npc"],
-		NEUTRALNPC = L["Neutral npc"],
-		ENEMYNPC = L["Enemy npc"],
-		TRACK = L["Tracked resource"],
+		L["Friendly npc"],
+		L["Neutral npc"],
+		L["Enemy npc"],
+		L["Tracked resource"],
 
-		AVAIL = L["Available quest"],
-		COMPLETE = L["Completed quest"],
-		AVAILDAILY = L["Available daily quest"],
-		COMPLETEDAILY = L["Completed daily quest"],
-		FLIGHT = L["New flight path"],
+		L["Available quest"],
+		L["Completed quest"],
+		L["Available daily quest"],
+		L["Completed daily quest"],
+		L["New flight path"],
 	}
 	do
 		local texCoords = {
-			PARTY = { 0.875, 1, 0.5, 1 },
-			FRIEND = { 0.5, 0.625, 0, 0.5 },
-			NEUTRAL = { 0.375, 0.5, 0, 0.5 },
-			ENEMY = { 0.25, 0.375, 0, 0.5 },
+			{ 0.875, 1, 0.5, 1 }, -- PARTY
+			{ 0.5, 0.625, 0, 0.5 }, -- FRIEND
+			{ 0.375, 0.5, 0, 0.5 }, -- NEUTRAL
+			{ 0.25, 0.375, 0, 0.5 }, -- ENEMY
 
-			FRIENDNPC = { 0.875, 1, 0, 0.5 },
-			NEUTRALNPC = { 0.75, 0.875, 0, 0.5 },
-			ENEMYNPC = { 0.625, 0.75, 0, 0.5 },
-			TRACK = { 0, 0.125, 0.5, 1 },
+			{ 0.875, 1, 0, 0.5 }, -- FRIEND NPC
+			{ 0.75, 0.875, 0, 0.5 }, -- NEUTRAL NPC
+			{ 0.625, 0.75, 0, 0.5 }, -- ENEMY NPC
+			{ 0, 0.125, 0.5, 1 }, -- TRACK
 
-			AVAIL = { 0.125, 0.25, 0.5, 1 },
-			COMPLETE = { 0.25, 0.375, 0.5, 1 },
-			AVAILDAILY = { 0.375, 0.5, 0.5, 1 },
-			COMPLETEDAILY = { 0.5, 0.625, 0.5, 1 },
-			FLIGHT = { 0.625, 0.75, 0.5, 1 },
+			{ 0.125, 0.25, 0.5, 1 }, -- AVAIL
+			{ 0.25, 0.375, 0.5, 1 }, -- COMPLETE
+			{ 0.375, 0.5, 0.5, 1 }, -- AVAIL DAILY
+			{ 0.5, 0.625, 0.5, 1 }, -- COMPLETE DAILY
+			{ 0.625, 0.75, 0.5, 1 }, -- FLIGHT
 		}
 		local min, max, floor = math.min, math.max, math.floor
 
