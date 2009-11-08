@@ -22,6 +22,7 @@ Chinchilla.AddTrackingDotStyle = Chinchilla_TrackingDots.AddTrackingDotStyle
 
 Chinchilla_TrackingDots:AddTrackingDotStyle("Blizzard", L["Blizzard"], [[Interface\MiniMap\ObjectIcons]])
 Chinchilla_TrackingDots:AddTrackingDotStyle("Nandini", "Nandini", [[Interface\AddOns\Chinchilla\TrackingDots\Blip-Nandini]])
+Chinchilla_TrackingDots:AddTrackingDotStyle("NandiniNew", "Nandini New", [[Interface\AddOns\Chinchilla\TrackingDots\Blip-Nandini-New]])
 Chinchilla_TrackingDots:AddTrackingDotStyle("BlizzardBig", L["Big Blizzard"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-BlizzardBig]])
 Chinchilla_TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-GlassSpheres]])
 Chinchilla_TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-SolidSpheres]])
@@ -67,19 +68,18 @@ end
 
 Chinchilla_TrackingDots:AddChinchillaOption(function()
 	local AceGUI = LibStub("AceGUI-3.0")
-	
+
 	local previewValues = {
 		PARTY = L["Party member or pet"],
-		RAID = L["Raid member"],
 		FRIEND = L["Friendly player"],
 		NEUTRAL = L["Neutral player"],
 		ENEMY = L["Enemy player"],
-		
+
 		FRIENDNPC = L["Friendly npc"],
 		NEUTRALNPC = L["Neutral npc"],
 		ENEMYNPC = L["Enemy npc"],
 		TRACK = L["Tracked resource"],
-	
+
 		AVAIL = L["Available quest"],
 		COMPLETE = L["Completed quest"],
 		AVAILDAILY = L["Available daily quest"],
@@ -88,17 +88,16 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 	}
 	do
 		local texCoords = {
-			RAID = { 0, 0.125, 0, 0.5 },
-			PARTY = { 0.125, 0.25, 0, 0.5 },
+			PARTY = { 0.875, 1, 0.5, 1 },
 			FRIEND = { 0.5, 0.625, 0, 0.5 },
 			NEUTRAL = { 0.375, 0.5, 0, 0.5 },
 			ENEMY = { 0.25, 0.375, 0, 0.5 },
-			
+
 			FRIENDNPC = { 0.875, 1, 0, 0.5 },
 			NEUTRALNPC = { 0.75, 0.875, 0, 0.5 },
 			ENEMYNPC = { 0.625, 0.75, 0, 0.5 },
 			TRACK = { 0, 0.125, 0.5, 1 },
-		
+
 			AVAIL = { 0.125, 0.25, 0.5, 1 },
 			COMPLETE = { 0.25, 0.375, 0.5, 1 },
 			AVAILDAILY = { 0.375, 0.5, 0.5, 1 },
@@ -133,7 +132,7 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 			AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
 		end
 
-		do 
+		do
 			local widgetType = "Chinchilla_TrackingDots_Select"
 			local widgetVersion = 1
 
@@ -186,8 +185,8 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 			AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
 		end
 	end
-	
-	
+
+
 	return {
 	name = L["Tracking dots"],
 	desc = Chinchilla_TrackingDots.desc,
