@@ -161,9 +161,6 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 					AddListItem(self, value, value)
 					sortlist[i] = nil
 				end
-				if self.multiselect then
-					AddCloseButton()
-				end
 			end
 
 			local function Constructor()
