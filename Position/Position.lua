@@ -139,6 +139,7 @@ function Chinchilla_Position:OnEnable()
 
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
+	self:SecureHook(WatchFrame, "SetPoint", "WatchFrame_SetPoint")
 	-- self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	self:SecureHook("WorldStateAlwaysUpFrame_Update")
@@ -266,6 +267,13 @@ function Chinchilla_Position:DurabilityFrame_SetPoint(this)
 	self:SetFramePosition('durability', nil, nil, nil)
 end
 
+function Chinchilla_Position:WatchFrame_SetPoint(this)
+	if shouldntSetPoint then
+		return
+	end
+	self:SetFramePosition('questWatch', nil, nil, nil)
+end
+
 -- function Chinchilla_Position:WatchFrame_GetRemainingSpace(...)
 -- 	return 500
 -- end
@@ -331,6 +339,7 @@ function Chinchilla_Position:SetFramePosition(frame, point, x, y)
 	end
 	shouldntSetPoint = true
 	if movers[frame] and movers[frame]:IsShown() then
+--	if movers[frame] then
 		movers[frame]:ClearAllPoints()
 		movers[frame]:SetPoint(point, UIParent, point, x, y)
 	else
