@@ -13,6 +13,7 @@ function Chinchilla_Position:OnInitialize()
 			minimap = { "TOPRIGHT", 0, 0 },
 			minimapLock = false,
 			durability = { "TOPRIGHT", -143, -221 },
+			questWatch = { "TOPRIGHT", -183, -226 },
 			capture = { "TOPRIGHT", -9, -190 },
 			worldState = { "TOP", 0, -50 },
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
@@ -45,7 +46,7 @@ local function getPointXY(frame, newX, newY)
 	if x < width/3 then
 		x = x - frame:GetWidth()/2*scale
 		point = "LEFT"
-		
+
 		if frame == MinimapCluster then
 			if x < -35*scale then
 				x = -35*scale
@@ -61,7 +62,7 @@ local function getPointXY(frame, newX, newY)
 	else
 		point = "RIGHT"
 		x = x - width + frame:GetWidth()/2*scale
-		
+
 		if frame == MinimapCluster then
 			if x > 17*scale then
 				x = 17*scale
@@ -72,11 +73,11 @@ local function getPointXY(frame, newX, newY)
 			end
 		end
 	end
-	
+
 	if y < height/3 then
 		y = y - frame:GetHeight()/2*scale
 		point = "BOTTOM" .. point
-		
+
 		if frame == MinimapCluster then
 			if y < -30*scale then
 				y = -30*scale
@@ -94,7 +95,7 @@ local function getPointXY(frame, newX, newY)
 	else
 		point = "TOP" .. point
 		y = y - height + frame:GetHeight()/2*scale
-		
+
 		if frame == MinimapCluster then
 			if y > 22*scale then
 				y = 22*scale
@@ -105,7 +106,7 @@ local function getPointXY(frame, newX, newY)
 			end
 		end
 	end
-		
+
 	return point, x/scale, y/scale
 end
 
@@ -120,6 +121,7 @@ function Chinchilla_Position:OnEnable()
 	self:SetMinimapPosition(nil, nil, nil)
 	self:SetFramePosition('durability', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
+	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
@@ -127,14 +129,14 @@ function Chinchilla_Position:OnEnable()
 	self:SetFramePosition('worldState', nil, nil, nil)
 	self:SetFramePosition('ticketStatus', nil, nil, nil)
 	self:SetLocked(nil)
-	
+
 	Minimap:SetClampedToScreen(true)
-	
-	--hack so that frame positioning doesn't break
+
+	-- hack so that frame positioning doesn't break
 	MinimapCluster:SetMovable(true)
 	MinimapCluster:StartMoving()
   	MinimapCluster:StopMovingOrSizing()
-	
+
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
 	-- self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
@@ -152,13 +154,14 @@ function Chinchilla_Position:OnDisable()
 	WorldStateAlwaysUpFrame:EnableMouse(true)
 	self:ShowFrameMover('worldState', false)
 	self:SetFramePosition('durability', nil, nil, nil)
+	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('worldState', nil, nil, nil)
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
 	self:SetFramePosition('ticketStatus', nil, nil, nil)
 	self:SetLocked(nil)
 	-- self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
-	
+
 	Minimap:SetClampedToScreen(false)
 end
 
@@ -228,7 +231,7 @@ function Chinchilla_Position:SetMinimapPosition(point, x, y)
 	end
 	MinimapCluster:ClearAllPoints()
 	MinimapCluster:SetPoint(point, UIParent, point, x, y)
-	
+
 	local x, y = MinimapCluster:GetCenter()
 	local scale = MinimapCluster:GetEffectiveScale() / UIParent:GetEffectiveScale()
 	x = x*scale
@@ -299,6 +302,7 @@ end
 local nameToFrame = {
 	minimap = MinimapCluster,
 	durability = DurabilityFrame,
+	questWatch = WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
 	ticketStatus = TicketStatusFrame,
@@ -356,6 +360,7 @@ end
 
 local nameToNiceName = {
 	durability = L["Durability"],
+	questWatch = L["Quest tracker"],
 	worldState = L["World state"],
 	capture = L["Capture bar"],
 	vehicleSeats = L["Vehicle seats"],
@@ -428,7 +433,7 @@ Chinchilla_Position:AddChinchillaOption(function()
 		local frame = info[#info - 1]
 		return movers[frame] and movers[frame]:IsShown()
 	end
-	
+
 	local function movable_set(info, value)
 		local frame = info[#info - 1]
 		self:ShowFrameMover(frame, not not value)
@@ -501,7 +506,7 @@ Chinchilla_Position:AddChinchillaOption(function()
 			Chinchilla_Position:SetFramePosition(key, point, x, y)
 		end
 	end
-	
+
 	local x_min = -math.floor(GetScreenWidth()/10 + 0.5)*5
 
 	local x_max = math.floor(GetScreenWidth()/10 + 0.5)*5
@@ -509,7 +514,7 @@ Chinchilla_Position:AddChinchillaOption(function()
 	local y_min = -math.floor(GetScreenHeight()/10 + 0.5)*5
 
 	local y_max = math.floor(GetScreenHeight()/10 + 0.5)*5
-	
+
 	return {
 		name = L["Position"],
 		desc = Chinchilla_Position.desc,
@@ -589,6 +594,47 @@ Chinchilla_Position:AddChinchillaOption(function()
 					y = {
 						name = L["Vertical position"],
 						desc = L["Set the position on the y-axis for the durability man."],
+						type = 'range',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						-- stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+					},
+				}
+			},
+			questWatch = {
+				name = L["Quest and achievement tracker"],
+				desc = L["Position of the quest/achievement tracker on the screen"],
+				type = 'group',
+				inline = true,
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the quest tracker to be"],
+						type = 'toggle',
+						order = 1,
+						get = movable_get,
+						set = movable_set,
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the quest tracker."],
+						type = 'range',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the quest tracker."],
 						type = 'range',
 						min = y_min,
 						max = y_max,
