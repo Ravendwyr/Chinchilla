@@ -9,7 +9,7 @@ local buttons = {
 	battleground = MiniMapBattlefieldFrame,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
-	lfg = MiniMapMeetingStoneFrame,
+	lfg = MiniMapLFGFrame,
 	dayNight = GameTimeFrame,
 	clock = TimeManagerClockButton,
 	track = MiniMapTracking,
@@ -28,11 +28,11 @@ local buttonStarts = {}
 
 local function getOffset(deg)
 	local angle = math.rad(deg)
-	
+
 	local cos, sin = math.cos(angle), math.sin(angle)
-	
+
 	local minimapShape = GetMinimapShape and GetMinimapShape() or "ROUND"
-	
+
 	local round = true
 	if minimapShape == "ROUND" then
 		-- do nothing
@@ -87,9 +87,9 @@ local function getOffset(deg)
 			round = false
 		end
 	end
-	
+
 	local radius = Chinchilla_MoveButtons.db.profile.radius
-	
+
 	if round then
 		return radius * cos, radius * sin
 	else
@@ -129,7 +129,7 @@ local function getPointXY(frame, x, y)
 	local width, height = GetScreenWidth(), GetScreenHeight()
 	local uiscale = UIParent:GetEffectiveScale()
 	local scale = frame:GetEffectiveScale() / uiscale
-	
+
 	local point
 	if x < width/3 then
 		point = "LEFT"
@@ -151,7 +151,7 @@ local function getPointXY(frame, x, y)
 		point = "TOP" .. point
 		y = y - height
 	end
-	
+
 	return point, x/scale, y/scale
 end
 
@@ -183,7 +183,7 @@ local function button_OnUpdate(this)
 	else
 		this:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
 	end
-	
+
 	LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 end
 local function button_OnDragStart(this)
@@ -212,7 +212,7 @@ function Chinchilla_MoveButtons:OnInitialize()
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
-	
+
 	for k,v in pairs(buttons) do
 		if type(self.db.profile[v]) == "table" and #self.db.profile[v] == 2 then
 			table.insert(self.db.profile[v], "BOTTOMLEFT")
@@ -449,7 +449,7 @@ Chinchilla_MoveButtons:AddChinchillaOption(function()
 			hidden = attach_get,
 		},
 	}
-	
+
 	return {
 		name = L["Move Buttons"],
 		desc = Chinchilla_MoveButtons.desc,
