@@ -1,6 +1,8 @@
 Version 2.0.9
 - Updated for WoW 3.3.0.
-- The quest tracker can once again be moved by Chinchilla, as Blizzard have decided to lock it back under the minimap.
+- Added support for the new LFD/LFR minimap button.
+- Fixed a bug caused by Blizzard removing the minimap toggle button.
+- The quest tracker is movable once again, seeing as Blizzard have decided to lock it back under the minimap.
 
 Version 2.0.8
 - Updated for WoW 3.2.0.
