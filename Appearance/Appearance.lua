@@ -76,7 +76,7 @@ function Chinchilla_Appearance:OnEnable()
 	self:SetShape(nil)
 	self:SetBorderColor(nil, nil, nil, nil)
 	self:SetButtonBorderAlpha(nil)
-	
+
 	MinimapBorder:Hide()
 	if rotateMinimap then
 		if fullTexture then
@@ -87,12 +87,12 @@ function Chinchilla_Appearance:OnEnable()
 			v:Show()
 		end
 	end
-	
+
 	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:ScheduleRepeatingTimer("RecheckMinimapButtons", 1)
-	
+
 	--[[ these issues seem to have been fixed with the custom mask textures
 	self:AddEventListener("CVAR_UPDATE", "CVAR_UPDATE", 0.05)
 	if IsMacClient() then --temporary hack to try and fix minimaps going black for Mac users. ~Ellipsis
@@ -110,10 +110,10 @@ function Chinchilla_Appearance:OnDisable()
 	self:SetShape(nil)
 	self:SetBorderColor(nil, nil, nil, nil)
 	self:SetButtonBorderAlpha(nil)
-	
+
 	MinimapBorder:Show()
 	Minimap:SetMaskTexture([[Textures\MinimapMask]])
-	
+
 	if fullTexture then
 		fullTexture:Hide()
 	end
@@ -133,7 +133,7 @@ function Chinchilla_Appearance:MINIMAP_UPDATE_ZOOM()
 	end
 	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
 	Minimap:SetZoom(zoom)
-	
+
 	self:SetAlpha(nil)
 end
 
@@ -215,7 +215,7 @@ function Chinchilla_Appearance:SetScale(value)
 		value = 1
 		blipScale = 1
 	end
-	
+
 	Minimap:SetWidth(DEFAULT_MINIMAP_WIDTH / blipScale)
 	Minimap:SetHeight(DEFAULT_MINIMAP_HEIGHT / blipScale)
 	Minimap:SetScale(blipScale)
@@ -226,7 +226,7 @@ function Chinchilla_Appearance:SetScale(value)
 		Minimap:SetPoint(v[1], v[2], v[3], v[4]/blipScale, v[5]/blipScale)
 	end
 	MinimapCluster:SetScale(value)
-	
+
 	local zoom = Minimap:GetZoom()
 	Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
 	Minimap:SetZoom(zoom)
@@ -235,7 +235,7 @@ end
 function Chinchilla_Appearance:SetBlipScale(value)
 	if value then
 		self.db.profile.blipScale = value
-		
+
 		self:SetScale(nil)
 	end
 end
@@ -249,7 +249,7 @@ function Chinchilla_Appearance:SetAlpha(value)
 	if not self:IsEnabled() or indoors then
 		value = 1
 	end
-	
+
 	if not inCombat then
 		MinimapCluster:SetAlpha(value)
 	else
@@ -266,7 +266,7 @@ function Chinchilla_Appearance:SetCombatAlpha(value)
 	if not self:IsEnabled() or indoors then
 		value = 1
 	end
-	
+
 	if inCombat then
 		MinimapCluster:SetAlpha(value)
 	end
@@ -294,7 +294,7 @@ function Chinchilla_Appearance:SetFrameLevel(value)
 	if not self:IsEnabled() then
 		value = 1
 	end
-	
+
 	MinimapCluster:SetFrameLevel(value)
 end
 
@@ -351,7 +351,7 @@ function Chinchilla_Appearance:SetShape(shape)
 	else
 		RotateBorder_frame:Hide()
 	end
-	
+
 	if rotateMinimap then
 		if not fullTexture then
 			local borderRadius = self.db.profile.borderRadius
@@ -369,21 +369,21 @@ function Chinchilla_Appearance:SetShape(shape)
 				cornerTextures[i]:SetWidth(borderRadius)
 				cornerTextures[i]:SetHeight(borderRadius)
 			end
-		
+
 			cornerTextures[1]:SetPoint("BOTTOMRIGHT", Minimap, "CENTER")
 			cornerTextures[1]:SetTexCoord(0, 0.5, 0, 0.5)
-		
+
 			cornerTextures[2]:SetPoint("BOTTOMLEFT", Minimap, "CENTER")
 			cornerTextures[2]:SetTexCoord(0.5, 1, 0, 0.5)
-		
+
 			cornerTextures[3]:SetPoint("TOPRIGHT", Minimap, "CENTER")
 			cornerTextures[3]:SetTexCoord(0, 0.5, 0.5, 1)
-		
+
 			cornerTextures[4]:SetPoint("TOPLEFT", Minimap, "CENTER")
 			cornerTextures[4]:SetTexCoord(0.5, 1, 0.5, 1)
 		end
 	end
-	
+
 	local borderStyle = borderStyles[self.db.profile.borderStyle] or borderStyles.Blizzard
 	local round = borderStyle and borderStyle[2] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]]
 	local square = borderStyle and borderStyle[3] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]]
@@ -406,7 +406,7 @@ function Chinchilla_Appearance:SetShape(shape)
 
 	self:SetBorderColor() -- prevent border reverting to white, not sure if there's a way around this
 	Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Appearance\Masks\Mask-]] .. shape)
-	
+
 	if Chinchilla:GetModule("MoveButtons", true) then
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
@@ -467,7 +467,7 @@ function Chinchilla_Appearance:SetBorderColor(r, g, b, a)
 	if not self:IsEnabled() then
 		return
 	end
-	
+
 	for i,v in ipairs(cornerTextures) do
 		v:SetVertexColor(r, g, b, a)
 	end
@@ -480,12 +480,12 @@ local buttonBorderTextures = {
 	MiniMapBattlefieldBorder,
 	MiniMapWorldBorder,
 	MiniMapMailBorder,
-	MiniMapMeetingStoneBorder,
+--	MiniMapMeetingStoneBorder,
 --	GameTimeFrame,
 	MiniMapTrackingBorder,
 	MiniMapVoiceChatFrameBorder,
 --	MinimapZoomIn,
---	MinimapZoomOut
+--	MinimapZoomOut,
 }
 function Chinchilla_Appearance:SetButtonBorderAlpha(alpha)
 	if alpha then
@@ -496,11 +496,11 @@ function Chinchilla_Appearance:SetButtonBorderAlpha(alpha)
 	if not self:IsEnabled() then
 		alpha = 1
 	end
-	
+
 	for i,v in ipairs(buttonBorderTextures) do
 		v:SetAlpha(alpha)
 	end
-	
+
 	for k,v in pairs(minimapButtons) do
 		if v then
 			_G[k:GetName() .. "Overlay"]:SetAlpha(alpha)
