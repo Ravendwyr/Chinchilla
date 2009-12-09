@@ -1,4 +1,4 @@
-## Interface: 30200
+## Interface: 30300
 ## Title: Chinchilla Minimap @project-version@
 ## Version: @project-version@
 ## Notes: Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets.
