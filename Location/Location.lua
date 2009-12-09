@@ -77,7 +77,7 @@ function Chinchilla_Location:OnEnable()
 			self:Update()
 			LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 		end)
-		
+
 		local closeButton = CreateFrame("Button", frame:GetName() .. "_CloseButton", frame)
 		frame.closeButton = closeButton
 		closeButton:SetWidth(27)
@@ -100,7 +100,6 @@ function Chinchilla_Location:OnEnable()
 	self:RegisterEvent("ZONE_CHANGED", "Update")
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update")
-	MinimapToggleButton:Hide()
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()
 	if Chinchilla:GetModule("ShowHide", true) then
@@ -110,7 +109,6 @@ end
 
 function Chinchilla_Location:OnDisable()
 	frame:Hide()
-	MinimapToggleButton:Show()
 	MinimapBorderTop:Show()
 	MinimapZoneTextButton:Show()
 	if Chinchilla:GetModule("ShowHide", true) then
@@ -133,7 +131,7 @@ function Chinchilla_Location:Update()
 	frame.text:SetText(GetMinimapZoneText())
 	frame:SetWidth(frame.text:GetWidth() + 12)
 	frame:SetHeight(frame.text:GetHeight() + 12)
-	
+
 	local pvpType = GetZonePVPInfo()
 	if pvpType == "sanctuary" then
 		frame.text:SetTextColor(0.41, 0.8, 0.94)
