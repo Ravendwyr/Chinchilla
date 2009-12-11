@@ -46,6 +46,7 @@ Location\Location.lua
 MoveButtons\MoveButtons.lua
 Ping\Ping.lua
 Position\Position.lua
+QuestTracker\QuestTracker.lua
 RangeCircle\RangeCircle.lua
 ShowHide\ShowHide.lua
 TrackingDots\TrackingDots.lua
