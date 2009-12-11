@@ -87,15 +87,19 @@ function Chinchilla_Location:OnEnable()
 			if Minimap:IsShown() then
 				PlaySound("igMiniMapClose")
 				Minimap:Hide()
+				this:SetNormalTexture("Interface\\Buttons\\UI-Panel-ExpandButton-Up")
+				this:SetPushedTexture("Interface\\Buttons\\UI-Panel-ExpandButton-Down")
 			else
 				PlaySound("igMiniMapOpen")
 				Minimap:Show()
+				this:SetNormalTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Up")
+				this:SetPushedTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Down")
 			end
 			UpdateUIPanelPositions()
 		end)
-		closeButton:SetNormalTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Up]])
-		closeButton:SetPushedTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Down]])
-		closeButton:SetHighlightTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
+		closeButton:SetNormalTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Up")
+		closeButton:SetPushedTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Down")
+		closeButton:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight")
 	end
 	frame:Show()
 	if self.db.profile.showClose then
