@@ -84,7 +84,14 @@ function Chinchilla_Location:OnEnable()
 		closeButton:SetHeight(27)
 		closeButton:SetPoint("LEFT", frame, "RIGHT", -6, 0)
 		closeButton:SetScript("OnClick", function(this, button)
-			_G.ToggleMinimap()
+			if Minimap:IsShown() then
+				PlaySound("igMiniMapClose")
+				Minimap:Hide()
+			else
+				PlaySound("igMiniMapOpen")
+				Minimap:Show()
+			end
+			UpdateUIPanelPositions()
 		end)
 		closeButton:SetNormalTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Up]])
 		closeButton:SetPushedTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Down]])
