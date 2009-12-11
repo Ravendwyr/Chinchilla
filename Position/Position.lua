@@ -10,14 +10,15 @@ local numHookedCaptureFrames = 0
 function Chinchilla_Position:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Position", {
 		profile = {
+			difficulty = { "TOPRIGHT", -160, 0 },
 			minimap = { "TOPRIGHT", 0, 0 },
-			minimapLock = false,
 			durability = { "TOPRIGHT", -143, -221 },
 			questWatch = { "TOPRIGHT", -183, -226 },
 			capture = { "TOPRIGHT", -9, -190 },
 			worldState = { "TOP", 0, -50 },
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
 			ticketStatus = { "TOPRIGHT", -180, 0 },
+			minimapLock = false,
 			enabled = true,
 		}
 	})
@@ -308,6 +309,7 @@ function Chinchilla_Position:WorldStateAlwaysUpFrame_Update(this)
 end
 
 local nameToFrame = {
+	difficulty = MiniMapInstanceDifficulty,
 	minimap = MinimapCluster,
 	durability = DurabilityFrame,
 	questWatch = WatchFrame,
@@ -368,6 +370,7 @@ local function mover_OnDragStop(this)
 end
 
 local nameToNiceName = {
+	difficulty = L["Instance difficulty"],
 	durability = L["Durability"],
 	questWatch = L["Quest tracker"],
 	worldState = L["World state"],
@@ -726,6 +729,47 @@ Chinchilla_Position:AddChinchillaOption(function()
 					y = {
 						name = L["Vertical position"],
 						desc = L["Set the position on the y-axis for the ticket status indicator."],
+						type = 'range',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						-- stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+					},
+				},
+			},
+			difficulty = {
+				name = L["Instance difficulty"],
+				desc = L["Position of the instance difficulty indicator on the screen"],
+				type = 'group',
+				inline = true,
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the instance difficulty indicator to be"],
+						type = 'toggle',
+						order = 1,
+						get = movable_get,
+						set = movable_set,
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the instance difficulty indicator."],
+						type = 'range',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the instance difficulty indicator."],
 						type = 'range',
 						min = y_min,
 						max = y_max,
