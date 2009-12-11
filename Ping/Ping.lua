@@ -5,21 +5,6 @@ local L = Chinchilla.L
 
 Chinchilla_Ping.desc = L["Show who last pinged the minimap"]
 
--- Backwards compatability for pre 3.1.0 clients 
-local MinimapPing = MinimapPing
-if not MinimapPing then 
-	MinimapPing = MiniMapPing
-end
-local MinimapPing_FadeOut = MinimapPing_FadeOut
-if not MinimapPing_FadeOut then
-	MinimapPing_FadeOut = MiniMapPing_FadeOut
-end
-
-if Minimap:GetScript("OnMouseUp") == _G.Minimap_OnClick then
-	Minimap:SetScript("OnMouseUp", function(...)
-		return _G.Minimap_OnClick(...)
-	end)
-end
 
 function Chinchilla_Ping:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Ping", {
@@ -99,7 +84,7 @@ function Chinchilla_Ping:OnEnable()
 	end
 	frame:Show()
 	self:RegisterEvent("MINIMAP_PING")
-	
+
 	self:RawHook("Minimap_SetPing", true)
 	self:RawHook("Minimap_OnClick", true)
 	_G.MINIMAPPING_TIMER = self.db.profile.MINIMAPPING_TIMER
@@ -119,7 +104,7 @@ function Chinchilla_Ping:MINIMAP_PING(event, unit)
 		return
 	end
 	allowNextPlayerPing = false
-	
+
 	local name, server = UnitName(unit)
 	if server and server ~= "" then
 		name = name .. '-' .. server
@@ -132,7 +117,7 @@ function Chinchilla_Ping:MINIMAP_PING(event, unit)
 		return
 	end
 	frame:Show()
-	
+
 	frame.text:SetText(L["Ping by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)))
 	frame:SetScale(self.db.profile.scale)
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
@@ -167,7 +152,7 @@ end
 
 local function isCornerRound(x, y)
 	local minimapShape = _G.GetMinimapShape and _G.GetMinimapShape() or "ROUND"
-	
+
 	if minimapShape == "ROUND" then
 		return true
 	elseif minimapShape == "SQUARE" then
@@ -204,12 +189,12 @@ function Chinchilla_Ping:Minimap_SetPing(x, y, playSound)
 	x = x * Minimap:GetWidth()
 	y = y * Minimap:GetHeight()
 	local radius = Minimap:GetWidth()/2
-	
+
 	if x > radius or x < -radius or y > radius or y < -radius or (x^2 + y^2 > radius^2 and isCornerRound(x, y)) then
 		MinimapPing:Hide()
 		return
 	end
-	
+
 	MinimapPing:SetPoint("CENTER", "Minimap", "CENTER", x, y)
 	MinimapPing:SetAlpha(1)
 	MinimapPing:Show()
@@ -226,9 +211,9 @@ function Chinchilla_Ping:Minimap_OnClick()
 	local cx, cy = Minimap:GetCenter()
 	x = x - cx
 	y = y - cy
-	
+
 	local radius = Minimap:GetWidth()/2
-	
+
 	if x > radius or x < -radius or y > radius or y < -radius or (x^2 + y^2 > radius^2 and isCornerRound(x, y)) then
 		return
 	end
