@@ -179,6 +179,9 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 				type = 'toggle',
 				get = get,
 				set = set,
+				disabled = function()
+					return not self.db.profile.locationText
+				end,
 			},
 			locationText = {
 				name = L["Location text"],
@@ -186,9 +189,6 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 				type = 'toggle',
 				get = get,
 				set = set,
-				disabled = function()
-					return self.db.profile.locationBar
-				end
 			},
 			map = {
 				name = L["World map"],
