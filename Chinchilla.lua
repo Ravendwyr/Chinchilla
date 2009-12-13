@@ -15,7 +15,7 @@ local opts = {}
 local module = {}
 function module:AddChinchillaOption(data)
 	assert(type(data) == "function")
-	
+
 	opts[self] = data
 end
 Chinchilla:SetDefaultModulePrototype(module)
@@ -30,11 +30,13 @@ function Chinchilla:OnInitialize()
 end
 
 function Chinchilla:OnEnable()
+	MinimapCluster:EnableMouse(false)
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
 end
 
 function Chinchilla:OnDisable()
+	MinimapCluster:EnableMouse(true)
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
 end
@@ -116,7 +118,7 @@ function Chinchilla:OpenConfig()
 	function self:OpenConfig()
 		AceConfigDialog:Open("Chinchilla")
 	end
-	
+
 	local options = {
 		name = L["Chinchilla Minimap"],
 		desc = L["Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets."],
@@ -194,7 +196,7 @@ function Chinchilla:OpenConfig()
 			}
 		}
 	}
-		
+
 	for module, func in pairs(opts) do
 		local t = func()
 		if not t.handler then
@@ -223,12 +225,12 @@ function Chinchilla:OpenConfig()
 		options.args[module.name] = t
 	end
 	opts = nil
-	
+
 	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 	options.args.profile.order = -1
-	
+
 	AceConfig:RegisterOptionsTable("Chinchilla", options)
 	AceConfigDialog:SetDefaultSize("Chinchilla", 835, 550)
-	
+
 	return self:OpenConfig()
 end
