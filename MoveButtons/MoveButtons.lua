@@ -7,6 +7,7 @@ Chinchilla_MoveButtons.desc = L["Move buttons around the minimap"]
 
 local buttons = {
 	battleground = MiniMapBattlefieldFrame,
+	difficulty = MiniMapInstanceDifficulty,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
 	lfg = MiniMapLFGFrame,
@@ -520,6 +521,13 @@ Chinchilla_MoveButtons:AddChinchillaOption(function()
 			clock = buttons.clock and {
 				name = L["Clock"],
 				desc = L["Set the position of the clock"],
+				type = 'group',
+				inline = true,
+				args = args,
+			} or nil,
+			difficulty = buttons.difficulty and {
+				name = L["Instance difficulty"],
+				desc = L["Set the position of the instance difficulty indicator"],
 				type = 'group',
 				inline = true,
 				args = args,

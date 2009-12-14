@@ -10,7 +10,6 @@ local numHookedCaptureFrames = 0
 function Chinchilla_Position:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Position", {
 		profile = {
-			difficulty = { "TOPRIGHT", -160, 0 },
 			minimap = { "TOPRIGHT", 0, 0 },
 			durability = { "TOPRIGHT", -143, -221 },
 			questWatch = { "TOPRIGHT", -183, -226 },
@@ -121,7 +120,6 @@ end
 function Chinchilla_Position:OnEnable()
 	self:SetMinimapPosition(nil, nil, nil)
 	self:SetFramePosition('durability', nil, nil, nil)
-	self:SetFramePosition('difficulty', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
@@ -157,7 +155,6 @@ function Chinchilla_Position:OnDisable()
 	WorldStateAlwaysUpFrame:EnableMouse(true)
 	self:ShowFrameMover('worldState', false)
 	self:SetFramePosition('durability', nil, nil, nil)
-	self:SetFramePosition('difficulty', nil, nil, nil)
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('worldState', nil, nil, nil)
@@ -311,7 +308,6 @@ function Chinchilla_Position:WorldStateAlwaysUpFrame_Update(this)
 end
 
 local nameToFrame = {
-	difficulty = MiniMapInstanceDifficulty,
 	minimap = MinimapCluster,
 	durability = DurabilityFrame,
 	questWatch = WatchFrame,
@@ -343,7 +339,6 @@ function Chinchilla_Position:SetFramePosition(frame, point, x, y)
 	end
 	shouldntSetPoint = true
 	if movers[frame] and movers[frame]:IsShown() then
---	if movers[frame] then
 		movers[frame]:ClearAllPoints()
 		movers[frame]:SetPoint(point, UIParent, point, x, y)
 	else
@@ -372,7 +367,6 @@ local function mover_OnDragStop(this)
 end
 
 local nameToNiceName = {
-	difficulty = L["Instance difficulty"],
 	durability = L["Durability"],
 	questWatch = L["Quest tracker"],
 	worldState = L["World state"],
@@ -743,47 +737,6 @@ Chinchilla_Position:AddChinchillaOption(function()
 					},
 				},
 			},
-			difficulty = {
-				name = L["Instance difficulty"],
-				desc = L["Position of the instance difficulty indicator on the screen"],
-				type = 'group',
-				inline = true,
-				args = {
-					movable = {
-						name = L["Movable"],
-						desc = L["Show a frame that is movable to show where you want the instance difficulty indicator to be"],
-						type = 'toggle',
-						order = 1,
-						get = movable_get,
-						set = movable_set,
-					},
-					x = {
-						name = L["Horizontal position"],
-						desc = L["Set the position on the x-axis for the instance difficulty indicator."],
-						type = 'range',
-						min = x_min,
-						max = x_max,
-						step = 1,
-						bigStep = 5,
-						get = x_get,
-						set = x_set,
-						order = 3,
-					},
-					y = {
-						name = L["Vertical position"],
-						desc = L["Set the position on the y-axis for the instance difficulty indicator."],
-						type = 'range',
-						min = y_min,
-						max = y_max,
-						step = 1,
-						bigStep = 5,
-						-- stepBasis = 0,
-						get = y_get,
-						set = y_set,
-						order = 4,
-					},
-				},
-			},
 			worldState = {
 				name = L["World state"],
 				desc = L["Position of the world state indicator on the screen"],
@@ -864,8 +817,8 @@ Chinchilla_Position:AddChinchillaOption(function()
 						set = y_set,
 						order = 4,
 					},
-				}
+				},
 			},
-		}
-	}
+		},
+	},
 end)
