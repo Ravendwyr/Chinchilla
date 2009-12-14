@@ -820,5 +820,5 @@ Chinchilla_Position:AddChinchillaOption(function()
 				},
 			},
 		},
-	},
+	}
 end)
