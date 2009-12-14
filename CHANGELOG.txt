@@ -1,3 +1,12 @@
+Version 2.1
+- The quest tracker is now resizable via Chinchilla's options.
+- The dungeon difficulty flag is now movable and hidable.
+- The boss unit frames are now movable.
+- The minimap toggle button now updates it's texture when the minimap is collapsed/expanded.
+- Hopefully fixed a bug with the square map causing Error 132 for some Windows users. Fingers are crossed, as I use a Mac and can't replicate it.
+- Fixed a bug causing some actionbar buttons to become unclickable if a high strata minimap is positioned directly below them.
+- Removed all leftover references to the pre-3.3 LFG minimap button.
+
 Version 2.0.9
 - Updated for WoW 3.3.0.
 - Added support for the new LFD/LFR minimap button.
