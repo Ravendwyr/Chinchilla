@@ -17,6 +17,7 @@ function Chinchilla_Position:OnInitialize()
 			worldState = { "TOP", 0, -50 },
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
 			ticketStatus = { "TOPRIGHT", -180, 0 },
+			boss = { "TOPRIGHT", 55, -236 },
 			minimapLock = false,
 			enabled = true,
 		}
@@ -123,6 +124,7 @@ function Chinchilla_Position:OnEnable()
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('questWatch', nil, nil, nil)
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
+	self:SetFramePosition('boss', nil, nil, nil)
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
 	WorldStateAlwaysUpFrame:EnableMouse(false)
@@ -159,6 +161,7 @@ function Chinchilla_Position:OnDisable()
 	self:SetFramePosition('capture', nil, nil, nil)
 	self:SetFramePosition('worldState', nil, nil, nil)
 	self:SetFramePosition('vehicleSeats', nil, nil, nil)
+	self:SetFramePosition('boss', nil, nil, nil)
 	self:SetFramePosition('ticketStatus', nil, nil, nil)
 	self:SetLocked(nil)
 	-- self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
@@ -309,6 +312,7 @@ end
 
 local nameToFrame = {
 	minimap = MinimapCluster,
+	boss = Boss1TargetFrame,
 	durability = DurabilityFrame,
 	questWatch = WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,
@@ -373,6 +377,7 @@ local nameToNiceName = {
 	capture = L["Capture bar"],
 	vehicleSeats = L["Vehicle seats"],
 	ticketStatus = L["Ticket status"],
+	boss = L["Boss frames"],
 }
 
 function Chinchilla_Position:ShowFrameMover(frame, value, force)
@@ -654,6 +659,47 @@ Chinchilla_Position:AddChinchillaOption(function()
 						order = 4,
 					},
 				}
+			},
+			boss = {
+				name = L["Boss frames"],
+				desc = L["Position of the boss unit frames on the screen"],
+				type = 'group',
+				inline = true,
+				args = {
+					movable = {
+						name = L["Movable"],
+						desc = L["Show a frame that is movable to show where you want the boss frames to be"],
+						type = 'toggle',
+						order = 1,
+						get = movable_get,
+						set = movable_set,
+					},
+					x = {
+						name = L["Horizontal position"],
+						desc = L["Set the position on the x-axis for the boss frames."],
+						type = 'range',
+						min = x_min,
+						max = x_max,
+						step = 1,
+						bigStep = 5,
+						get = x_get,
+						set = x_set,
+						order = 3,
+					},
+					y = {
+						name = L["Vertical position"],
+						desc = L["Set the position on the y-axis for the boss frames."],
+						type = 'range',
+						min = y_min,
+						max = y_max,
+						step = 1,
+						bigStep = 5,
+						-- stepBasis = 0,
+						get = y_get,
+						set = y_set,
+						order = 4,
+					},
+				},
 			},
 			vehicleSeats = {
 				name = L["Vehicle seats"],
