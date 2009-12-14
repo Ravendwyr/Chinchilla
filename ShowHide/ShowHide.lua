@@ -12,6 +12,7 @@ function Chinchilla_ShowHide:OnInitialize()
 			north = true,
 			locationBar = true,
 			locationText = true,
+			difficulty = true,
 			map = true,
 			mail = true,
 			lfg = true,
@@ -33,6 +34,7 @@ end
 
 local frames = {
 	battleground = MiniMapBattlefieldFrame,
+	difficulty = MiniMapInstanceDifficulty,
 	north = MinimapNorthTag,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
@@ -169,6 +171,13 @@ Chinchilla_ShowHide:AddChinchillaOption(function()
 			north = {
 				name = L["North"],
 				desc = L["Show the north symbol on the minimap"],
+				type = 'toggle',
+				get = get,
+				set = set,
+			},
+			difficulty = {
+				name = L["Instance difficulty"],
+				desc = L["Show the instance difficulty flag on the minimap"],
 				type = 'toggle',
 				get = get,
 				set = set,
