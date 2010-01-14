@@ -142,6 +142,7 @@ function Chinchilla_Position:OnEnable()
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
 	self:SecureHook(WatchFrame, "SetPoint", "WatchFrame_SetPoint")
+	self:SecureHook(Boss1TargetFrame, "SetPoint", "BossFrame_SetPoint")
 	-- self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	self:SecureHook("WorldStateAlwaysUpFrame_Update")
@@ -275,6 +276,13 @@ function Chinchilla_Position:WatchFrame_SetPoint(this)
 		return
 	end
 	self:SetFramePosition('questWatch', nil, nil, nil)
+end
+
+function Chinchilla_Position:BossFrame_SetPoint(this)
+	if shouldntSetPoint then
+		return
+	end
+	self:SetFramePosition('boss', nil, nil, nil)
 end
 
 -- function Chinchilla_Position:WatchFrame_GetRemainingSpace(...)
