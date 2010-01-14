@@ -12,7 +12,7 @@ function Chinchilla_Position:OnInitialize()
 		profile = {
 			minimap = { "TOPRIGHT", 0, 0 },
 			durability = { "TOPRIGHT", -143, -221 },
-			questWatch = { "TOPRIGHT", -183, -226 },
+			questWatch = { "TOPRIGHT", 0, -175 },
 			capture = { "TOPRIGHT", -9, -190 },
 			worldState = { "TOP", 0, -50 },
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
