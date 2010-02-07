@@ -1,57 +1,46 @@
-local Chinchilla = Chinchilla
-local Chinchilla_AutoZoom = Chinchilla:NewModule("AutoZoom", "AceHook-3.0")
-local self = Chinchilla_AutoZoom
-local L = Chinchilla.L
 
-Chinchilla_AutoZoom.desc = L["Automatically zoom out after a specified time."]
+local AutoZoom = Chinchilla:NewModule("AutoZoom", "AceHook-3.0", "AceTimer-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-function Chinchilla_AutoZoom:OnInitialize()
+AutoZoom.desc = L["Automatically zoom out after a specified time."]
+
+
+function AutoZoom:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("AutoZoom", {
 		profile = {
 			time = 20,
 			enabled = true,
 		}
 	})
+
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
 end
 
-local frame
-local nextZoomOutTime = 0
-function Chinchilla_AutoZoom:OnEnable()
-	if not frame then
-		frame = CreateFrame("Frame")
-		frame:SetScript("OnUpdate", function(this, elapsed)
-			local currentTime = GetTime()
-			if nextZoomOutTime <= currentTime then
-				if Minimap:GetZoom() > 0 then
-					Minimap_ZoomOut()
-					nextZoomOutTime = currentTime -- reset and do it every frame
-				else
-					this:Hide()
-				end
-			end
-		end)
-	end
-	frame:Show()
+
+function AutoZoom:OnEnable()
 	self:SecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
 end
 
-function Chinchilla_AutoZoom:OnDisable()
-	frame:Hide()
+function AutoZoom:OnDisable()
+	self:CancelAllScheduledTimers()
 end
 
-function Chinchilla_AutoZoom:Minimap_SetZoom(...)
-	frame:Show()
-	nextZoomOutTime = GetTime() + self.db.profile.time
+
+function AutoZoom:Minimap_SetZoom(_, zoomLevel)
+	if zoomLevel > 0 then
+		self:ScheduleTimer("ZoomOut", self.db.profile.time)
+	end
 end
 
-Chinchilla_AutoZoom:AddChinchillaOption(function() return {
-	name = L["Auto zoom"],
-	desc = Chinchilla_AutoZoom.desc,
-	type = 'group',
-	args = {
+function AutoZoom:ZoomOut()
+	Minimap:SetZoom(0)
+end
+
+
+function AutoZoom:GetOptions()
+	return {
 		time = {
 			name = L["Time to zoom"],
 			desc = L["Set the time it takes between manually zooming in and automatically zooming out"],
@@ -65,7 +54,7 @@ Chinchilla_AutoZoom:AddChinchillaOption(function() return {
 			end,
 			set = function(info, value)
 				self.db.profile.time = value
-			end
-		}
+			end,
+		},
 	}
-} end)
+end

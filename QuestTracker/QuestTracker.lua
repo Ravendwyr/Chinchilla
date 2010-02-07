@@ -1,14 +1,13 @@
-local Chinchilla = Chinchilla
-local Chinchilla_QuestTracker = Chinchilla:NewModule("QuestTracker")
-local self = Chinchilla_QuestTracker
-local L = Chinchilla.L
 
-Chinchilla_QuestTracker.desc = L["Tweak the quest tracker"]
+local QuestTracker = Chinchilla:NewModule("QuestTracker")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
+
+QuestTracker.desc = L["Tweak the quest tracker"]
 
 
 local origTitleShow, origCollapseShow = WatchFrameTitle.Show, WatchFrameCollapseExpandButton.Show
 
-function Chinchilla_QuestTracker:OnInitialize()
+function QuestTracker:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("QuestTracker", {
 		profile = {
 			showTitle = true,
@@ -23,7 +22,7 @@ function Chinchilla_QuestTracker:OnInitialize()
 	end
 end
 
-function Chinchilla_QuestTracker:OnEnable()
+function QuestTracker:OnEnable()
 	self:ToggleTitle()
 	self:ToggleButton()
 
@@ -32,7 +31,7 @@ function Chinchilla_QuestTracker:OnEnable()
 	WatchFrame:SetHeight(self.db.profile.frameHeight)
 end
 
-function Chinchilla_QuestTracker:OnDisable()
+function QuestTracker:OnDisable()
 	WatchFrameTitle.Show = origTitleShow -- "unhook"
 	WatchFrameTitle:Show()
 
@@ -45,7 +44,7 @@ function Chinchilla_QuestTracker:OnDisable()
 end
 
 
-function Chinchilla_QuestTracker:ToggleTitle()
+function QuestTracker:ToggleTitle()
 	if self.db.profile.showTitle then
 		WatchFrameTitle.Show = origTitleShow -- "unhook"
 		WatchFrameTitle:Show()
@@ -55,7 +54,7 @@ function Chinchilla_QuestTracker:ToggleTitle()
 	end
 end
 
-function Chinchilla_QuestTracker:ToggleButton()
+function QuestTracker:ToggleButton()
 	if self.db.profile.showCollapseButton then
 		WatchFrameCollapseExpandButton.Show = origCollapseShow -- "unhook"
 		WatchFrameCollapseExpandButton:Show()
@@ -66,11 +65,8 @@ function Chinchilla_QuestTracker:ToggleButton()
 end
 
 
-Chinchilla_QuestTracker:AddChinchillaOption(function() return {
-	name = L["Quest Tracker"],
-	desc = Chinchilla_QuestTracker.desc,
-	type = 'group',
-	args = {
+function QuestTracker:GetOptions()
+	return {
 		showTitle = {
 			name = L["Show title"],
 			desc = L["Show the title of the quest tracker."],
@@ -124,5 +120,5 @@ Chinchilla_QuestTracker:AddChinchillaOption(function() return {
 			end,
 			order = 4,
 		},
-	},
-} end)
+	}
+end

@@ -1,23 +1,23 @@
-local Chinchilla = Chinchilla
-local Chinchilla_Coordinates = Chinchilla:NewModule("Coordinates", "AceTimer-3.0")
-local self = Chinchilla_Coordinates
-local L = Chinchilla.L
 
-Chinchilla_Coordinates.desc = L["Show coordinates on or near the minimap"]
+local Coordinates = Chinchilla:NewModule("Coordinates", "AceTimer-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
+
+Coordinates.desc = L["Show coordinates on or near the minimap"]
+
 
 local coordString
 local function recalculateCoordString()
 	local sep
-	if ("%.1f"):format(1.1) == "1,1" then
-		sep = " x "
-	else
-		sep = ", "
-	end
-	local prec = self.db.profile.precision
+
+	if ("%.1f"):format(1.1) == "1,1" then sep = " x "
+	else sep = ", " end
+
+	local prec = Coordinates.db.profile.precision
+
 	coordString = ("%%.%df%s%%.%df"):format(prec, sep, prec)
 end
 
-function Chinchilla_Coordinates:OnInitialize()
+function Coordinates:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Coordinates", {
 		profile = {
 			precision = 1,
@@ -28,30 +28,31 @@ function Chinchilla_Coordinates:OnInitialize()
 				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
 				TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
 				TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
-				1
+				1,
 			},
 			border = {
 				TOOLTIP_DEFAULT_COLOR.r,
 				TOOLTIP_DEFAULT_COLOR.g,
 				TOOLTIP_DEFAULT_COLOR.b,
-				1
+				1,
 			},
 			textColor = {
 				0.8,
 				0.8,
 				0.6,
-				1
+				1,
 			},
-			enabled = true
-		}
+			enabled = true,
+		},
 	})
+
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
 end
 
 local frame, timerID
-function Chinchilla_Coordinates:OnEnable()
+function Coordinates:OnEnable()
 	if not frame then
 		frame = CreateFrame("Frame", "Chinchilla_Coordinates_Frame", Minimap)
 		frame:SetBackdrop({
@@ -64,14 +65,17 @@ function Chinchilla_Coordinates:OnEnable()
 				left = 4,
 				right = 4,
 				top = 4,
-				bottom = 4
-			}
+				bottom = 4,
+			},
 		})
+
 		frame:SetWidth(1)
 		frame:SetHeight(1)
+
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
 		text:SetPoint("CENTER")
+
 		function frame:Update()
 			local x, y = GetPlayerMapPosition("player")
 			if x == 0 and y == 0 then
@@ -80,50 +84,56 @@ function Chinchilla_Coordinates:OnEnable()
 			else
 				if not self:IsShown() then
 					self:Show()
-					Chinchilla_Coordinates:Update()
+					Coordinates:Update()
 					return
 				end
 				text:SetText(coordString:format(x*100, y*100))
 			end
 		end
-		frame:SetScript("OnDragStart", function(this)
-			this:StartMoving()
-		end)
+
+		frame:SetScript("OnDragStart", function(this) this:StartMoving() end)
 		frame:SetScript("OnDragStop", function(this)
 			this:StopMovingOrSizing()
+
 			local cx, cy = this:GetCenter()
 			local scale = frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
+
 			cx, cy = cx*scale, cy*scale
+
 			local mx, my = Minimap:GetCenter()
 			local mscale = Minimap:GetEffectiveScale() / UIParent:GetEffectiveScale()
+
 			mx, my = mx*mscale, my*mscale
+
 			local x, y = cx - mx, cy - my
+
 			self.db.profile.positionX = x/scale
 			self.db.profile.positionY = y/scale
 			self:Update()
+
 			LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 		end)
 	end
 
 	frame:Show()
 
-	 -- need these otherwise the frame won't scale on login
+	-- need these otherwise the frame won't scale on login
 	recalculateCoordString()
 	self:ScheduleTimer("Update", 0)
 
 	timerID = self:ScheduleRepeatingTimer(frame.Update, 0.1, frame)
 end
 
-function Chinchilla_Coordinates:OnDisable()
+function Coordinates:OnDisable()
 	self:CancelTimer(timerID)
 	frame:Hide()
 end
 
-function Chinchilla_Coordinates:Update()
-	if not self:IsEnabled() then
-		return
-	end
+function Coordinates:Update()
+	if not self:IsEnabled() then return end
+
 	recalculateCoordString()
+
 	frame:SetScale(self.db.profile.scale)
 	frame.text:SetText(coordString:format(12.345, 23.456))
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
@@ -137,21 +147,17 @@ function Chinchilla_Coordinates:Update()
 	frame:Update()
 end
 
-function Chinchilla_Coordinates:SetMovable(value)
+function Coordinates:SetMovable(value)
 	frame:SetMovable(value)
 	frame:EnableMouse(value)
-	if value then
-		frame:RegisterForDrag("LeftButton")
-	else
-		frame:RegisterForDrag()
-	end
+
+	if value then frame:RegisterForDrag("LeftButton")
+	else frame:RegisterForDrag() end
 end
 
-Chinchilla_Coordinates:AddChinchillaOption(function() return {
-	name = L["Coordinates"],
-	desc = Chinchilla_Coordinates.desc,
-	type = 'group',
-	args = {
+
+function Coordinates:GetOptions()
+	return {
 		precision = {
 			name = L["Precision"],
 			desc = L["Set the amount of numbers past the decimal place to show."],
@@ -199,7 +205,7 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 				t[3] = b
 				t[4] = a
 				self:Update()
-			end
+			end,
 		},
 		border = {
 			name = L["Border"],
@@ -216,7 +222,7 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 				t[3] = b
 				t[4] = a
 				self:Update()
-			end
+			end,
 		},
 		textColor = {
 			name = L["Text"],
@@ -233,7 +239,7 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 				t[3] = b
 				t[4] = a
 				self:Update()
-			end
+			end,
 		},
 		position = {
 			name = L["Position"],
@@ -290,10 +296,9 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 					end,
 					order = 3,
 				},
-			}
+			},
 		},
-		--[[
-		position = {
+--[[		position = {
 			name = L["Position"],
 			desc = L["Set the position of the coordinate indicator"],
 			type = 'choice',
@@ -313,8 +318,7 @@ Chinchilla_Coordinates:AddChinchillaOption(function() return {
 			set = function(value)
 				self.db.profile.point, self.db.profile.relpoint = value:match("(.*);(.*)")
 				self:Update()
-			end
-		},
-		]]
+			end,
+]]--		},
 	}
-} end)
+end

@@ -1,12 +1,11 @@
-local Chinchilla = Chinchilla
-local Chinchilla_Ping = Chinchilla:NewModule("Ping", "AceEvent-3.0", "AceHook-3.0")
-local self = Chinchilla_Ping
-local L = Chinchilla.L
 
-Chinchilla_Ping.desc = L["Show who last pinged the minimap"]
+local Ping = Chinchilla:NewModule("Ping", "AceEvent-3.0", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
+
+Ping.desc = L["Show who last pinged the minimap"]
 
 
-function Chinchilla_Ping:OnInitialize()
+function Ping:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Ping", {
 		profile = {
 			chat = false,
@@ -34,15 +33,16 @@ function Chinchilla_Ping:OnInitialize()
 			MINIMAPPING_TIMER = 5,
 			MINIMAPPING_FADE_TIMER = 0.5,
 			enabled = true
-		}
+		},
 	})
+
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
 end
 
 local frame
-function Chinchilla_Ping:OnEnable()
+function Ping:OnEnable()
 	if not frame then
 		frame = CreateFrame("Frame", "Chinchilla_Ping_Frame", MinimapPing) -- anchor to MinimapPing so that it hides/shows based on MinimapPing
 		frame:SetBackdrop({
@@ -58,57 +58,71 @@ function Chinchilla_Ping:OnEnable()
 				bottom = 4
 			}
 		})
+
 		frame:SetWidth(1)
 		frame:SetHeight(1)
+
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
 		text:SetPoint("CENTER")
+
 		frame:SetScript("OnDragStart", function(this)
 			this:StartMoving()
 		end)
+
 		frame:SetScript("OnDragStop", function(this)
 			this:StopMovingOrSizing()
+
 			local cx, cy = this:GetCenter()
 			local scale = frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
 			cx, cy = cx*scale, cy*scale
+
 			local mx, my = Minimap:GetCenter()
 			local mscale = Minimap:GetEffectiveScale() / UIParent:GetEffectiveScale()
 			mx, my = mx*mscale, my*mscale
+
 			local x, y = cx - mx, cy - my
 			self.db.profile.positionX = x/scale
 			self.db.profile.positionY = y/scale
+
 			frame:ClearAllPoints()
 			frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
+
 			LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 		end)
 	end
+
 	frame:Show()
 	self:RegisterEvent("MINIMAP_PING")
 
 	self:RawHook("Minimap_SetPing", true)
 	self:RawHook("Minimap_OnClick", true)
+
 	_G.MINIMAPPING_TIMER = self.db.profile.MINIMAPPING_TIMER
 	_G.MINIMAPPING_FADE_TIMER = self.db.profile.MINIMAPPING_FADE_TIMER
 end
 
-function Chinchilla_Ping:OnDisable()
+function Ping:OnDisable()
 	frame:Hide()
+
 	_G.MINIMAPPING_TIMER = 5
 	_G.MINIMAPPING_FADE_TIMER = 0.5
 end
 
 local allowNextPlayerPing = false
-function Chinchilla_Ping:MINIMAP_PING(event, unit)
+function Ping:MINIMAP_PING(event, unit)
 	if UnitIsUnit("player", unit) and not allowNextPlayerPing then
 		frame:Hide()
 		return
 	end
+
 	allowNextPlayerPing = false
 
 	local name, server = UnitName(unit)
 	if server and server ~= "" then
 		name = name .. '-' .. server
 	end
+
 	local _, class = UnitClass(unit)
 	local color = RAID_CLASS_COLORS[class]
 
@@ -116,16 +130,20 @@ function Chinchilla_Ping:MINIMAP_PING(event, unit)
 		DEFAULT_CHAT_FRAME:AddMessage(L["Minimap pinged by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)))
 		return
 	end
+
 	frame:Show()
 
 	frame.text:SetText(L["Ping by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)))
+	frame.text:SetTextColor(unpack(self.db.profile.textColor))
+
 	frame:SetScale(self.db.profile.scale)
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
 	frame:SetWidth(frame.text:GetWidth() + 12)
 	frame:SetHeight(frame.text:GetHeight() + 12)
-	frame.text:SetTextColor(unpack(self.db.profile.textColor))
+
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
+
 	frame:ClearAllPoints()
 	frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
 end
@@ -135,12 +153,14 @@ local function test()
 	Minimap:PingLocation(0, 0)
 end
 
-function Chinchilla_Ping:SetMovable(value)
+function Ping:SetMovable(value)
 	frame:SetMovable(value)
 	frame:EnableMouse(value)
+
 	if value then
 		frame:SetParent(Minimap)
 		frame:RegisterForDrag("LeftButton")
+
 		if not MinimapPing:IsShown() then
 			test()
 		end
@@ -182,12 +202,14 @@ local function isCornerRound(x, y)
 	elseif minimapShape == "TRICORNER-BOTTOMLEFT" then
 		return x < 0 or y < 0
 	end
+
 	return true
 end
 
-function Chinchilla_Ping:Minimap_SetPing(x, y, playSound)
+function Ping:Minimap_SetPing(x, y, playSound)
 	x = x * Minimap:GetWidth()
 	y = y * Minimap:GetHeight()
+
 	local radius = Minimap:GetWidth()/2
 
 	if x > radius or x < -radius or y > radius or y < -radius or (x^2 + y^2 > radius^2 and isCornerRound(x, y)) then
@@ -198,12 +220,13 @@ function Chinchilla_Ping:Minimap_SetPing(x, y, playSound)
 	MinimapPing:SetPoint("CENTER", "Minimap", "CENTER", x, y)
 	MinimapPing:SetAlpha(1)
 	MinimapPing:Show()
+
 	if playSound then
 		PlaySound("MapPing")
 	end
 end
 
-function Chinchilla_Ping:Minimap_OnClick()
+function Ping:Minimap_OnClick()
 	local x, y = GetCursorPosition()
 	x = x / Minimap:GetEffectiveScale()
 	y = y / Minimap:GetEffectiveScale()
@@ -217,14 +240,13 @@ function Chinchilla_Ping:Minimap_OnClick()
 	if x > radius or x < -radius or y > radius or y < -radius or (x^2 + y^2 > radius^2 and isCornerRound(x, y)) then
 		return
 	end
+
 	Minimap:PingLocation(x, y)
 end
 
-Chinchilla_Ping:AddChinchillaOption(function() return {
-	name = L["Ping"],
-	desc = Chinchilla_Ping.desc,
-	type = 'group',
-	args = {
+
+function Ping:GetOptions()
+	return {
 		test = {
 			name = L["Test"],
 			desc = L["Show a test ping"],
@@ -241,7 +263,7 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			end,
 			set = function(info, value)
 				self.db.profile.chat = value
-			end
+			end,
 		},
 		scale = {
 			name = L["Size"],
@@ -261,7 +283,7 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			end,
 			hidden = function(info)
 				return self.db.profile.chat
-			end
+			end,
 		},
 		background = {
 			name = L["Background"],
@@ -281,7 +303,7 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			end,
 			hidden = function(info)
 				return self.db.profile.chat
-			end
+			end,
 		},
 		border = {
 			name = L["Border"],
@@ -301,7 +323,7 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			end,
 			hidden = function(info)
 				return self.db.profile.chat
-			end
+			end,
 		},
 		textColor = {
 			name = L["Text"],
@@ -321,7 +343,7 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			end,
 			hidden = function(info)
 				return self.db.profile.chat
-			end
+			end,
 		},
 		position = {
 			name = L["Position"],
@@ -378,7 +400,7 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 					end,
 					order = 3,
 				},
-			}
+			},
 		},
 		pingTime = {
 			name = L["Ping time"],
@@ -415,4 +437,4 @@ Chinchilla_Ping:AddChinchillaOption(function() return {
 			end,
 		},
 	}
-} end)
+end

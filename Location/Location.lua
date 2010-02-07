@@ -1,11 +1,11 @@
-local Chinchilla = Chinchilla
-local Chinchilla_Location = Chinchilla:NewModule("Location", "AceEvent-3.0")
-local self = Chinchilla_Location
-local L = Chinchilla.L
 
-Chinchilla_Location.desc = L["Show zone information on or near minimap"]
+local Location = Chinchilla:NewModule("Location", "AceEvent-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-function Chinchilla_Location:OnInitialize()
+Location.desc = L["Show zone information on or near minimap"]
+
+
+function Location:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Location", {
 		profile = {
 			scale = 1.2,
@@ -33,13 +33,14 @@ function Chinchilla_Location:OnInitialize()
 			enabled = true,
 		}
 	})
+
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
 end
 
 local frame
-function Chinchilla_Location:OnEnable()
+function Location:OnEnable()
 	if not frame then
 		frame = CreateFrame("Frame", "Chinchilla_Location_Frame", MinimapCluster)
 		frame:SetBackdrop({
@@ -55,34 +56,44 @@ function Chinchilla_Location:OnEnable()
 				bottom = 4
 			}
 		})
+
 		frame:SetWidth(1)
 		frame:SetHeight(1)
+
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
 		text:SetPoint("CENTER")
+
 		frame:SetScript("OnDragStart", function(this)
 			this:StartMoving()
 		end)
 		frame:SetScript("OnDragStop", function(this)
 			this:StopMovingOrSizing()
+
 			local cx, cy = this:GetCenter()
 			local scale = frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
 			cx, cy = cx*scale, cy*scale
+
 			local mx, my = Minimap:GetCenter()
 			local mscale = Minimap:GetEffectiveScale() / UIParent:GetEffectiveScale()
 			mx, my = mx*mscale, my*mscale
+
 			local x, y = cx - mx, cy - my
 			self.db.profile.positionX = x/scale
 			self.db.profile.positionY = y/scale
+
 			self:Update()
+
 			LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 		end)
 
 		local closeButton = CreateFrame("Button", frame:GetName() .. "_CloseButton", frame)
 		frame.closeButton = closeButton
+
 		closeButton:SetWidth(27)
 		closeButton:SetHeight(27)
 		closeButton:SetPoint("LEFT", frame, "RIGHT", -6, 0)
+
 		closeButton:SetScript("OnClick", function(this, button)
 			if Minimap:IsShown() then
 				PlaySound("igMiniMapClose")
@@ -97,53 +108,68 @@ function Chinchilla_Location:OnEnable()
 			end
 			UpdateUIPanelPositions()
 		end)
+
 		closeButton:SetNormalTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Up")
 		closeButton:SetPushedTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Down")
 		closeButton:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight")
 	end
+
 	frame:Show()
+
 	if self.db.profile.showClose then
 		frame.closeButton:Show()
 	else
 		frame.closeButton:Hide()
 	end
+
 	self:Update()
 	self:RegisterEvent("ZONE_CHANGED", "Update")
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update")
+
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()
+
 	if Chinchilla:GetModule("ShowHide", true) then
 		Chinchilla:GetModule("ShowHide"):Update()
 	end
 end
 
-function Chinchilla_Location:OnDisable()
+function Location:OnDisable()
 	frame:Hide()
+
 	MinimapBorderTop:Show()
 	MinimapZoneTextButton:Show()
+
 	if Chinchilla:GetModule("ShowHide", true) then
 		Chinchilla:GetModule("ShowHide"):Update()
 	end
 end
 
-function Chinchilla_Location:Update()
+function Location:Update()
 	if not self:IsEnabled() then
 		return
 	end
+
 	local scale = self.db.profile.scale
+
 	frame:SetScale(scale)
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
+
 	frame.closeButton:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
+
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
+
 	frame:ClearAllPoints()
 	frame:SetPoint("CENTER", MinimapCluster, "CENTER", self.db.profile.positionX+9/scale, self.db.profile.positionY+4/scale)
+
 	frame.text:SetText(GetMinimapZoneText())
 	frame:SetWidth(frame.text:GetWidth() + 12)
 	frame:SetHeight(frame.text:GetHeight() + 12)
 
 	local pvpType = GetZonePVPInfo()
+
 	if pvpType == "sanctuary" then
 		frame.text:SetTextColor(0.41, 0.8, 0.94)
 	elseif pvpType == "arena" then
@@ -159,21 +185,17 @@ function Chinchilla_Location:Update()
 	end
 end
 
-function Chinchilla_Location:SetMovable(value)
+function Location:SetMovable(value)
 	frame:SetMovable(value)
 	frame:EnableMouse(value)
-	if value then
-		frame:RegisterForDrag("LeftButton")
-	else
-		frame:RegisterForDrag()
-	end
+
+	if value then frame:RegisterForDrag("LeftButton")
+	else frame:RegisterForDrag() end
 end
 
-Chinchilla_Location:AddChinchillaOption(function() return {
-	name = L["Location"],
-	desc = Chinchilla_Location.desc,
-	type = 'group',
-	args = {
+
+function Location:GetOptions()
+	return {
 		scale = {
 			name = L["Size"],
 			desc = L["Set the size of the location display."],
@@ -225,8 +247,7 @@ Chinchilla_Location:AddChinchillaOption(function() return {
 				self:Update()
 			end
 		},
-		--[[
-		textColor = {
+--[[		textColor = {
 			name = L["Text"],
 			desc = L["Set the text color"],
 			type = 'color',
@@ -242,8 +263,7 @@ Chinchilla_Location:AddChinchillaOption(function() return {
 				t[4] = a
 				self:Update()
 			end
-		},
-		]]
+]]--		},
 		showClose = {
 			name = L["Show close button"],
 			desc = L["Show the button to hide the minimap"],
@@ -317,7 +337,7 @@ Chinchilla_Location:AddChinchillaOption(function() return {
 					end,
 					order = 3,
 				},
-			}
+			},
 		},
 	}
-} end)
+end

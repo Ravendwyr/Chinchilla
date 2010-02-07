@@ -1,12 +1,12 @@
-local Chinchilla = Chinchilla
-local Chinchilla_TrackingDots = Chinchilla:NewModule("TrackingDots")
-local self = Chinchilla_TrackingDots
-local L = Chinchilla.L
 
-Chinchilla_TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
+local TrackingDots = Chinchilla:NewModule("TrackingDots")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
+
+TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
+
 
 local trackingDotStyles = {}
-function Chinchilla_TrackingDots:AddTrackingDotStyle(english, localized, texture)
+function TrackingDots:AddTrackingDotStyle(english, localized, texture)
 	if type(english) ~= "string" then
 		error(("Bad argument #2 to `AddTrackingDotStyle'. Expected %q, got %q"):format("string", type(english)), 2)
 	elseif trackingDotStyles[english] then
@@ -16,36 +16,41 @@ function Chinchilla_TrackingDots:AddTrackingDotStyle(english, localized, texture
 	elseif type(texture) ~= "string" then
 		error(("Bad argument #4 to `AddTrackingDotStyle'. Expected %q, got %q"):format("string", type(texture)), 2)
 	end
+
 	trackingDotStyles[english] = { localized, texture }
 end
-Chinchilla.AddTrackingDotStyle = Chinchilla_TrackingDots.AddTrackingDotStyle
 
-Chinchilla_TrackingDots:AddTrackingDotStyle("Blizzard", L["Blizzard"], [[Interface\MiniMap\ObjectIcons]])
-Chinchilla_TrackingDots:AddTrackingDotStyle("Nandini", "Nandini", [[Interface\AddOns\Chinchilla\TrackingDots\Blip-Nandini]])
-Chinchilla_TrackingDots:AddTrackingDotStyle("NandiniNew", "Nandini New", [[Interface\AddOns\Chinchilla\TrackingDots\Blip-Nandini-New]])
-Chinchilla_TrackingDots:AddTrackingDotStyle("BlizzardBig", L["Big Blizzard"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-BlizzardBig]])
-Chinchilla_TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-GlassSpheres]])
-Chinchilla_TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-SolidSpheres]])
+Chinchilla.AddTrackingDotStyle = TrackingDots.AddTrackingDotStyle
 
-function Chinchilla_TrackingDots:OnInitialize()
+TrackingDots:AddTrackingDotStyle("Blizzard", L["Blizzard"], [[Interface\MiniMap\ObjectIcons]])
+TrackingDots:AddTrackingDotStyle("Nandini", "Nandini", [[Interface\AddOns\Chinchilla\TrackingDots\Blip-Nandini]])
+TrackingDots:AddTrackingDotStyle("NandiniNew", "Nandini New", [[Interface\AddOns\Chinchilla\TrackingDots\Blip-Nandini-New]])
+TrackingDots:AddTrackingDotStyle("BlizzardBig", L["Big Blizzard"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-BlizzardBig]])
+TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-GlassSpheres]])
+TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"], [[Interface\AddOns\Chinchilla\TrackingDots\Blip-SolidSpheres]])
+
+
+function TrackingDots:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("TrackingDots", {
 		profile = {
 			trackingDotStyle = "Blizzard",
 			enabled = true,
-		}
+		},
 	})
+
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
 end
 
-function Chinchilla_TrackingDots:OnEnable()
+function TrackingDots:OnEnable()
 	self:SetBlipTexture(nil)
 end
 
-function Chinchilla_TrackingDots:OnDisable()
+function TrackingDots:OnDisable()
 	self:SetBlipTexture(nil)
 end
+
 
 local function getBlipTexture(name)
 	local style = trackingDotStyles[name] or trackingDotStyles["Blizzard"]
@@ -53,20 +58,25 @@ local function getBlipTexture(name)
 	return texture
 end
 
-function Chinchilla_TrackingDots:SetBlipTexture(name)
+
+function TrackingDots:SetBlipTexture(name)
 	if not name then
 		name = self.db.profile.trackingDotStyle
 	else
 		self.db.profile.trackingDotStyle = name
 	end
+
 	local texture = getBlipTexture(name)
+
 	if not self:IsEnabled() then
 		texture = [[Interface\MiniMap\ObjectIcons]]
 	end
+
 	Minimap:SetBlipTexture(texture)
 end
 
-Chinchilla_TrackingDots:AddChinchillaOption(function()
+
+function TrackingDots:GetOptions()
 	local AceGUI = LibStub("AceGUI-3.0")
 
 	local previewValues = {
@@ -104,6 +114,7 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 			{ 0.5, 0.625, 0.5, 1 }, -- COMPLETE DAILY
 			{ 0.625, 0.75, 0.5, 1 }, -- FLIGHT
 		}
+
 		local min, max, floor = math.min, math.max, math.floor
 
 		do
@@ -112,9 +123,10 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 
 			local function SetText(self, text, ...)
 				if text and text ~= '' then
-					self.texture:SetTexture(getBlipTexture(Chinchilla_TrackingDots.db.profile.trackingDotStyle))
+					self.texture:SetTexture(getBlipTexture(TrackingDots.db.profile.trackingDotStyle))
 					self.texture:SetTexCoord(unpack(texCoords[text]))
 				end
+
 				self.text:SetText(previewValues[text] or "")
 			end
 
@@ -122,13 +134,16 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 				local self = AceGUI:Create("Dropdown-Item-Toggle")
 				self.type = widgetType
 				self.SetText = SetText
+
 				local texture = self.frame:CreateTexture(nil, "BACKGROUND")
 				texture:SetTexture(0,0,0,0)
-				texture:SetPoint("BOTTOMRIGHT",self.frame,"TOPLEFT",22,-17)
-				texture:SetPoint("TOPLEFT",self.frame,"TOPLEFT",6,-1)
+				texture:SetPoint("BOTTOMRIGHT", self.frame,"TOPLEFT",22,-17)
+				texture:SetPoint("TOPLEFT", self.frame,"TOPLEFT",6,-1)
 				self.texture = texture
+
 				return self
 			end
+
 			AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
 		end
 
@@ -153,10 +168,13 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 			local function SetList(self, list)
 				self.list = list
 				self.pullout:Clear()
+
 				for v in pairs(self.list) do
 					sortlist[#sortlist + 1] = v
 				end
+
 				table.sort(sortlist)
+
 				for i, value in pairs(sortlist) do
 					AddListItem(self, value, value)
 					sortlist[i] = nil
@@ -177,18 +195,16 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 				texture:SetPoint("BOTTOMRIGHT", right, "BOTTOMRIGHT" ,-39, 26)
 				texture:SetPoint("TOPLEFT", left, "TOPLEFT", 24, -24)
 				self.texture = texture
+
 				return self
 			end
+
 			AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
 		end
 	end
 
 
 	return {
-	name = L["Tracking dots"],
-	desc = Chinchilla_TrackingDots.desc,
-	type = 'group',
-	args = {
 		style = {
 			name = L["Style"],
 			desc = L["Set the style of how the tracking dots should look."],
@@ -219,4 +235,4 @@ Chinchilla_TrackingDots:AddChinchillaOption(function()
 			dialogControl = "Chinchilla_TrackingDots_Select",
 		},
 	}
-} end)
+end

@@ -1,11 +1,11 @@
-local Chinchilla = Chinchilla
-local Chinchilla_Compass = Chinchilla:NewModule("Compass")
-local self = Chinchilla_Compass
-local L = Chinchilla.L
 
-Chinchilla_Compass.desc = L["Show direction indicators on the minimap"]
+local Compass = Chinchilla:NewModule("Compass")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-function Chinchilla_Compass:OnInitialize()
+Compass.desc = L["Show direction indicators on the minimap"]
+
+
+function Compass:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Compass", {
 		profile = {
 			radius = 61,
@@ -15,13 +15,13 @@ function Chinchilla_Compass:OnInitialize()
 			enabled = false,
 		}
 	})
+
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
 end
 
 local rotateMinimap
-
 local function hideBlizzDirections()
 	MinimapCompassTexture:Hide()
 	MinimapNorthTag:Hide()
@@ -37,30 +37,37 @@ end)
 local frame
 local function repositionCompass()
 	hideBlizzDirections_frame:Show()
+
 	local angle = 0
+
 	if rotateMinimap then
 		angle = -GetPlayerFacing()
 	end
-	local radius = Chinchilla_Compass.db.profile.radius
+
+	local radius = Compass.db.profile.radius
 	frame.east:SetPoint("CENTER", Minimap, "CENTER", radius*math.cos(angle), radius*math.sin(angle))
 	frame.north:SetPoint("CENTER", Minimap, "CENTER", radius*math.cos(angle + math.pi/2), radius*math.sin(angle + math.pi/2))
 	frame.west:SetPoint("CENTER", Minimap, "CENTER", radius*math.cos(angle + math.pi), radius*math.sin(angle + math.pi))
 	frame.south:SetPoint("CENTER", Minimap, "CENTER", radius*math.cos(angle + math.pi*3/2), radius*math.sin(angle + math.pi*3/2))
 end
 
-function Chinchilla_Compass:OnEnable()
+function Compass:OnEnable()
 	if not frame then
 		frame = CreateFrame("Frame", "Chinchilla_Compass_Frame", Minimap)
 		frame:SetAllPoints()
+
 		local north = frame:CreateFontString(frame:GetName() .. "_North", "ARTWORK", "GameFontNormal")
 		frame.north = north
 		north:SetText("N")
+
 		local east = frame:CreateFontString(frame:GetName() .. "_East", "ARTWORK", "GameFontNormalSmall")
 		frame.east = east
 		east:SetText("E")
+
 		local south = frame:CreateFontString(frame:GetName() .. "_South", "ARTWORK", "GameFontNormalSmall")
 		frame.south = south
 		south:SetText("S")
+
 		local west = frame:CreateFontString(frame:GetName() .. "_West", "ARTWORK", "GameFontNormalSmall")
 		frame.west = west
 		west:SetText("W")
@@ -71,15 +78,18 @@ function Chinchilla_Compass:OnEnable()
 
 	rotateMinimap = GetCVar("rotateMinimap") == "1" -- delay CVar check otherwise compass won't rotate after exitting
 	repositionCompass()
+
 	if rotateMinimap then
 		frame:SetScript("OnUpdate", repositionCompass)
 	end
+
 	self:SetFontSize(nil)
 	self:SetColor(nil)
 end
 
-function Chinchilla_Compass:OnDisable()
+function Compass:OnDisable()
 	frame:Hide()
+
 	if rotateMinimap then
 		MinimapCompassTexture:Show()
 	else
@@ -87,8 +97,9 @@ function Chinchilla_Compass:OnDisable()
 	end
 end
 
-function Chinchilla_Compass:OnRotateMinimapUpdate(value)
+function Compass:OnRotateMinimapUpdate(value)
 	rotateMinimap = value
+
 	if self:IsEnabled() then
 		if value then
 			frame:SetScript("OnUpdate", repositionCompass)
@@ -99,15 +110,16 @@ function Chinchilla_Compass:OnRotateMinimapUpdate(value)
 	end
 end
 
-function Chinchilla_Compass:SetRadius(value)
-	Chinchilla_Compass.db.profile.radius = value
+function Compass:SetRadius(value)
+	self.db.profile.radius = value
+
 	if self:IsEnabled() then
 		repositionCompass()
 	end
 end
 
-function Chinchilla_Compass:SetColor(r, g, b, a)
-	local color = Chinchilla_Compass.db.profile.color
+function Compass:SetColor(r, g, b, a)
+	local color = self.db.profile.color
 
 	if r then
 		color[1] = r
@@ -117,7 +129,7 @@ function Chinchilla_Compass:SetColor(r, g, b, a)
 	else
 		r, g, b, a = unpack(color)
 	end
-	
+
 	if frame then
 		frame.north:SetTextColor(r, g, b, a)
 		frame.east:SetTextColor(r, g, b, a)
@@ -126,16 +138,15 @@ function Chinchilla_Compass:SetColor(r, g, b, a)
 	end
 end
 
-function Chinchilla_Compass:SetFontSize(value)
-	if value then
-		self.db.profile.fontSize = value
-	else
-		value = self.db.profile.fontSize
-	end
-	
+function Compass:SetFontSize(value)
+	if value then self.db.profile.fontSize = value
+	else value = self.db.profile.fontSize end
+
 	local nonNorthSize = self.db.profile.nonNorthSize
+
 	if frame then
 		local font, _, style = frame.north:GetFont()
+
 		frame.north:SetFont(font, value, style)
 		frame.east:SetFont(font, value*nonNorthSize, style)
 		frame.south:SetFont(font, value*nonNorthSize, style)
@@ -143,16 +154,14 @@ function Chinchilla_Compass:SetFontSize(value)
 	end
 end
 
-function Chinchilla_Compass:SetNonNorthSize(value)
+function Compass:SetNonNorthSize(value)
 	self.db.profile.nonNorthSize = value
 	self:SetFontSize(nil)
 end
 
-Chinchilla_Compass:AddChinchillaOption(function() return {
-	name = L["Compass"],
-	desc = Chinchilla_Compass.desc,
-	type = 'group',
-	args = {
+
+function Compass:GetOptions()
+	return {
 		radius = {
 			name = L["Radius"],
 			desc = L["The distance from the center of the minimap to show the indicators."],
@@ -161,10 +170,10 @@ Chinchilla_Compass:AddChinchillaOption(function() return {
 			max = 100,
 			step = 1,
 			get = function(info)
-				return Chinchilla_Compass.db.profile.radius
+				return self.db.profile.radius
 			end,
 			set = function(info, value)
-				Chinchilla_Compass:SetRadius(value)
+				self:SetRadius(value)
 			end,
 		},
 		color = {
@@ -173,10 +182,10 @@ Chinchilla_Compass:AddChinchillaOption(function() return {
 			type = 'color',
 			hasAlpha = true,
 			get = function(info)
-				return unpack(Chinchilla_Compass.db.profile.color)
+				return unpack(self.db.profile.color)
 			end,
 			set = function(info, r, g, b, a)
-				Chinchilla_Compass:SetColor(r, g, b, a)
+				self:SetColor(r, g, b, a)
 			end,
 		},
 		fontSize = {
@@ -187,10 +196,10 @@ Chinchilla_Compass:AddChinchillaOption(function() return {
 			max = 24,
 			step = 1,
 			get = function(info)
-				return Chinchilla_Compass.db.profile.fontSize
+				return self.db.profile.fontSize
 			end,
 			set = function(info, value)
-				Chinchilla_Compass:SetFontSize(value)
+				self:SetFontSize(value)
 			end,
 		},
 		nonNorthSize = {
@@ -203,11 +212,11 @@ Chinchilla_Compass:AddChinchillaOption(function() return {
 			bigStep = 0.05,
 			isPercent = true,
 			get = function(info)
-				return Chinchilla_Compass.db.profile.nonNorthSize
+				return self.db.profile.nonNorthSize
 			end,
 			set = function(info, value)
-				Chinchilla_Compass:SetNonNorthSize(value)
+				self:SetNonNorthSize(value)
 			end,
 		},
 	}
-} end)
+end

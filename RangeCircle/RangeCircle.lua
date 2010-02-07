@@ -1,11 +1,11 @@
-local Chinchilla = Chinchilla
-local Chinchilla_RangeCircle = Chinchilla:NewModule("RangeCircle", "AceEvent-3.0", "AceHook-3.0")
-local self = Chinchilla_RangeCircle
-local L = Chinchilla.L
 
-Chinchilla_RangeCircle.desc = L["Show a circle on the minimap at a prefered range"]
+local RangeCircle = Chinchilla:NewModule("RangeCircle", "AceEvent-3.0", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-function Chinchilla_RangeCircle:OnInitialize()
+RangeCircle.desc = L["Show a circle on the minimap at a prefered range"]
+
+
+function RangeCircle:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("RangeCircle", {
 		profile = {
 			range = 90,
@@ -15,8 +15,9 @@ function Chinchilla_RangeCircle:OnInitialize()
 			combatColor = { 1, 0.82, 0, 0.25 },
 			combatStyle = "Solid",
 			enabled = false,
-		}
+		},
 	})
+
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
@@ -52,64 +53,71 @@ local minimapSize = { -- radius of minimap
 	},
 }
 
-local texture
-local indoors
+local texture, indoors
 local inCombat = not not InCombatLockdown()
-function Chinchilla_RangeCircle:OnEnable()
+
+function RangeCircle:OnEnable()
 	if not texture then
 		texture = Minimap:CreateTexture("Chinchilla_RangeCircle_Circle", "BORDER")
 		texture:SetPoint("CENTER")
 	end
+
 	texture:Show()
-	
+
 	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:Update()
-	
+
 	self:SecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
 end
 
-function Chinchilla_RangeCircle:OnDisable()
+function RangeCircle:OnDisable()
 	texture:Hide()
 end
 
-function Chinchilla_RangeCircle:PLAYER_REGEN_ENABLED()
+function RangeCircle:PLAYER_REGEN_ENABLED()
 	inCombat = false
 	self:Update()
 end
 
-function Chinchilla_RangeCircle:PLAYER_REGEN_DISABLED()
+function RangeCircle:PLAYER_REGEN_DISABLED()
 	inCombat = true
 	self:Update()
 end
 
-function Chinchilla_RangeCircle:MINIMAP_UPDATE_ZOOM()
+function RangeCircle:MINIMAP_UPDATE_ZOOM()
 	local zoom = Minimap:GetZoom()
+
 	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
 		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
 	end
+
 	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
 	Minimap:SetZoom(zoom)
-	
+
 	self:Update()
 end
 
-function Chinchilla_RangeCircle:Update()
+function RangeCircle:Update()
 	if not self:IsEnabled() then
 		return
 	end
+
 	local style = styles[self.db.profile[inCombat and 'combatStyle' or 'style']] or styles.Solid
 	local tex = style and style[2] or [[Interface\AddOns\Chinchilla\RangeCircle\Solid]]
+
 	texture:SetTexture(tex)
 	texture:SetVertexColor(unpack(self.db.profile[inCombat and 'combatColor' or 'color']))
-	
+
 	local radius = minimapSize[indoors and "indoor" or "outdoor"][Minimap:GetZoom()]
 	local range = self.db.profile[inCombat and 'combatRange' or 'range']
 	local minimapWidth = Minimap:GetWidth()
 	local size = minimapWidth * range/radius
+
 	if size > minimapWidth then
 		local ratio = minimapWidth/size
+
 		texture:SetTexCoord(0.5 - ratio/2, 0.5 + ratio/2, 0.5 - ratio/2, 0.5 + ratio/2)
 		texture:SetWidth(minimapWidth)
 		texture:SetHeight(minimapWidth)
@@ -120,12 +128,12 @@ function Chinchilla_RangeCircle:Update()
 	end
 end
 
-function Chinchilla_RangeCircle:Minimap_SetZoom()
+function RangeCircle:Minimap_SetZoom()
 	self:Update()
 end
 
 
-Chinchilla_RangeCircle:AddChinchillaOption(function()
+function RangeCircle:GetOptions()
 	local args = {
 		range = {
 			type = 'range',
@@ -192,28 +200,23 @@ Chinchilla_RangeCircle:AddChinchillaOption(function()
 			end
 		}
 	}
-	
+
 	return {
-		name = L["Range circle"],
-		desc = Chinchilla_RangeCircle.desc,
-		type = 'group',
-		args = {
-			outCombat = {
-				type = 'group',
-				inline = true,
-				name = L["Out of combat"],
-				desc = L["These settings apply when out of combat"],
-				args = args,
-				order = 2,
-			},
-			inCombat = {
-				type = 'group',
-				inline = true,
-				name = L["In combat"],
-				desc = L["These settings apply when in combat"],
-				args = args,
-				order = 3,
-			}
-		}
+		outCombat = {
+			type = 'group',
+			inline = true,
+			name = L["Out of combat"],
+			desc = L["These settings apply when out of combat"],
+			args = args,
+			order = 2,
+		},
+		inCombat = {
+			type = 'group',
+			inline = true,
+			name = L["In combat"],
+			desc = L["These settings apply when in combat"],
+			args = args,
+			order = 3,
+		},
 	}
-end)
+end
