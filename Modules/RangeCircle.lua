@@ -26,11 +26,11 @@ end
 local styles = {
 	Solid = {
 		L["Solid"],
-		[[Interface\AddOns\Chinchilla\RangeCircle\Solid]],
+		[[Interface\AddOns\Chinchilla\Art\Range-Solid]],
 	},
 	Outline = {
 		L["Outline"],
-		[[Interface\AddOns\Chinchilla\RangeCircle\Outline]],
+		[[Interface\AddOns\Chinchilla\Art\Range-Outline]],
 	}
 }
 
@@ -105,7 +105,7 @@ function RangeCircle:Update()
 	end
 
 	local style = styles[self.db.profile[inCombat and 'combatStyle' or 'style']] or styles.Solid
-	local tex = style and style[2] or [[Interface\AddOns\Chinchilla\RangeCircle\Solid]]
+	local tex = style and style[2] or [[Interface\AddOns\Chinchilla\Art\Range-Solid]]
 
 	texture:SetTexture(tex)
 	texture:SetVertexColor(unpack(self.db.profile[inCombat and 'combatColor' or 'color']))

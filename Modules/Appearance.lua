@@ -56,13 +56,13 @@ function Appearance:AddBorderStyle(english, localized, round, square)
 end
 
 Chinchilla.AddBorderStyle = Appearance.AddBorderStyle
-Appearance:AddBorderStyle("Blizzard",   L["Blizzard"], [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]])
-Appearance:AddBorderStyle("Thin",       L["Thin"],     [[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Thin-Square]])
-Appearance:AddBorderStyle("Alliance",   L["Alliance"], [[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Alliance-Square]])
-Appearance:AddBorderStyle("Tooltip",    L["Tooltip"],  [[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Tooltip-Square]])
-Appearance:AddBorderStyle("Tubular",    L["Tubular"],  [[Interface\AddOns\Chinchilla\Appearance\Border-Tubular-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Tubular-Square]])
-Appearance:AddBorderStyle("Flat",       L["Flat"],     [[Interface\AddOns\Chinchilla\Appearance\Border-Flat-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Flat-Square]])
-Appearance:AddBorderStyle("Chinchilla", "Chinchilla",  [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla-Round]], [[Interface\AddOns\Chinchilla\Appearance\Border-Chinchilla-Square]])
+Appearance:AddBorderStyle("Blizzard",   L["Blizzard"], [[Interface\AddOns\Chinchilla\Art\Border-Blizzard-Round]],   [[Interface\AddOns\Chinchilla\Art\Border-Blizzard-Square]])
+Appearance:AddBorderStyle("Thin",       L["Thin"],     [[Interface\AddOns\Chinchilla\Art\Border-Thin-Round]],       [[Interface\AddOns\Chinchilla\Art\Border-Thin-Square]])
+Appearance:AddBorderStyle("Alliance",   L["Alliance"], [[Interface\AddOns\Chinchilla\Art\Border-Alliance-Round]],   [[Interface\AddOns\Chinchilla\Art\Border-Alliance-Square]])
+Appearance:AddBorderStyle("Tooltip",    L["Tooltip"],  [[Interface\AddOns\Chinchilla\Art\Border-Tooltip-Round]],    [[Interface\AddOns\Chinchilla\Art\Border-Tooltip-Square]])
+Appearance:AddBorderStyle("Tubular",    L["Tubular"],  [[Interface\AddOns\Chinchilla\Art\Border-Tubular-Round]],    [[Interface\AddOns\Chinchilla\Art\Border-Tubular-Square]])
+Appearance:AddBorderStyle("Flat",       L["Flat"],     [[Interface\AddOns\Chinchilla\Art\Border-Flat-Round]],       [[Interface\AddOns\Chinchilla\Art\Border-Flat-Square]])
+Appearance:AddBorderStyle("Chinchilla", "Chinchilla",  [[Interface\AddOns\Chinchilla\Art\Border-Chinchilla-Round]], [[Interface\AddOns\Chinchilla\Art\Border-Chinchilla-Square]])
 
 local RotateBorder_frame = CreateFrame("Frame")
 RotateBorder_frame:Hide()
@@ -398,8 +398,8 @@ function Appearance:SetShape(shape)
 	end
 
 	local borderStyle = borderStyles[self.db.profile.borderStyle] or borderStyles.Blizzard
-	local round = borderStyle and borderStyle[2] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Round]]
-	local square = borderStyle and borderStyle[3] or [[Interface\AddOns\Chinchilla\Appearance\Border-Blizzard-Square]]
+	local round = borderStyle and borderStyle[2] or [[Interface\AddOns\Chinchilla\Art\Border-Blizzard-Round]]
+	local square = borderStyle and borderStyle[3] or [[Interface\AddOns\Chinchilla\Art\Border-Blizzard-Square]]
 
 	if rotateMinimap then
 		fullTexture:SetTexture(shape ~= "SQUARE" and round or square)
@@ -420,7 +420,7 @@ function Appearance:SetShape(shape)
 	end
 
 	self:SetBorderColor() -- prevent border reverting to white, not sure if there's a way around this
-	Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Appearance\Masks\Mask-]] .. shape)
+	Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Art\Mask-]] .. shape)
 
 	if Chinchilla:GetModule("MoveButtons", true) then
 		Chinchilla:GetModule("MoveButtons"):Update()
