@@ -172,9 +172,3 @@ function Chinchilla:OnDisable()
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
 end
-
-
- -- REMOVE LATER --
-Chinchilla.L = L
-Chinchilla:SetDefaultModulePrototype({ AddChinchillaOption = function() end })
- -- REMOVE LATER --
