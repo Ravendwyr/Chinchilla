@@ -13,7 +13,7 @@ function QuestTracker:OnInitialize()
 			showTitle = true,
 			showCollapseButton = true,
 			frameWidth = 204,
-			frameHeight = 140,
+			frameHeight = 600,
 		},
 	})
 
