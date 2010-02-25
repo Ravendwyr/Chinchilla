@@ -44,11 +44,11 @@ function TrackingDots:OnInitialize()
 end
 
 function TrackingDots:OnEnable()
-	self:SetBlipTexture(nil)
+	self:SetBlipTexture()
 end
 
 function TrackingDots:OnDisable()
-	self:SetBlipTexture(nil)
+	self:SetBlipTexture()
 end
 
 

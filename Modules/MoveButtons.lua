@@ -243,12 +243,12 @@ function MoveButtons:OnInitialize()
 end
 
 function MoveButtons:OnEnable()
-	self:SetLocked(nil)
+	self:SetLocked()
 	self:Update()
 end
 
 function MoveButtons:OnDisable()
-	self:SetLocked(nil)
+	self:SetLocked()
 
 	for k,v in pairs(buttons) do
 		local deg = buttonStarts[k]
@@ -409,7 +409,7 @@ function MoveButtons:IsLocked()
 end
 
 function MoveButtons:SetLocked(value)
-	if value ~= nil then
+	if value then
 		self.db.profile.lock = value
 	else
 		value = self.db.profile.lock

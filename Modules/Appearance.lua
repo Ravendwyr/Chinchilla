@@ -73,13 +73,13 @@ end)
 local cornerTextures = {}
 local fullTexture
 function Appearance:OnEnable()
-	self:SetScale(nil)
-	self:SetAlpha(nil)
-	self:SetFrameStrata(nil)
-	self:SetFrameLevel(nil)
-	self:SetShape(nil)
-	self:SetBorderColor(nil, nil, nil, nil)
-	self:SetButtonBorderAlpha(nil)
+	self:SetScale()
+	self:SetAlpha()
+	self:SetFrameStrata()
+	self:SetFrameLevel()
+	self:SetShape()
+	self:SetBorderColor()
+	self:SetButtonBorderAlpha()
 
 	MinimapBorder:Hide()
 
@@ -108,13 +108,13 @@ function Appearance:OnEnable()
 end
 
 function Appearance:OnDisable()
-	self:SetScale(nil)
-	self:SetAlpha(nil)
-	self:SetFrameStrata(nil)
-	self:SetFrameLevel(nil)
-	self:SetShape(nil)
-	self:SetBorderColor(nil, nil, nil, nil)
-	self:SetButtonBorderAlpha(nil)
+	self:SetScale()
+	self:SetAlpha()
+	self:SetFrameStrata()
+	self:SetFrameLevel()
+	self:SetShape()
+	self:SetBorderColor()
+	self:SetButtonBorderAlpha()
 
 	MinimapBorder:Show()
 	Minimap:SetMaskTexture([[Textures\MinimapMask]])
@@ -143,18 +143,18 @@ function Appearance:MINIMAP_UPDATE_ZOOM()
 	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
 	Minimap:SetZoom(zoom)
 
-	self:SetAlpha(nil)
+	self:SetAlpha()
 end
 
 local inCombat = InCombatLockdown()
 function Appearance:PLAYER_REGEN_ENABLED()
 	inCombat = false
-	self:SetAlpha(nil)
+	self:SetAlpha()
 end
 
 function Appearance:PLAYER_REGEN_DISABLED()
 	inCombat = true
-	self:SetCombatAlpha(nil)
+	self:SetCombatAlpha()
 end
 
 local minimapButtons = {}
@@ -446,7 +446,7 @@ function Appearance:SetBorderStyle(style)
 	if style then self.db.profile.borderStyle = style
 	else return end
 
-	self:SetShape(nil)
+	self:SetShape()
 end
 
 function Appearance:SetBorderRadius(value)

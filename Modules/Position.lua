@@ -126,21 +126,21 @@ end
 
 
 function Position:OnEnable()
-	self:SetMinimapPosition(nil, nil, nil)
+	self:SetMinimapPosition()
 
-	self:SetFramePosition('durability', nil, nil, nil)
-	self:SetFramePosition('capture', nil, nil, nil)
-	self:SetFramePosition('questWatch', nil, nil, nil)
-	self:SetFramePosition('vehicleSeats', nil, nil, nil)
-	self:SetFramePosition('boss', nil, nil, nil)
+	self:SetFramePosition('durability')
+	self:SetFramePosition('capture')
+	self:SetFramePosition('questWatch')
+	self:SetFramePosition('vehicleSeats')
+	self:SetFramePosition('boss')
 
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
 	WorldStateAlwaysUpFrame:EnableMouse(false)
 
-	self:SetFramePosition('worldState', nil, nil, nil)
-	self:SetFramePosition('ticketStatus', nil, nil, nil)
-	self:SetLocked(nil)
+	self:SetFramePosition('worldState')
+	self:SetFramePosition('ticketStatus')
+	self:SetLocked()
 
 	Minimap:SetClampedToScreen(true)
 
@@ -159,7 +159,7 @@ function Position:OnEnable()
 end
 
 function Position:OnDisable()
-	self:SetMinimapPosition(nil, nil, nil)
+	self:SetMinimapPosition()
 
 	self:ShowFrameMover('durability', false)
 	self:ShowFrameMover('vehicleSeats', false)
@@ -170,14 +170,14 @@ function Position:OnDisable()
 	WorldStateAlwaysUpFrame:EnableMouse(true)
 
 	self:ShowFrameMover('worldState', false)
-	self:SetFramePosition('durability', nil, nil, nil)
-	self:SetFramePosition('questWatch', nil, nil, nil)
-	self:SetFramePosition('capture', nil, nil, nil)
-	self:SetFramePosition('worldState', nil, nil, nil)
-	self:SetFramePosition('vehicleSeats', nil, nil, nil)
-	self:SetFramePosition('boss', nil, nil, nil)
-	self:SetFramePosition('ticketStatus', nil, nil, nil)
-	self:SetLocked(nil)
+	self:SetFramePosition('durability')
+	self:SetFramePosition('questWatch')
+	self:SetFramePosition('capture')
+	self:SetFramePosition('worldState')
+	self:SetFramePosition('vehicleSeats')
+	self:SetFramePosition('boss')
+	self:SetFramePosition('ticketStatus')
+	self:SetLocked()
 --	self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 
 	Minimap:SetClampedToScreen(false)
@@ -291,17 +291,17 @@ end
 local shouldntSetPoint = false
 function Position:DurabilityFrame_SetPoint(this)
 	if shouldntSetPoint then return end
-	self:SetFramePosition('durability', nil, nil, nil)
+	self:SetFramePosition('durability')
 end
 
 function Position:WatchFrame_SetPoint(this)
 	if shouldntSetPoint then return end
-	self:SetFramePosition('questWatch', nil, nil, nil)
+	self:SetFramePosition('questWatch')
 end
 
 function Position:BossFrame_SetPoint(this)
 	if shouldntSetPoint then return end
-	self:SetFramePosition('boss', nil, nil, nil)
+	self:SetFramePosition('boss')
 end
 
 -- function Position:WatchFrame_GetRemainingSpace(...)
@@ -310,17 +310,17 @@ end
 
 function Position:VehicleSeatIndicator_SetPoint(this)
 	if shouldntSetPoint then return end
-	self:SetFramePosition('vehicleSeats', nil, nil, nil)
+	self:SetFramePosition('vehicleSeats')
 end
 
 function Position:WorldStateAlwaysUpFrame_SetPoint(this)
 	if shouldntSetPoint then return end
-	self:SetFramePosition('worldState', nil, nil, nil)
+	self:SetFramePosition('worldState')
 end
 
 function Position:WorldStateCaptureBar_SetPoint(this)
 	if shouldntSetPoint then return end
-	self:SetFramePosition('capture', nil, nil, nil)
+	self:SetFramePosition('capture')
 end
 
 function Position:WorldStateAlwaysUpFrame_Update(this)

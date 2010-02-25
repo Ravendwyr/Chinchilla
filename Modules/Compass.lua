@@ -83,8 +83,8 @@ function Compass:OnEnable()
 		frame:SetScript("OnUpdate", repositionCompass)
 	end
 
-	self:SetFontSize(nil)
-	self:SetColor(nil)
+	self:SetFontSize()
+	self:SetColor()
 end
 
 function Compass:OnDisable()
