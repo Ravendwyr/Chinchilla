@@ -13,25 +13,16 @@ function Location:OnInitialize()
 			positionY = 70,
 			showClose = true,
 			background = {
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
-				1
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1,
 			},
 			border = {
-				TOOLTIP_DEFAULT_COLOR.r,
-				TOOLTIP_DEFAULT_COLOR.g,
-				TOOLTIP_DEFAULT_COLOR.b,
-				1
+				TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1,
 			},
-	--[[		textColor = {
-				1,
-				0.82,
-				0,
-				1
-			}]]
+--			textColor = {
+--				1, 0.82, 0, 1,
+--			},
 			enabled = true,
-		}
+		},
 	})
 
 	if not self.db.profile.enabled then
