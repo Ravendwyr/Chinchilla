@@ -13,26 +13,17 @@ function Ping:OnInitialize()
 			positionX = 0,
 			positionY = 60,
 			background = {
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
-				1
+				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1,
 			},
 			border = {
-				TOOLTIP_DEFAULT_COLOR.r,
-				TOOLTIP_DEFAULT_COLOR.g,
-				TOOLTIP_DEFAULT_COLOR.b,
-				1
+				TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1,
 			},
 			textColor = {
-				0.8,
-				0.8,
-				0.6,
-				1
+				0.8, 0.8, 0.6, 1,
 			},
 			MINIMAPPING_TIMER = 5,
 			MINIMAPPING_FADE_TIMER = 0.5,
-			enabled = true
+			enabled = true,
 		},
 	})
 
@@ -51,12 +42,7 @@ function Ping:OnEnable()
 			tile = true,
 			tileSize = 16,
 			edgeSize = 16,
-			insets = {
-				left = 4,
-				right = 4,
-				top = 4,
-				bottom = 4
-			}
+			insets = { left = 4, right = 4, top = 4, bottom = 4 },
 		})
 
 		frame:SetWidth(1)
