@@ -140,7 +140,7 @@ function Chinchilla:OnInitialize()
 			width = "full",
 		}
 
-		options.args[key] = { type = "group", name = key, desc = key.desc, args = t }
+		options.args[key] = { type = "group", name = key, desc = module.desc, args = t }
 	end
 
 	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
