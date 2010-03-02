@@ -165,8 +165,9 @@ function ShowHide:GetOptions()
 
 	local function set(info, value)
 		local key = info[#info]
+
 		self.db.profile[key] = value
-		Chinchilla_ShowHide:Update(key, value)
+		self:Update(key, value)
 	end
 
 	return {
