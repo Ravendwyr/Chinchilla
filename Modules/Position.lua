@@ -5,6 +5,12 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 
+-- special hack for boss/arena unitframes
+local Chinchilla_UnitAnchor = CreateFrame("Frame")
+Chinchilla_UnitAnchor:SetWidth(200)
+Chinchilla_UnitAnchor:SetHeight(350)
+
+
 local numHookedCaptureFrames = 0
 
 function Position:OnInitialize()
@@ -124,22 +130,28 @@ local function Minimap_OnDragStop(this)
 	LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 end
 
-
 function Position:OnEnable()
 	self:SetMinimapPosition()
 
-	self:SetFramePosition('durability')
-	self:SetFramePosition('capture')
-	self:SetFramePosition('questWatch')
-	self:SetFramePosition('vehicleSeats')
+	for i=1, 4, 1 do
+		_G["Boss"..i.."TargetFrame"]:ClearAllPoints()
+		_G["Boss"..i.."TargetFrame"]:SetParent(Chinchilla_UnitAnchor)
+		_G["Boss"..i.."TargetFrame"]:SetPoint("TOP", i == 1 and Chinchilla_UnitAnchor or _G["Boss"..(i-1).."TargetFrame"], i == 1 and "TOP" or "BOTTOM")
+		_G["Boss"..i.."TargetFrame"].SetPoint = function() end
+	end
+
 	self:SetFramePosition('boss')
+	self:SetFramePosition('capture')
+	self:SetFramePosition('durability')
+	self:SetFramePosition('questWatch')
+	self:SetFramePosition('ticketStatus')
+	self:SetFramePosition('vehicleSeats')
+	self:SetFramePosition('worldState')
 
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
 	WorldStateAlwaysUpFrame:EnableMouse(false)
 
-	self:SetFramePosition('worldState')
-	self:SetFramePosition('ticketStatus')
 	self:SetLocked()
 
 	Minimap:SetClampedToScreen(true)
@@ -152,7 +164,7 @@ function Position:OnEnable()
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
 	self:SecureHook(WatchFrame, "SetPoint", "WatchFrame_SetPoint")
-	self:SecureHook(Boss1TargetFrame, "SetPoint", "BossFrame_SetPoint")
+--	self:SecureHook(Boss1TargetFrame, "SetPoint", "BossFrame_SetPoint")
 --	self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	self:SecureHook("WorldStateAlwaysUpFrame_Update")
@@ -161,22 +173,23 @@ end
 function Position:OnDisable()
 	self:SetMinimapPosition()
 
+	self:ShowFrameMover('capture', false)
 	self:ShowFrameMover('durability', false)
 	self:ShowFrameMover('vehicleSeats', false)
-	self:ShowFrameMover('capture', false)
+	self:ShowFrameMover('worldState', false)
+
+	self:SetFramePosition('boss')
+	self:SetFramePosition('capture')
+	self:SetFramePosition('durability')
+	self:SetFramePosition('questWatch')
+	self:SetFramePosition('ticketStatus')
+	self:SetFramePosition('vehicleSeats')
+	self:SetFramePosition('worldState')
 
 	WorldStateAlwaysUpFrame:SetWidth(10)
 	WorldStateAlwaysUpFrame:SetHeight(10)
 	WorldStateAlwaysUpFrame:EnableMouse(true)
 
-	self:ShowFrameMover('worldState', false)
-	self:SetFramePosition('durability')
-	self:SetFramePosition('questWatch')
-	self:SetFramePosition('capture')
-	self:SetFramePosition('worldState')
-	self:SetFramePosition('vehicleSeats')
-	self:SetFramePosition('boss')
-	self:SetFramePosition('ticketStatus')
 	self:SetLocked()
 --	self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 
@@ -299,10 +312,10 @@ function Position:WatchFrame_SetPoint(this)
 	self:SetFramePosition('questWatch')
 end
 
-function Position:BossFrame_SetPoint(this)
-	if shouldntSetPoint then return end
-	self:SetFramePosition('boss')
-end
+-- function Position:BossFrame_SetPoint(this)
+--	if shouldntSetPoint then return end
+--	self:SetFramePosition('boss')
+-- end
 
 -- function Position:WatchFrame_GetRemainingSpace(...)
 -- 	return 500
@@ -334,7 +347,7 @@ end
 
 local nameToFrame = {
 	minimap = MinimapCluster,
-	boss = Boss1TargetFrame,
+	boss = Chinchilla_UnitAnchor,
 	durability = DurabilityFrame,
 	questWatch = WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,
