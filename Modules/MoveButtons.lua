@@ -372,7 +372,7 @@ local function x_set(info, value)
 	data[2] = x
 	data[3] = y
 
-	if not self:IsEnabled() then
+	if not MoveButtons:IsEnabled() then
 		return
 	end
 
