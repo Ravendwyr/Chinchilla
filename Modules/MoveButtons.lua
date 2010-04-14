@@ -316,7 +316,7 @@ local function attach_set(info, value)
 		MoveButtons.db.profile[key] = getAngle(buttons[key]:GetCenter())
 
 		buttons[key]:ClearAllPoints()
-		buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(self.db.profile[key]))
+		buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(MoveButtons.db.profile[key]))
 	end
 end
 
