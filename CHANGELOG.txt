@@ -1,3 +1,10 @@
+Version 2.1.1
+- Added Chinchilla's option window to Blizzard's in-game options window.
+- Fixed a bug causing the bossframes to stretch over half of the screen.
+- Fixed various typing errors.
+- Removed a load of redundant code.
+- Rearranged various files inside Chinchilla's directory.
+
 Version 2.1
 - The quest tracker is now resizable via Chinchilla's options.
 - The dungeon difficulty flag is now movable and hidable.
