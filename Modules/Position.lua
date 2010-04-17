@@ -2,6 +2,7 @@
 local Position = Chinchilla:NewModule("Position", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
+Position.name = L["Position"]
 Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 

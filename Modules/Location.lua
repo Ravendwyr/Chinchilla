@@ -2,6 +2,7 @@
 local Location = Chinchilla:NewModule("Location", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
+Location.name = L["Location"]
 Location.desc = L["Show zone information on or near minimap"]
 
 

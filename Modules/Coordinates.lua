@@ -2,6 +2,7 @@
 local Coordinates = Chinchilla:NewModule("Coordinates", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
+Coordinates.name = L["Coordinates"]
 Coordinates.desc = L["Show coordinates on or near the minimap"]
 
 

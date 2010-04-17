@@ -2,6 +2,7 @@
 local RangeCircle = Chinchilla:NewModule("RangeCircle", "AceEvent-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
+RangeCircle.name = L["Range circle"]
 RangeCircle.desc = L["Show a circle on the minimap at a prefered range"]
 
 

@@ -2,6 +2,7 @@
 local TrackingDots = Chinchilla:NewModule("TrackingDots")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
+TrackingDots.name = L["Tracking dots"]
 TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
 
 

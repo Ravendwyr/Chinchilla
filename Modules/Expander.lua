@@ -2,6 +2,7 @@
 local Expander = Chinchilla:NewModule("Expander")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
+Expander.name = L["Expander"]
 Expander.desc = L["Show an expanded minimap on keypress"]
 
 
