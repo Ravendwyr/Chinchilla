@@ -25,7 +25,7 @@ function AutoZoom:OnEnable()
 end
 
 function AutoZoom:OnDisable()
-	self:CancelAllScheduledTimers()
+	self:CancelAllTimers()
 end
 
 
