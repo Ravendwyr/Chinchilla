@@ -125,6 +125,10 @@ function Chinchilla:OnInitialize()
 	for key, module in self:IterateModules() do
 		local t = module.GetOptions and module:GetOptions() or {}
 
+		for option, args in pairs(t) do
+			args.disabled = function() return not module:IsEnabled() end
+		end
+
 		t.toggle = {
 			type = 'toggle',
 			name = L["Enable"],
