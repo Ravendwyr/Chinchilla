@@ -304,8 +304,7 @@ local function attach_get(info)
 end
 
 local function not_attach_get(info)
-	local key = info[#info - 1]
-	return not attach_get(key)
+	return not attach_get(info)
 end
 
 local function attach_set(info, value)
