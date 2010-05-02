@@ -409,7 +409,7 @@ function MoveButtons:IsLocked()
 end
 
 function MoveButtons:SetLocked(value)
-	if value then
+	if value ~= nil then
 		self.db.profile.lock = value
 	else
 		value = self.db.profile.lock
