@@ -764,6 +764,7 @@ function Position:GetOptions()
 					order = 4,
 				},
 			},
+			disabled = function() return not self:IsEnabled() or not Chinchilla_BossAnchor:IsShown() end,
 		},
 		vehicleSeats = {
 			name = L["Vehicle seats"],
