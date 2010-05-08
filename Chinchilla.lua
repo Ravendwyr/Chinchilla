@@ -126,7 +126,9 @@ function Chinchilla:OnInitialize()
 		local t = module.GetOptions and module:GetOptions() or {}
 
 		for option, args in pairs(t) do
-			args.disabled = function() return not module:IsEnabled() end
+			if not args.disabled then
+				args.disabled = function() return not module:IsEnabled() end
+			end
 		end
 
 		t.toggle = {
