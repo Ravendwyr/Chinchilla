@@ -7,9 +7,9 @@ Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 
 -- special hack for boss/arena unitframes
-local Chinchilla_UnitAnchor = CreateFrame("Frame")
-Chinchilla_UnitAnchor:SetWidth(200)
-Chinchilla_UnitAnchor:SetHeight(350)
+Chinchilla_BossAnchor = CreateFrame("Frame")
+Chinchilla_BossAnchor:SetWidth(200)
+Chinchilla_BossAnchor:SetHeight(350)
 
 
 local numHookedCaptureFrames = 0
@@ -136,8 +136,8 @@ function Position:OnEnable()
 
 	for i=1, 4, 1 do
 		_G["Boss"..i.."TargetFrame"]:ClearAllPoints()
-		_G["Boss"..i.."TargetFrame"]:SetParent(Chinchilla_UnitAnchor)
-		_G["Boss"..i.."TargetFrame"]:SetPoint("TOP", i == 1 and Chinchilla_UnitAnchor or _G["Boss"..(i-1).."TargetFrame"], i == 1 and "TOP" or "BOTTOM")
+		_G["Boss"..i.."TargetFrame"]:SetParent(Chinchilla_BossAnchor)
+		_G["Boss"..i.."TargetFrame"]:SetPoint("TOP", i == 1 and Chinchilla_BossAnchor or _G["Boss"..(i-1).."TargetFrame"], i == 1 and "TOP" or "BOTTOM")
 		_G["Boss"..i.."TargetFrame"].SetPoint = function() end
 	end
 
@@ -348,7 +348,7 @@ end
 
 local nameToFrame = {
 	minimap = MinimapCluster,
-	boss = Chinchilla_UnitAnchor,
+	boss = Chinchilla_BossAnchor,
 	durability = DurabilityFrame,
 	questWatch = WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,

@@ -9,6 +9,7 @@ ShowHide.desc = L["Show and hide interface elements of the minimap"]
 function ShowHide:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
 		profile = {
+			boss = false,
 			battleground = true,
 			north = true,
 			locationBar = true,
@@ -35,6 +36,7 @@ function ShowHide:OnInitialize()
 end
 
 local frames = {
+	boss = Chinchilla_BossAnchor,
 	battleground = MiniMapBattlefieldFrame,
 	difficulty = MiniMapInstanceDifficulty,
 	north = MinimapNorthTag,
@@ -282,6 +284,13 @@ function ShowHide:GetOptions()
 			name = L["Vehicle seats"],
 			desc = L["Show the vehicle seats indicator"],
 			type = 'toggle',
+			get = get,
+			set = set,
+		},
+		boss = {
+			name = L["Boss frames"],
+			desc = L["Show the boss unit frames"],
+			type = "toggle",
 			get = get,
 			set = set,
 		},
