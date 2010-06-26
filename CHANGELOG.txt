@@ -1,6 +1,15 @@
+Version 2.1.2
+- Added an option to show or hide Blizzard's boss frames. Are you happy now?
+- Manual entries in sliders now override minimum and maximum values.
+- Module option names are localised once again.
+- Fixed a bug causing a module's options to remain enabled even when the module itself is disabled.
+- Fixed a bug causing the angle option to remain shown even when it's associated minimap button is attached to the minimap.
+- Fixed a bug in the Lock button. (thanks SilentDonkey)
+- Fixed a Lua error in the AutoZoom module. (thanks Cremor)
+
 Version 2.1.1
 - Added Chinchilla's option window to Blizzard's in-game options window.
-- Fixed a bug causing the bossframes to stretch over half of the screen.
+- Fixed a bug causing Blizzard's boss frames to stretch over half of the screen.
 - Fixed various typing errors.
 - Removed a load of redundant code.
 - Rearranged various files inside Chinchilla's directory.
