@@ -1,5 +1,8 @@
+Version 2.1.3
+- Library update. I blame lazy Ace-3.0 devs.
+
 Version 2.1.2
-- Added an option to show or hide Blizzard's boss frames. Are you happy now?
+- Added an option to show or hide Blizzard's boss frames.
 - Manual entries in sliders now override minimum and maximum values.
 - Module option names are localised once again.
 - Fixed a bug causing a module's options to remain enabled even when the module itself is disabled.
