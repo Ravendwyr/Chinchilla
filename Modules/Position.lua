@@ -8,6 +8,7 @@ Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 -- special hack for boss/arena unitframes
 Chinchilla_BossAnchor = CreateFrame("Frame")
+Chinchilla_BossAnchor:Show()
 Chinchilla_BossAnchor:SetWidth(200)
 Chinchilla_BossAnchor:SetHeight(350)
 

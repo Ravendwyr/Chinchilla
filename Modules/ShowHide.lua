@@ -9,7 +9,7 @@ ShowHide.desc = L["Show and hide interface elements of the minimap"]
 function ShowHide:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
 		profile = {
-			boss = false,
+			boss = true,
 			battleground = true,
 			north = true,
 			locationBar = true,
