@@ -160,6 +160,26 @@ function ShowHide:MinimapZoneTextButton_Hide(object)
 end
 
 
+function ShowHide:SetBoss(info, value)
+	local key = info[#info]
+
+	self.db.profile[key] = value
+	self:Update(key, value)
+
+	if value then
+		Boss1TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		Boss2TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		Boss3TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		Boss4TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+	else
+		Boss1TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		Boss2TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		Boss3TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		Boss4TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+	end
+end
+
+
 function ShowHide:GetOptions()
 	local function get(info)
 		local key = info[#info]
@@ -292,7 +312,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the boss unit frames"],
 			type = "toggle",
 			get = get,
-			set = set,
+			set = "SetBoss",
 		},
 	}
 end
