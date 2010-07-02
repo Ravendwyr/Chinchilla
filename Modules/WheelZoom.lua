@@ -2,7 +2,7 @@
 local WheelZoom = Chinchilla:NewModule("WheelZoom")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-WheelZoom.name = L["Wheel zoom"]
+WheelZoom.displayName = L["Wheel zoom"]
 WheelZoom.desc = L["Use the mouse wheel to zoom in and out on the minimap."]
 
 

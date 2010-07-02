@@ -2,7 +2,7 @@
 local Appearance = Chinchilla:NewModule("Appearance", "AceEvent-3.0", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-Appearance.name = L["Appearance"]
+Appearance.displayName = L["Appearance"]
 Appearance.desc = L["Allow for a customized look of the minimap"]
 
 

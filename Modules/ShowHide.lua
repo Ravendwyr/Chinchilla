@@ -2,7 +2,7 @@
 local ShowHide = Chinchilla:NewModule("ShowHide", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-ShowHide.name = L["Show / Hide"]
+ShowHide.displayName = L["Show / Hide"]
 ShowHide.desc = L["Show and hide interface elements of the minimap"]
 
 

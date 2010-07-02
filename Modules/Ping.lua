@@ -2,7 +2,7 @@
 local Ping = Chinchilla:NewModule("Ping", "AceEvent-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-Ping.name = L["Ping"]
+Ping.displayName = L["Ping"]
 Ping.desc = L["Show who last pinged the minimap"]
 
 

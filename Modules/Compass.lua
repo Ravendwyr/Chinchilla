@@ -2,7 +2,7 @@
 local Compass = Chinchilla:NewModule("Compass")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-Compass.name = L["Compass"]
+Compass.displayName = L["Compass"]
 Compass.desc = L["Show direction indicators on the minimap"]
 
 

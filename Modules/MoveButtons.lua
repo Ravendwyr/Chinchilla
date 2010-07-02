@@ -2,7 +2,7 @@
 local MoveButtons = Chinchilla:NewModule("MoveButtons")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-MoveButtons.name = L["Move Buttons"]
+MoveButtons.displayName = L["Move Buttons"]
 MoveButtons.desc = L["Move buttons around the minimap"]
 
 

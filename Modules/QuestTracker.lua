@@ -2,7 +2,7 @@
 local QuestTracker = Chinchilla:NewModule("QuestTracker")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-QuestTracker.name = L["Quest Tracker"]
+QuestTracker.displayName = L["Quest Tracker"]
 QuestTracker.desc = L["Tweak the quest tracker"]
 
 
