@@ -84,21 +84,23 @@ end
 function ShowHide:Update()
 	if not self:IsEnabled() then return end
 
-	for k,v in pairs(frames) do
-		local key = k
-
+	for key, frame in pairs(frames) do
 		if key == "zoomOut" or key == "zoomIn" then
 			key = "zoom"
 		end
 
-		if not self.db.profile[key] then
-		 	if v:IsShown() then
-				v:Hide()
-				framesShown[v] = true
+		local value = self.db.profile[key]
+
+		if key == "boss" then
+			self:SetBoss(value)
+		elseif not value then
+		 	if frame:IsShown() then
+				frame:Hide()
+				framesShown[frame] = true
 			end
 		else
-			if framesShown[v] then
-				v:Show()
+			if framesShown[frame] then
+				frame:Show()
 			end
 		end
 	end
@@ -161,10 +163,6 @@ end
 
 
 function ShowHide:SetBoss(info, value)
-	local key = info[#info]
-
-	self.db.profile[key] = value
-
 	if value then
 		Boss1TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 		Boss2TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
@@ -311,7 +309,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the boss unit frames"],
 			type = "toggle",
 			get = get,
-			set = "SetBoss",
+			set = set,
 		},
 	}
 end
