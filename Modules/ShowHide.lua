@@ -164,7 +164,6 @@ function ShowHide:SetBoss(info, value)
 	local key = info[#info]
 
 	self.db.profile[key] = value
-	self:Update(key, value)
 
 	if value then
 		Boss1TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
