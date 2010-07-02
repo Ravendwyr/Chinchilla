@@ -162,7 +162,7 @@ function ShowHide:MinimapZoneTextButton_Hide(object)
 end
 
 
-function ShowHide:SetBoss(info, value)
+function ShowHide:SetBoss(value)
 	if value then
 		Boss1TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 		Boss2TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
