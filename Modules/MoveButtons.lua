@@ -220,6 +220,15 @@ local function button_OnDragStop(this)
 	button_OnUpdate(this)
 end
 
+-- copied from Tekkub's Cork
+local function GetTipAnchor(frame)
+	local x,y = frame:GetCenter()
+	if not x or not y then return "TOPLEFT", frame, "BOTTOMLEFT" end
+	local hhalf = (x > UIParent:GetWidth()*2/3) and "RIGHT" or (x < UIParent:GetWidth()/3) and "LEFT" or ""
+	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
+	return vhalf..hhalf, frame, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
+end
+-- end copy
 
 function MoveButtons:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("MoveButtons", {
@@ -244,6 +253,7 @@ function MoveButtons:OnInitialize()
 end
 
 function MoveButtons:OnEnable()
+	self:PositionLFD()
 	self:SetLocked()
 	self:Update()
 end
@@ -278,6 +288,11 @@ function MoveButtons:Update()
 			v:SetClampedToScreen(false)
 		end
 	end
+end
+
+function MoveButtons:PositionLFD()
+	LFDSearchStatus:ClearAllPoints()
+	LFDSearchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
 end
 
 local function angle_get(info)
@@ -378,6 +393,8 @@ local function x_set(info, value)
 
 	buttons[key]:ClearAllPoints()
 	buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
+
+	if key == "lfg" then MoveButtons:PositionLFD() end
 end
 
 local function y_set(info, value)
@@ -396,6 +413,8 @@ local function y_set(info, value)
 
 	buttons[key]:ClearAllPoints()
 	buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
+
+	if key == "lfg" then MoveButtons:PositionLFD() end
 end
 
 local x_min = -math.floor(GetScreenWidth()/10 + 0.5) * 5
