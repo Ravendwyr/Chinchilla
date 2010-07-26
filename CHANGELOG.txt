@@ -1,3 +1,10 @@
+Version 2.1.4
+- Module names no longer conflict with other addons. Whoops.
+- Boss frames are no longer hidden by default. Whoops.
+- Boss frame positioning options are no longer disabled when the boss frames themselves are disabled.
+- LFD Status window no longer disappears off the screen when the minimap is on the left side.
+- Hiding border textures for LFG, Movie Recording and Tracking buttons now works.
+
 Version 2.1.3
 - Library update. I blame lazy Ace-3.0 devs.
 
