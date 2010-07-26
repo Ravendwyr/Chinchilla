@@ -497,12 +497,10 @@ local buttonBorderTextures = {
 	MiniMapBattlefieldBorder,
 	MiniMapWorldBorder,
 	MiniMapMailBorder,
---	MiniMapMeetingStoneBorder,
---	GameTimeFrame,
-	MiniMapTrackingBorder,
+	MiniMapTrackingButtonBorder,
 	MiniMapVoiceChatFrameBorder,
---	MinimapZoomIn,
---	MinimapZoomOut,
+	MiniMapLFGFrameBorder,
+	MiniMapRecordingBorder,
 }
 
 function Appearance:SetButtonBorderAlpha(alpha)
