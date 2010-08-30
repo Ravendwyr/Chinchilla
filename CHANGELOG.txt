@@ -1,3 +1,7 @@
+Version 2.1.5
+- Fixed a longstanding bug preventing minimap buttons from being place along the edges of the screen.  Blizzard's code really sucks sometimes.
+- Options are now created on demand. This should make logging in slightly faster.
+
 Version 2.1.4
 - Module names no longer conflict with other addons. Whoops.
 - Boss frames are no longer hidden by default. Whoops.
