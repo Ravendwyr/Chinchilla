@@ -49,8 +49,6 @@ end
 
 local options
 function Chinchilla:OpenConfig()
-	Chinchilla.OpenConfig = function() AceConfigDialog:Open("Chinchilla") end -- override, we only need to be created once
-
 	options = {
 		name = L["Chinchilla Minimap"], type = 'group',
 		args = {
@@ -154,6 +152,8 @@ function Chinchilla:OpenConfig()
 	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(Chinchilla.db)
 	options.args.profile.order = -1
 
+	Chinchilla.OpenConfig = nil -- delete, just to make sure
+
 	return options
 end
 
@@ -163,9 +163,15 @@ function Chinchilla:OnInitialize()
 end
 
 function Chinchilla:OnEnable()
-	LibStub("AceConfig-3.0"):RegisterOptionsTable("Chinchilla", Chinchilla.OpenConfig, { "/Chinchilla", "/Chin" })
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("Chinchilla", Chinchilla.OpenConfig)
 	AceConfigDialog:AddToBlizOptions("Chinchilla", L["Chinchilla Minimap"])
 	AceConfigDialog:SetDefaultSize("Chinchilla", 800, 500)
+
+	_G["SLASH_CHINCHILLA1"] = "/chinchilla"
+	_G["SLASH_CHINCHILLA2"] = "/chin"
+
+	_G.hash_SlashCmdList["CHINCHILLA"] = nil
+	_G.SlashCmdList["CHINCHILLA"] = function() AceConfigDialog:Open("Chinchilla") end
 
 	MinimapCluster:EnableMouse(false)
 
