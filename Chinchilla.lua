@@ -47,82 +47,82 @@ function Chinchilla:CallMethodOnAllModules(method, ...)
 end
 
 
-local options = {
-	name = L["Chinchilla Minimap"], type = 'group',
-	args = {
-		lock = {
-			name = L["Lock"],
-			desc = L["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."],
-			type = 'toggle',
-			tristate = true,
-			get = function()
-				local current, max = 0, 0
+local options
+function Chinchilla:OpenConfig()
+	Chinchilla.OpenConfig = function() AceConfigDialog:Open("Chinchilla") end -- override, we only need to be created once
 
-				for name, module in Chinchilla:IterateModules(false) do
-					if type(module.IsLocked) == "function" then
-						local locked = module:IsLocked()
+	options = {
+		name = L["Chinchilla Minimap"], type = 'group',
+		args = {
+			lock = {
+				name = L["Lock"],
+				desc = L["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."],
+				type = 'toggle',
+				tristate = true,
+				get = function()
+					local current, max = 0, 0
 
-						max = max + 1
+					for name, module in Chinchilla:IterateModules(false) do
+						if type(module.IsLocked) == "function" then
+							local locked = module:IsLocked()
 
-						if locked then
-							if locked == "HALF" then current = current + 0.5
-							else current = current + 1 end
+							max = max + 1
+
+							if locked then
+								if locked == "HALF" then current = current + 0.5
+								else current = current + 1 end
+							end
 						end
 					end
-				end
 
-				if current == 0 then return false
-				elseif current == max then return true
-				else return nil end
-			end,
-			set = function(_, value)
-				Chinchilla:CallMethodOnAllModules("SetLocked", not not value)
-			end,
-		},
-		rotateMinimap = {
-			name = _G.ROTATE_MINIMAP,
-			desc = _G.OPTION_TOOLTIP_ROTATE_MINIMAP,
-			type = 'toggle',
-			get = function()
-				return GetCVar("rotateMinimap") == "1"
-			end,
-			set = function(_, value)
-				SetCVar("rotateMinimap", value and "1" or "0")
-				Minimap_UpdateRotationSetting()
-			end,
-		},
-		mouseButton = {
-			name = L["Preferences button"],
-			desc = L["Button to use on the minimap to open the preferences window.\nNote: you can always open with /chin"],
-			type = "select",
-			values = {
-				RightButton = L["Right mouse button"],
-				MiddleButton = L["Middle mouse button"],
-				Button4 = L["Mouse button #4"],
-				Button5 = L["Mouse button #5"],
-				None = L["None"],
+					if current == 0 then return false
+					elseif current == max then return true
+					else return nil end
+				end,
+				set = function(_, value)
+					Chinchilla:CallMethodOnAllModules("SetLocked", not not value)
+				end,
 			},
-			get = function()
-				return Chinchilla.db.profile.mouseButton
-			end,
-			set = function(_, value)
-				Chinchilla.db.profile.mouseButton = value
-			end,
+			rotateMinimap = {
+				name = _G.ROTATE_MINIMAP,
+				desc = _G.OPTION_TOOLTIP_ROTATE_MINIMAP,
+				type = 'toggle',
+				get = function()
+					return GetCVar("rotateMinimap") == "1"
+				end,
+				set = function(_, value)
+					SetCVar("rotateMinimap", value and "1" or "0")
+					Minimap_UpdateRotationSetting()
+				end,
+			},
+			mouseButton = {
+				name = L["Preferences button"],
+				desc = L["Button to use on the minimap to open the preferences window.\nNote: you can always open with /chin"],
+				type = "select",
+				values = {
+					RightButton = L["Right mouse button"],
+					MiddleButton = L["Middle mouse button"],
+					Button4 = L["Mouse button #4"],
+					Button5 = L["Mouse button #5"],
+					None = L["None"],
+				},
+				get = function()
+					return Chinchilla.db.profile.mouseButton
+				end,
+				set = function(_, value)
+					Chinchilla.db.profile.mouseButton = value
+				end,
+			},
+			version = {
+				name = L["Version: %s"]:format(Chinchilla.version),
+				type = "description",
+				order = -1,
+				width = "normal",
+			},
 		},
-		version = {
-			name = L["Version: %s"]:format(Chinchilla.version),
-			type = "description",
-			order = -1,
-			width = "normal",
-		},
-	},
-}
+	}
 
-
-function Chinchilla:OnInitialize()
-	self.db = LibStub("AceDB-3.0"):New("Chinchilla2DB", { profile = { mouseButton = "RightButton" }}, 'Default')
-
-	for key, module in self:IterateModules() do
+	for key, module in Chinchilla:IterateModules() do
 		local t = module.GetOptions and module:GetOptions() or {}
 
 		for option, args in pairs(t) do
@@ -151,23 +151,22 @@ function Chinchilla:OnInitialize()
 		options.args[key] = { type = "group", name = module.displayName, desc = module.desc, handler = module, args = t }
 	end
 
-	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(Chinchilla.db)
 	options.args.profile.order = -1
 
-	LibStub("AceConfig-3.0"):RegisterOptionsTable("Chinchilla", options)
-	AceConfigDialog:AddToBlizOptions("Chinchilla", L["Chinchilla Minimap"])
-	AceConfigDialog:SetDefaultSize("Chinchilla", 800, 500)
+	return options
+end
 
-	_G["SLASH_CHINCHILLA1"] = "/chinchilla"
-	_G["SLASH_CHINCHILLA2"] = "/chin"
 
-	_G.hash_SlashCmdList["CHINCHILLA"] = nil
-	_G.SlashCmdList["CHINCHILLA"] = function()
-		AceConfigDialog:Open("Chinchilla")
-	end
+function Chinchilla:OnInitialize()
+	self.db = LibStub("AceDB-3.0"):New("Chinchilla2DB", { profile = { mouseButton = "RightButton" }}, 'Default')
 end
 
 function Chinchilla:OnEnable()
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("Chinchilla", Chinchilla.OpenConfig, { "/Chinchilla", "/Chin" })
+	AceConfigDialog:AddToBlizOptions("Chinchilla", L["Chinchilla Minimap"])
+	AceConfigDialog:SetDefaultSize("Chinchilla", 800, 500)
+
 	MinimapCluster:EnableMouse(false)
 
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
