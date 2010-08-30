@@ -94,7 +94,6 @@ function Appearance:OnEnable()
 		end
 	end
 
-	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:ScheduleRepeatingTimer("RecheckMinimapButtons", 1)
@@ -133,19 +132,6 @@ function Appearance:OnDisable()
 	end
 end
 
-local indoors
-function Appearance:MINIMAP_UPDATE_ZOOM()
-	local zoom = Minimap:GetZoom()
-
-	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
-	end
-
-	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
-	Minimap:SetZoom(zoom)
-
-	self:SetAlpha()
-end
 
 local inCombat = InCombatLockdown()
 function Appearance:PLAYER_REGEN_ENABLED()
@@ -264,14 +250,20 @@ function Appearance:SetAlpha(value)
 	if value then self.db.profile.alpha = value
 	else value = self.db.profile.alpha end
 
-	if not self:IsEnabled() or indoors then
+	if not self:IsEnabled() then
 		value = 1
 	end
 
 	if not inCombat then
-		MinimapCluster:SetAlpha(value)
+		if value == 0 then MinimapCluster:Hide() else
+			MinimapCluster:Show()
+			MinimapCluster:SetAlpha(value)
+		end
 	else
-		MinimapCluster:SetAlpha(self.db.profile.combatAlpha)
+		if self.db.profile.combatAlpha == 0 then MinimapCluster:Hide() else
+			MinimapCluster:Show()
+			MinimapCluster:SetAlpha(self.db.profile.combatAlpha)
+		end
 	end
 end
 
@@ -279,12 +271,15 @@ function Appearance:SetCombatAlpha(value)
 	if value then self.db.profile.combatAlpha = value
 	else value = self.db.profile.combatAlpha end
 
-	if not self:IsEnabled() or indoors then
+	if not self:IsEnabled() then
 		value = 1
 	end
 
 	if inCombat then
-		MinimapCluster:SetAlpha(value)
+		if value == 0 then MinimapCluster:Hide() else
+			MinimapCluster:Show()
+			MinimapCluster:SetAlpha(value)
+		end
 	end
 end
 
