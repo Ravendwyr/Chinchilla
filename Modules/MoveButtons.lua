@@ -417,11 +417,6 @@ local function y_set(info, value)
 	if key == "lfg" then MoveButtons:PositionLFD() end
 end
 
-local x_min = -math.floor(GetScreenWidth()/10 + 0.5) * 5
-local x_max = math.floor(GetScreenWidth()/10 + 0.5) * 5
-local y_min = -math.floor(GetScreenHeight()/10 + 0.5) * 5
-local y_max = math.floor(GetScreenHeight()/10 + 0.5) * 5
-
 
 function MoveButtons:IsLocked()
 	return self.db.profile.lock
@@ -465,6 +460,11 @@ end
 
 
 function MoveButtons:GetOptions()
+	local x_min = -math.floor(GetScreenWidth()/10 + 0.5) * 5
+	local x_max = math.floor(GetScreenWidth()/10 + 0.5) * 5
+	local y_min = -math.floor(GetScreenHeight()/10 + 0.5) * 5
+	local y_max = math.floor(GetScreenHeight()/10 + 0.5) * 5
+
 	local args = {
 		attach = {
 			name = L["Attach to minimap"],
