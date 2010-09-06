@@ -1,3 +1,6 @@
+Version 2.1.6
+- Fixed a bug I introduced in Version 2.1.5 causing the minimap to go blank when indoors. I tried to make something better, but it didn't work.
+
 Version 2.1.5
 - Fixed a longstanding bug preventing minimap buttons from being place along the edges of the screen.  Blizzard's code really sucks sometimes.
 - Options are now created on demand. This should make logging in slightly faster.
