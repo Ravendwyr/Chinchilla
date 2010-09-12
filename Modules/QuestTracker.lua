@@ -7,6 +7,7 @@ QuestTracker.desc = L["Tweak the quest tracker"]
 
 local noop = function() end
 local origTitleShow, origCollapseShow = WatchFrameTitle.Show, WatchFrameCollapseExpandButton.Show
+local origSetWidth = WatchFrame_SetWidth
 
 function QuestTracker:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("QuestTracker", {
@@ -31,6 +32,8 @@ function QuestTracker:OnEnable()
 	WATCHFRAME_EXPANDEDWIDTH  = self.db.profile.frameWidth
 	WATCHFRAME_MAXLINEWIDTH   = self.db.profile.frameWidth - 8
 
+	WatchFrame_SetWidth = noop
+
 	WatchFrame:SetWidth(self.db.profile.frameWidth)
 	WatchFrame:SetHeight(self.db.profile.frameHeight)
 end
@@ -45,6 +48,8 @@ function QuestTracker:OnDisable()
 	WATCHFRAME_COLLAPSEDWIDTH = WatchFrameTitle:GetWidth() + 70
 	WATCHFRAME_EXPANDEDWIDTH  = 204
 	WATCHFRAME_MAXLINEWIDTH   = 192
+
+	WatchFrame_SetWidth = origSetWidth
 
 	WatchFrame:SetWidth(204)
 	WatchFrame:SetHeight(140)
