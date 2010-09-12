@@ -45,13 +45,10 @@ function QuestTracker:OnDisable()
 	WatchFrameCollapseExpandButton.Show = origCollapseShow
 	WatchFrameCollapseExpandButton:Show()
 
-	WATCHFRAME_COLLAPSEDWIDTH = WatchFrameTitle:GetWidth() + 70
-	WATCHFRAME_EXPANDEDWIDTH  = 204
-	WATCHFRAME_MAXLINEWIDTH   = 192
+	WATCHFRAME_COLLAPSEDWIDTH = 230
 
 	WatchFrame_SetWidth = origSetWidth
-
-	WatchFrame:SetWidth(204)
+	WatchFrame_SetWidth(GetCVar("watchFrameWidth"))
 	WatchFrame:SetHeight(140)
 end
 
