@@ -5,7 +5,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 QuestTracker.displayName = L["Quest Tracker"]
 QuestTracker.desc = L["Tweak the quest tracker"]
 
-
+local noop = function() end
 local origTitleShow, origCollapseShow = WatchFrameTitle.Show, WatchFrameCollapseExpandButton.Show
 
 function QuestTracker:OnInitialize()
@@ -27,19 +27,25 @@ function QuestTracker:OnEnable()
 	self:ToggleTitle()
 	self:ToggleButton()
 
-	WATCHFRAME_MAXLINEWIDTH = self.db.profile.frameWidth - 8
+	WATCHFRAME_COLLAPSEDWIDTH = self.db.profile.frameWidth
+	WATCHFRAME_EXPANDEDWIDTH  = self.db.profile.frameWidth
+	WATCHFRAME_MAXLINEWIDTH   = self.db.profile.frameWidth - 8
+
 	WatchFrame:SetWidth(self.db.profile.frameWidth)
 	WatchFrame:SetHeight(self.db.profile.frameHeight)
 end
 
 function QuestTracker:OnDisable()
-	WatchFrameTitle.Show = origTitleShow -- "unhook"
+	WatchFrameTitle.Show = origTitleShow
 	WatchFrameTitle:Show()
 
-	WatchFrameCollapseExpandButton.Show = origCollapseShow -- "unhook"
+	WatchFrameCollapseExpandButton.Show = origCollapseShow
 	WatchFrameCollapseExpandButton:Show()
 
-	WATCHFRAME_MAXLINEWIDTH = 192
+	WATCHFRAME_COLLAPSEDWIDTH = WatchFrameTitle:GetWidth() + 70
+	WATCHFRAME_EXPANDEDWIDTH  = 204
+	WATCHFRAME_MAXLINEWIDTH   = 192
+
 	WatchFrame:SetWidth(204)
 	WatchFrame:SetHeight(140)
 end
@@ -47,21 +53,21 @@ end
 
 function QuestTracker:ToggleTitle()
 	if self.db.profile.showTitle then
-		WatchFrameTitle.Show = origTitleShow -- "unhook"
+		WatchFrameTitle.Show = origTitleShow
 		WatchFrameTitle:Show()
 	else
 		WatchFrameTitle:Hide()
-		WatchFrameTitle.Show = WatchFrameTitle.Hide -- clearly not the best way, but it works and doesn't seem to cause taint
+		WatchFrameTitle.Show = noop
 	end
 end
 
 function QuestTracker:ToggleButton()
 	if self.db.profile.showCollapseButton then
-		WatchFrameCollapseExpandButton.Show = origCollapseShow -- "unhook"
+		WatchFrameCollapseExpandButton.Show = origCollapseShow
 		WatchFrameCollapseExpandButton:Show()
 	else
 		WatchFrameCollapseExpandButton:Hide()
-		WatchFrameCollapseExpandButton.Show = WatchFrameCollapseExpandButton.Hide -- clearly not the best way, but it works and doesn't seem to cause taint
+		WatchFrameCollapseExpandButton.Show = noop
 	end
 end
 
@@ -101,8 +107,12 @@ function QuestTracker:GetOptions()
 			get = function(info) return self.db.profile.frameWidth end,
 			set = function(info, value)
 				self.db.profile.frameWidth = value
+
+				WATCHFRAME_COLLAPSEDWIDTH = value
+				WATCHFRAME_EXPANDEDWIDTH  = value
+				WATCHFRAME_MAXLINEWIDTH   = value - 8
+
 				WatchFrame:SetWidth(value)
-				WATCHFRAME_MAXLINEWIDTH = value - 8
 			end,
 			order = 3,
 		},
