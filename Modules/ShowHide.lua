@@ -23,6 +23,7 @@ function ShowHide:OnInitialize()
 			voice = true,
 			zoom = true,
 			record = true,
+			clock = true,
 			vehicleSeats = true,
 			ticketStatus = true,
 
@@ -49,6 +50,7 @@ local frames = {
 	zoomIn = MinimapZoomIn,
 	zoomOut = MinimapZoomOut,
 	vehicleSeats = VehicleSeatIndicator,
+	clock = TimeManagerClockButton,
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
@@ -261,13 +263,15 @@ function ShowHide:GetOptions()
 			name = L["Clock"],
 			desc = L["Show the clock"],
 			type = 'toggle',
-			get = function(info)
-				return GetCVar("showClock") == "1"
-			end,
-			set = function(info, value)
-				SetCVar("showClock", value and "1" or "0")
-				InterfaceOptionsDisplayPanelShowClock_SetFunc(value and "1" or "0")
-			end,
+			get = get,
+			set = set,
+--			get = function(info)
+--				return GetCVar("showClock") == "1"
+--			end,
+--			set = function(info, value)
+--				SetCVar("showClock", value and "1" or "0")
+--				InterfaceOptionsDisplayPanelShowClock_SetFunc(value and "1" or "0")
+--			end,
 		},
 		track = {
 			name = L["Tracking"],
