@@ -152,7 +152,7 @@ function Chinchilla:OpenConfig()
 	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(Chinchilla.db)
 	options.args.profile.order = -1
 
-	Chinchilla.OpenConfig = nil -- delete, just to make sure
+	Chinchilla.OpenConfig = nil -- delete it, no longer needed
 
 	return options
 end
@@ -160,6 +160,12 @@ end
 
 function Chinchilla:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("Chinchilla2DB", { profile = { mouseButton = "RightButton" }}, 'Default')
+
+	local function OnProfileUpdate() Chinchilla:CallMethodOnAllModules("Disable") Chinchilla:CallMethodOnAllModules("Enable") end
+
+	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileUpdate")
+	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileUpdate")
+	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileUpdate")
 end
 
 function Chinchilla:OnEnable()
@@ -184,4 +190,14 @@ function Chinchilla:OnDisable()
 
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
+end
+
+function Chinchilla:OnProfileUpdate()
+	for name, module in self:IterateModules() do
+		module:Disable()
+
+		if module.db.profile.enabled then
+			module:Enable() -- reboot the module as I'm too lazy to add checks to everything
+		end
+	end
 end
