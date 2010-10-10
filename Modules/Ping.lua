@@ -107,10 +107,7 @@ end
 
 local allowNextPlayerPing = false
 function Ping:MINIMAP_PING(event, unit)
---	if UnitIsUnit("player", unit) then
---		frame:Hide()
---		return
---	end
+	if UnitIsUnit("player", unit) and not allowNextPlayerPing then return end
 
 	allowNextPlayerPing = false
 
