@@ -3,9 +3,8 @@
 ## Version: @project-version@
 ## Notes: Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets.
 ## Notes-frFR: Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.
-## Author: ckknight
-## X-eMail: ckknight AT gmail DOT com
-## X-Website: http://www.wowace.com/
+## Author: Ethan Centaurai, ckknight
+## X-Website: http://www.wowace.com/addons/chinchilla
 ## X-Category: Map
 ## SavedVariables: Chinchilla2DB
 ## OptionalDeps: !Swatter, !BugGrabber, Ace3, Blizzard_TimeManager
