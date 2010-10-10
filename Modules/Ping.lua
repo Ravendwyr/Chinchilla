@@ -34,9 +34,11 @@ function Ping:OnInitialize()
 end
 
 local frame
+local timeSinceShow = 0
 function Ping:OnEnable()
 	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_Ping_Frame", MinimapPing) -- anchor to MinimapPing so that it hides/shows based on MinimapPing
+		frame = CreateFrame("Frame", "Chinchilla_Ping_Frame")
+		frame:Hide()
 		frame:SetBackdrop({
 			bgFile = [[Interface\Tooltips\UI-Tooltip-Background]],
 			edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
@@ -52,6 +54,14 @@ function Ping:OnEnable()
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
 		text:SetPoint("CENTER")
+
+--		frame:SetScript("OnShow", function() timeSinceShow = 0 end)
+
+		frame:SetScript("OnUpdate", function(this, elapsed)
+			timeSinceShow = timeSinceShow + elapsed
+
+			if timeSinceShow >= MINIMAPPING_TIMER then this:Hide() end
+		end)
 
 		frame:SetScript("OnDragStart", function(this)
 			this:StartMoving()
@@ -79,10 +89,9 @@ function Ping:OnEnable()
 		end)
 	end
 
-	frame:Show()
 	self:RegisterEvent("MINIMAP_PING")
 
-	self:RawHook("Minimap_SetPing", true)
+--	self:RawHook("Minimap_SetPing", true)
 	self:RawHook("Minimap_OnClick", true)
 
 	_G.MINIMAPPING_TIMER = self.db.profile.MINIMAPPING_TIMER
@@ -98,10 +107,10 @@ end
 
 local allowNextPlayerPing = false
 function Ping:MINIMAP_PING(event, unit)
-	if UnitIsUnit("player", unit) and not allowNextPlayerPing then
-		frame:Hide()
-		return
-	end
+--	if UnitIsUnit("player", unit) then
+--		frame:Hide()
+--		return
+--	end
 
 	allowNextPlayerPing = false
 
@@ -118,13 +127,14 @@ function Ping:MINIMAP_PING(event, unit)
 		return
 	end
 
+	timeSinceShow = 0
 	frame:Show()
 
 	frame.text:SetText(L["Ping by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)))
 	frame.text:SetTextColor(unpack(self.db.profile.textColor))
 
 	frame:SetScale(self.db.profile.scale)
-	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
+	frame:SetFrameLevel(MinimapCluster:GetFrameLevel() + 7)
 	frame:SetWidth(frame.text:GetWidth() + 12)
 	frame:SetHeight(frame.text:GetHeight() + 12)
 
@@ -144,17 +154,8 @@ function Ping:SetMovable(value)
 	frame:SetMovable(value)
 	frame:EnableMouse(value)
 
-	if value then
-		frame:SetParent(Minimap)
-		frame:RegisterForDrag("LeftButton")
-
-		if not MinimapPing:IsShown() then
-			test()
-		end
-	else
-		frame:SetParent(MinimapPing)
-		frame:RegisterForDrag()
-	end
+	if value then frame:RegisterForDrag("LeftButton")
+	else frame:RegisterForDrag() end
 end
 
 local function isCornerRound(x, y)
@@ -193,6 +194,7 @@ local function isCornerRound(x, y)
 	return true
 end
 
+--[[
 function Ping:Minimap_SetPing(x, y, playSound)
 	x = x * Minimap:GetWidth()
 	y = y * Minimap:GetHeight()
@@ -212,6 +214,7 @@ function Ping:Minimap_SetPing(x, y, playSound)
 		PlaySound("MapPing")
 	end
 end
+]]--
 
 function Ping:Minimap_OnClick()
 	local x, y = GetCursorPosition()
@@ -228,7 +231,7 @@ function Ping:Minimap_OnClick()
 		return
 	end
 
-	Minimap:PingLocation(x, y)
+	Minimap_SetPing(x, y, true)
 end
 
 
@@ -239,7 +242,7 @@ function Ping:GetOptions()
 			desc = L["Show a test ping"],
 			type = 'execute',
 			func = test,
-			order = -1,
+			order = 1,
 		},
 		chat = {
 			name = L["Show in chat"],
@@ -251,92 +254,54 @@ function Ping:GetOptions()
 			set = function(info, value)
 				self.db.profile.chat = value
 			end,
+			width = "double",
+			order = 2,
 		},
-		scale = {
-			name = L["Size"],
-			desc = L["Set the size of the ping display."],
+		pingTime = {
+			name = L["Ping time"],
+			desc = L["How long the ping will show on the minimap"],
 			type = 'range',
-			min = 0.25,
-			max = 4,
-			step = 0.01,
-			bigStep = 0.05,
-			isPercent = true,
+			min = 1,
+			max = 30,
+			step = 0.1,
+			bigStep = 1,
 			get = function(info)
-				return self.db.profile.scale
+				return self.db.profile.MINIMAPPING_TIMER
 			end,
 			set = function(info, value)
-				self.db.profile.scale = value
+				self.db.profile.MINIMAPPING_TIMER = value
+				_G.MINIMAPPING_TIMER = value
 				test()
 			end,
-			hidden = function(info)
-				return self.db.profile.chat
-			end,
+			order = 3,
 		},
-		background = {
-			name = L["Background"],
-			desc = L["Set the background color"],
-			type = 'color',
-			hasAlpha = true,
+		fadeoutTime = {
+			name = L["Fadeout time"],
+			desc = L["How long will it take for the ping to fade"],
+			type = 'range',
+			min = 0,
+			max = 5,
+			step = 0.1,
+			bigStep = 0.5,
 			get = function(info)
-				return unpack(self.db.profile.background)
+				return self.db.profile.MINIMAPPING_FADE_TIMER
 			end,
-			set = function(info, r, g, b, a)
-				local t = self.db.profile.background
-				t[1] = r
-				t[2] = g
-				t[3] = b
-				t[4] = a
+			set = function(info, value)
+				self.db.profile.MINIMAPPING_FADE_TIMER = value
+				_G.MINIMAPPING_FADE_TIMER = value
 				test()
 			end,
-			hidden = function(info)
-				return self.db.profile.chat
-			end,
-		},
-		border = {
-			name = L["Border"],
-			desc = L["Set the border color"],
-			type = 'color',
-			hasAlpha = true,
-			get = function(info)
-				return unpack(self.db.profile.border)
-			end,
-			set = function(info, r, g, b, a)
-				local t = self.db.profile.border
-				t[1] = r
-				t[2] = g
-				t[3] = b
-				t[4] = a
-				test()
-			end,
-			hidden = function(info)
-				return self.db.profile.chat
-			end,
-		},
-		textColor = {
-			name = L["Text"],
-			desc = L["Set the text color"],
-			type = 'color',
-			hasAlpha = true,
-			get = function(info)
-				return unpack(self.db.profile.textColor)
-			end,
-			set = function(info, r, g, b, a)
-				local t = self.db.profile.textColor
-				t[1] = r
-				t[2] = g
-				t[3] = b
-				t[4] = a
-				test()
-			end,
-			hidden = function(info)
-				return self.db.profile.chat
-			end,
+			order = 4,
 		},
 		position = {
 			name = L["Position"],
 			desc = L["Set the position of the ping indicator"],
 			type = 'group',
 			inline = true,
+			order = 5,
+			hidden = function(info)
+				return self.db.profile.chat
+			end,
 			args = {
 				movable = {
 					name = L["Movable"],
@@ -389,39 +354,89 @@ function Ping:GetOptions()
 				},
 			},
 		},
-		pingTime = {
-			name = L["Ping time"],
-			desc = L["How long the ping will show on the minimap"],
-			type = 'range',
-			min = 1,
-			max = 30,
-			step = 0.1,
-			bigStep = 1,
+		background = {
+			name = L["Background"],
+			desc = L["Set the background color"],
+			type = 'color',
+			hasAlpha = true,
 			get = function(info)
-				return self.db.profile.MINIMAPPING_TIMER
+				return unpack(self.db.profile.background)
 			end,
-			set = function(info, value)
-				self.db.profile.MINIMAPPING_TIMER = value
-				_G.MINIMAPPING_TIMER = value
+			set = function(info, r, g, b, a)
+				local t = self.db.profile.background
+				t[1] = r
+				t[2] = g
+				t[3] = b
+				t[4] = a
 				test()
 			end,
+			hidden = function(info)
+				return self.db.profile.chat
+			end,
+			order = 6,
 		},
-		fadeoutTime = {
-			name = L["Fadeout time"],
-			desc = L["How long will it take for the ping to fade"],
-			type = 'range',
-			min = 0,
-			max = 5,
-			step = 0.1,
-			bigStep = 0.5,
+		border = {
+			name = L["Border"],
+			desc = L["Set the border color"],
+			type = 'color',
+			hasAlpha = true,
 			get = function(info)
-				return self.db.profile.MINIMAPPING_FADE_TIMER
+				return unpack(self.db.profile.border)
 			end,
-			set = function(info, value)
-				self.db.profile.MINIMAPPING_FADE_TIMER = value
-				_G.MINIMAPPING_FADE_TIMER = value
+			set = function(info, r, g, b, a)
+				local t = self.db.profile.border
+				t[1] = r
+				t[2] = g
+				t[3] = b
+				t[4] = a
 				test()
 			end,
+			hidden = function(info)
+				return self.db.profile.chat
+			end,
+			order = 7,
+		},
+		scale = {
+			name = L["Size"],
+			desc = L["Set the size of the ping display."],
+			type = 'range',
+			min = 0.25,
+			max = 4,
+			step = 0.01,
+			bigStep = 0.05,
+			isPercent = true,
+			get = function(info)
+				return self.db.profile.scale
+			end,
+			set = function(info, value)
+				self.db.profile.scale = value
+				test()
+			end,
+			hidden = function(info)
+				return self.db.profile.chat
+			end,
+			order = 8,
+		},
+		textColor = {
+			name = L["Text"],
+			desc = L["Set the text color"],
+			type = 'color',
+			hasAlpha = true,
+			get = function(info)
+				return unpack(self.db.profile.textColor)
+			end,
+			set = function(info, r, g, b, a)
+				local t = self.db.profile.textColor
+				t[1] = r
+				t[2] = g
+				t[3] = b
+				t[4] = a
+				test()
+			end,
+			hidden = function(info)
+				return self.db.profile.chat
+			end,
+			order = 9,
 		},
 	}
 end
