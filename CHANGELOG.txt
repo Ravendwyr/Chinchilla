@@ -1,3 +1,6 @@
+Version 2.2
+- Updated for WoW 4.0.1.
+
 Version 2.1.6
 - Fixed a bug I introduced in Version 2.1.5 causing the minimap to go blank when indoors. I tried to make something better, but it didn't work.
 
