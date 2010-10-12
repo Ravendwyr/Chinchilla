@@ -6,9 +6,6 @@ ShowHide.displayName = L["Show / Hide"]
 ShowHide.desc = L["Show and hide interface elements of the minimap"]
 
 
-local cataclysm = select(4, GetBuildInfo()) >= 40000
-
-
 function ShowHide:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
 		profile = {
@@ -53,7 +50,7 @@ local frames = {
 	zoomIn = MinimapZoomIn,
 	zoomOut = MinimapZoomOut,
 	vehicleSeats = VehicleSeatIndicator,
-	clock = cataclysm and TimeManagerClockButton or nil,
+	clock = TimeManagerClockButton,
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
@@ -271,14 +268,9 @@ function ShowHide:GetOptions()
 			desc = L["Show the clock"],
 			type = 'toggle',
 			get = get,
-			set = function(key, value)
-				if cataclysm then
-					if value then TimeManagerClockButton:Show()
-					else TimeManagerClockButton:Hide() end
-				else
-					SetCVar("showClock", value and "1" or "0")
-					InterfaceOptionsDisplayPanelShowClock_SetFunc(value and "1" or "0")
-				end
+			set = function(key, value) -- the hooks in OnEnable will save the setting
+				if value then TimeManagerClockButton:Show()
+				else TimeManagerClockButton:Hide() end
 			end,
 		},
 		track = {
