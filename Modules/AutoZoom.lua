@@ -24,10 +24,6 @@ function AutoZoom:OnEnable()
 	self:SecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
 end
 
-function AutoZoom:OnDisable()
-	self:CancelAllTimers()
-end
-
 
 function AutoZoom:Minimap_SetZoom(_, zoomLevel)
 	if zoomLevel > 0 then
