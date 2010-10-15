@@ -256,34 +256,39 @@ function Appearance:SetAlpha(value)
 	if value then self.db.profile.alpha = value
 	else value = self.db.profile.alpha end
 
-	if not self:IsEnabled() or indoors then
-		value = 1
-	end
+	if not self:IsEnabled() then value = 1 end
 
-	if not inCombat then
-		MinimapCluster:SetAlpha(value)
+	if value == 0 then
+		MinimapCluster:Hide()
+		return
 	else
-		MinimapCluster:SetAlpha(self.db.profile.combatAlpha)
+		MinimapCluster:Show()
 	end
 
-	if value == 0 then MinimapCluster:Hide()
-	else MinimapCluster:Show() end
+	if indoors then value = 1 end
+
+	if inCombat then self:SetCombatAlpha()
+	else MinimapCluster:SetAlpha(value) end
 end
 
 function Appearance:SetCombatAlpha(value)
+	assert(inCombat)
+
 	if value then self.db.profile.combatAlpha = value
 	else value = self.db.profile.combatAlpha end
 
-	if not self:IsEnabled() or indoors then
-		value = 1
+	if not self:IsEnabled() then value = 1 end
+
+	if value == 0 then
+		MinimapCluster:Hide()
+		return
+	else
+		MinimapCluster:Show()
 	end
 
-	if inCombat then
-		MinimapCluster:SetAlpha(value)
-	end
+	if indoors then value = 1 end
 
-	if value == 0 then MinimapCluster:Hide()
-	else MinimapCluster:Show() end
+	MinimapCluster:SetAlpha(value)
 end
 
 function Appearance:SetFrameStrata(value)
