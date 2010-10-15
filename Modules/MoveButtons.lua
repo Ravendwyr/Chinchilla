@@ -9,6 +9,7 @@ MoveButtons.desc = L["Move buttons around the minimap"]
 local buttons = {
 	battleground = MiniMapBattlefieldFrame,
 	difficulty = MiniMapInstanceDifficulty,
+	guilddifficulty = GuildInstanceDifficulty,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
 	lfg = MiniMapLFGFrame,
@@ -433,7 +434,7 @@ function MoveButtons:SetLocked(value)
 		value = true
 	end
 
-	if value then
+	if value ~= nil then
 		for k, v in pairs(buttons) do
 			v:SetMovable(false)
 			v:RegisterForDrag()
@@ -585,6 +586,13 @@ function MoveButtons:GetOptions()
 		difficulty = buttons.difficulty and {
 			name = L["Instance difficulty"],
 			desc = L["Set the position of the instance difficulty indicator"],
+			type = 'group',
+			inline = true,
+			args = args,
+		} or nil,
+		guilddifficulty = buttons.guilddifficulty and {
+			name = L["Guild difficulty"],
+			desc = L["Set the position of the guild instance difficulty indicator"],
 			type = 'group',
 			inline = true,
 			args = args,
