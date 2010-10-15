@@ -89,31 +89,35 @@ function TrackingDots:GetOptions()
 		L["Friendly npc"],
 		L["Neutral npc"],
 		L["Enemy npc"],
+
 		L["Tracked resource"],
 
 		L["Available quest"],
 		L["Completed quest"],
 		L["Available daily quest"],
 		L["Completed daily quest"],
+
 		L["New flight path"],
 	}
 	do
 		local texCoords = {
-			{ 0.875, 1, 0.5, 1 }, -- PARTY
-			{ 0.5, 0.625, 0, 0.5 }, -- FRIEND
-			{ 0.375, 0.5, 0, 0.5 }, -- NEUTRAL
-			{ 0.25, 0.375, 0, 0.5 }, -- ENEMY
+			{ 0, 0.125, 0, 0.25 },    -- party
+			{ 0.5, 0.625, 0, 0.25 },  -- friend
+			{ 0.375, 0.5, 0, 0.25 },  -- neutral
+			{ 0.25, 0.375, 0, 0.25 }, -- enemy
 
-			{ 0.875, 1, 0, 0.5 }, -- FRIEND NPC
-			{ 0.75, 0.875, 0, 0.5 }, -- NEUTRAL NPC
-			{ 0.625, 0.75, 0, 0.5 }, -- ENEMY NPC
-			{ 0, 0.125, 0.5, 1 }, -- TRACK
+			{ 0.875, 1, 0, 0.25 },    -- friendly npc
+			{ 0.75, 0.875, 0, 0.25 }, -- neutral npc
+			{ 0.625, 0.75, 0, 0.25 }, -- enemy npc
 
-			{ 0.125, 0.25, 0.5, 1 }, -- AVAIL
-			{ 0.25, 0.375, 0.5, 1 }, -- COMPLETE
-			{ 0.375, 0.5, 0.5, 1 }, -- AVAIL DAILY
-			{ 0.5, 0.625, 0.5, 1 }, -- COMPLETE DAILY
-			{ 0.625, 0.75, 0.5, 1 }, -- FLIGHT
+			{ 0, 0.125, 0.25, 0.5 },    -- tracked object
+
+			{ 0.125, 0.25, 0.25, 0.5 }, -- quest available
+			{ 0.25, 0.375, 0.25, 0.5 }, -- quest complete
+			{ 0.375, 0.5, 0.25, 0.5 },  -- daily quest available
+			{ 0.5, 0.625, 0.25, 0.5 },  -- daily quest complete
+
+			{ 0.625, 0.75, 0.25, 0.5 }, -- undiscovered flight point
 		}
 
 		local min, max, floor = math.min, math.max, math.floor
@@ -123,7 +127,7 @@ function TrackingDots:GetOptions()
 			local widgetVersion = 1
 
 			local function SetText(self, text, ...)
-				if text and text ~= '' then
+				if text and text ~= "" then
 					self.texture:SetTexture(getBlipTexture(TrackingDots.db.profile.trackingDotStyle))
 					self.texture:SetTexCoord(unpack(texCoords[text]))
 				end
@@ -158,10 +162,10 @@ function TrackingDots:GetOptions()
 
 			local function AddListItem(self, value, text)
 				local item = AceGUI:Create("Chinchilla_TrackingDots_Item_Select")
+				item.disabled = true
 				item:SetText(text)
 				item.userdata.obj = self
 				item.userdata.value = value
-				item.disabled = true
 				self.pullout:AddItem(item)
 			end
 
