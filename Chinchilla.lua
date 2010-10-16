@@ -180,6 +180,8 @@ function Chinchilla:OnEnable()
 	_G.SlashCmdList["CHINCHILLA"] = function() AceConfigDialog:Open("Chinchilla") end
 
 	MinimapCluster:EnableMouse(false)
+	MiniMapWorldMapButton:SetNormalTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
+	MiniMapWorldMapButton:SetPushedTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
@@ -187,6 +189,8 @@ end
 
 function Chinchilla:OnDisable()
 	MinimapCluster:EnableMouse(true)
+	MiniMapWorldMapButton:SetNormalTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
+	MiniMapWorldMapButton:SetPushedTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
 
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
