@@ -272,11 +272,10 @@ function Appearance:SetAlpha(value)
 end
 
 function Appearance:SetCombatAlpha(value)
-	assert(inCombat)
-
 	if value then self.db.profile.combatAlpha = value
 	else value = self.db.profile.combatAlpha end
 
+	if not inCombat then return end
 	if not self:IsEnabled() then value = 1 end
 
 	if value == 0 then
