@@ -40,7 +40,6 @@ local frames = {
 	boss = Chinchilla_BossAnchor,
 	battleground = MiniMapBattlefieldFrame,
 	difficulty = MiniMapInstanceDifficulty,
-	guilddificulty = GuildInstanceDifficulty,
 	north = MinimapNorthTag,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
@@ -94,8 +93,6 @@ function ShowHide:Update()
 	for key, frame in pairs(frames) do
 		if key == "zoomOut" or key == "zoomIn" then
 			key = "zoom"
-		elseif key == "guilddifficulty" then
-			key = "difficulty"
 		end
 
 		local value = self.db.profile[key]

@@ -271,32 +271,22 @@ function MoveButtons:OnDisable()
 end
 
 function MoveButtons:Update()
-	for key, button in pairs(buttons) do
-		if key == "difficulty" then
-			self:PositionButton(key, MiniMapInstanceDifficulty)
-			self:PositionButton(key, GuildInstanceDifficulty)
-		else
-			self:PositionButton(key, button)
+	for k, v in pairs(buttons) do
+		local deg = self.db.profile[k] or buttonStarts[k]
+
+		if not deg then
+			deg = getAngle(v:GetCenter())
 		end
-	end
-end
 
+		v:ClearAllPoints()
 
-function MoveButtons:PositionButton(key, button)
-	local deg = self.db.profile[key] or buttonStarts[key]
-
-	if not deg then
-		deg = getAngle(button:GetCenter())
-	end
-
-	button:ClearAllPoints()
-
-	if type(deg) == "table" then
-		button:SetPoint("CENTER", UIParent, deg[1], deg[2], deg[3])
-		button:SetClampedToScreen(true)
-	else
-		button:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
-		button:SetClampedToScreen(false)
+		if type(deg) == "table" then
+			v:SetPoint("CENTER", UIParent, deg[1], deg[2], deg[3])
+			v:SetClampedToScreen(true)
+		else
+			v:SetPoint("CENTER", Minimap, "CENTER", getOffset(deg))
+			v:SetClampedToScreen(false)
+		end
 	end
 end
 
@@ -443,7 +433,7 @@ function MoveButtons:SetLocked(value)
 		value = true
 	end
 
-	if value ~= nil then
+	if value then
 		for k, v in pairs(buttons) do
 			v:SetMovable(false)
 			v:RegisterForDrag()
@@ -595,13 +585,6 @@ function MoveButtons:GetOptions()
 		difficulty = buttons.difficulty and {
 			name = L["Instance difficulty"],
 			desc = L["Set the position of the instance difficulty indicator"],
-			type = 'group',
-			inline = true,
-			args = args,
-		} or nil,
-		guilddifficulty = buttons.guilddifficulty and {
-			name = L["Guild difficulty"],
-			desc = L["Set the position of the guild instance difficulty indicator"],
 			type = 'group',
 			inline = true,
 			args = args,
