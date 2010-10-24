@@ -9,6 +9,7 @@ MoveButtons.desc = L["Move buttons around the minimap"]
 local buttons = {
 	battleground = MiniMapBattlefieldFrame,
 	difficulty = MiniMapInstanceDifficulty,
+	guilddifficulty = GuildInstanceDifficulty,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
 	lfg = MiniMapLFGFrame,
@@ -243,7 +244,7 @@ function MoveButtons:OnInitialize()
 		self:SetEnabledState(false)
 	end
 
-	for k,v in pairs(buttons) do
+	for k, v in pairs(buttons) do
 		if type(self.db.profile[v]) == "table" and #self.db.profile[v] == 2 then
 			table.insert(self.db.profile[v], "BOTTOMLEFT")
 		end
@@ -262,6 +263,8 @@ function MoveButtons:OnDisable()
 	self:SetLocked()
 
 	for k, v in pairs(buttons) do
+		if k == "guilddifficulty" then k = "difficulty" end
+
 		local deg = buttonStarts[k]
 
 		v:ClearAllPoints()
@@ -272,6 +275,8 @@ end
 
 function MoveButtons:Update()
 	for k, v in pairs(buttons) do
+		if k == "guilddifficulty" then k = "difficulty" end
+
 		local deg = self.db.profile[k] or buttonStarts[k]
 
 		if not deg then
@@ -309,8 +314,15 @@ local function angle_set(info, value)
 		return
 	end
 
-	buttons[key]:ClearAllPoints()
-	buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+	if key == "difficulty" then
+		MiniMapInstanceDifficulty:ClearAllPoints()
+		MiniMapInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+		GuildInstanceDifficulty:ClearAllPoints()
+		GuildInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+	else
+		buttons[key]:ClearAllPoints()
+		buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+	end
 end
 
 local function attach_get(info)
@@ -378,6 +390,10 @@ local function y_get(info)
 end
 
 local function x_set(info, value)
+	if not MoveButtons:IsEnabled() then
+		return
+	end
+
 	local key = info[#info - 1]
 	local data = MoveButtons.db.profile[key]
 	local y = y_get(info)
@@ -387,17 +403,24 @@ local function x_set(info, value)
 	data[2] = x
 	data[3] = y
 
-	if not MoveButtons:IsEnabled() then
-		return
+	if key == "difficulty" then
+		MiniMapInstanceDifficulty:ClearAllPoints()
+		MiniMapInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
+		GuildInstanceDifficulty:ClearAllPoints()
+		GuildInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
+	else
+		buttons[key]:ClearAllPoints()
+		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 	end
-
-	buttons[key]:ClearAllPoints()
-	buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 
 	if key == "lfg" then MoveButtons:PositionLFD() end
 end
 
 local function y_set(info, value)
+	if not MoveButtons:IsEnabled() then
+		return
+	end
+
 	local key = info[#info - 1]
 	local data = MoveButtons.db.profile[key]
 	local x = x_get(info)
@@ -407,12 +430,15 @@ local function y_set(info, value)
 	data[2] = x
 	data[3] = y
 
-	if not MoveButtons:IsEnabled() then
-		return
+	if key == "difficulty" then
+		MiniMapInstanceDifficulty:ClearAllPoints()
+		MiniMapInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
+		GuildInstanceDifficulty:ClearAllPoints()
+		GuildInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
+	else
+		buttons[key]:ClearAllPoints()
+		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 	end
-
-	buttons[key]:ClearAllPoints()
-	buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 
 	if key == "lfg" then MoveButtons:PositionLFD() end
 end
