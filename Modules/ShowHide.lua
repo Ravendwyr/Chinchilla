@@ -40,6 +40,7 @@ local frames = {
 	boss = Chinchilla_BossAnchor,
 	battleground = MiniMapBattlefieldFrame,
 	difficulty = MiniMapInstanceDifficulty,
+	guilddifficulty = GuildInstanceDifficulty,
 	north = MinimapNorthTag,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
@@ -57,8 +58,9 @@ local frames = {
 local framesShown = {}
 
 function ShowHide:OnEnable()
-	for k,v in pairs(frames) do
+	for k, v in pairs(frames) do
 		framesShown[v] = v:IsShown()
+
 		self:SecureHook(frames[k], "Show", "frame_Show")
 		self:SecureHook(frames[k], "Hide", "frame_Hide")
 	end
@@ -99,10 +101,18 @@ function ShowHide:Update()
 
 		if key == "boss" then
 			self:SetBoss(value)
+		elseif key == "difficulty" then
+			if value then
+				MiniMapInstanceDifficulty:Show()
+				GuildInstanceDifficulty:Show()
+			else
+				MiniMapInstanceDifficulty:Hide()
+				GuildInstanceDifficulty:Hide()
+			end
 		elseif not value then
 		 	if frame:IsShown() then
 				frame:Hide()
-				framesShown[frame] = true
+--				framesShown[frame] = true
 			end
 		else
 			if framesShown[frame] then
@@ -131,13 +141,16 @@ end
 function ShowHide:frame_Show(object)
 	local object_k
 
-	for k,v in pairs(frames) do
+	for k, v in pairs(frames) do
 		if v == object then
 			if k == "zoomIn" or k == "zoomOut" then
 				object_k = "zoom"
+			elseif k == "guilddifficulty" then
+				object_k = "difficulty"
 			else
 				object_k = k
 			end
+
 			break
 		end
 	end
