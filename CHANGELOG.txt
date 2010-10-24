@@ -1,6 +1,10 @@
+Version 2.2.2
+- Removed leftover debug which caused issues with the combat alpha slider.
+- Moving, showing and hiding the guild instance difficulty flag now actually works.
+
 Version 2.2.1
 - Fixed non-default tracking blips becoming stretched and cut in half.
-- Both the regular and the guild instance difficulty flags now obey the same settings (position, hidden, etc).
+- The guild instance difficulty flag now inherits the same settings as the regular instance difficulty flag (shown, position on minimap, etc.)
 
 Version 2.2
 - Updated for WoW 4.0.1.
