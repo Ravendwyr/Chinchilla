@@ -65,8 +65,9 @@ function ShowHide:OnEnable()
 		self:SecureHook(frames[k], "Hide", "frame_Hide")
 	end
 
-	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown()
+	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown() -- to ensure a boolean
 
+	-- these hooks make sure Broker uClock and Chinchilla Minimap play nice with each other
 	self:HookScript(TimeManagerClockButton, "OnShow", function() self.db.profile.clock = true end)
 	self:HookScript(TimeManagerClockButton, "OnHide", function() self.db.profile.clock = false end)
 
@@ -95,24 +96,18 @@ function ShowHide:Update()
 	for key, frame in pairs(frames) do
 		if key == "zoomOut" or key == "zoomIn" then
 			key = "zoom"
+		elseif key == "guilddifficulty" then
+			key = "difficulty"
 		end
 
 		local value = self.db.profile[key]
 
 		if key == "boss" then
 			self:SetBoss(value)
-		elseif key == "difficulty" then
-			if value then
-				MiniMapInstanceDifficulty:Show()
-				GuildInstanceDifficulty:Show()
-			else
-				MiniMapInstanceDifficulty:Hide()
-				GuildInstanceDifficulty:Hide()
-			end
 		elseif not value then
 		 	if frame:IsShown() then
 				frame:Hide()
---				framesShown[frame] = true
+				framesShown[frame] = true
 			end
 		else
 			if framesShown[frame] then
