@@ -58,6 +58,10 @@ local frames = {
 local framesShown = {}
 
 function ShowHide:OnEnable()
+	-- these hooks make sure Broker uClock and Chinchilla Minimap play nice with each other
+	self:HookScript(TimeManagerClockButton, "OnShow", function() self.db.profile.clock = true end)
+	self:HookScript(TimeManagerClockButton, "OnHide", function() self.db.profile.clock = false end)
+
 	for k, v in pairs(frames) do
 		framesShown[v] = v:IsShown()
 
@@ -66,10 +70,6 @@ function ShowHide:OnEnable()
 	end
 
 	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown() -- to ensure a boolean
-
-	-- these hooks make sure Broker uClock and Chinchilla Minimap play nice with each other
-	self:HookScript(TimeManagerClockButton, "OnShow", function() self.db.profile.clock = true end)
-	self:HookScript(TimeManagerClockButton, "OnHide", function() self.db.profile.clock = false end)
 
 	self:SecureHook(MinimapZoneTextButton, "Show", "MinimapZoneTextButton_Show")
 	self:SecureHook(MinimapZoneTextButton, "Hide", "MinimapZoneTextButton_Hide")
