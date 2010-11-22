@@ -1,5 +1,5 @@
 ## Interface: 40000
-## Title: Chinchilla Minimap
+## Title: Chinchilla
 ## Version: @project-version@
 ## Notes: Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets.
 ## Notes-frFR: Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.
@@ -7,7 +7,7 @@
 ## X-Website: http://www.wowace.com/addons/chinchilla
 ## X-Category: Map
 ## SavedVariables: Chinchilla2DB
-## OptionalDeps: !Swatter, !BugGrabber, Ace3, Blizzard_TimeManager
+## OptionalDeps: !Swatter, !BugGrabber, Ace3, Blizzard_TimeManager, TitanClock
 ## X-WoWIPortal: ckknight
 
 #@no-lib-strip@

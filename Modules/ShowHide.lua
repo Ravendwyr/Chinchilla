@@ -58,9 +58,11 @@ local frames = {
 local framesShown = {}
 
 function ShowHide:OnEnable()
-	-- these hooks make sure Broker uClock and Chinchilla Minimap play nice with each other
+	-- these hooks are here to ensure Chinchilla plays nicely with Broker uClock and Titan Clock
 	self:HookScript(TimeManagerClockButton, "OnShow", function() self.db.profile.clock = true end)
 	self:HookScript(TimeManagerClockButton, "OnHide", function() self.db.profile.clock = false end)
+	self:HookScript(GameTimeFrame, "OnShow", function() self.db.profile.dayNight = true end)
+	self:HookScript(GameTimeFrame, "OnHide", function() self.db.profile.dayNight = false end)
 
 	for k, v in pairs(frames) do
 		framesShown[v] = v:IsShown()
@@ -269,16 +271,19 @@ function ShowHide:GetOptions()
 			desc = L["Show the calendar"],
 			type = 'toggle',
 			get = get,
-			set = set,
+			set = function(...)
+				if TITAN_CLOCK_ID then TitanPanelClockButton_ToggleGameTimeFrameShown()
+				else set(...) end
+			end,
 		},
 		clock = {
 			name = L["Clock"],
 			desc = L["Show the clock"],
 			type = 'toggle',
 			get = get,
-			set = function(key, value) -- the hooks in OnEnable will save the setting
-				if value then TimeManagerClockButton:Show()
-				else TimeManagerClockButton:Hide() end
+			set = function(...)
+				if TITAN_CLOCK_ID then TitanPanelClockButton_ToggleMapTime()
+				else set(...) end
 			end,
 		},
 		track = {
