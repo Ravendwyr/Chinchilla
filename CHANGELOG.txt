@@ -1,3 +1,7 @@
+Version 2.3 beta
+- OnMouseOver support has begun. Options work but actual functionality is not finished and will spam you.
+- Fixed a conflict with Titan Panel v5.
+
 Version 2.2.2
 - Removed leftover debug which caused issues with the combat alpha slider.
 - Moving, showing and hiding the guild instance difficulty flag now actually works.

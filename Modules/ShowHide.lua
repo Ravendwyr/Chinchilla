@@ -27,6 +27,7 @@ function ShowHide:OnInitialize()
 			vehicleSeats = true,
 
 			enabled = true,
+			onMouseOver = true,
 		},
 	})
 
@@ -62,6 +63,11 @@ function ShowHide:OnEnable()
 	self:HookScript(TimeManagerClockButton, "OnHide", function() self.db.profile.clock = false end)
 	self:HookScript(GameTimeFrame, "OnShow", function() self.db.profile.dayNight = true end)
 	self:HookScript(GameTimeFrame, "OnHide", function() self.db.profile.dayNight = false end)
+
+	if self.db.profile.onMouseOver then
+		self:HookScript(Minimap, "OnEnter")
+		self:HookScript(Minimap, "OnLeave")
+	end
 
 	for k, v in pairs(frames) do
 		framesShown[v] = v:IsShown()
@@ -192,83 +198,136 @@ function ShowHide:SetBoss(value)
 end
 
 
+function ShowHide:OnEnter()
+	print("OnEnter")
+end
+
+function ShowHide:OnLeave()
+	print("OnLeave")
+end
+
+function ShowHide:OnMouseOverUpdate(info, value)
+	if info then self.db.profile.onMouseOver = value end
+
+	if self.db.profile.onMouseOver then
+		self:HookScript(Minimap, "OnEnter")
+		self:HookScript(Minimap, "OnLeave")
+	else
+		self:Unhook(Minimap, "OnEnter")
+		self:Unhook(Minimap, "OnLeave")
+	end
+end
+
+
 function ShowHide:GetOptions()
 	local function get(info)
 		local key = info[#info]
-		return self.db.profile[key]
+
+		if self.db.profile[key] == "mouseover" then
+			return nil
+		else
+			return self.db.profile[key]
+		end
 	end
 
 	local function set(info, value)
 		local key = info[#info]
+
+		if value == nil then
+			if not self.db.profile.onMouseOver then value = false
+			else value = "mouseover" end
+		end
+
+		print(value)
 
 		self.db.profile[key] = value
 		self:Update(key, value)
 	end
 
 	return {
+		onMouseOver = {
+			name = L["On Mouse Over"],
+			desc = L["Only show certain buttons when the cursor is hovering over the minimap."],
+			type = 'toggle',
+			width = 'full',
+			order = 1,
+			get = get, set = "OnMouseOverUpdate",
+		},
+		tutorial = {
+			name = L["A gold tick means the button will be shown at all times. A silver tick means the button will be shown when you hover the cursor over the minimap. An empty tickbox means the button will not be shown at all."],
+			type = "description",
+			order = 2,
+			hidden = function() return not self.db.profile.onMouseOver end,
+		},
 		battleground = {
 			name = L["Battleground"],
 			desc = L["Show the battleground indicator"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			tristate = true,
+			order = 3,
+			get = get, set = set,
 		},
 		north = {
 			name = L["North"],
 			desc = L["Show the north symbol on the minimap"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			order = 4,
+			get = get, set = set,
 		},
 		difficulty = {
 			name = L["Instance difficulty"],
 			desc = L["Show the instance difficulty flag on the minimap"],
 			type = 'toggle',
-			get = get,
-			set = set,
-		},
-		locationBar = {
-			name = L["Location bar"],
-			desc = L["Show the location bar above the minimap"],
-			type = 'toggle',
-			get = get,
-			set = set,
-			disabled = function()
-				return not self.db.profile.locationText
-			end,
+			order = 5,
+			get = get, set = set,
 		},
 		locationText = {
 			name = L["Location text"],
 			desc = L["Show the location text above the minimap"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			order = 6,
+			get = get, set = set,
+		},
+		locationBar = {
+			name = L["Location bar"],
+			desc = L["Show the location bar above the minimap"],
+			type = 'toggle',
+			order = 7,
+			get = get, set = set,
+			disabled = function()
+				return not self.db.profile.locationText
+			end,
 		},
 		map = {
 			name = L["World map"],
 			desc = L["Show the world map button"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			tristate = true,
+			order = 8,
+			get = get, set = set,
 		},
 		mail = {
 			name = L["Mail"],
 			desc = L["Show the mail indicator"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			tristate = true,
+			order = 9,
+			get = get, set = set,
 		},
 		lfg = {
 			name = L["LFG"],
 			desc = L["Show the looking for group indicator"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			tristate = true,
+			order = 10,
+			get = get, set = set,
 		},
 		dayNight = {
 			name = L["Calendar"],
 			desc = L["Show the calendar"],
 			type = 'toggle',
+			tristate = true,
+			order = 11,
 			get = get,
 			set = function(...)
 				if TITAN_CLOCK_ID then TitanPanelClockButton_ToggleGameTimeFrameShown()
@@ -279,6 +338,8 @@ function ShowHide:GetOptions()
 			name = L["Clock"],
 			desc = L["Show the clock"],
 			type = 'toggle',
+			tristate = true,
+			order = 12,
 			get = get,
 			set = function(...)
 				if TITAN_CLOCK_ID then TitanPanelClockButton_ToggleMapTime()
@@ -289,43 +350,47 @@ function ShowHide:GetOptions()
 			name = L["Tracking"],
 			desc = L["Show the tracking indicator"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			tristate = true,
+			order = 13,
+			get = get, set = set,
 		},
 		voice = {
 			name = L["Voice chat"],
 			desc = L["Show the voice chat button"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			tristate = true,
+			order = 14,
+			get = get, set = set,
 		},
 		zoom = {
 			name = L["Zoom"],
 			desc = L["Show the zoom in and out buttons"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			tristate = true,
+			order = 15,
+			get = get, set = set,
+		},
+		vehicleSeats = {
+			name = L["Vehicle seats"],
+			desc = L["Show the vehicle seats indicator"],
+			type = 'toggle',
+			order = 16,
+			get = get, set = set,
+		},
+		boss = {
+			name = L["Boss frames"],
+			desc = L["Show the boss unit frames"],
+			type = 'toggle',
+			order = 17,
+			get = get, set = set,
 		},
 		record = IsMacClient() and {
 			name = L["Recording"],
 			desc = L["Show the recording button"],
 			type = 'toggle',
-			get = get,
-			set = set,
+			tristate = true,
+			order = 18,
+			get = get, set = set,
 		} or nil,
-		vehicleSeats = {
-			name = L["Vehicle seats"],
-			desc = L["Show the vehicle seats indicator"],
-			type = 'toggle',
-			get = get,
-			set = set,
-		},
-		boss = {
-			name = L["Boss frames"],
-			desc = L["Show the boss unit frames"],
-			type = "toggle",
-			get = get,
-			set = set,
-		},
 	}
 end
