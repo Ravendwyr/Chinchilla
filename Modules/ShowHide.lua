@@ -25,7 +25,6 @@ function ShowHide:OnInitialize()
 			record = true,
 			clock = true,
 			vehicleSeats = true,
-			ticketStatus = true,
 
 			enabled = true,
 		},
