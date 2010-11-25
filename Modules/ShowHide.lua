@@ -59,10 +59,12 @@ local framesShown = {}
 
 function ShowHide:OnEnable()
 	-- these hooks are here to ensure Chinchilla plays nicely with Broker uClock and Titan Clock
-	self:HookScript(TimeManagerClockButton, "OnShow", function() self.db.profile.clock = true end)
-	self:HookScript(TimeManagerClockButton, "OnHide", function() self.db.profile.clock = false end)
-	self:HookScript(GameTimeFrame, "OnShow", function() self.db.profile.dayNight = true end)
-	self:HookScript(GameTimeFrame, "OnHide", function() self.db.profile.dayNight = false end)
+	if IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID then
+		self:HookScript(TimeManagerClockButton, "OnShow", function() self.db.profile.clock = true end)
+		self:HookScript(TimeManagerClockButton, "OnHide", function() self.db.profile.clock = false end)
+		self:HookScript(GameTimeFrame, "OnShow", function() self.db.profile.dayNight = true end)
+		self:HookScript(GameTimeFrame, "OnHide", function() self.db.profile.dayNight = false end)
+	end
 
 	if self.db.profile.onMouseOver then
 		self:HookScript(Minimap, "OnEnter")
@@ -348,7 +350,9 @@ function ShowHide:GetOptions()
 			name = L["Calendar"],
 			desc = L["Show the calendar"],
 			type = 'toggle',
-			tristate = true,
+			tristate = function()
+				return (IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID) and true or false
+			end,
 			order = 11,
 			get = get,
 			set = function(...)
@@ -360,7 +364,9 @@ function ShowHide:GetOptions()
 			name = L["Clock"],
 			desc = L["Show the clock"],
 			type = 'toggle',
-			tristate = true,
+			tristate = function()
+				return (IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID) and true or false
+			end,
 			order = 12,
 			get = get,
 			set = function(...)
