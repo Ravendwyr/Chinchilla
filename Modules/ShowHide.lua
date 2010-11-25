@@ -1,5 +1,5 @@
 
-local ShowHide = Chinchilla:NewModule("ShowHide", "AceHook-3.0")
+local ShowHide = Chinchilla:NewModule("ShowHide", "AceHook-3.0", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 ShowHide.displayName = L["Show / Hide"]
@@ -157,7 +157,7 @@ function ShowHide:frame_Show(object)
 		end
 	end
 
-	if object_k and not self.db.profile[object_k] then
+	if object_k and self.db.profile[object_k] == false then
 		object:Hide()
 	end
 
@@ -170,7 +170,7 @@ end
 
 
 function ShowHide:MinimapZoneTextButton_Show(object)
-	if not self.db.profile.locationText or (Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled()) then
+	if not self.db.profile.locationText or ( Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled() ) then
 		MinimapBorderTop:Hide()
 		MinimapZoneTextButton:Hide()
 	end
@@ -199,11 +199,30 @@ end
 
 
 function ShowHide:OnEnter()
+	self:CancelTimer("HideAll", true)
+
+	for key, value in pairs(self.db.profile) do
+		if value == "mouseover" then
+			frames[key]:Show()
+		end
+	end
+
 	print("OnEnter")
 end
 
 function ShowHide:OnLeave()
+	self:ScheduleTimer("HideAll", 1)
 	print("OnLeave")
+end
+
+function ShowHide:HideAll()
+	for key, value in pairs(self.db.profile) do
+		if value == "mouseover" then
+			frames[key]:Hide()
+		end
+	end
+
+	print("HideAll")
 end
 
 function ShowHide:OnMouseOverUpdate(info, value)
