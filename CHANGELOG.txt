@@ -1,14 +1,16 @@
 Version 2.3 beta
-- OnMouseOver support has begun. Options work but actual functionality is not finished and will spam you.
-- Fixed a conflict with Titan Panel v5.
+- Work on a feature that allows you to show minimap buttons when you hover your cursor over the minimap has begun.
+  NOTE: This is UNFINISHED BETA and will likely spam you with lots of messages.
+- Fixed a conflict with Titan Panel v5. Thanks to Bremp for figuring this one out.
+- Updates to localisation.
 
 Version 2.2.2
 - Removed leftover debug which caused issues with the combat alpha slider.
 - Moving, showing and hiding the guild instance difficulty flag now actually works.
 
 Version 2.2.1
-- Fixed non-default tracking blips becoming stretched and cut in half.
-- The guild instance difficulty flag now inherits the same settings as the regular instance difficulty flag (shown, position on minimap, etc.)
+- Fixed non-Blizzard tracking blips becoming stretched and cut in half.
+- The guild instance difficulty flag now inherits the same settings as the regular instance difficulty flag.
 
 Version 2.2
 - Updated for WoW 4.0.1.
@@ -24,11 +26,11 @@ Version 2.1.4
 - Module names no longer conflict with other addons. Whoops.
 - Boss frames are no longer hidden by default. Whoops.
 - Boss frame positioning options are no longer disabled when the boss frames themselves are disabled.
-- LFD Status window no longer disappears off the screen when the minimap is on the left side.
+- LFD Status window no longer disappears off the screen when the minimap is on the left side of the screen.
 - Hiding border textures for LFG, Movie Recording and Tracking buttons now works.
 
 Version 2.1.3
-- Library update. I blame lazy Ace-3.0 devs.
+- Library update.
 
 Version 2.1.2
 - Added an option to show or hide Blizzard's boss frames.
@@ -85,9 +87,9 @@ Version 2.0.4
 - Fixed the border changing to white when enabling/disabling Rotating Minimap.
 - Fixed compass rotating the wrong way round.
 - Tweak the Expander module to shrink the player arrow (fixes ticket #3).
-- Load libraries and modules from the .toc.
+- Load libraries and modules from the .toc file.
 - The "Profiles" section now appears at the bottom of the modules list instead of in the middle of it.
-- Set the width of the "Enable" option to "full" to force other options onto a new line (which looks nicer imo).
+- Set the width of the "Enable Module" checkboxes to "full" to force other options onto a new line.
 
 Version 2.0.3
 - Remove all references to the Watch Frame, since the user can move and resize it manually.
