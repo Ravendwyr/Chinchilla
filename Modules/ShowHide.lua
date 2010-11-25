@@ -111,14 +111,14 @@ function ShowHide:Update()
 
 		if key == "boss" then
 			self:SetBoss(value)
-		elseif not value then
+		elseif value == true then
+			if framesShown[frame] then
+				frame:Show()
+			end
+		else -- Minimap:IsMouseOver() isn't going to happen while the config is open
 		 	if frame:IsShown() then
 				frame:Hide()
 				framesShown[frame] = true
-			end
-		else
-			if framesShown[frame] then
-				frame:Show()
 			end
 		end
 	end
