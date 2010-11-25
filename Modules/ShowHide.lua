@@ -210,6 +210,8 @@ function ShowHide:OnEnter()
 				frames["zoomOut"]:Show()
 			elseif key == "mail" then
 				if HasNewMail() then frames["mail"]:Show() end
+			elseif key == "lfg" then
+				if GetLFGMode() then frames["lfg"]:Show() end
 			else
 				frames[key]:Show()
 			end
