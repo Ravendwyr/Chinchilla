@@ -241,7 +241,7 @@ end
 function ShowHide:OnMouseOverUpdate(info, value)
 	if info then self.db.profile.onMouseOver = value end
 
-	if self.db.profile.onMouseOver then
+	if value then
 		self:HookScript(Minimap, "OnEnter")
 		self:HookScript(Minimap, "OnLeave")
 	else
