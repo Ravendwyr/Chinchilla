@@ -214,7 +214,7 @@ function ShowHide:OnEnter()
 			elseif key == "lfg" then
 				if GetLFGMode() then frames["lfg"]:Show() end
 			elseif key == "battleground" then
-				if MiniMapBattlefieldFrame.status == "active" then frames["battleground"]:Show() end
+				if GetBattlefieldStatus(1) ~= "none" then frames["battleground"]:Show() end
 			else
 				frames[key]:Show()
 			end
