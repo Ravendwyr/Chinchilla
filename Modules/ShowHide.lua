@@ -200,8 +200,9 @@ function ShowHide:SetBoss(value)
 end
 
 
+local timerID
 function ShowHide:OnEnter()
-	self:CancelTimer("HideAll", true)
+	if timerID then self:CancelTimer(timerID, true) end
 
 	for key, value in pairs(self.db.profile) do
 		if value == "mouseover" then
@@ -222,7 +223,7 @@ function ShowHide:OnEnter()
 end
 
 function ShowHide:OnLeave()
-	self:ScheduleTimer("HideAll", 2)
+	timerID = self:ScheduleTimer("HideAll", 2)
 end
 
 function ShowHide:HideAll()
