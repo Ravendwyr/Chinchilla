@@ -222,7 +222,7 @@ function ShowHide:OnEnter()
 end
 
 function ShowHide:OnLeave()
-	self:ScheduleTimer("HideAll", 1)
+	self:ScheduleTimer("HideAll", 2)
 end
 
 function ShowHide:HideAll()
