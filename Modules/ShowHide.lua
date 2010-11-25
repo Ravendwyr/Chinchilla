@@ -204,7 +204,7 @@ function ShowHide:OnEnter()
 	for key, value in pairs(self.db.profile) do
 		if value == "mouseover" then
 			if key == "zoom" then
-				frames["zoomIn"]:Shoe()
+				frames["zoomIn"]:Show()
 				frames["zoomOut"]:Show()
 			else
 				frames[key]:Show()
