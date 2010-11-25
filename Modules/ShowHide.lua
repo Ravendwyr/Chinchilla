@@ -211,13 +211,10 @@ function ShowHide:OnEnter()
 			end
 		end
 	end
-
-	print("OnEnter")
 end
 
 function ShowHide:OnLeave()
 	self:ScheduleTimer("HideAll", 1)
-	print("OnLeave")
 end
 
 function ShowHide:HideAll()
@@ -231,8 +228,6 @@ function ShowHide:HideAll()
 			end
 		end
 	end
-
-	print("HideAll")
 end
 
 function ShowHide:OnMouseOverUpdate(info, value)
@@ -266,8 +261,6 @@ function ShowHide:GetOptions()
 			if not self.db.profile.onMouseOver then value = false
 			else value = "mouseover" end
 		end
-
-		print(value)
 
 		self.db.profile[key] = value
 		self:Update(key, value)
