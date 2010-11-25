@@ -159,7 +159,7 @@ function ShowHide:frame_Show(object)
 		end
 	end
 
-	if object_k and self.db.profile[object_k] == false then
+	if object_k and self.db.profile[object_k] == false or (self.db.profile[object_k] == "mouseover" and not Minimap:IsMouseOver() ) then
 		object:Hide()
 	end
 
@@ -212,6 +212,8 @@ function ShowHide:OnEnter()
 				if HasNewMail() then frames["mail"]:Show() end
 			elseif key == "lfg" then
 				if GetLFGMode() then frames["lfg"]:Show() end
+			elseif key == "battleground" then
+				if MiniMapBattlefieldFrame.status == "active" then frames["battleground"]:Show() end
 			else
 				frames[key]:Show()
 			end
