@@ -208,6 +208,8 @@ function ShowHide:OnEnter()
 			if key == "zoom" then
 				frames["zoomIn"]:Show()
 				frames["zoomOut"]:Show()
+			elseif key == "mail" then
+				if HasNewMail() then frames["mail"]:Show() end
 			else
 				frames[key]:Show()
 			end
