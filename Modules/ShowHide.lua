@@ -203,7 +203,12 @@ function ShowHide:OnEnter()
 
 	for key, value in pairs(self.db.profile) do
 		if value == "mouseover" then
-			frames[key]:Show()
+			if key == "zoom" then
+				frames["zoomIn"]:Shoe()
+				frames["zoomOut"]:Show()
+			else
+				frames[key]:Show()
+			end
 		end
 	end
 
@@ -218,7 +223,12 @@ end
 function ShowHide:HideAll()
 	for key, value in pairs(self.db.profile) do
 		if value == "mouseover" then
-			frames[key]:Hide()
+			if key == "zoom" then
+				frames["zoomIn"]:Hide()
+				frames["zoomOut"]:Hide()
+			else
+				frames[key]:Hide()
+			end
 		end
 	end
 
