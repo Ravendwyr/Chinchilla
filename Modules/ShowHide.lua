@@ -214,7 +214,7 @@ function ShowHide:OnEnter()
 			elseif key == "lfg" then
 				if GetLFGMode() then frames["lfg"]:Show() end
 			elseif key == "battleground" then
-				if GetBattlefieldStatus(1) ~= "none" then frames["battleground"]:Show() end
+				if PVPFrame.numQueues > 0 then frames["battleground"]:Show() end
 			else
 				frames[key]:Show()
 			end
