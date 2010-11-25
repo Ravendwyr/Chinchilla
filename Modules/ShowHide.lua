@@ -350,9 +350,7 @@ function ShowHide:GetOptions()
 			name = L["Calendar"],
 			desc = L["Show the calendar"],
 			type = 'toggle',
-			tristate = function()
-				return (IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID) and true or false
-			end,
+			tristate = (IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID) and false or true,
 			order = 11,
 			get = get,
 			set = function(...)
@@ -364,9 +362,7 @@ function ShowHide:GetOptions()
 			name = L["Clock"],
 			desc = L["Show the clock"],
 			type = 'toggle',
-			tristate = function()
-				return (IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID) and true or false
-			end,
+			tristate = (IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID) and false or true,
 			order = 12,
 			get = get,
 			set = function(...)
