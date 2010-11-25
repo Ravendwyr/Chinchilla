@@ -1,8 +1,7 @@
 Version 2.3 beta
-- Work on a feature that allows you to show minimap buttons when you hover your cursor over the minimap has begun.
-  NOTE: This is UNFINISHED BETA and will likely spam you with lots of messages.
+- Added a feature that allows you to show minimap buttons when you hover your cursor over the minimap.
 - Fixed a conflict with Titan Panel v5. Thanks to Bremp for figuring this one out.
-- Updates to localisation.
+- Updated localisation.
 
 Version 2.2.2
 - Removed leftover debug which caused issues with the combat alpha slider.
