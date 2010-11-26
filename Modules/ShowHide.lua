@@ -9,6 +9,8 @@ ShowHide.desc = L["Show and hide interface elements of the minimap"]
 function ShowHide:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
 		profile = {
+			enabled = true, onMouseOver = true,
+
 			boss = true,
 			battleground = true,
 			north = true,
@@ -25,9 +27,6 @@ function ShowHide:OnInitialize()
 			record = true,
 			clock = true,
 			vehicleSeats = true,
-
-			enabled = true,
-			onMouseOver = true,
 		},
 	})
 
@@ -58,14 +57,6 @@ local frames = {
 local framesShown = {}
 
 function ShowHide:OnEnable()
-	-- these hooks are here to ensure Chinchilla plays nicely with Broker uClock and Titan Clock
-	if IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID then
-		self:HookScript(TimeManagerClockButton, "OnShow", function() self.db.profile.clock = true end)
-		self:HookScript(TimeManagerClockButton, "OnHide", function() self.db.profile.clock = false end)
-		self:HookScript(GameTimeFrame, "OnShow", function() self.db.profile.dayNight = true end)
-		self:HookScript(GameTimeFrame, "OnHide", function() self.db.profile.dayNight = false end)
-	end
-
 	if self.db.profile.onMouseOver then
 		self:HookScript(Minimap, "OnEnter")
 		self:HookScript(Minimap, "OnLeave")
@@ -357,9 +348,12 @@ function ShowHide:GetOptions()
 			name = L["Calendar"],
 			desc = L["Show the calendar"],
 			type = 'toggle',
-			tristate = (IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID) and false or true,
+			tristate = TITAN_CLOCK_ID and false or true,
 			order = 11,
-			get = get,
+			get = function(...)
+				if TITAN_CLOCK_ID then return TitanGetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap")
+				else return get(...) end
+			end,
 			set = function(...)
 				if TITAN_CLOCK_ID then TitanPanelClockButton_ToggleGameTimeFrameShown()
 				else set(...) end
@@ -369,9 +363,12 @@ function ShowHide:GetOptions()
 			name = L["Clock"],
 			desc = L["Show the clock"],
 			type = 'toggle',
-			tristate = (IsAddOnLoaded("Broker_uClock") or TITAN_CLOCK_ID) and false or true,
+			tristate = TITAN_CLOCK_ID and false or true,
 			order = 12,
-			get = get,
+			get = function(...)
+				if TITAN_CLOCK_ID then return TitanGetVar(TITAN_CLOCK_ID, "HideMapTime")
+				else return get(...) end
+			end,
 			set = function(...)
 				if TITAN_CLOCK_ID then TitanPanelClockButton_ToggleMapTime()
 				else set(...) end
