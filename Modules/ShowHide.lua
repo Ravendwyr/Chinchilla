@@ -150,7 +150,7 @@ function ShowHide:frame_Show(object)
 		end
 	end
 
-	if object_k and self.db.profile[object_k] == false or (self.db.profile[object_k] == "mouseover" and not Minimap:IsMouseOver() ) then
+	if self.db.profile[object_k] == false or ( self.db.profile[object_k] == "mouseover" and not Minimap:IsMouseOver() ) then
 		object:Hide()
 	end
 
@@ -255,10 +255,10 @@ function ShowHide:GetOptions()
 	local function get(info)
 		local key = info[#info]
 
-		if self.db.profile[key] == "mouseover" then
+		if self.db.profile.onMouseOver and self.db.profile[key] == "mouseover" then
 			return nil
 		else
-			return self.db.profile[key]
+			return not not self.db.profile[key]
 		end
 	end
 
@@ -266,8 +266,8 @@ function ShowHide:GetOptions()
 		local key = info[#info]
 
 		if value == nil then
-			if not self.db.profile.onMouseOver then value = false
-			else value = "mouseover" end
+			if self.db.profile.onMouseOver then value = "mouseover"
+			else value = false end
 		end
 
 		self.db.profile[key] = value
@@ -358,18 +358,7 @@ function ShowHide:GetOptions()
 			type = 'toggle',
 			tristate = true,
 			order = 11,
-			get = get,
-			set = function(info, value)
-				if TITAN_CLOCK_ID then
-					if value == true or value == nil then
-						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", false)
-					else
-						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", 1)
-					end
-				end
-
-				set(info, value)
-			end,
+			get = get, set = set,
 		},
 		clock = {
 			name = L["Clock"],
@@ -377,18 +366,7 @@ function ShowHide:GetOptions()
 			type = 'toggle',
 			tristate = true,
 			order = 12,
-			get = get,
-			set = function(info, value)
-				if TITAN_CLOCK_ID then
-					if value == true or value == nil then
-						TitanSetVar(TITAN_CLOCK_ID, "HideMapTime", false)
-					else
-						TitanSetVar(TITAN_CLOCK_ID, "HideMapTime", 1)
-					end
-				end
-
-				set(info, value)
-			end,
+			get = get, set = set,
 		},
 		track = {
 			name = L["Tracking"],
