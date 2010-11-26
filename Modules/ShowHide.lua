@@ -360,8 +360,6 @@ function ShowHide:GetOptions()
 			order = 11,
 			get = get,
 			set = function(info, value)
-				print(value)
-
 				if TITAN_CLOCK_ID then
 					if value == true or value == nil then
 						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", false)
@@ -381,8 +379,6 @@ function ShowHide:GetOptions()
 			order = 12,
 			get = get,
 			set = function(info, value)
-				print(value)
-
 				if TITAN_CLOCK_ID then
 					if value == true or value == nil then
 						TitanSetVar(TITAN_CLOCK_ID, "HideMapTime", false)
