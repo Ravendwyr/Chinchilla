@@ -195,19 +195,24 @@ local timerID
 function ShowHide:OnEnter()
 	if timerID then self:CancelTimer(timerID, true) end
 
-	for key, value in pairs(self.db.profile) do
-		if value == "mouseover" then
-			if key == "zoom" then
-				frames["zoomIn"]:Show()
-				frames["zoomOut"]:Show()
-			elseif key == "mail" then
-				if HasNewMail() then frames["mail"]:Show() end
+	local realKey
+
+	for key, frame in pairs(frames) do
+		if key == "zoomIn" or key == "zoomOut" then
+			realKey = "zoom"
+		else
+			realKey = key
+		end
+
+		if self.db.profile[realKey] == "mouseover" then
+			if key == "mail" then
+				if HasNewMail() then frame:Show() end
 			elseif key == "lfg" then
-				if GetLFGMode() then frames["lfg"]:Show() end
+				if GetLFGMode() then frame:Show() end
 			elseif key == "battleground" then
-				if PVPFrame.numQueues > 0 or MiniMapBattlefieldFrame.inWorldPVPArea then frames["battleground"]:Show() end
+				if PVPFrame.numQueues > 0 or MiniMapBattlefieldFrame.inWorldPVPArea then frame:Show() end
 			else
-				frames[key]:Show()
+				frame:Show()
 			end
 		end
 	end
@@ -218,14 +223,17 @@ function ShowHide:OnLeave()
 end
 
 function ShowHide:HideAll()
-	for key, value in pairs(self.db.profile) do
-		if value == "mouseover" then
-			if key == "zoom" then
-				frames["zoomIn"]:Hide()
-				frames["zoomOut"]:Hide()
-			else
-				frames[key]:Hide()
-			end
+	local realKey
+
+	for key, frame in pairs(frames) do
+		if key == "zoomIn" or key == "zoomOut" then
+			realKey = "zoom"
+		else
+			realKey = key
+		end
+
+		if self.db.profile[realKey] == "mouseover" then
+			frame:Hide()
 		end
 	end
 end
