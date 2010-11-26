@@ -54,7 +54,7 @@ local frames = {
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
-local framesShown = {}
+-- local framesShown = {}
 
 function ShowHide:OnEnable()
 	if self.db.profile.onMouseOver then
@@ -63,13 +63,13 @@ function ShowHide:OnEnable()
 	end
 
 	for k, v in pairs(frames) do
-		framesShown[v] = v:IsShown()
+--		framesShown[v] = v:IsShown()
 
 		self:SecureHook(frames[k], "Show", "frame_Show")
 		self:SecureHook(frames[k], "Hide", "frame_Hide")
 	end
 
-	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown() -- to ensure a boolean
+--	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown() -- to ensure a boolean
 
 	self:SecureHook(MinimapZoneTextButton, "Show", "MinimapZoneTextButton_Show")
 	self:SecureHook(MinimapZoneTextButton, "Hide", "MinimapZoneTextButton_Hide")
@@ -79,15 +79,15 @@ end
 
 function ShowHide:OnDisable()
 	for k, v in pairs(frames) do
-		if framesShown[v] then
+--		if framesShown[v] then
 			v:Show()
-		end
+--		end
 	end
 
-	if framesShown[MinimapZoneTextButton] then
-		MinimapBorderTop:Show()
-		MinimapZoneTextButton:Show()
-	end
+--	if framesShown[MinimapZoneTextButton] then
+--		MinimapBorderTop:Show()
+--		MinimapZoneTextButton:Show()
+--	end
 end
 
 function ShowHide:Update()
@@ -104,15 +104,17 @@ function ShowHide:Update()
 
 		if key == "boss" then
 			self:SetBoss(value)
+		elseif key == "difficulty" and value then
+			MiniMapInstanceDifficulty_Update()
 		elseif value == true then
-			if framesShown[frame] then
+--			if framesShown[frame] then
 				frame:Show()
-			end
+--			end
 		else -- Minimap:IsMouseOver() isn't going to happen while the config is open
-		 	if frame:IsShown() then
+--		 	if frame:IsShown() then
 				frame:Hide()
-				framesShown[frame] = true
-			end
+--				framesShown[frame] = true
+--			end
 		end
 	end
 
@@ -154,11 +156,11 @@ function ShowHide:frame_Show(object)
 		object:Hide()
 	end
 
-	framesShown[object] = true
+--	framesShown[object] = true
 end
 
 function ShowHide:frame_Hide(object)
-	framesShown[object] = false
+--	framesShown[object] = false
 end
 
 
@@ -168,11 +170,11 @@ function ShowHide:MinimapZoneTextButton_Show(object)
 		MinimapZoneTextButton:Hide()
 	end
 
-	framesShown[object] = true
+--	framesShown[object] = true
 end
 
 function ShowHide:MinimapZoneTextButton_Hide(object)
-	framesShown[object] = false
+--	framesShown[object] = false
 end
 
 
@@ -358,7 +360,17 @@ function ShowHide:GetOptions()
 			type = 'toggle',
 			tristate = true,
 			order = 11,
-			get = get, set = set,
+			get = get, set = function(info, value)
+				if TITAN_CLOCK_ID then
+					if value == true or value == nil then
+						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", false)
+					else
+						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", 1)
+					end
+				end
+
+				set(info, value)
+			end,
 		},
 		clock = {
 			name = L["Clock"],
@@ -366,7 +378,17 @@ function ShowHide:GetOptions()
 			type = 'toggle',
 			tristate = true,
 			order = 12,
-			get = get, set = set,
+			get = get, set = function(info, value)
+				if TITAN_CLOCK_ID then
+					if value == true or value == nil then
+						TitanSetVar(TITAN_CLOCK_ID, "HideMapTime", false)
+					else
+						TitanSetVar(TITAN_CLOCK_ID, "HideMapTime", 1)
+					end
+				end
+
+				set(info, value)
+			end,
 		},
 		track = {
 			name = L["Tracking"],
