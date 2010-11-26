@@ -356,30 +356,42 @@ function ShowHide:GetOptions()
 			name = L["Calendar"],
 			desc = L["Show the calendar"],
 			type = 'toggle',
-			tristate = TITAN_CLOCK_ID and false or true,
+			tristate = true,
 			order = 11,
-			get = function(...)
-				if TITAN_CLOCK_ID then return TitanGetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap")
-				else return get(...) end
-			end,
-			set = function(...)
-				if TITAN_CLOCK_ID then TitanPanelClockButton_ToggleGameTimeFrameShown()
-				else set(...) end
+			get = get,
+			set = function(info, value)
+				print(value)
+
+				if TITAN_CLOCK_ID then
+					if value == true or value == nil then
+						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", false)
+					else
+						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", 1)
+					end
+				end
+
+				set(info, value)
 			end,
 		},
 		clock = {
 			name = L["Clock"],
 			desc = L["Show the clock"],
 			type = 'toggle',
-			tristate = TITAN_CLOCK_ID and false or true,
+			tristate = true,
 			order = 12,
-			get = function(...)
-				if TITAN_CLOCK_ID then return TitanGetVar(TITAN_CLOCK_ID, "HideMapTime")
-				else return get(...) end
-			end,
-			set = function(...)
-				if TITAN_CLOCK_ID then TitanPanelClockButton_ToggleMapTime()
-				else set(...) end
+			get = get,
+			set = function(info, value)
+				print(value)
+
+				if TITAN_CLOCK_ID then
+					if value == true or value == nil then
+						TitanSetVar(TITAN_CLOCK_ID, "HideMapTime", false)
+					else
+						TitanSetVar(TITAN_CLOCK_ID, "HideMapTime", 1)
+					end
+				end
+
+				set(info, value)
 			end,
 		},
 		track = {
