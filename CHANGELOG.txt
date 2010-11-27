@@ -1,6 +1,8 @@
 Version 2.3 beta
 - Added a feature that allows you to show minimap buttons when you hover your cursor over the minimap.
+- Added a safety check to the AutoZoom module to prevent 500+ timers being created when someone spams the zoom button.
 - Fixed a conflict with Titan Panel v5. Thanks to Bremp for figuring this one out.
+- Increased the default height of the quest tracker.
 - Updated localisation.
 
 Version 2.2.2
@@ -8,14 +10,14 @@ Version 2.2.2
 - Moving, showing and hiding the guild instance difficulty flag now actually works.
 
 Version 2.2.1
-- Fixed non-Blizzard tracking blips becoming stretched and cut in half.
+- Non-Blizzard tracking blip textures no longer become stretched and cut in half.
 - The guild instance difficulty flag now inherits the same settings as the regular instance difficulty flag.
 
 Version 2.2
 - Updated for WoW 4.0.1.
 
 Version 2.1.6
-- Fixed a bug I introduced in Version 2.1.5 causing the minimap to go blank when indoors. I tried to make something better, but it didn't work.
+- Fixed a bug I introduced in Version 2.1.5 causing the minimap to go blank when indoors. I tried to make something better, but it didn't work. :(
 
 Version 2.1.5
 - Fixed a longstanding bug preventing minimap buttons from being place along the edges of the screen.  Blizzard's code really sucks sometimes.
@@ -24,7 +26,7 @@ Version 2.1.5
 Version 2.1.4
 - Module names no longer conflict with other addons. Whoops.
 - Boss frames are no longer hidden by default. Whoops.
-- Boss frame positioning options are no longer disabled when the boss frames themselves are disabled.
+- Boss frame positioning options are no longer disabled when boss frames are disabled.
 - LFD Status window no longer disappears off the screen when the minimap is on the left side of the screen.
 - Hiding border textures for LFG, Movie Recording and Tracking buttons now works.
 
