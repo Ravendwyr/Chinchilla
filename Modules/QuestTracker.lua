@@ -8,16 +8,17 @@ QuestTracker.desc = L["Tweak the quest tracker"]
 local noop = function() end
 local origTitleShow, origCollapseShow = WatchFrameTitle.Show, WatchFrameCollapseExpandButton.Show
 local origSetWidth = WatchFrame_SetWidth
+local height = floor(WatchFrame:GetTop() - CONTAINER_OFFSET_Y) -- shamelessly stolen from wmMap
 
 function QuestTracker:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("QuestTracker", {
 		profile = {
-			showTitle = true,
-			showCollapseButton = true,
-			frameWidth = 204,
-			frameHeight = 600,
+			showTitle = true, showCollapseButton = true,
+			frameWidth = 204, frameHeight = height,
 		},
 	})
+
+	WatchFrame:SetHeight(height)
 
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
@@ -49,7 +50,7 @@ function QuestTracker:OnDisable()
 
 	WatchFrame_SetWidth = origSetWidth
 	WatchFrame_SetWidth(GetCVar("watchFrameWidth"))
-	WatchFrame:SetHeight(140)
+	WatchFrame:SetHeight(height)
 end
 
 
