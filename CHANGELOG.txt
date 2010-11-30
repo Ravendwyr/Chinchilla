@@ -1,9 +1,10 @@
-Version 2.3 beta
+Version 2.3
 - Added a feature that allows you to show minimap buttons when you hover your cursor over the minimap.
-- Added a safety check to the AutoZoom module to prevent 500+ timers being created when someone spams the zoom button.
+- Added a feature that allows you to toggle the tracking menu on mouse-click.
+- Added a safety check to the AutoZoom module to prevent 500+ timers being created when someone (or another addon) spams the zoom button.
 - Fixed a conflict with Titan Panel v5. Thanks to Bremp for figuring this one out.
 - Increased the default height of the quest tracker.
-- Updated localisation.
+- Updated localisation. Some translations are still missing in places, check addon info for details.
 
 Version 2.2.2
 - Removed leftover debug which caused issues with the combat alpha slider.
