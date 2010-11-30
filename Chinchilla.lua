@@ -14,20 +14,6 @@ Chinchilla.version = "Development"
 --@end-debug@
 
 
-function Chinchilla:Minimap_OnMouseUp(this, button, ...)
-	if button == self.db.profile.mouseButton then
-		AceConfigDialog:Open("Chinchilla")
-	else
-		return self.hooks[this].OnMouseUp(this, button, ...)
-	end
-end
-
-function Chinchilla:SetCVar(key, value)
-	if key == "rotateMinimap" then
-		self:CallMethodOnAllModules("OnRotateMinimapUpdate", value == "1")
-	end
-end
-
 function Chinchilla:AddBorderStyle()
 	-- blank method, to be replaced in Appearance module
 	-- if Appearance module does not exist, other addons should not break by calling this
@@ -46,17 +32,36 @@ function Chinchilla:CallMethodOnAllModules(method, ...)
 	end
 end
 
+function Chinchilla:SetCVar(key, value)
+	if key == "rotateMinimap" then
+		self:CallMethodOnAllModules("OnRotateMinimapUpdate", value == "1")
+	end
+end
+
+function Chinchilla:Minimap_OnMouseUp(this, button, ...)
+	if button == self.db.profile.mouseButton then
+		AceConfigDialog:Open("Chinchilla")
+	elseif button == self.db.profile.trackButton then
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor", -10, -20)
+		PlaySound("igMainMenuOptionCheckBoxOn")
+	else
+		return self.hooks[this].OnMouseUp(this, button, ...)
+	end
+end
+
 
 local options
 function Chinchilla:OpenConfig()
 	options = {
-		name = L["Chinchilla Minimap"], type = 'group',
+		name = L["Chinchilla Minimap"],
+		type = 'group',
 		args = {
 			lock = {
 				name = L["Lock"],
 				desc = L["Lock any draggable items regarding the minimap, so they can't be dragged mistakenly."],
 				type = 'toggle',
 				tristate = true,
+				order = 1,
 				get = function()
 					local current, max = 0, 0
 
@@ -85,6 +90,7 @@ function Chinchilla:OpenConfig()
 				name = _G.ROTATE_MINIMAP,
 				desc = _G.OPTION_TOOLTIP_ROTATE_MINIMAP,
 				type = 'toggle',
+				order = 2,
 				get = function()
 					return GetCVar("rotateMinimap") == "1"
 				end,
@@ -97,6 +103,7 @@ function Chinchilla:OpenConfig()
 				name = L["Preferences button"],
 				desc = L["Button to use on the minimap to open the preferences window.\nNote: you can always open with /chin"],
 				type = "select",
+				order = 3,
 				values = {
 					RightButton = L["Right mouse button"],
 					MiddleButton = L["Middle mouse button"],
@@ -111,11 +118,29 @@ function Chinchilla:OpenConfig()
 					Chinchilla.db.profile.mouseButton = value
 				end,
 			},
+			trackButton = {
+				name = L["Tracking"],
+				desc = L["Button to use on the minimap to toggle the tracking menu."],
+				type = "select",
+				order = 3,
+				values = {
+					RightButton = L["Right mouse button"],
+					MiddleButton = L["Middle mouse button"],
+					Button4 = L["Mouse button #4"],
+					Button5 = L["Mouse button #5"],
+					None = L["None"],
+				},
+				get = function()
+					return Chinchilla.db.profile.trackButton
+				end,
+				set = function(_, value)
+					Chinchilla.db.profile.trackButton = value
+				end,
+			},
 			version = {
 				name = L["Version: %s"]:format(Chinchilla.version),
 				type = "description",
-				order = -1,
-				width = "normal",
+				order = 5,
 			},
 		},
 	}
@@ -159,7 +184,7 @@ end
 
 
 function Chinchilla:OnInitialize()
-	self.db = LibStub("AceDB-3.0"):New("Chinchilla2DB", { profile = { mouseButton = "RightButton" }}, 'Default')
+	self.db = LibStub("AceDB-3.0"):New("Chinchilla2DB", { profile = { mouseButton = "RightButton", trackButton = "MiddleButton" }}, 'Default')
 
 	local function OnProfileUpdate() Chinchilla:CallMethodOnAllModules("Disable") Chinchilla:CallMethodOnAllModules("Enable") end
 
