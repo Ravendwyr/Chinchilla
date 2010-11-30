@@ -6,7 +6,7 @@ Position.displayName = L["Position"]
 Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 
--- special hack for boss/arena unitframes
+-- special hack for boss unitframes
 Chinchilla_BossAnchor = CreateFrame("Frame")
 Chinchilla_BossAnchor:Show()
 Chinchilla_BossAnchor:SetWidth(200)
@@ -26,7 +26,7 @@ function Position:OnInitialize()
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
 			ticketStatus = { "TOPRIGHT", -180, 0 },
 			boss = { "TOPRIGHT", 55, -236 },
-			minimapLock = false,
+			minimapLock = false, clamped = true,
 			enabled = true,
 		}
 	})
@@ -64,10 +64,10 @@ local function getPointXY(frame, newX, newY)
 			if x < -35*scale then
 				x = -35*scale
 			end
-		else
-			if x < 0 then
-				x = 0
-			end
+--		else
+--			if x < 0 then
+--				x = 0
+--			end
 		end
 	elseif x < width*2/3 then
 		point = ""
@@ -80,10 +80,10 @@ local function getPointXY(frame, newX, newY)
 			if x > 17*scale then
 				x = 17*scale
 			end
-		else
-			if x > 0 then
-				x = 0
-			end
+--		else
+--			if x > 0 then
+--				x = 0
+--			end
 		end
 	end
 
@@ -95,10 +95,10 @@ local function getPointXY(frame, newX, newY)
 			if y < -30*scale then
 				y = -30*scale
 			end
-		else
-			if y < 0 then
-				y = 0
-			end
+--		else
+--			if y < 0 then
+--				y = 0
+--			end
 		end
 	elseif y < height*2/3 then
 		if point == "" then
@@ -113,10 +113,10 @@ local function getPointXY(frame, newX, newY)
 			if y > 22*scale then
 				y = 22*scale
 			end
-		else
-			if y > 0 then
-				y = 0
-			end
+--		else
+--			if y > 0 then
+--				y = 0
+--			end
 		end
 	end
 
@@ -155,6 +155,7 @@ function Position:OnEnable()
 	WorldStateAlwaysUpFrame:EnableMouse(false)
 
 	self:SetLocked()
+	self:UpdateClamp()
 
 	Minimap:SetClampedToScreen(true)
 
@@ -447,7 +448,7 @@ function Position:ShowFrameMover(frame, value, force)
 			mover:SetFrameLevel(nameToFrame[frame]:GetFrameLevel()+5)
 		end
 
-		mover:SetClampedToScreen(true)
+		mover:SetClampedToScreen(self.db.profile.clamped)
 		mover:EnableMouse(true)
 		mover:SetMovable(true)
 		mover:RegisterForDrag("LeftButton")
@@ -497,6 +498,23 @@ function Position:ShowFrameMover(frame, value, force)
 		end
 
 		shouldntSetPoint = false
+	end
+end
+
+function Position:UpdateClamp(info, value)
+	if info then self.db.profile.clamped = value
+	else value = self.db.profile.clamped end
+
+	for key, frame in pairs(nameToFrame) do
+		if key ~= "minimap" then
+			frame:SetClampedToScreen(value)
+		end
+	end
+
+	for key, frame in pairs(movers) do
+		if key ~= "minimap" then
+			frame:SetClampedToScreen(value)
+		end
 	end
 end
 
@@ -598,6 +616,14 @@ function Position:GetOptions()
 	local y_max = math.floor(GetScreenHeight()/10 + 0.5)*5
 
 	return {
+		clamped = {
+			name = L["Clamped to Screen"],
+			desc = L["Prevent the frames from being dragged off the edge of your screen."],
+			type = 'toggle',
+			order = 2,
+			get = function() return self.db.profile.clamped end,
+			set = "UpdateClamp",
+		},
 		minimap = {
 			name = L["Minimap"],
 			desc = L["Position of the minimap on the screen"],
