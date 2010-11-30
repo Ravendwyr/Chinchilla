@@ -186,8 +186,6 @@ end
 function Chinchilla:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("Chinchilla2DB", { profile = { mouseButton = "RightButton", trackButton = "MiddleButton" }}, 'Default')
 
-	local function OnProfileUpdate() Chinchilla:CallMethodOnAllModules("Disable") Chinchilla:CallMethodOnAllModules("Enable") end
-
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileUpdate")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileUpdate")
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileUpdate")
