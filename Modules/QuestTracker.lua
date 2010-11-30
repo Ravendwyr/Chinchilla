@@ -18,8 +18,6 @@ function QuestTracker:OnInitialize()
 		},
 	})
 
-	WatchFrame:SetHeight(height)
-
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
