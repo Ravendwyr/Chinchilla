@@ -4,15 +4,19 @@ Version 2.3
 - Added an option that allows you to "unclamp" frames and drag them off the screen. Thanks goes to Kynn for the idea.
 - Added several safety checks to the AutoZoom module to prevent 500+ timers being created if you or another addon repeatedly alter the minimap zoom very quickly.
 - Fixed a conflict with Titan Panel v5. Thanks to Bremp for figuring this one out.
+- Removed GatherMate 1 support from the Expander module in preference to the newer and more up-to-date GatherMate 2.
+- You now toggle the Expander minimap instead of it only showing while you are pressing down your chosen button.
+- The LFD search status popup is now clamped to the screen.
+- The "who pinged?" chat notification is now throttled to once per 5 seconds if the same person spam-pings the minimap.
 - Increased the default height of the quest tracker.
-- Updated localisation. Some translations are still missing in places, check addon info for details.
+- Updated localisation. A huge thanks goes to the people who do the translating for me, I don't thank or credit their work enough. Some translations are still missing in places, see Chinchilla's addon webpage for more information.
 
 Version 2.2.2
 - Removed leftover debug which caused issues with the combat alpha slider.
 - Moving, showing and hiding the guild instance difficulty flag now actually works.
 
 Version 2.2.1
-- Non-Blizzard tracking blip textures no longer become stretched and cut in half.
+- Non-Blizzard tracking blip textures no longer appear stretched and cut in half.
 - The guild instance difficulty flag now inherits the same settings as the regular instance difficulty flag.
 
 Version 2.2
