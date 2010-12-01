@@ -21,54 +21,57 @@ function Expander:OnInitialize()
 end
 
 local frame, minimap
+local show = false
 function Expander:OnEnable()
 	if not frame then
 		frame = CreateFrame("Button", "Chinchilla_Expander_Button")
 	end
 
-	frame:SetScript("OnMouseDown", function(this, button)
-		MinimapCluster:Hide()
-
-		if not minimap then
-			minimap = CreateFrame("Minimap", "Chinchilla_Expander_Minimap", UIParent)
-			minimap:SetWidth(140 * self.db.profile.scale)
-			minimap:SetHeight(140 * self.db.profile.scale)
-			minimap:SetScale(1.2)
-			minimap:SetPoint("CENTER")
-			minimap:SetFrameStrata("TOOLTIP")
-			minimap:EnableMouse(true)
-			minimap:EnableMouseWheel(false)
-			minimap:EnableKeyboard(false)
-		end
-
-		minimap:Show()
-
---		local z = minimap:GetZoom()
-
---		if z > 2 then minimap:SetZoom(z-1)
---		else minimap:SetZoom(z+1) end
-
---		minimap:SetZoom(z)
-
-		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(minimap) end
-		if GatherMate then GatherMate:GetModule("Display"):ReparentMinimapPins(minimap) end
-		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(minimap) end
-	end)
-
 	frame:SetScript("OnMouseUp", function(this, button)
-		minimap:Hide()
-		MinimapCluster:Show()
+		show = not show
 
---		local z = Minimap:GetZoom()
+		if show then
+			MinimapCluster:Hide()
 
---		if z > 2 then Minimap:SetZoom(z-1)
---		else Minimap:SetZoom(z+1) end
+			if not minimap then
+				minimap = CreateFrame("Minimap", "Chinchilla_Expander_Minimap", UIParent)
+				minimap:SetWidth(140 * self.db.profile.scale)
+				minimap:SetHeight(140 * self.db.profile.scale)
+				minimap:SetScale(1.2)
+				minimap:SetPoint("CENTER")
+				minimap:SetFrameStrata("TOOLTIP")
+				minimap:EnableMouse(true)
+				minimap:EnableMouseWheel(false)
+				minimap:EnableKeyboard(false)
+			end
 
---		Minimap:SetZoom(z)
+			minimap:Show()
 
-		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(Minimap) end
-		if GatherMate then GatherMate:GetModule("Display"):ReparentMinimapPins(Minimap) end
-		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(Minimap) end
+--			local z = minimap:GetZoom()
+
+--			if z > 2 then minimap:SetZoom(z-1)
+--			else minimap:SetZoom(z+1) end
+
+--			minimap:SetZoom(z)
+
+			if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(minimap) end
+			if GatherMate then GatherMate:GetModule("Display"):ReparentMinimapPins(minimap) end
+			if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(minimap) end
+		else
+			minimap:Hide()
+			MinimapCluster:Show()
+
+--			local z = Minimap:GetZoom()
+
+--			if z > 2 then Minimap:SetZoom(z-1)
+--			else Minimap:SetZoom(z+1) end
+
+--			Minimap:SetZoom(z)
+
+			if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(Minimap) end
+			if GatherMate then GatherMate:GetModule("Display"):ReparentMinimapPins(Minimap) end
+			if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(Minimap) end
+		end
 	end)
 
 	if self.db.profile.key then
@@ -81,7 +84,6 @@ function Expander:OnEnable()
 end
 
 function Expander:OnDisable()
-	frame:SetScript("OnMouseDown", nil)
 	frame:SetScript("OnMouseUp", nil)
 end
 
