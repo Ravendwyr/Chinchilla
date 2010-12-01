@@ -55,7 +55,6 @@ function Expander:OnEnable()
 --			minimap:SetZoom(z)
 
 			if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(minimap) end
-			if GatherMate then GatherMate:GetModule("Display"):ReparentMinimapPins(minimap) end
 			if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(minimap) end
 		else
 			minimap:Hide()
@@ -69,7 +68,6 @@ function Expander:OnEnable()
 --			Minimap:SetZoom(z)
 
 			if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(Minimap) end
-			if GatherMate then GatherMate:GetModule("Display"):ReparentMinimapPins(Minimap) end
 			if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(Minimap) end
 		end
 	end)
