@@ -1,5 +1,5 @@
 
-local Ping = Chinchilla:NewModule("Ping", "AceEvent-3.0", "AceHook-3.0")
+local Ping = Chinchilla:NewModule("Ping", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 Ping.displayName = L["Ping"]
@@ -34,7 +34,7 @@ function Ping:OnInitialize()
 end
 
 local frame
-local timeSinceShow = 0
+-- local timeSinceShow = 0
 local lastPingedBy = ""
 
 function Ping:OnEnable()
@@ -59,14 +59,13 @@ function Ping:OnEnable()
 
 --		frame:SetScript("OnShow", function() timeSinceShow = 0 end)
 
-		frame:SetScript("OnUpdate", function(this, elapsed)
-			timeSinceShow = timeSinceShow + elapsed
+--		frame:SetScript("OnUpdate", function(this, elapsed)
+--			timeSinceShow = timeSinceShow + elapsed
 
-			if timeSinceShow >= MINIMAPPING_TIMER then
-				lastPingedBy = ""
-				this:Hide()
-			end
-		end)
+--			if timeSinceShow >= MINIMAPPING_TIMER then
+--				this:Hide()
+--			end
+--		end)
 
 		frame:SetScript("OnDragStart", function(this)
 			this:StartMoving()
@@ -110,7 +109,9 @@ function Ping:OnDisable()
 	_G.MINIMAPPING_FADE_TIMER = 0.5
 end
 
+
 local allowNextPlayerPing = false
+local frameTimerID, msgTimerID
 function Ping:MINIMAP_PING(event, unit)
 	if UnitIsUnit("player", unit) and not allowNextPlayerPing then return end
 
@@ -124,15 +125,26 @@ function Ping:MINIMAP_PING(event, unit)
 	local _, class = UnitClass(unit)
 	local color = RAID_CLASS_COLORS[class]
 
-	if self.db.profile.chat and lastPingedBy ~= name then
-		DEFAULT_CHAT_FRAME:AddMessage(L["Minimap pinged by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)))
+	if self.db.profile.chat then
+		if msgTimerID or lastPingedBy == name then return end
+
+		DEFAULT_CHAT_FRAME:AddMessage(L["Minimap pinged by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)), 1, .7, 0)
+
+		lastPingedBy = name
+		msgTimerID = self:ScheduleTimer("MessageTimer", 5)
+
 		return
 	end
 
-	lastPingedBy = name
-	timeSinceShow = 0
+--	timeSinceShow = 0
+
+	if frameTimerID then
+		self:CancelTimer(frameTimerID, true)
+	end
 
 	frame:Show()
+
+	frameTimerID = self:ScheduleTimer("FrameTimer", MINIMAPPING_TIMER)
 
 	frame.text:SetText(L["Ping by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)))
 	frame.text:SetTextColor(unpack(self.db.profile.textColor))
@@ -149,10 +161,22 @@ function Ping:MINIMAP_PING(event, unit)
 	frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
 end
 
+function Ping:FrameTimer()
+	frame:Hide()
+	frameTimerID = nil
+end
+
+function Ping:MessageTimer()
+	lastPingedBy = ""
+	msgTimerID = nil
+end
+
+
 local function test()
 	allowNextPlayerPing = true
 	Minimap:PingLocation(0, 0)
 end
+
 
 function Ping:SetMovable(value)
 	frame:SetMovable(value)
