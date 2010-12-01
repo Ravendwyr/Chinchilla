@@ -35,6 +35,8 @@ end
 
 local frame
 local timeSinceShow = 0
+local lastPingedBy = ""
+
 function Ping:OnEnable()
 	if not frame then
 		frame = CreateFrame("Frame", "Chinchilla_Ping_Frame")
@@ -60,7 +62,10 @@ function Ping:OnEnable()
 		frame:SetScript("OnUpdate", function(this, elapsed)
 			timeSinceShow = timeSinceShow + elapsed
 
-			if timeSinceShow >= MINIMAPPING_TIMER then this:Hide() end
+			if timeSinceShow >= MINIMAPPING_TIMER then
+				lastPingedBy = ""
+				this:Hide()
+			end
 		end)
 
 		frame:SetScript("OnDragStart", function(this)
@@ -119,12 +124,14 @@ function Ping:MINIMAP_PING(event, unit)
 	local _, class = UnitClass(unit)
 	local color = RAID_CLASS_COLORS[class]
 
-	if self.db.profile.chat then
+	if self.db.profile.chat and lastPingedBy ~= name then
 		DEFAULT_CHAT_FRAME:AddMessage(L["Minimap pinged by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)))
 		return
 	end
 
+	lastPingedBy = name
 	timeSinceShow = 0
+
 	frame:Show()
 
 	frame.text:SetText(L["Ping by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)))
