@@ -33,10 +33,8 @@ function Ping:OnInitialize()
 	end
 end
 
-local frame
--- local timeSinceShow = 0
-local lastPingedBy = ""
 
+local frame
 function Ping:OnEnable()
 	if not frame then
 		frame = CreateFrame("Frame", "Chinchilla_Ping_Frame")
@@ -56,16 +54,6 @@ function Ping:OnEnable()
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
 		text:SetPoint("CENTER")
-
---		frame:SetScript("OnShow", function() timeSinceShow = 0 end)
-
---		frame:SetScript("OnUpdate", function(this, elapsed)
---			timeSinceShow = timeSinceShow + elapsed
-
---			if timeSinceShow >= MINIMAPPING_TIMER then
---				this:Hide()
---			end
---		end)
 
 		frame:SetScript("OnDragStart", function(this)
 			this:StartMoving()
@@ -112,6 +100,8 @@ end
 
 local allowNextPlayerPing = false
 local frameTimerID, msgTimerID
+local lastPingedBy = ""
+
 function Ping:MINIMAP_PING(event, unit)
 	if UnitIsUnit("player", unit) and not allowNextPlayerPing then return end
 
@@ -135,8 +125,6 @@ function Ping:MINIMAP_PING(event, unit)
 
 		return
 	end
-
---	timeSinceShow = 0
 
 	if frameTimerID then
 		self:CancelTimer(frameTimerID, true)
@@ -185,6 +173,7 @@ function Ping:SetMovable(value)
 	if value then frame:RegisterForDrag("LeftButton")
 	else frame:RegisterForDrag() end
 end
+
 
 local function isCornerRound(x, y)
 	local minimapShape = _G.GetMinimapShape and _G.GetMinimapShape() or "ROUND"
