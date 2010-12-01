@@ -32,16 +32,17 @@ function WheelZoom:OnEnable()
 		end)
 	end
 
+	frame:Show()
 	frame:EnableMouseWheel(true)
 end
 
 function WheelZoom:OnDisable()
+	frame:Hide()
 	frame:EnableMouseWheel(false)
 end
 
 --[[
 function WheelZoom:GetOptions()
-	return {
-	}
+	return {}
 end
 ]]--

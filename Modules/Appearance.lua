@@ -130,11 +130,11 @@ function Appearance:MINIMAP_UPDATE_ZOOM()
 	local zoom = Minimap:GetZoom()
 
 	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
+		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1, true)
 	end
 
 	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
-	Minimap:SetZoom(zoom)
+	Minimap:SetZoom(zoom, true)
 
 	self:SetAlpha()
 end
@@ -240,9 +240,9 @@ function Appearance:SetScale(value)
 
 	MinimapCluster:SetScale(value)
 
-	local zoom = Minimap:GetZoom()
-	Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
-	Minimap:SetZoom(zoom)
+--	local zoom = Minimap:GetZoom()
+--	Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
+--	Minimap:SetZoom(zoom)
 end
 
 function Appearance:SetBlipScale(value)

@@ -26,15 +26,22 @@ end
 
 
 local timerID
-function AutoZoom:Minimap_SetZoom(_, zoomLevel)
-	if zoomLevel ~= 0 and not timerID then
+function AutoZoom:Minimap_SetZoom(_, zoomLevel, ignore)
+	if ignore then return end
+
+	if zoomLevel ~= 0 then
+		if timerID then
+			self:CancelTimer(timerID, true)
+			timerID = nil
+		end
+
 		timerID = self:ScheduleTimer("ZoomOut", self.db.profile.time)
 	end
 end
 
 function AutoZoom:ZoomOut()
-	Minimap:SetZoom(0)
-	timerID = self:CancelTimer("ZoomOut", true)
+	Minimap:SetZoom(0, true)
+	timerID = nil
 end
 
 
