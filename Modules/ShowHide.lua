@@ -54,7 +54,7 @@ local frames = {
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
--- local framesShown = {}
+local framesShown = {}
 
 function ShowHide:OnEnable()
 	if self.db.profile.onMouseOver then
@@ -63,13 +63,13 @@ function ShowHide:OnEnable()
 	end
 
 	for k, v in pairs(frames) do
---		framesShown[v] = v:IsShown()
+		framesShown[v] = v:IsShown()
 
 		self:SecureHook(frames[k], "Show", "frame_Show")
 		self:SecureHook(frames[k], "Hide", "frame_Hide")
 	end
 
---	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown() -- to ensure a boolean
+	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown() -- to ensure a boolean
 
 	self:SecureHook(MinimapZoneTextButton, "Show", "MinimapZoneTextButton_Show")
 	self:SecureHook(MinimapZoneTextButton, "Hide", "MinimapZoneTextButton_Hide")
@@ -79,15 +79,15 @@ end
 
 function ShowHide:OnDisable()
 	for k, v in pairs(frames) do
---		if framesShown[v] then
+		if framesShown[v] then
 			v:Show()
---		end
+		end
 	end
 
---	if framesShown[MinimapZoneTextButton] then
---		MinimapBorderTop:Show()
---		MinimapZoneTextButton:Show()
---	end
+	if framesShown[MinimapZoneTextButton] then
+		MinimapBorderTop:Show()
+		MinimapZoneTextButton:Show()
+	end
 end
 
 function ShowHide:Update()
@@ -104,17 +104,15 @@ function ShowHide:Update()
 
 		if key == "boss" then
 			self:SetBoss(value)
-		elseif key == "difficulty" and value then
-			MiniMapInstanceDifficulty_Update()
 		elseif value == true then
---			if framesShown[frame] then
-				frame:Show()
---			end
+			if framesShown[frame] then
+				self:SetFrameShown(key, frame)
+			end
 		else -- Minimap:IsMouseOver() isn't going to happen while the config is open
---		 	if frame:IsShown() then
+		 	if frame:IsShown() then
 				frame:Hide()
---				framesShown[frame] = true
---			end
+				framesShown[frame] = true
+			end
 		end
 	end
 
@@ -156,11 +154,11 @@ function ShowHide:frame_Show(object)
 		object:Hide()
 	end
 
---	framesShown[object] = true
+	framesShown[object] = true
 end
 
 function ShowHide:frame_Hide(object)
---	framesShown[object] = false
+	framesShown[object] = false
 end
 
 
@@ -170,13 +168,27 @@ function ShowHide:MinimapZoneTextButton_Show(object)
 		MinimapZoneTextButton:Hide()
 	end
 
---	framesShown[object] = true
+	framesShown[object] = true
 end
 
 function ShowHide:MinimapZoneTextButton_Hide(object)
---	framesShown[object] = false
+	framesShown[object] = false
 end
 
+
+function ShowHide:SetFrameShown(key, frame)
+	if key == "mail" then
+		if HasNewMail() then frame:Show() end
+	elseif key == "lfg" then
+		if GetLFGMode() then frame:Show() end
+	elseif key == "battleground" then
+		if PVPFrame.numQueues > 0 or MiniMapBattlefieldFrame.inWorldPVPArea then frame:Show() end
+	elseif key == "difficulty" and self.db.profile[key] then
+		MiniMapInstanceDifficulty_Update()
+	else
+		frame:Show()
+	end
+end
 
 function ShowHide:SetBoss(value)
 	if value then
@@ -193,13 +205,14 @@ function ShowHide:SetBoss(value)
 end
 
 
-local timerID
+local timerID = nil
 function ShowHide:OnEnter()
-	if timerID then self:CancelTimer(timerID, true) end
+	if timerID then self:CancelTimer(timerID) timerID = nil end
 
 	local realKey
 
 	for key, frame in pairs(frames) do
+		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not tristate
 		if key == "zoomIn" or key == "zoomOut" then
 			realKey = "zoom"
 		else
@@ -207,15 +220,7 @@ function ShowHide:OnEnter()
 		end
 
 		if self.db.profile[realKey] == "mouseover" then
-			if key == "mail" then
-				if HasNewMail() then frame:Show() end
-			elseif key == "lfg" then
-				if GetLFGMode() then frame:Show() end
-			elseif key == "battleground" then
-				if PVPFrame.numQueues > 0 or MiniMapBattlefieldFrame.inWorldPVPArea then frame:Show() end
-			else
-				frame:Show()
-			end
+			self:SetFrameShown(realKey, frame)
 		end
 	end
 end
@@ -236,8 +241,11 @@ function ShowHide:HideAll()
 
 		if self.db.profile[realKey] == "mouseover" then
 			frame:Hide()
+			framesShown[frame] = true
 		end
 	end
+
+	timerID = nil
 end
 
 function ShowHide:OnMouseOverUpdate(info, value)
