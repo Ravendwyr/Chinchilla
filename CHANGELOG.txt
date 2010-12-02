@@ -1,3 +1,8 @@
+Version 2.3.1
+- Fixed an oversight causing every minimap button to show unnecessarily if set to always show. Oops.
+- Added a "None" border which removes any and all borders around the minimap. Thanks to Blazeflack for the idea.
+- Added an option to only show the Calendar button if there are new invites.
+
 Version 2.3
 - Added a feature that allows you to show minimap buttons when you hover your cursor over the minimap.
 - Added a feature that allows you to toggle the tracking menu on mouse-click.
