@@ -9,7 +9,7 @@ ShowHide.desc = L["Show and hide interface elements of the minimap"]
 function ShowHide:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
 		profile = {
-			enabled = true, onMouseOver = true,
+			enabled = true, onMouseOver = true, calendarInviteOnly = false,
 
 			boss = true,
 			battleground = true,
@@ -177,7 +177,18 @@ end
 
 
 function ShowHide:SetFrameShown(key, frame)
-	if key == "mail" then
+	if key == "dayNight" then
+		if self.db.profile.calendarInviteOnly then
+			if CalendarGetNumPendingInvites() > 0 then
+				frame:Show()
+			else
+				frame:Hide()
+				framesShown[frame] = true
+			end
+		else
+			frame:Show()
+		end
+	elseif key == "mail" then
 		if HasNewMail() then frame:Show() end
 	elseif key == "lfg" then
 		if GetLFGMode() then frame:Show() end
@@ -212,7 +223,7 @@ function ShowHide:OnEnter()
 	local realKey
 
 	for key, frame in pairs(frames) do
-		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not tristate
+		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not tristate. yet.
 		if key == "zoomIn" or key == "zoomOut" then
 			realKey = "zoom"
 		else
@@ -281,7 +292,7 @@ function ShowHide:GetOptions()
 		end
 
 		self.db.profile[key] = value
-		self:Update(key, value)
+		self:Update()
 	end
 
 	return {
@@ -289,14 +300,21 @@ function ShowHide:GetOptions()
 			name = L["On Mouse Over"],
 			desc = L["Only show certain buttons when the cursor is hovering over the minimap."],
 			type = 'toggle',
-			width = 'full',
 			order = 1,
 			get = get, set = "OnMouseOverUpdate",
+		},
+		calendarInviteOnly = {
+			name = L["Unread Invites Only"],
+			desc = L["Only show the calendar when you have unread invites waiting for you."],
+			type = 'toggle',
+			order = 2,
+			get = get, set = set,
+			disabled = function() return self.db.profile.dayNight == false end,
 		},
 		tutorial = {
 			name = L["A gold tick means the button will be shown at all times. A silver tick means the button will be shown when you hover the cursor over the minimap. An empty tickbox means the button will not be shown at all."],
 			type = "description",
-			order = 2,
+			order = 3,
 			hidden = function() return not self.db.profile.onMouseOver end,
 		},
 		battleground = {
@@ -304,35 +322,35 @@ function ShowHide:GetOptions()
 			desc = L["Show the battleground indicator"],
 			type = 'toggle',
 			tristate = true,
-			order = 3,
+			order = 4,
 			get = get, set = set,
 		},
 		north = {
 			name = L["North"],
 			desc = L["Show the north symbol on the minimap"],
 			type = 'toggle',
-			order = 4,
+			order = 5,
 			get = get, set = set,
 		},
 		difficulty = {
 			name = L["Instance difficulty"],
 			desc = L["Show the instance difficulty flag on the minimap"],
 			type = 'toggle',
-			order = 5,
+			order = 6,
 			get = get, set = set,
 		},
 		locationText = {
 			name = L["Location text"],
 			desc = L["Show the location text above the minimap"],
 			type = 'toggle',
-			order = 6,
+			order = 7,
 			get = get, set = set,
 		},
 		locationBar = {
 			name = L["Location bar"],
 			desc = L["Show the location bar above the minimap"],
 			type = 'toggle',
-			order = 7,
+			order = 8,
 			get = get, set = set,
 			disabled = function()
 				return not self.db.profile.locationText
@@ -343,7 +361,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the world map button"],
 			type = 'toggle',
 			tristate = true,
-			order = 8,
+			order = 9,
 			get = get, set = set,
 		},
 		mail = {
@@ -351,7 +369,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the mail indicator"],
 			type = 'toggle',
 			tristate = true,
-			order = 9,
+			order = 10,
 			get = get, set = set,
 		},
 		lfg = {
@@ -359,33 +377,23 @@ function ShowHide:GetOptions()
 			desc = L["Show the looking for group indicator"],
 			type = 'toggle',
 			tristate = true,
-			order = 10,
+			order = 11,
 			get = get, set = set,
 		},
-		dayNight = {
-			name = L["Calendar"],
-			desc = L["Show the calendar"],
+		track = {
+			name = L["Tracking"],
+			desc = L["Show the tracking indicator"],
 			type = 'toggle',
 			tristate = true,
-			order = 11,
-			get = get, set = function(info, value)
-				if TITAN_CLOCK_ID then
-					if value == true or value == nil then
-						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", false)
-					else
-						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", 1)
-					end
-				end
-
-				set(info, value)
-			end,
+			order = 12,
+			get = get, set = set,
 		},
 		clock = {
 			name = L["Clock"],
 			desc = L["Show the clock"],
 			type = 'toggle',
 			tristate = true,
-			order = 12,
+			order = 13,
 			get = get, set = function(info, value)
 				if TITAN_CLOCK_ID then
 					if value == true or value == nil then
@@ -398,20 +406,30 @@ function ShowHide:GetOptions()
 				set(info, value)
 			end,
 		},
-		track = {
-			name = L["Tracking"],
-			desc = L["Show the tracking indicator"],
+		dayNight = {
+			name = L["Calendar"],
+			desc = L["Show the calendar"],
 			type = 'toggle',
 			tristate = true,
-			order = 13,
-			get = get, set = set,
+			order = 14,
+			get = get, set = function(info, value)
+				if TITAN_CLOCK_ID then
+					if value == true or value == nil then
+						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", false)
+					else
+						TitanSetVar(TITAN_CLOCK_ID, "HideGameTimeMinimap", 1)
+					end
+				end
+
+				set(info, value)
+			end,
 		},
 		voice = {
 			name = L["Voice chat"],
 			desc = L["Show the voice chat button"],
 			type = 'toggle',
 			tristate = true,
-			order = 14,
+			order = 15,
 			get = get, set = set,
 		},
 		zoom = {
@@ -419,21 +437,21 @@ function ShowHide:GetOptions()
 			desc = L["Show the zoom in and out buttons"],
 			type = 'toggle',
 			tristate = true,
-			order = 15,
+			order = 16,
 			get = get, set = set,
 		},
 		vehicleSeats = {
 			name = L["Vehicle seats"],
 			desc = L["Show the vehicle seats indicator"],
 			type = 'toggle',
-			order = 16,
+			order = 17,
 			get = get, set = set,
 		},
 		boss = {
 			name = L["Boss frames"],
 			desc = L["Show the boss unit frames"],
 			type = 'toggle',
-			order = 17,
+			order = 18,
 			get = get, set = set,
 		},
 		record = IsMacClient() and {
@@ -441,7 +459,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the recording button"],
 			type = 'toggle',
 			tristate = true,
-			order = 18,
+			order = 19,
 			get = get, set = set,
 		} or nil,
 	}
