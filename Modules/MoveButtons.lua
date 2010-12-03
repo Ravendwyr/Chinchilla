@@ -544,9 +544,7 @@ function MoveButtons:GetOptions()
 			desc = L["Lock buttons in place so that they won't be mistakenly dragged"],
 			type = 'toggle',
 			order = 2,
-			get = function(info)
-				self:IsLocked()
-			end,
+			get = "IsLocked",
 			set = function(info, value)
 				self:SetLocked(value)
 			end,
