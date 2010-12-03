@@ -41,11 +41,25 @@ function Expander:Refresh()
 
 		minimap:Show()
 
+		local z = minimap:GetZoom()
+
+		if z > 2 then minimap:SetZoom(z-1)
+		else minimap:SetZoom(z+1) end
+
+		minimap:SetZoom(z)
+
 		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(minimap) end
 		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(minimap) end
 	else
 		minimap:Hide()
 		MinimapCluster:Show()
+
+		local z = Minimap:GetZoom()
+
+		if z > 2 then Minimap:SetZoom(z-1)
+		else Minimap:SetZoom(z+1, true) end
+
+		Minimap:SetZoom(z, true)
 
 		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(Minimap) end
 		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(Minimap) end
