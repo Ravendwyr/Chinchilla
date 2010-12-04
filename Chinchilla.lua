@@ -234,17 +234,3 @@ function Chinchilla:OnProfileUpdate()
 		end
 	end
 end
-
-
-function Chinchilla:FindThatButton()
-	for i=1, MinimapBackdrop:GetNumChildren() do
-		local v = select(i, MinimapBackdrop:GetChildren())
-		local func = v.GetTexture or v.GetNormalTexture
-
-		if func() == "Interface\\Minimap\\MiniMap-QuestArrow" then
-			print(v:GetName())
-		end
-	end
-end
-
-
