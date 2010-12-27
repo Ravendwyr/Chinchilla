@@ -21,24 +21,36 @@ function Expander:OnInitialize()
 end
 
 
-local frame, minimap
+local cluster, minimap, button
 local show = false
 
 function Expander:Refresh()
 	if show then
 		MinimapCluster:Hide()
 
-		if not minimap then
-			minimap = CreateFrame("Minimap", "Chinchilla_Expander_Minimap", UIParent)
+		if not cluster then
+			cluster = CreateFrame("Frame", nil, UIParent)
+			cluster:SetFrameStrata("BACKGROUND")
+			cluster:SetWidth(140 * self.db.profile.scale)
+			cluster:SetHeight(140 * self.db.profile.scale)
+			cluster:SetScale(1.2)
+			cluster:SetPoint("CENTER")
+
+			minimap = CreateFrame("Minimap", "Chinchilla_Expander_Minimap", cluster)
+			minimap:SetFrameStrata("TOOLTIP")
 			minimap:SetWidth(140 * self.db.profile.scale)
 			minimap:SetHeight(140 * self.db.profile.scale)
 			minimap:SetScale(1.2)
-			minimap:SetAlpha(self.db.profile.alpha)
 			minimap:SetPoint("CENTER")
-			minimap:SetFrameStrata("TOOLTIP")
+			minimap:SetAlpha(self.db.profile.alpha)
+
 			minimap:EnableMouse(false)
 			minimap:EnableMouseWheel(false)
 			minimap:EnableKeyboard(false)
+
+			setmetatable(cluster, { __index = minimap })
+
+			cluster.GetScale = function() return 1 end
 		end
 
 		minimap:Show()
@@ -50,8 +62,8 @@ function Expander:Refresh()
 
 		minimap:SetZoom(z)
 
-		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(minimap) end
-		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(minimap) end
+		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(cluster) end
+		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(cluster) end
 	else
 		minimap:Hide()
 		MinimapCluster:Show()
@@ -70,11 +82,11 @@ end
 
 
 function Expander:OnEnable()
-	if not frame then
-		frame = CreateFrame("Button", "Chinchilla_Expander_Button")
+	if not button then
+		button = CreateFrame("Button", "Chinchilla_Expander_Button")
 	end
 
-	frame:SetScript("OnMouseDown", function(this, button)
+	button:SetScript("OnMouseDown", function()
 		if self.db.profile.toggle then
 			show = not show
 		else
@@ -84,7 +96,7 @@ function Expander:OnEnable()
 		self:Refresh()
 	end)
 
-	frame:SetScript("OnMouseUp", function(this, button)
+	button:SetScript("OnMouseUp", function()
 		if not self.db.profile.toggle then
 			show = false
 			self:Refresh()
@@ -101,8 +113,21 @@ function Expander:OnEnable()
 end
 
 function Expander:OnDisable()
-	frame:SetScript("OnMouseDown", nil)
-	frame:SetScript("OnMouseUp", nil)
+	button:SetScript("OnMouseDown", nil)
+	button:SetScript("OnMouseUp", nil)
+end
+
+
+function Expander:SetSizes()
+	if not cluster or not minimap then return end
+
+	cluster:SetWidth(140 * self.db.profile.scale)
+	cluster:SetHeight(140 * self.db.profile.scale)
+	cluster:SetScale(1.2)
+
+	minimap:SetWidth(140 * self.db.profile.scale)
+	minimap:SetHeight(140 * self.db.profile.scale)
+	minimap:SetScale(1.2)
 end
 
 
@@ -113,9 +138,7 @@ function Expander:GetOptions()
 			desc = L["The key to press to show the expanded minimap"],
 			type = 'keybinding',
 			order = 1,
-			get = function()
-				return self.db.profile.key
-			end,
+			get = function() return self.db.profile.key end,
 			set = function(_, value)
 				if self.db.profile.key then
 					SetBinding(self.db.profile.key, nil)
@@ -123,7 +146,7 @@ function Expander:GetOptions()
 
 				self.db.profile.key = value
 
-				if frame and value then
+				if button and value then
 					SetBindingClick(value, "Chinchilla_Expander_Button")
 				end
 			end,
@@ -139,16 +162,10 @@ function Expander:GetOptions()
 			step = 0.01,
 			bigStep = 0.05,
 			isPercent = true,
-			get = function()
-				return self.db.profile.scale
-			end,
+			get = function() return self.db.profile.scale end,
 			set = function(_, value)
 				self.db.profile.scale = value
-
-				if minimap then
-					minimap:SetWidth(140 * self.db.profile.scale)
-					minimap:SetHeight(140 * self.db.profile.scale)
-				end
+				self:SetSizes()
 			end,
 		},
 		alpha = {
@@ -157,6 +174,7 @@ function Expander:GetOptions()
 			order = 3,
 			min = 0,
 			max = 1,
+			step = 1,
 			isPercent = true,
 			get = function() return self.db.profile.alpha end,
 			set = function(_, value)
