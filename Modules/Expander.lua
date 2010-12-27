@@ -10,7 +10,8 @@ function Expander:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Expander", {
 		profile = {
 			enabled = true,
-			key = false, scale = 3, toggle = true,
+			key = false, toggle = true,
+			scale = 3, alpha = 1,
 		},
 	})
 
@@ -32,9 +33,10 @@ function Expander:Refresh()
 			minimap:SetWidth(140 * self.db.profile.scale)
 			minimap:SetHeight(140 * self.db.profile.scale)
 			minimap:SetScale(1.2)
+			minimap:SetAlpha(self.db.profile.alpha)
 			minimap:SetPoint("CENTER")
 			minimap:SetFrameStrata("TOOLTIP")
-			minimap:EnableMouse(true)
+			minimap:EnableMouse(false)
 			minimap:EnableMouseWheel(false)
 			minimap:EnableKeyboard(false)
 		end
@@ -56,7 +58,7 @@ function Expander:Refresh()
 
 		local z = Minimap:GetZoom()
 
-		if z > 2 then Minimap:SetZoom(z-1)
+		if z > 2 then Minimap:SetZoom(z-1, true)
 		else Minimap:SetZoom(z+1, true) end
 
 		Minimap:SetZoom(z, true)
@@ -110,6 +112,7 @@ function Expander:GetOptions()
 			name = L["Keybinding"],
 			desc = L["The key to press to show the expanded minimap"],
 			type = 'keybinding',
+			order = 1,
 			get = function()
 				return self.db.profile.key
 			end,
@@ -124,12 +127,13 @@ function Expander:GetOptions()
 					SetBindingClick(value, "Chinchilla_Expander_Button")
 				end
 			end,
-			disabled = InCombatLockdown,
+			disabled = function() return InCombatLockdown() or not self:IsEnabled() end,
 		},
 		scale = {
 			name = L["Size"],
 			desc = L["The size of the expanded minimap"],
 			type = 'range',
+			order = 2,
 			min = 0.5,
 			max = 8,
 			step = 0.01,
@@ -147,10 +151,24 @@ function Expander:GetOptions()
 				end
 			end,
 		},
+		alpha = {
+			name = L["Opacity"],
+			type = 'range',
+			order = 3,
+			min = 0,
+			max = 1,
+			isPercent = true,
+			get = function() return self.db.profile.alpha end,
+			set = function(_, value)
+				self.db.profile.alpha = value
+				if minimap then minimap:SetAlpha(value) end
+			end,
+		},
 		toggle = {
 			name = L["Toggle"],
 			desc = L["Choose to toggle the expanded minimap or only keep it shown while pressing the button down."],
 			type = 'toggle',
+			order = 4,
 			get = function() return self.db.profile.toggle end,
 			set = function(_, value) self.db.profile.toggle = value end,
 		},
