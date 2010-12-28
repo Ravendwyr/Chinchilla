@@ -174,7 +174,7 @@ function Expander:GetOptions()
 			order = 3,
 			min = 0,
 			max = 1,
-			step = 1,
+			step = 0.01,
 			isPercent = true,
 			get = function() return self.db.profile.alpha end,
 			set = function(_, value)
