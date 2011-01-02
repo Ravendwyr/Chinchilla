@@ -102,13 +102,14 @@ function ShowHide:Update()
 
 		local value = self.db.profile[key]
 
-		if key == "boss" then
-			self:SetBoss(value)
-		elseif value == true then
+--		if key == "boss" then
+--			self:SetBoss(value)
+--		elseif value == true then
+		if value == true then
 			if framesShown[frame] then
 				self:SetFrameShown(key, frame)
 			end
-		else -- Minimap:IsMouseOver() isn't going to happen while the config is open
+		else -- Minimap:IsMouseOver() isn't going to return true while the config is open, so hide the buttons
 		 	if frame:IsShown() then
 				frame:Hide()
 				framesShown[frame] = true
@@ -203,15 +204,17 @@ end
 
 function ShowHide:SetBoss(value)
 	if value then
-		Boss1TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-		Boss2TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-		Boss3TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-		Boss4TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		Chinchilla_BossAnchor:Show()
+--		Boss1TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+--		Boss2TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+--		Boss3TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+--		Boss4TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 	else
-		Boss1TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-		Boss2TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-		Boss3TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-		Boss4TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		Chinchilla_BossAnchor:Hide()
+--		Boss1TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+--		Boss2TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+--		Boss3TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+--		Boss4TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 	end
 end
 
