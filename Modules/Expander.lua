@@ -26,18 +26,16 @@ local show = false
 
 function Expander:Refresh()
 	if show then
-		MinimapCluster:Hide()
-
 		if not cluster then
 			cluster = CreateFrame("Frame", nil, UIParent)
-			cluster:SetFrameStrata("BACKGROUND")
+			cluster:SetFrameStrata("LOW")
 			cluster:SetWidth(140 * self.db.profile.scale)
 			cluster:SetHeight(140 * self.db.profile.scale)
 			cluster:SetScale(1.2)
 			cluster:SetPoint("CENTER")
 
 			minimap = CreateFrame("Minimap", "Chinchilla_Expander_Minimap", cluster)
-			minimap:SetFrameStrata("TOOLTIP")
+			minimap:SetFrameStrata("BACKGROUND")
 			minimap:SetWidth(140 * self.db.profile.scale)
 			minimap:SetHeight(140 * self.db.profile.scale)
 			minimap:SetScale(1.2)
@@ -53,6 +51,9 @@ function Expander:Refresh()
 			cluster.GetScale = function() return 1 end
 		end
 
+		MinimapCluster:Hide()
+
+		cluster:Show()
 		minimap:Show()
 
 		local z = minimap:GetZoom()
@@ -65,7 +66,9 @@ function Expander:Refresh()
 		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(cluster) end
 		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(cluster) end
 	else
+		cluster:Hide()
 		minimap:Hide()
+
 		MinimapCluster:Show()
 
 		local z = Minimap:GetZoom()
