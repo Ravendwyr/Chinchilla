@@ -1,3 +1,10 @@
+Version 2.3.2
+- Fixed a typo which broke the Lock button in the Move Buttons module. Thanks to Mysteeq for reporting.
+- Fixed some odd behaviour in the Expander module caused by a copy/paste fail.
+- Fixed a bug which prevented Boss Frames from staying disabled.
+- Added an option that lets you choose between toggling the Expander minimap or the original "push-to-view" behaviour.
+- Added an opacity option to the Expander module.
+
 Version 2.3.1
 - Fixed an oversight causing every minimap button to show unnecessarily if set to always show. Oops.
 - Added a "None" border which removes any and all borders around the minimap. Thanks to Blazeflack for the idea.
@@ -6,10 +13,10 @@ Version 2.3.1
 Version 2.3
 - Added a feature that allows you to show minimap buttons when you hover your cursor over the minimap.
 - Added a feature that allows you to toggle the tracking menu on mouse-click.
-- Added an option that allows you to "unclamp" frames and drag them off the screen. Thanks goes to Kynn for the idea.
+- Added an option that allows you to "unclamp" frames and drag them off the screen. Thanks to Kynn for the idea.
 - Added several safety checks to the AutoZoom module to prevent 500+ timers being created if you or another addon repeatedly alter the minimap zoom very quickly.
 - Fixed a conflict with Titan Panel v5. Thanks to Bremp for figuring this one out.
-- Removed GatherMate 1 support from the Expander module in preference to the newer and more up-to-date GatherMate 2.
+- Removed support for GatherMate 1. Please upgrade to GatherMate 2 to retain HUD functionality.
 - You now toggle the Expander minimap instead of it only showing while you are pressing down your chosen button.
 - The LFD search status popup is now clamped to the screen.
 - The "who pinged?" chat notification is now throttled to once per 5 seconds if the same person spam-pings the minimap.
