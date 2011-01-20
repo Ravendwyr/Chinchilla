@@ -156,7 +156,7 @@ function Position:OnEnable()
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
 
-	if not (IsAddOnLoaded("Atramedes") or IsAddOnLoaded("CustomPlayerPowerBarAlt")) then
+	if not IsAddOnLoaded("CustomPlayerPowerBarAlt") then
 		self:SetFramePosition('poweralt')
 	end
 
@@ -201,7 +201,7 @@ function Position:OnDisable()
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
 
-	if not (IsAddOnLoaded("Atramedes") or IsAddOnLoaded("CustomPlayerPowerBarAlt")) then
+	if not IsAddOnLoaded("CustomPlayerPowerBarAlt") then
 		self:SetFramePosition('poweralt')
 	end
 
@@ -856,6 +856,7 @@ function Position:GetOptions()
 				},
 			},
 			disabled = InCombatLockdown,
+			hidden = function() return not not IsAddOnLoaded("CustomPlayerPowerBarAlt") end,
 		},
 		boss = {
 			name = L["Boss frames"],
