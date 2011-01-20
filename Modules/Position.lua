@@ -17,6 +17,9 @@ local numHookedCaptureFrames = 0
 function Position:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Position", {
 		profile = {
+			enabled = true,
+			minimapLock = false, clamped = true,
+
 			minimap = { "TOPRIGHT", 0, 0 },
 			durability = { "TOPRIGHT", -143, -221 },
 			questWatch = { "TOPRIGHT", 0, -175 },
@@ -25,8 +28,7 @@ function Position:OnInitialize()
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
 			ticketStatus = { "TOPRIGHT", -180, 0 },
 			boss = { "TOPRIGHT", 55, -236 },
-			minimapLock = false, clamped = true,
-			enabled = true,
+			poweralt = { "CENTER", 0, 0 },
 		}
 	})
 
@@ -362,6 +364,7 @@ local nameToFrame = {
 	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
 	ticketStatus = TicketStatusFrame,
+	poweralt = PlayerPowerBarAlt,
 }
 
 
@@ -455,6 +458,7 @@ local nameToNiceName = {
 	vehicleSeats = L["Vehicle seats"],
 	ticketStatus = L["Ticket status"],
 	boss = L["Boss frames"],
+	poweralt = L["Player power bar"],
 }
 
 function Position:ShowFrameMover(frame, value, force)
@@ -764,6 +768,50 @@ function Position:GetOptions()
 				movable = {
 					name = L["Movable"],
 					desc = L["Show a frame that is movable to show where you want the quest tracker to be"],
+					type = 'toggle',
+					order = 1,
+					get = movable_get,
+					set = movable_set,
+				},
+				x = {
+					name = L["Horizontal position"],
+					desc = L["Set the position on the x-axis for the quest tracker."],
+					type = 'range',
+					softMin = x_min,
+					softMax = x_max,
+					step = 1,
+					bigStep = 5,
+					get = x_get,
+					set = x_set,
+					order = 3,
+					disabled = isDisabled,
+				},
+				y = {
+					name = L["Vertical position"],
+					desc = L["Set the position on the y-axis for the quest tracker."],
+					type = 'range',
+					softMin = y_min,
+					softMax = y_max,
+					step = 1,
+					bigStep = 5,
+					-- stepBasis = 0,
+					get = y_get,
+					set = y_set,
+					order = 4,
+					disabled = isDisabled,
+				},
+			},
+			disabled = InCombatLockdown,
+		},
+		poweralt = {
+			name = L["Player power bar"],
+			desc = L["Position the circular status window which shows in certain raid encounters."],
+			type = 'group',
+			inline = true,
+			args = {
+				movable = {
+					name = L["Movable"],
+					desc = L["Show a frame that is movable to show where you want the power bar to be."],
 					type = 'toggle',
 					order = 1,
 					get = movable_get,
