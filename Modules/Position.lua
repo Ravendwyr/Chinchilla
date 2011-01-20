@@ -147,9 +147,11 @@ function Position:OnEnable()
 		_G["Boss"..i.."TargetFrame"].SetPoint = function() end
 	end
 
+	-- in alphabetical order, as they should be
 	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
+	self:SetFramePosition('poweralt')
 	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
@@ -187,9 +189,11 @@ function Position:OnDisable()
 	self:ShowFrameMover('vehicleSeats', false)
 	self:ShowFrameMover('worldState', false)
 
+	-- in alphabetical order, as they should be
 	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
+	self:SetFramePosition('poweralt')
 	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
