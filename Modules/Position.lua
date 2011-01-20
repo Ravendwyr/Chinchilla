@@ -641,6 +641,10 @@ function Position:GetOptions()
 		end
 	end
 
+	local function isDisabled(info, value)
+		return not movable_get(info)
+	end
+
 	local x_min = -math.floor(GetScreenWidth()/10 + 0.5)*5
 	local x_max = math.floor(GetScreenWidth()/10 + 0.5)*5
 	local y_min = -math.floor(GetScreenHeight()/10 + 0.5)*5
@@ -732,6 +736,7 @@ function Position:GetOptions()
 					get = x_get,
 					set = x_set,
 					order = 3,
+					disabled = isDisabled,
 				},
 				y = {
 					name = L["Vertical position"],
@@ -745,6 +750,7 @@ function Position:GetOptions()
 					get = y_get,
 					set = y_set,
 					order = 4,
+					disabled = isDisabled,
 				},
 			},
 			disabled = InCombatLockdown,
@@ -774,6 +780,7 @@ function Position:GetOptions()
 					get = x_get,
 					set = x_set,
 					order = 3,
+					disabled = isDisabled,
 				},
 				y = {
 					name = L["Vertical position"],
@@ -787,6 +794,7 @@ function Position:GetOptions()
 					get = y_get,
 					set = y_set,
 					order = 4,
+					disabled = isDisabled,
 				},
 			},
 			disabled = InCombatLockdown,
@@ -816,6 +824,7 @@ function Position:GetOptions()
 					get = x_get,
 					set = x_set,
 					order = 3,
+					disabled = isDisabled,
 				},
 				y = {
 					name = L["Vertical position"],
@@ -829,6 +838,7 @@ function Position:GetOptions()
 					get = y_get,
 					set = y_set,
 					order = 4,
+					disabled = isDisabled,
 				},
 			},
 			disabled = InCombatLockdown,
@@ -859,6 +869,7 @@ function Position:GetOptions()
 					get = x_get,
 					set = x_set,
 					order = 3,
+					disabled = isDisabled,
 				},
 				y = {
 					name = L["Vertical position"],
@@ -872,6 +883,7 @@ function Position:GetOptions()
 					get = y_get,
 					set = y_set,
 					order = 4,
+					disabled = isDisabled,
 				},
 			},
 			disabled = InCombatLockdown,
@@ -901,6 +913,7 @@ function Position:GetOptions()
 					get = x_get,
 					set = x_set,
 					order = 3,
+					disabled = isDisabled,
 				},
 				y = {
 					name = L["Vertical position"],
@@ -914,6 +927,7 @@ function Position:GetOptions()
 					get = y_get,
 					set = y_set,
 					order = 4,
+					disabled = isDisabled,
 				},
 			},
 			disabled = InCombatLockdown,
@@ -943,6 +957,7 @@ function Position:GetOptions()
 					get = x_get,
 					set = x_set,
 					order = 3,
+					disabled = isDisabled,
 				},
 				y = {
 					name = L["Vertical position"],
@@ -956,6 +971,7 @@ function Position:GetOptions()
 					get = y_get,
 					set = y_set,
 					order = 4,
+					disabled = isDisabled,
 				},
 			},
 			disabled = InCombatLockdown,
@@ -985,6 +1001,7 @@ function Position:GetOptions()
 					get = x_get,
 					set = x_set,
 					order = 3,
+					disabled = isDisabled,
 				},
 				y = {
 					name = L["Vertical position"],
@@ -998,6 +1015,7 @@ function Position:GetOptions()
 					get = y_get,
 					set = y_set,
 					order = 4,
+					disabled = isDisabled,
 				},
 			},
 			disabled = InCombatLockdown,
