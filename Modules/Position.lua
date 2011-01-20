@@ -1,5 +1,5 @@
 
-local Position = Chinchilla:NewModule("Position", "AceHook-3.0")
+local Position = Chinchilla:NewModule("Position", "AceEvent-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 Position.displayName = L["Position"]
@@ -131,6 +131,7 @@ local function Minimap_OnDragStop(this)
 	LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 end
 
+
 function Position:OnEnable()
 	self:SetMinimapPosition()
 
@@ -172,6 +173,7 @@ function Position:OnEnable()
 	self:SecureHook("WorldStateAlwaysUpFrame_Update")
 end
 
+
 function Position:OnDisable()
 	self:SetMinimapPosition()
 
@@ -197,6 +199,7 @@ function Position:OnDisable()
 
 	Minimap:SetClampedToScreen(false)
 end
+
 
 local quadrantToShape = {
 	"CORNER-TOPRIGHT",
@@ -347,6 +350,7 @@ function Position:WorldStateAlwaysUpFrame_Update(this)
 	end
 end
 
+local movers = {}
 local nameToFrame = {
 	minimap = MinimapCluster,
 	boss = Chinchilla_BossAnchor,
@@ -358,8 +362,32 @@ local nameToFrame = {
 }
 
 
-local movers = {}
+local inCombat = InCombatLockdown()
+function Position:PLAYER_REGEN_DISABLED()
+	inCombat = true
+
+	for _, mover in pairs(movers) do
+		if mover then
+			mover.restoreAfterCombat = true
+			mover:Hide()
+		end
+	end
+end
+function Position:PLAYER_REGEN_ENABLED()
+	inCombat = false
+
+	for _, mover in pairs(movers) do
+		if mover and mover.restoreAfterCombat then
+			mover.restoreAfterCombat = false
+			mover:Show()
+		end
+	end
+end
+
+
 function Position:SetFramePosition(frame, point, x, y)
+	if inCombat then return end
+
 	if point then
 		self.db.profile[frame][1] = point
 	else
@@ -634,10 +662,10 @@ function Position:GetOptions()
 					desc = L["Allow the minimap to be movable so you can drag it where you want"],
 					type = 'toggle',
 					order = 1,
-					get = function(info)
+					get = function()
 						return not self:IsLocked()
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						self:SetLocked(not value)
 					end,
 				},
@@ -652,6 +680,9 @@ function Position:GetOptions()
 					get = x_get,
 					set = x_set,
 					order = 3,
+					disabled = function()
+						return self:IsLocked()
+					end,
 				},
 				y = {
 					name = L["Vertical position"],
@@ -665,8 +696,12 @@ function Position:GetOptions()
 					get = y_get,
 					set = y_set,
 					order = 4,
+					disabled = function()
+						return self:IsLocked()
+					end,
 				},
 			},
+			disabled = InCombatLockdown,
 		},
 		durability = {
 			name = L["Durability"],
@@ -708,6 +743,7 @@ function Position:GetOptions()
 					order = 4,
 				},
 			},
+			disabled = InCombatLockdown,
 		},
 		questWatch = {
 			name = L["Quest and achievement tracker"],
@@ -749,6 +785,7 @@ function Position:GetOptions()
 					order = 4,
 				},
 			},
+			disabled = InCombatLockdown,
 		},
 		boss = {
 			name = L["Boss frames"],
@@ -790,6 +827,7 @@ function Position:GetOptions()
 					order = 4,
 				},
 			},
+			disabled = InCombatLockdown,
 --			disabled = function() return not self:IsEnabled() or not Chinchilla_BossAnchor:IsShown() end,
 		},
 		vehicleSeats = {
@@ -832,6 +870,7 @@ function Position:GetOptions()
 					order = 4,
 				},
 			},
+			disabled = InCombatLockdown,
 		},
 		ticketStatus = {
 			name = L["Ticket status"],
@@ -873,6 +912,7 @@ function Position:GetOptions()
 					order = 4,
 				},
 			},
+			disabled = InCombatLockdown,
 		},
 		worldState = {
 			name = L["World state"],
@@ -914,6 +954,7 @@ function Position:GetOptions()
 					order = 4,
 				},
 			},
+			disabled = InCombatLockdown,
 		},
 		capture = {
 			name = L["Capture bar"],
@@ -955,6 +996,7 @@ function Position:GetOptions()
 					order = 4,
 				},
 			},
+			disabled = InCombatLockdown,
 		},
 	}
 end
