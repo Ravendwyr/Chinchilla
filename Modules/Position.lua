@@ -151,11 +151,14 @@ function Position:OnEnable()
 	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
-	self:SetFramePosition('poweralt')
 	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
+
+	if not (IsAddOnLoaded("Atramedes") or IsAddOnLoaded("CustomPlayerPowerBarAlt")) then
+		self:SetFramePosition('poweralt')
+	end
 
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
@@ -193,11 +196,14 @@ function Position:OnDisable()
 	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
-	self:SetFramePosition('poweralt')
 	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
+
+	if not (IsAddOnLoaded("Atramedes") or IsAddOnLoaded("CustomPlayerPowerBarAlt")) then
+		self:SetFramePosition('poweralt')
+	end
 
 	WorldStateAlwaysUpFrame:SetWidth(10)
 	WorldStateAlwaysUpFrame:SetHeight(10)
