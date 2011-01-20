@@ -133,6 +133,9 @@ end
 
 
 function Position:OnEnable()
+	self:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self:RegisterEvent("PLAYER_REGEN_DISABLED")
+
 	self:SetMinimapPosition()
 
 	for i=1, 4, 1 do
@@ -367,7 +370,7 @@ function Position:PLAYER_REGEN_DISABLED()
 	inCombat = true
 
 	for _, mover in pairs(movers) do
-		if mover then
+		if mover and mover:IsShown() then
 			mover.restoreAfterCombat = true
 			mover:Hide()
 		end
@@ -469,6 +472,7 @@ function Position:ShowFrameMover(frame, value, force)
 		mover = CreateFrame("Frame", "Chinchilla_Position_" .. frame .. "_Mover", UIParent)
 		movers[frame] = mover
 		mover.name = frame
+		mover.restoreAfterCombat = false
 
 		if frame ~= 'capture' then
 			mover:SetFrameStrata(nameToFrame[frame]:GetFrameStrata())
