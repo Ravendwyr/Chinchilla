@@ -511,6 +511,9 @@ function Position:ShowFrameMover(frame, value, force)
 		if frame == 'capture' then
 			mover:SetWidth(173)
 			mover:SetHeight(26)
+		elseif frame == 'poweralt' then
+			mover:SetWidth(100)
+			mover:SetHeight(100)
 		else
 			mover:SetWidth(nameToFrame[frame]:GetWidth())
 			mover:SetHeight(nameToFrame[frame]:GetHeight())
