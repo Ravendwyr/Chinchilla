@@ -328,7 +328,6 @@ function Position:DurabilityFrame_SetPoint(this)
 end
 
 function Position:WatchFrame_SetPoint(this)
-	Swatter.OnError("SetPoint")
 	if shouldntSetPoint then return end
 	self:SetFramePosition('questWatch')
 end
@@ -446,8 +445,6 @@ local function mover_OnDragStart(this)
 end
 
 local function mover_OnDragStop(this)
-	print("OnDragStop")
-
 	this:StopMovingOrSizing()
 
 	local point, x, y = getPointXY(this)
