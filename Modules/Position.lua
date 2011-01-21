@@ -379,10 +379,7 @@ local nameToFrame = {
 }
 
 
-local inCombat = InCombatLockdown()
 function Position:PLAYER_REGEN_DISABLED()
-	inCombat = true
-
 	for _, mover in pairs(movers) do
 		if mover and mover:IsShown() then
 			mover.restoreAfterCombat = true
@@ -391,8 +388,6 @@ function Position:PLAYER_REGEN_DISABLED()
 	end
 end
 function Position:PLAYER_REGEN_ENABLED()
-	inCombat = false
-
 	for _, mover in pairs(movers) do
 		if mover and mover.restoreAfterCombat then
 			mover.restoreAfterCombat = false
