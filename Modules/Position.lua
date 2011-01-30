@@ -6,10 +6,14 @@ Position.displayName = L["Position"]
 Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 
--- special hack for boss unitframes
+-- special hacks for troublesome frames
 Chinchilla_BossAnchor = CreateFrame("Frame")
 Chinchilla_BossAnchor:SetWidth(200)
 Chinchilla_BossAnchor:SetHeight(350)
+
+Chinchilla_PowerAnchor = CreateFrame("Frame")
+Chinchilla_PowerAnchor:SetWidth(100)
+Chinchilla_PowerAnchor:SetHeight(100)
 
 
 local numHookedCaptureFrames = 0
@@ -28,7 +32,7 @@ function Position:OnInitialize()
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
 			ticketStatus = { "TOPRIGHT", -180, 0 },
 			boss = { "TOPRIGHT", 55, -236 },
-			poweralt = { "CENTER", 0, 0 },
+			poweralt = { "CENTER", 0, -225 },
 		}
 	})
 
@@ -157,6 +161,10 @@ function Position:OnEnable()
 	self:SetFramePosition('worldState')
 
 	if not IsAddOnLoaded("CustomPlayerPowerBarAlt") then
+		PlayerPowerBarAlt:ClearAllPoints()
+		PlayerPowerBarAlt:SetParent(Chinchilla_PowerAnchor)
+		PlayerPowerBarAlt:SetPoint("CENTER", Chinchilla_PowerAnchor, "CENTER")
+
 		self:SetFramePosition('poweralt')
 	end
 
@@ -374,7 +382,7 @@ local nameToFrame = {
 	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
 	ticketStatus = TicketStatusFrame,
-	poweralt = PlayerPowerBarAlt,
+	poweralt = Chinchilla_PowerAnchor,
 }
 
 
@@ -511,9 +519,6 @@ function Position:ShowFrameMover(frame, value, force)
 		if frame == 'capture' then
 			mover:SetWidth(173)
 			mover:SetHeight(26)
-		elseif frame == 'poweralt' then
-			mover:SetWidth(100)
-			mover:SetHeight(100)
 		else
 			mover:SetWidth(nameToFrame[frame]:GetWidth())
 			mover:SetHeight(nameToFrame[frame]:GetHeight())
