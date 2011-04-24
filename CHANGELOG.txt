@@ -1,4 +1,5 @@
 Version 2.3.2
+- Updates for WoW 4.1.0.
 - Fixed a typo which broke the Lock button in the Move Buttons module. Thanks to Mysteeq for reporting.
 - Fixed some odd behaviour in the Expander module caused by a copy/paste fail.
 - Fixed a bug which prevented Boss Frames from staying disabled.
