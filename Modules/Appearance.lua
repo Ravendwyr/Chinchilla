@@ -57,6 +57,7 @@ function Appearance:AddBorderStyle(english, localized, round, square)
 end
 
 Chinchilla.AddBorderStyle = Appearance.AddBorderStyle
+Appearance:AddBorderStyle("None",	L["None"],	"", "")
 Appearance:AddBorderStyle("Blizzard",   L["Blizzard"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Blizzard-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Blizzard-Square")
 Appearance:AddBorderStyle("Thin",       L["Thin"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Thin-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Thin-Square")
 Appearance:AddBorderStyle("Alliance",   L["Alliance"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Alliance-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Alliance-Square")
@@ -64,7 +65,6 @@ Appearance:AddBorderStyle("Tooltip",    L["Tooltip"],	"Interface\\AddOns\\Chinch
 Appearance:AddBorderStyle("Tubular",    L["Tubular"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Tubular-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Tubular-Square")
 Appearance:AddBorderStyle("Flat",       L["Flat"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Flat-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Flat-Square")
 Appearance:AddBorderStyle("Chinchilla",   "Chinchilla",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Square")
-Appearance:AddBorderStyle("None",	L["None"],	"", "")
 
 local RotateBorder_frame = CreateFrame("Frame")
 RotateBorder_frame:Hide()
@@ -74,14 +74,18 @@ end)
 
 local cornerTextures = {}
 local fullTexture
+
+local inCombat = InCombatLockdown()
 function Appearance:OnEnable()
 	self:SetScale()
-	self:SetAlpha()
 	self:SetFrameStrata()
 	self:SetFrameLevel()
 	self:SetShape()
 	self:SetBorderColor()
 	self:SetButtonBorderAlpha()
+
+	if inCombat then self:SetCombatAlpha()
+	else self:SetAlpha() end
 
 	MinimapBorder:Hide()
 
@@ -103,7 +107,6 @@ end
 
 function Appearance:OnDisable()
 	self:SetScale()
-	self:SetAlpha()
 	self:SetFrameStrata()
 	self:SetFrameLevel()
 	self:SetShape()
@@ -111,6 +114,7 @@ function Appearance:OnDisable()
 	self:SetButtonBorderAlpha()
 
 	MinimapBorder:Show()
+	MinimapCluster:SetAlpha(1)
 	Minimap:SetMaskTexture([[Textures\MinimapMask]])
 
 	if fullTexture then
@@ -137,10 +141,11 @@ function Appearance:MINIMAP_UPDATE_ZOOM()
 	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
 	Minimap:SetZoom(zoom, true)
 
-	self:SetAlpha()
+	if InCombatLockdown() then self:SetCombatAlpha()
+	else self:SetAlpha() end
 end
 
-local inCombat = InCombatLockdown()
+
 function Appearance:PLAYER_REGEN_ENABLED()
 	inCombat = false
 	self:SetAlpha()
@@ -186,7 +191,7 @@ do
 		wipe(tmp)
 
 		if found then
-			self:SetButtonBorderAlpha(nil)
+			self:SetButtonBorderAlpha()
 		end
 	end
 end
@@ -212,7 +217,7 @@ function Appearance:OnRotateMinimapUpdate(value)
 		end
 	end
 
-	self:SetShape(nil)
+	self:SetShape()
 	Minimap:SetFrameLevel(MinimapCluster:GetFrameLevel()+1)
 end
 
@@ -241,9 +246,9 @@ function Appearance:SetScale(value)
 
 	MinimapCluster:SetScale(value)
 
---	local zoom = Minimap:GetZoom()
---	Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
---	Minimap:SetZoom(zoom)
+	local zoom = Minimap:GetZoom()
+	Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1, true)
+	Minimap:SetZoom(zoom, true)
 end
 
 function Appearance:SetBlipScale(value)
@@ -257,18 +262,9 @@ function Appearance:SetAlpha(value)
 	if value then self.db.profile.alpha = value
 	else value = self.db.profile.alpha end
 
-	if not self:IsEnabled() then value = 1 end
+	if not self:IsEnabled() or indoors then value = 1 end
 
-	if value == 0 then
-		MinimapCluster:Hide()
-		return
-	else
-		MinimapCluster:Show()
-	end
-
-	if indoors then value = 1 end
-
-	if inCombat then self:SetCombatAlpha()
+	if inCombat then self:SetCombatAlpha() print("SetAlpha --> SetCombatAlpha")
 	else MinimapCluster:SetAlpha(value) end
 end
 
@@ -277,16 +273,7 @@ function Appearance:SetCombatAlpha(value)
 	else value = self.db.profile.combatAlpha end
 
 	if not inCombat then return end
-	if not self:IsEnabled() then value = 1 end
-
-	if value == 0 then
-		MinimapCluster:Hide()
-		return
-	else
-		MinimapCluster:Show()
-	end
-
-	if indoors then value = 1 end
+	if not self:IsEnabled() or indoors then value = 1 end
 
 	MinimapCluster:SetAlpha(value)
 end
