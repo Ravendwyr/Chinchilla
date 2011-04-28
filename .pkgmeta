@@ -1,8 +1,7 @@
+
 package-as: Chinchilla
 
 license-output: LICENSE.txt
-
-manual-changelog: CHANGELOG.txt
 
 externals:
   Libs/LibStub: svn://svn.wowace.com/wow/libstub/mainline/trunk
