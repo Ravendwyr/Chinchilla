@@ -21,7 +21,7 @@ function Expander:OnInitialize()
 end
 
 
-local cluster, minimap, button
+local cluster, minimap, button, overlay
 local show = false
 
 function Expander:Refresh()
@@ -65,6 +65,7 @@ function Expander:Refresh()
 
 		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(cluster) end
 		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(cluster) end
+		if overlay and overlay.SetMinimapFrame then overlay:SetMinimapFrame(cluster) end
 	else
 		cluster:Hide()
 		minimap:Hide()
@@ -80,6 +81,7 @@ function Expander:Refresh()
 
 		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(Minimap) end
 		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(Minimap) end
+		if overlay and overlay.SetMinimapFrame then overlay:SetMinimapFrame(Minimap) end
 	end
 end
 
@@ -112,6 +114,10 @@ function Expander:OnEnable()
 			SetBindingClick(self.db.profile.key, "Chinchilla_Expander_Button")
 			this:Hide()
 		end)
+	end
+
+	if _NPCScan and not overlay then
+		overlay = _NPCScan.Overlay.Modules.List["Minimap"]
 	end
 end
 
