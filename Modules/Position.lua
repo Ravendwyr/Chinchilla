@@ -160,7 +160,7 @@ function Position:OnEnable()
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
 
-	if not IsAddOnLoaded("CustomPlayerPowerBarAlt") then
+	if not IsAddOnLoaded("CustomPlayerPowerBarAlt") and not IsAddOnLoaded("BetterPowerBarAlt") then
 		PlayerPowerBarAlt:ClearAllPoints()
 		PlayerPowerBarAlt:SetParent(Chinchilla_PowerAnchor)
 		PlayerPowerBarAlt:SetPoint("CENTER", Chinchilla_PowerAnchor, "CENTER")
@@ -209,7 +209,7 @@ function Position:OnDisable()
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
 
-	if not IsAddOnLoaded("CustomPlayerPowerBarAlt") then
+	if not IsAddOnLoaded("CustomPlayerPowerBarAlt") and not IsAddOnLoaded("BetterPowerBarAlt") then
 		self:SetFramePosition('poweralt')
 	end
 
