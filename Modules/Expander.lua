@@ -66,6 +66,7 @@ function Expander:Refresh()
 		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(cluster) end
 		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(cluster) end
 		if overlay and overlay.SetMinimapFrame then overlay:SetMinimapFrame(cluster) end
+		if TomTom and TomTom.ReparentMinimap then TomTom:ReparentMinimap(cluster) end
 	else
 		cluster:Hide()
 		minimap:Hide()
@@ -82,6 +83,7 @@ function Expander:Refresh()
 		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(Minimap) end
 		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(Minimap) end
 		if overlay and overlay.SetMinimapFrame then overlay:SetMinimapFrame(Minimap) end
+		if TomTom and TomTom.ReparentMinimap then TomTom:ReparentMinimap(Minimap) end
 	end
 end
 
