@@ -11,10 +11,6 @@ Chinchilla_BossAnchor = CreateFrame("Frame")
 Chinchilla_BossAnchor:SetWidth(200)
 Chinchilla_BossAnchor:SetHeight(350)
 
-Chinchilla_PowerAnchor = CreateFrame("Frame")
-Chinchilla_PowerAnchor:SetWidth(100)
-Chinchilla_PowerAnchor:SetHeight(100)
-
 
 local numHookedCaptureFrames = 0
 
@@ -32,7 +28,6 @@ function Position:OnInitialize()
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
 			ticketStatus = { "TOPRIGHT", -180, 0 },
 			boss = { "TOPRIGHT", 55, -236 },
-			poweralt = { "CENTER", 0, -225 },
 		}
 	})
 
@@ -160,14 +155,6 @@ function Position:OnEnable()
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
 
-	if not IsAddOnLoaded("CustomPlayerPowerBarAlt") and not IsAddOnLoaded("BetterPowerBarAlt") then
-		PlayerPowerBarAlt:ClearAllPoints()
-		PlayerPowerBarAlt:SetParent(Chinchilla_PowerAnchor)
-		PlayerPowerBarAlt:SetPoint("CENTER", Chinchilla_PowerAnchor, "CENTER")
-
-		self:SetFramePosition('poweralt')
-	end
-
 	WorldStateAlwaysUpFrame:SetWidth(200)
 	WorldStateAlwaysUpFrame:SetHeight(60)
 	WorldStateAlwaysUpFrame:EnableMouse(false)
@@ -208,10 +195,6 @@ function Position:OnDisable()
 	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
-
-	if not IsAddOnLoaded("CustomPlayerPowerBarAlt") and not IsAddOnLoaded("BetterPowerBarAlt") then
-		self:SetFramePosition('poweralt')
-	end
 
 	WorldStateAlwaysUpFrame:SetWidth(10)
 	WorldStateAlwaysUpFrame:SetHeight(10)
@@ -382,7 +365,6 @@ local nameToFrame = {
 	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
 	ticketStatus = TicketStatusFrame,
-	poweralt = Chinchilla_PowerAnchor,
 }
 
 
@@ -469,7 +451,6 @@ local nameToNiceName = {
 	vehicleSeats = L["Vehicle seats"],
 	ticketStatus = L["Ticket status"],
 	boss = L["Boss frames"],
-	poweralt = L["Player power bar"],
 }
 
 function Position:ShowFrameMover(frame, value, force)
@@ -813,51 +794,6 @@ function Position:GetOptions()
 				},
 			},
 			disabled = InCombatLockdown,
-		},
-		poweralt = {
-			name = L["Player power bar"],
-			desc = L["Position the circular status window which shows in certain raid encounters."],
-			type = 'group',
-			inline = true,
-			args = {
-				movable = {
-					name = L["Movable"],
-					desc = L["Show a frame that is movable to show where you want the power bar to be."],
-					type = 'toggle',
-					order = 1,
-					get = movable_get,
-					set = movable_set,
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the quest tracker."],
-					type = 'range',
-					softMin = x_min,
-					softMax = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					order = 3,
-					disabled = isDisabled,
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the quest tracker."],
-					type = 'range',
-					softMin = y_min,
-					softMax = y_max,
-					step = 1,
-					bigStep = 5,
-					-- stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					order = 4,
-					disabled = isDisabled,
-				},
-			},
-			disabled = InCombatLockdown,
-			hidden = function() return not not IsAddOnLoaded("CustomPlayerPowerBarAlt") end,
 		},
 		boss = {
 			name = L["Boss frames"],
