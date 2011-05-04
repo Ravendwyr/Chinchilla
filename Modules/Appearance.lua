@@ -264,7 +264,7 @@ function Appearance:SetAlpha(value)
 
 	if not self:IsEnabled() or indoors then value = 1 end
 
-	if inCombat then self:SetCombatAlpha() print("SetAlpha --> SetCombatAlpha")
+	if inCombat then self:SetCombatAlpha()
 	else MinimapCluster:SetAlpha(value) end
 end
 
