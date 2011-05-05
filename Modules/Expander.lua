@@ -118,7 +118,7 @@ function Expander:OnEnable()
 		end)
 	end
 
-	if _NPCScan and not overlay then
+	if _NPCScan and _NPCScan.Overlay and not overlay then
 		overlay = _NPCScan.Overlay.Modules.List["Minimap"]
 	end
 end
