@@ -102,10 +102,9 @@ function ShowHide:Update()
 
 		local value = self.db.profile[key]
 
---		if key == "boss" then
---			self:SetBoss(value)
---		elseif value == true then
-		if value == true then
+		if key == "boss" then
+			self:SetBoss(value)
+		elseif value == true then
 			if framesShown[frame] then
 				self:SetFrameShown(key, frame)
 			end
