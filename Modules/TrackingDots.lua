@@ -23,12 +23,13 @@ end
 
 Chinchilla.AddTrackingDotStyle = TrackingDots.AddTrackingDotStyle
 
-TrackingDots:AddTrackingDotStyle("Blizzard",     L["Blizzard"],      [[Interface\MiniMap\ObjectIcons]])
-TrackingDots:AddTrackingDotStyle("Nandini",        "Nandini",        [[Interface\AddOns\Chinchilla\Art\Blip-Nandini]])
-TrackingDots:AddTrackingDotStyle("NandiniNew",     "Nandini New",    [[Interface\AddOns\Chinchilla\Art\Blip-Nandini-New]])
-TrackingDots:AddTrackingDotStyle("BlizzardBig",  L["Big Blizzard"],  [[Interface\AddOns\Chinchilla\Art\Blip-BlizzardBig]])
-TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"], [[Interface\AddOns\Chinchilla\Art\Blip-GlassSpheres]])
-TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"], [[Interface\AddOns\Chinchilla\Art\Blip-SolidSpheres]])
+TrackingDots:AddTrackingDotStyle("Blizzard",     L["Blizzard"],			[[Interface\MiniMap\ObjectIcons]])
+TrackingDots:AddTrackingDotStyle("Nandini",        "Nandini",			[[Interface\AddOns\Chinchilla\Art\Blip-Nandini]])
+TrackingDots:AddTrackingDotStyle("NandiniNew",     "Nandini New",		[[Interface\AddOns\Chinchilla\Art\Blip-Nandini-New]])
+TrackingDots:AddTrackingDotStyle("BlizzardBig",  L["Big Blizzard"],		[[Interface\AddOns\Chinchilla\Art\Blip-BlizzardBig]])
+TrackingDots:AddTrackingDotStyle("BlizzardBigR",   "Blizzard, Big Resources",	[[Interface\AddOns\Chinchilla\Art\Blip-BlizzardBigR]])
+TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"],		[[Interface\AddOns\Chinchilla\Art\Blip-GlassSpheres]])
+TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"],		[[Interface\AddOns\Chinchilla\Art\Blip-SolidSpheres]])
 
 
 function TrackingDots:OnInitialize()
