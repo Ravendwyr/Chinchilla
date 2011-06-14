@@ -1,12 +1,13 @@
 
-local TrackingDots = Chinchilla:NewModule("TrackingDots")
+local TrackingDots = Chinchilla:NewModule("TrackingDots", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 TrackingDots.displayName = L["Tracking dots"]
 TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
 
-
+local blipFile = ""
 local trackingDotStyles = {}
+
 function TrackingDots:AddTrackingDotStyle(english, localized, texture)
 	if type(english) ~= "string" then
 		error(("Bad argument #2 to `AddTrackingDotStyle'. Expected %q, got %q"):format("string", type(english)), 2)
@@ -35,7 +36,7 @@ TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"],		[[Interfac
 function TrackingDots:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("TrackingDots", {
 		profile = {
-			trackingDotStyle = "Blizzard",
+			trackingDotStyle = "Blizzard", blink = true,
 			enabled = true,
 		},
 	})
@@ -47,10 +48,12 @@ end
 
 function TrackingDots:OnEnable()
 	self:SetBlipTexture()
+	self:SetBlinking()
 end
 
 function TrackingDots:OnDisable()
 	self:SetBlipTexture()
+	self:SetBlinking()
 end
 
 
@@ -68,13 +71,40 @@ function TrackingDots:SetBlipTexture(name)
 		self.db.profile.trackingDotStyle = name
 	end
 
-	local texture = getBlipTexture(name)
+	blipFile = getBlipTexture(name)
 
 	if not self:IsEnabled() then
-		texture = [[Interface\MiniMap\ObjectIcons]]
+		blipFile = [[Interface\MiniMap\ObjectIcons]]
 	end
 
-	Minimap:SetBlipTexture(texture)
+	Minimap:SetBlipTexture(blipFile)
+end
+
+
+local show = true
+function TrackingDots:Blink()
+	if show then
+		Minimap:SetBlipTexture(blipFile)
+	else
+		Minimap:SetBlipTexture([[Interface\AddOns\Chinchilla\Art\Blip-Blank]])
+	end
+
+	show = not show
+end
+
+function TrackingDots:SetBlinking(_, value)
+	self.db.profile.blink = value
+
+	if not self:IsEnabled() then
+		value = false
+	end
+
+	if value then
+		self:ScheduleRepeatingTimer("Blink", 0.5)
+	else
+		Minimap:SetBlipTexture(blipFile)
+		self:CancelAllTimers()
+	end
 end
 
 
@@ -238,6 +268,15 @@ function TrackingDots:GetOptions()
 			values = previewValues,
 			order = 3,
 			dialogControl = "Chinchilla_TrackingDots_Select",
+		},
+		blink = {
+			name = "Blinking Blips",
+			desc = "Make the minimap blips flash to make them more noticable.",
+			type = 'toggle',
+			get = function(info)
+				return self.db.profile.blink
+			end,
+			set = "SetBlinking",
 		},
 	}
 end
