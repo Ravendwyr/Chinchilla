@@ -100,6 +100,7 @@ function TrackingDots:GetOptions()
 
 		L["New flight path"],
 	}
+
 	do
 		local texCoords = {
 			{ 0, 0.125, 0, 0.25 },    -- party
@@ -138,13 +139,14 @@ function TrackingDots:GetOptions()
 
 			local function Constructor()
 				local self = AceGUI:Create("Dropdown-Item-Toggle")
+				self.useHighlight = false
 				self.type = widgetType
 				self.SetText = SetText
 
 				local texture = self.frame:CreateTexture(nil, "BACKGROUND")
-				texture:SetTexture(0,0,0,0)
-				texture:SetPoint("BOTTOMRIGHT", self.frame,"TOPLEFT",22,-17)
-				texture:SetPoint("TOPLEFT", self.frame,"TOPLEFT",6,-1)
+				texture:SetTexture(0, 0, 0, 0)
+				texture:SetPoint("BOTTOMRIGHT", self.frame, "TOPLEFT", 22, -17)
+				texture:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 6, -1)
 				self.texture = texture
 
 				return self
@@ -198,7 +200,7 @@ function TrackingDots:GetOptions()
 				local right = _G[self.dropdown:GetName() .. "Right"]
 
 				local texture = self.dropdown:CreateTexture(nil, "ARTWORK")
-				texture:SetPoint("BOTTOMRIGHT", right, "BOTTOMRIGHT" ,-39, 26)
+				texture:SetPoint("BOTTOMRIGHT", right, "BOTTOMRIGHT", -39, 26)
 				texture:SetPoint("TOPLEFT", left, "TOPLEFT", 24, -24)
 				self.texture = texture
 
@@ -208,7 +210,6 @@ function TrackingDots:GetOptions()
 			AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
 		end
 	end
-
 
 	return {
 		style = {
@@ -235,8 +236,6 @@ function TrackingDots:GetOptions()
 			desc = L["See how the tracking dots will look"],
 			type = 'select',
 			values = previewValues,
-			get = function(info) end,
-			set = function(info, value) end,
 			order = 3,
 			dialogControl = "Chinchilla_TrackingDots_Select",
 		},
