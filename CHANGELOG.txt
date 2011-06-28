@@ -1,3 +1,11 @@
+Version 2.3.3
+- Updated for WoW 4.2.0.
+- Removed movement support for PlayerPowerBarAlt as it proved too problematic to maintain. Download the "BetterPowerBarAlt" addon instead.
+- Removed some leftover debug in the Appearance module.
+- Added support for TomTom and _NPCScan.Overlay to the Expander module.
+- Added support for blinking minimap node icons.
+- Fixed boss frames not obeying their show/hide setting.
+
 Version 2.3.2
 - Updated for WoW 4.1.0.
 - Fixed a typo which broke the Lock button in the Move Buttons module. Thanks to Mysteeq for reporting.
