@@ -270,8 +270,8 @@ function TrackingDots:GetOptions()
 			dialogControl = "Chinchilla_TrackingDots_Select",
 		},
 		blink = {
-			name = "Blinking Blips",
-			desc = "Make the minimap blips flash to make them more noticable.",
+			name = L["Blinking Blips"],
+			desc = L["Make the minimap blips flash to make them more noticable."],
 			type = 'toggle',
 			get = function(info)
 				return self.db.profile.blink
