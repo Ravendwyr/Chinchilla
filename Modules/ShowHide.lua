@@ -196,6 +196,12 @@ function ShowHide:SetFrameShown(key, frame)
 		if PVPFrame.numQueues > 0 or MiniMapBattlefieldFrame.inWorldPVPArea then frame:Show() end
 	elseif key == "difficulty" and self.db.profile[key] then
 		MiniMapInstanceDifficulty_Update()
+	elseif key == "record" then
+		if MovieRecording_IsRecording() and GetCVar("MovieRecordingIcon") == "1" then
+			frame:Show()
+		else
+			frame:Hide()
+		end
 	else
 		frame:Show()
 	end
