@@ -13,7 +13,7 @@
 ## X-Website: http://www.wowace.com/addons/chinchilla
 ## X-Category: Map
 ## SavedVariables: Chinchilla2DB
-## OptionalDeps: !Swatter, !BugGrabber, Ace3, Blizzard_TimeManager, TitanClock
+## OptionalDeps: !Swatter, !BugGrabber, Ace3, Blizzard_Calendar, Blizzard_TimeManager, TitanClock
 ## X-WoWIPortal: ckknight
 
 #@no-lib-strip@
