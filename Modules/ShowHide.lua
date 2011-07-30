@@ -105,9 +105,9 @@ function ShowHide:Update()
 		if key == "boss" then
 			self:SetBoss(value)
 		elseif value == true then
-			if framesShown[frame] then
+--			if framesShown[frame] then
 				self:SetFrameShown(key, frame)
-			end
+--			end
 		else -- Minimap:IsMouseOver() isn't going to return true when settings are being changed, so just hide the buttons
 		 	if frame:IsShown() then
 				frame:Hide()
