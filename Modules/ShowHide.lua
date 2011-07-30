@@ -24,7 +24,6 @@ function ShowHide:OnInitialize()
 			track = true,
 			voice = true,
 			zoom = true,
-			record = true,
 			clock = true,
 			vehicleSeats = true,
 		},
@@ -197,7 +196,7 @@ function ShowHide:SetFrameShown(key, frame)
 	elseif key == "difficulty" and self.db.profile[key] then
 		MiniMapInstanceDifficulty_Update()
 	elseif key == "record" then
-		if MovieRecording_IsRecording() and GetCVar("MovieRecordingIcon") == "1" then
+		if GetCVar("MovieRecordingIcon") == "1" and MovieRecording_IsRecording() then
 			frame:Show()
 		else
 			frame:Hide()
@@ -231,7 +230,7 @@ function ShowHide:OnEnter()
 	local realKey
 
 	for key, frame in pairs(frames) do
-		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not tristate. yet.
+		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not tristate.
 		if key == "zoomIn" or key == "zoomOut" then
 			realKey = "zoom"
 		else
@@ -466,9 +465,12 @@ function ShowHide:GetOptions()
 			name = L["Recording"],
 			desc = L["Show the recording button"],
 			type = 'toggle',
-			tristate = true,
 			order = 19,
-			get = get, set = set,
+			get = function() return GetCVar("MovieRecordingIcon") == "1" and true or false end,
+			set = function(_, value)
+				if value then SetCVar("MovieRecordingIcon", "1")
+				else SetCVar("MovieRecordingIcon", "0") end
+			end,
 		} or nil,
 	}
 end
