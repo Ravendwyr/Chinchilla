@@ -101,9 +101,7 @@ function ShowHide:Update()
 
 		local value = self.db.profile[key]
 
-		if key == "boss" then
-			self:SetBoss(value)
-		elseif value == true then
+		if value == true then
 --			if framesShown[frame] then
 				self:SetFrameShown(key, frame)
 --			end
@@ -206,22 +204,6 @@ function ShowHide:SetFrameShown(key, frame)
 	end
 end
 
-function ShowHide:SetBoss(value)
-	if value then
-		Chinchilla_BossAnchor:Show()
---		Boss1TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
---		Boss2TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
---		Boss3TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
---		Boss4TargetFrame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-	else
-		Chinchilla_BossAnchor:Hide()
---		Boss1TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
---		Boss2TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
---		Boss3TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
---		Boss4TargetFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-	end
-end
-
 
 local timerID = nil
 function ShowHide:OnEnter()
@@ -230,7 +212,7 @@ function ShowHide:OnEnter()
 	local realKey
 
 	for key, frame in pairs(frames) do
-		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not tristate.
+		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not tristate
 		if key == "zoomIn" or key == "zoomOut" then
 			realKey = "zoom"
 		else
