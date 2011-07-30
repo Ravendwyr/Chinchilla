@@ -11,10 +11,12 @@
 ## Notes-zhTW: 很龍貓的小地圖插件。*嚼嚼嚼*這龍貓嚼了你的乾草球～
 ## Author: Ethan Centaurai, ckknight
 ## X-Website: http://www.wowace.com/addons/chinchilla
+## X-WoWIPortal: ckknight
 ## X-Category: Map
+## X-Icon: Interface\AddOns\Chinchilla\Art\icon
 ## SavedVariables: Chinchilla2DB
 ## OptionalDeps: !Swatter, !BugGrabber, Ace3, Blizzard_Calendar, Blizzard_TimeManager, TitanClock
-## X-WoWIPortal: ckknight
+
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
