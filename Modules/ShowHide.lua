@@ -108,7 +108,7 @@ function ShowHide:Update()
 			if framesShown[frame] then
 				self:SetFrameShown(key, frame)
 			end
-		else -- Minimap:IsMouseOver() isn't going to return true while the config is open, so hide the buttons
+		else -- Minimap:IsMouseOver() isn't going to return true when settings are being changed, so just hide the buttons
 		 	if frame:IsShown() then
 				frame:Hide()
 				framesShown[frame] = true
