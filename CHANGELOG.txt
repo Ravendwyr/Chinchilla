@@ -1,3 +1,6 @@
+Version 2.4.1
+- Fixed a bug caused by Blizzard's awful coding which caused errors on startup for some users.
+
 Version 2.4
 - Updated for WoW 4.2.0.
 - Special thanks to Fyreuni, _Lizzia and palmetto_rose for their support!
