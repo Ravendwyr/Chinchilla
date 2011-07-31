@@ -190,7 +190,7 @@ function ShowHide:SetFrameShown(key, frame)
 	elseif key == "lfg" then
 		if GetLFGMode() then frame:Show() end
 	elseif key == "battleground" then
-		if PVPFrame.numQueues > 0 or MiniMapBattlefieldFrame.inWorldPVPArea then frame:Show() end
+		if (PVPFrame.numQueues and PVPFrame.numQueues > 0) or MiniMapBattlefieldFrame.inWorldPVPArea then frame:Show() end
 	elseif key == "difficulty" and self.db.profile[key] then
 		MiniMapInstanceDifficulty_Update()
 	elseif key == "record" then
