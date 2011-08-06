@@ -68,7 +68,8 @@ function ShowHide:OnEnable()
 		self:SecureHook(frames[k], "Hide", "frame_Hide")
 	end
 
-	self:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES")
+	self:RegisterEvent("CALENDAR_ACTION_PENDING", "UpdateCalendar")
+	self:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES", "UpdateCalendar")
 
 	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown() -- to ensure a boolean
 
@@ -89,21 +90,6 @@ function ShowHide:OnDisable()
 		MinimapBorderTop:Show()
 		MinimapZoneTextButton:Show()
 	end
-end
-
-
-function ShowHide:CALENDAR_UPDATE_PENDING_INVITES()
-	print("whelp")
-	self:SetFrameShown("dayNight", GameTimeFrame)
-
---	if self.db.profile.calendarInviteOnly and CalendarGetNumPendingInvites() > 0 then
---		if self.db.profile.dayNight == true or ( self.db.profile.dayNight == "mouseover" and Minimap:IsMouseOver() ) then
---			GameTimeFrame:Show()
---		else
---			GameTimeFrame:Hide()
---			framesShown[GameTimeFrame] = true
---		end
---	end
 end
 
 
@@ -146,6 +132,20 @@ function ShowHide:Update()
 		MinimapBorderTop:Show()
 		MinimapZoneTextButton:Show()
 	end
+end
+
+function ShowHide:UpdateCalendar()
+	print("whelp")
+	self:SetFrameShown("dayNight", GameTimeFrame)
+
+--	if self.db.profile.calendarInviteOnly and CalendarGetNumPendingInvites() > 0 then
+--		if self.db.profile.dayNight == true or ( self.db.profile.dayNight == "mouseover" and Minimap:IsMouseOver() ) then
+--			GameTimeFrame:Show()
+--		else
+--			GameTimeFrame:Hide()
+--			framesShown[GameTimeFrame] = true
+--		end
+--	end
 end
 
 
