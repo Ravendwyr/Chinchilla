@@ -40,9 +40,3 @@ function WheelZoom:OnDisable()
 	frame:Hide()
 	frame:EnableMouseWheel(false)
 end
-
---[[
-function WheelZoom:GetOptions()
-	return {}
-end
-]]--
