@@ -1,5 +1,5 @@
 
-local ShowHide = Chinchilla:NewModule("ShowHide", "AceHook-3.0", "AceTimer-3.0")
+local ShowHide = Chinchilla:NewModule("ShowHide", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 ShowHide.displayName = L["Show / Hide"]
@@ -68,6 +68,8 @@ function ShowHide:OnEnable()
 		self:SecureHook(frames[k], "Hide", "frame_Hide")
 	end
 
+	self:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES")
+
 	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown() -- to ensure a boolean
 
 	self:SecureHook(MinimapZoneTextButton, "Show", "MinimapZoneTextButton_Show")
@@ -88,6 +90,22 @@ function ShowHide:OnDisable()
 		MinimapZoneTextButton:Show()
 	end
 end
+
+
+function ShowHide:CALENDAR_UPDATE_PENDING_INVITES()
+	print("whelp")
+	self:SetFrameShown("dayNight", GameTimeFrame)
+
+--	if self.db.profile.calendarInviteOnly and CalendarGetNumPendingInvites() > 0 then
+--		if self.db.profile.dayNight == true or ( self.db.profile.dayNight == "mouseover" and Minimap:IsMouseOver() ) then
+--			GameTimeFrame:Show()
+--		else
+--			GameTimeFrame:Hide()
+--			framesShown[GameTimeFrame] = true
+--		end
+--	end
+end
+
 
 function ShowHide:Update()
 	if not self:IsEnabled() then return end
@@ -129,6 +147,7 @@ function ShowHide:Update()
 		MinimapZoneTextButton:Show()
 	end
 end
+
 
 function ShowHide:frame_Show(object)
 	local object_k
@@ -190,7 +209,7 @@ function ShowHide:SetFrameShown(key, frame)
 	elseif key == "lfg" then
 		if GetLFGMode() then frame:Show() end
 	elseif key == "battleground" then
-		if (PVPFrame.numQueues and PVPFrame.numQueues > 0) or MiniMapBattlefieldFrame.inWorldPVPArea then frame:Show() end
+		if ( PVPFrame.numQueues and PVPFrame.numQueues > 0 ) or MiniMapBattlefieldFrame.inWorldPVPArea then frame:Show() end
 	elseif key == "difficulty" and self.db.profile[key] then
 		MiniMapInstanceDifficulty_Update()
 	elseif key == "record" then
@@ -207,12 +226,15 @@ end
 
 local timerID = nil
 function ShowHide:OnEnter()
-	if timerID then self:CancelTimer(timerID) timerID = nil end
+	if timerID then
+		self:CancelTimer(timerID)
+		timerID = nil
+	end
 
 	local realKey
 
 	for key, frame in pairs(frames) do
-		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not tristate
+		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not yet tristate
 		if key == "zoomIn" or key == "zoomOut" then
 			realKey = "zoom"
 		else
