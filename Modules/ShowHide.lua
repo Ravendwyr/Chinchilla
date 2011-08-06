@@ -135,17 +135,7 @@ function ShowHide:Update()
 end
 
 function ShowHide:UpdateCalendar()
-	print("whelp")
 	self:SetFrameShown("dayNight", GameTimeFrame)
-
---	if self.db.profile.calendarInviteOnly and CalendarGetNumPendingInvites() > 0 then
---		if self.db.profile.dayNight == true or ( self.db.profile.dayNight == "mouseover" and Minimap:IsMouseOver() ) then
---			GameTimeFrame:Show()
---		else
---			GameTimeFrame:Hide()
---			framesShown[GameTimeFrame] = true
---		end
---	end
 end
 
 
