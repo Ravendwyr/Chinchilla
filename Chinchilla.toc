@@ -15,7 +15,7 @@
 ## X-Category: Map
 ## X-Icon: Interface\AddOns\Chinchilla\Art\icon
 ## SavedVariables: Chinchilla2DB
-## OptionalDeps: !Swatter, !BugGrabber, Ace3, Blizzard_Calendar, Blizzard_TimeManager, TitanClock
+## OptionalDeps: !Swatter, !BugGrabber, Ace3, Blizzard_TimeManager, TitanClock
 
 
 #@no-lib-strip@
