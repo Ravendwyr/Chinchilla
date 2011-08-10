@@ -1,3 +1,6 @@
+Version 2.4.2
+- Fixed an oversight which caused the "Unread Invites Only" option to not function properly.
+
 Version 2.4.1
 - Fixed a bug caused by Blizzard's awful coding which caused errors on startup for some users.
 
