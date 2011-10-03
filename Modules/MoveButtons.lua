@@ -221,7 +221,7 @@ local function button_OnDragStop(this)
 	button_OnUpdate(this)
 end
 
--- copied from Tekkub's Cork
+-- yoinked from Tekkub's Cork
 local function GetTipAnchor(frame)
 	local x,y = frame:GetCenter()
 	if not x or not y then return "TOPLEFT", frame, "BOTTOMLEFT" end
@@ -229,7 +229,7 @@ local function GetTipAnchor(frame)
 	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
 	return vhalf..hhalf, frame, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
 end
--- end copy
+-- end yoink
 
 function MoveButtons:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("MoveButtons", {
@@ -295,9 +295,17 @@ function MoveButtons:Update()
 	end
 end
 
+
+-- FOUR POINT THREE COMPAT LAYER
+local searchStatus = _G.LFGSearchStatus or _G.LFDSearchStatus
+-- FOUR POINT THREE COMPAT LAYER
+
+
 function MoveButtons:PositionLFD()
-	LFDSearchStatus:ClearAllPoints()
-	LFDSearchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
+	-- FOUR POINT THREE COMPAT LAYER
+	searchStatus:ClearAllPoints()
+	searchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
+	-- FOUR POINT THREE COMPAT LAYER
 end
 
 local function angle_get(info)
