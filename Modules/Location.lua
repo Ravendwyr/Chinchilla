@@ -2,6 +2,8 @@
 local Location = Chinchilla:NewModule("Location", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
+local LSM = LibStub("LibSharedMedia-3.0")
+
 Location.displayName = L["Location"]
 Location.desc = L["Show zone information on or near minimap"]
 
@@ -13,13 +15,9 @@ function Location:OnInitialize()
 			positionX = 0,
 			positionY = 70,
 			showClose = true,
-			background = {
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1,
-			},
-			border = {
-				TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1,
-			},
-
+			font = LSM.DefaultMedia.font,
+			background = { TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1 },
+			border = { TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1 },
 			enabled = true,
 		},
 	})
@@ -52,6 +50,7 @@ function Location:OnEnable()
 
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
+
 		text:SetPoint("CENTER")
 
 		frame:SetScript("OnDragStart", function(this)
@@ -112,10 +111,14 @@ function Location:OnEnable()
 		frame.closeButton:Hide()
 	end
 
+	self:SetFont()
 	self:Update()
+
 	self:RegisterEvent("ZONE_CHANGED", "Update")
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update")
+
+	LSM.RegisterCallback(self, "LibSharedMedia_Registered", "MediaRegistered")
 
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()
@@ -135,6 +138,25 @@ function Location:OnDisable()
 		Chinchilla:GetModule("ShowHide"):Update()
 	end
 end
+
+
+function Location:MediaRegistered(_, mediaType, fontName)
+	if mediaType ~= "font" then return end
+
+	if fontName == self.db.profile.font then
+		self:SetFont(fontName)
+	end
+end
+
+function Location:SetFont(font)
+	if font then self.db.profile.font = font
+	else font = self.db.profile.font end
+
+	frame.text:SetFont( LSM:Fetch("font", font, true), 11 )
+
+	self:Update()
+end
+
 
 function Location:Update()
 	if not self:IsEnabled() then
@@ -236,6 +258,14 @@ function Location:GetOptions()
 				t[4] = a
 				self:Update()
 			end
+		},
+		font = {
+			name = L["Font"],
+			type = 'select',
+			dialogControl = 'LSM30_Font',
+			values = AceGUIWidgetLSMlists.font,
+			get = function() return self.db.profile.font or LSM.DefaultMedia.font end,
+			set = function(_, value) self:SetFont(value) end,
 		},
 		showClose = {
 			name = L["Show close button"],
