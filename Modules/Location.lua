@@ -19,9 +19,7 @@ function Location:OnInitialize()
 			border = {
 				TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1,
 			},
---			textColor = {
---				1, 0.82, 0, 1,
---			},
+
 			enabled = true,
 		},
 	})
@@ -239,23 +237,6 @@ function Location:GetOptions()
 				self:Update()
 			end
 		},
---[[		textColor = {
-			name = L["Text"],
-			desc = L["Set the text color"],
-			type = 'color',
-			hasAlpha = true,
-			get = function(info)
-				return unpack(self.db.profile.textColor)
-			end,
-			set = function(info, r, g, b, a)
-				local t = self.db.profile.textColor
-				t[1] = r
-				t[2] = g
-				t[3] = b
-				t[4] = a
-				self:Update()
-			end
-]]--		},
 		showClose = {
 			name = L["Show close button"],
 			desc = L["Show the button to hide the minimap"],
