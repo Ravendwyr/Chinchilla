@@ -15,7 +15,7 @@
 ## X-Category: Map
 ## X-Icon: Interface\AddOns\Chinchilla\Art\icon
 ## SavedVariables: Chinchilla2DB
-## OptionalDeps: !Swatter, !BugGrabber, Ace3, Blizzard_TimeManager, TitanClock
+## OptionalDeps: !Swatter, !BugGrabber, Ace3, LibSharedMedia-3.0, Blizzard_TimeManager, TitanClock
 
 
 #@no-lib-strip@
@@ -30,6 +30,7 @@ Libs\AceLocale-3.0\AceLocale-3.0.xml
 Libs\AceEvent-3.0\AceEvent-3.0.xml
 Libs\AceTimer-3.0\AceTimer-3.0.xml
 Libs\AceHook-3.0\AceHook-3.0.xml
+Libs\LibSharedMedia-3.0\lib.xml
 #@end-no-lib-strip@
 
 Locale\enUS.lua
