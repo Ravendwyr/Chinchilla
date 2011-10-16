@@ -2,6 +2,8 @@
 local Coordinates = Chinchilla:NewModule("Coordinates", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
+local LSM = LibStub("LibSharedMedia-3.0")
+
 Coordinates.displayName = L["Coordinates"]
 Coordinates.desc = L["Show coordinates on or near the minimap"]
 
@@ -25,24 +27,10 @@ function Coordinates:OnInitialize()
 			scale = 1,
 			positionX = -30,
 			positionY = -50,
-			background = {
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.b,
-				1,
-			},
-			border = {
-				TOOLTIP_DEFAULT_COLOR.r,
-				TOOLTIP_DEFAULT_COLOR.g,
-				TOOLTIP_DEFAULT_COLOR.b,
-				1,
-			},
-			textColor = {
-				0.8,
-				0.8,
-				0.6,
-				1,
-			},
+			background = { TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1 },
+			border = { TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1 },
+			textColor = { 0.8, 0.8, 0.6, 1 },
+			font = LSM.DefaultMedia.font,
 			enabled = true,
 		},
 	})
@@ -130,12 +118,13 @@ function Coordinates:OnDisable()
 	frame:Hide()
 end
 
-function Coordinates:Update()
+function Coordinates:Update() -- TODO: Make this function not suck.
 	if not self:IsEnabled() then return end
 
 	recalculateCoordString()
 
 	frame:SetScale(self.db.profile.scale)
+	frame.text:SetFont( LSM:Fetch("font", self.db.profile.font, true), 11 )
 	frame.text:SetText(coordString:format(12.345, 23.456))
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
 	frame:SetWidth(frame.text:GetWidth() + 12)
@@ -225,6 +214,14 @@ function Coordinates:GetOptions()
 				self:Update()
 			end,
 		},
+		font = {
+			name = L["Font"],
+			type = 'select',
+			dialogControl = 'LSM30_Font',
+			values = AceGUIWidgetLSMlists.font,
+			get = function() return self.db.profile.font or LSM.DefaultMedia.font end,
+			set = function(_, value) self:SetFont(value) end,
+		},
 		textColor = {
 			name = L["Text"],
 			desc = L["Set the text color"],
@@ -299,27 +296,5 @@ function Coordinates:GetOptions()
 				},
 			},
 		},
---[[		position = {
-			name = L["Position"],
-			desc = L["Set the position of the coordinate indicator"],
-			type = 'choice',
-			choices = {
-				["BOTTOM;BOTTOM"] = L["Bottom, inside"],
-				["TOP;BOTTOM"] = L["Bottom, outside"],
-				["TOP;TOP"] = L["Top, inside"],
-				["BOTTOM;TOP"] = L["Top, outside"],
-				["TOPLEFT;TOPLEFT"] = L["Top-left"],
-				["BOTTOMLEFT;BOTTOMLEFT"] = L["Bottom-left"],
-				["TOPRIGHT;TOPRIGHT"] = L["Top-right"],
-				["BOTTOMRIGHT;BOTTOMRIGHT"] = L["Bottom-right"]
-			},
-			get = function()
-				return self.db.profile.point .. ";" .. self.db.profile.relpoint
-			end,
-			set = function(value)
-				self.db.profile.point, self.db.profile.relpoint = value:match("(.*);(.*)")
-				self:Update()
-			end,
-]]--		},
 	}
 end
