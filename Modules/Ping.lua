@@ -2,6 +2,8 @@
 local Ping = Chinchilla:NewModule("Ping", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
+local LSM = LibStub("LibSharedMedia-3.0")
+
 Ping.displayName = L["Ping"]
 Ping.desc = L["Show who last pinged the minimap"]
 
@@ -13,15 +15,10 @@ function Ping:OnInitialize()
 			scale = 1,
 			positionX = 0,
 			positionY = 60,
-			background = {
-				TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1,
-			},
-			border = {
-				TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1,
-			},
-			textColor = {
-				0.8, 0.8, 0.6, 1,
-			},
+			font = LSM.DefaultMedia.font,
+			background = { TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1 },
+			border = { TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1 },
+			textColor = { 0.8, 0.8, 0.6, 1 },
 			MINIMAPPING_TIMER = 5,
 			MINIMAPPING_FADE_TIMER = 0.5,
 			enabled = true,
@@ -51,6 +48,8 @@ function Ping:OnEnable()
 
 		local text = frame:CreateFontString(frame:GetName() .. "_FontString", "ARTWORK", "GameFontNormalSmall")
 		frame.text = text
+
+		self:SetFont()
 		text:SetPoint("CENTER")
 
 		frame:SetScript("OnDragStart", function(this)
@@ -170,6 +169,13 @@ function Ping:SetMovable(value)
 
 	if value then frame:RegisterForDrag("LeftButton")
 	else frame:RegisterForDrag() end
+end
+
+function Ping:SetFont(value)
+	if value then self.db.profile.font = value
+	else value = self.db.profile.font end
+
+	frame.text:SetFont( LSM:Fetch("font", value, true), 11 )
 end
 
 
@@ -432,6 +438,15 @@ function Ping:GetOptions()
 			end,
 			order = 8,
 		},
+		font = {
+			name = L["Font"],
+			type = 'select',
+			dialogControl = 'LSM30_Font',
+			values = AceGUIWidgetLSMlists.font,
+			get = function() return self.db.profile.font or LSM.DefaultMedia.font end,
+			set = function(_, value) self:SetFont(value) end,
+			order = 9,
+		},
 		textColor = {
 			name = L["Text"],
 			desc = L["Set the text color"],
@@ -451,7 +466,7 @@ function Ping:GetOptions()
 			hidden = function(info)
 				return self.db.profile.chat
 			end,
-			order = 9,
+			order = 10,
 		},
 	}
 end
