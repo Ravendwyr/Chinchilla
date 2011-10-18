@@ -256,7 +256,10 @@ function Coordinates:GetOptions()
 			dialogControl = 'LSM30_Font',
 			values = AceGUIWidgetLSMlists.font,
 			get = function() return self.db.profile.font or LSM.DefaultMedia.font end,
-			set = function(_, value) self:SetFont(value) end,
+			set = function(_, value)
+				self.db.profile.font = value
+				self:Update()
+			end,
 		},
 		textColor = {
 			name = L["Text"],
