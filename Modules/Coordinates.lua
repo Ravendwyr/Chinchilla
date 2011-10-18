@@ -28,7 +28,9 @@ function Coordinates:OnInitialize()
 			positionX = -30,
 			positionY = -50,
 			background = { TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1 },
+			backgroundTexture = "Blizzard Tooltip",
 			border = { TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1 },
+			borderTexture = "Blizzard Tooltip",
 			textColor = { 0.8, 0.8, 0.6, 1 },
 			font = LSM.DefaultMedia.font,
 			enabled = true,
@@ -40,23 +42,18 @@ function Coordinates:OnInitialize()
 	end
 end
 
-local frame, timerID
+local frame, timerID, backdrop
 function Coordinates:OnEnable()
+	backdrop = {
+		bgFile = LSM:Fetch("background", self.db.profile.backgroundTexture, true),
+		edgeFile = LSM:Fetch("border", self.db.profile.borderTexture, true),
+		insets = { left = 4, right = 4, top = 4, bottom = 4 },
+		edgeSize = 16,
+	}
+
 	if not frame then
 		frame = CreateFrame("Frame", "Chinchilla_Coordinates_Frame", Minimap)
-		frame:SetBackdrop({
-			bgFile = [[Interface\Tooltips\UI-Tooltip-Background]],
-			edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
-			tile = true,
-			tileSize = 16,
-			edgeSize = 16,
-			insets = {
-				left = 4,
-				right = 4,
-				top = 4,
-				bottom = 4,
-			},
-		})
+		frame:SetBackdrop(backdrop)
 
 		frame:SetWidth(1)
 		frame:SetHeight(1)
@@ -122,9 +119,10 @@ end
 
 
 function Coordinates:MediaRegistered(_, mediaType, mediaName)
-	if mediaType == "font" then
-		if mediaName == self.db.profile.font then self:Update() end
-	end
+	if mediaType == "font" and mediaName == self.db.profile.font
+	or mediaType == "border" and mediaName == self.db.profile.borderTexture
+	or mediaType == "background" and mediaName == self.db.profile.backgroundTexture
+	then self:Update() end
 end
 
 function Coordinates:Update()
@@ -133,16 +131,25 @@ function Coordinates:Update()
 	recalculateCoordString()
 
 	frame:SetScale(self.db.profile.scale)
+
 	frame.text:SetFont(LSM:Fetch("font", self.db.profile.font, true), 11)
 	frame.text:SetText(coordString:format(12.345, 23.456))
-	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
+	frame.text:SetTextColor(unpack(self.db.profile.textColor))
+
+	frame:SetFrameLevel(MinimapCluster:GetFrameLevel() + 7)
 	frame:SetWidth(frame.text:GetWidth() + 12)
 	frame:SetHeight(frame.text:GetHeight() + 12)
-	frame.text:SetTextColor(unpack(self.db.profile.textColor))
+
+	backdrop.edgeFile = LSM:Fetch("border", self.db.profile.borderTexture, true)
+	backdrop.bgFile = LSM:Fetch("background", self.db.profile.backgroundTexture, true)
+
+	frame:SetBackdrop(backdrop)
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
+
 	frame:ClearAllPoints()
 	frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX, self.db.profile.positionY)
+
 	frame:Update()
 end
 
@@ -189,6 +196,16 @@ function Coordinates:GetOptions()
 				self:Update()
 			end,
 		},
+		backgroundTexture = {
+			name = L["Background"],
+			type = "select", dialogControl = 'LSM30_Background',
+			values = AceGUIWidgetLSMlists.background,
+			get = function() return self.db.profile.backgroundTexture end,
+			set = function(_, value)
+				self.db.profile.backgroundTexture = value
+				self:Update()
+			end,
+		},
 		background = {
 			name = L["Background"],
 			desc = L["Set the background color"],
@@ -203,6 +220,16 @@ function Coordinates:GetOptions()
 				t[2] = g
 				t[3] = b
 				t[4] = a
+				self:Update()
+			end,
+		},
+		borderTexture = {
+			name = L["Border"],
+			type = "select", dialogControl = 'LSM30_Border',
+			values = AceGUIWidgetLSMlists.border,
+			get = function() return self.db.profile.borderTexture end,
+			set = function(_, value)
+				self.db.profile.borderTexture = value
 				self:Update()
 			end,
 		},
