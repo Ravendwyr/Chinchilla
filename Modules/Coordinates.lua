@@ -110,6 +110,8 @@ function Coordinates:OnEnable()
 	recalculateCoordString()
 	self:ScheduleTimer("Update", 0)
 
+	LSM.RegisterCallback(self, "LibSharedMedia_Registered", "MediaRegistered")
+
 	timerID = self:ScheduleRepeatingTimer(frame.Update, 0.1, frame)
 end
 
@@ -118,13 +120,20 @@ function Coordinates:OnDisable()
 	frame:Hide()
 end
 
-function Coordinates:Update() -- TODO: Make this function not suck.
+
+function Coordinates:MediaRegistered(_, mediaType, mediaName)
+	if mediaType == "font" then
+		if mediaName == self.db.profile.font then self:Update() end
+	end
+end
+
+function Coordinates:Update()
 	if not self:IsEnabled() then return end
 
 	recalculateCoordString()
 
 	frame:SetScale(self.db.profile.scale)
-	frame.text:SetFont( LSM:Fetch("font", self.db.profile.font, true), 11 )
+	frame.text:SetFont(LSM:Fetch("font", self.db.profile.font, true), 11)
 	frame.text:SetText(coordString:format(12.345, 23.456))
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
 	frame:SetWidth(frame.text:GetWidth() + 12)

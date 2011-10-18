@@ -83,6 +83,8 @@ function Ping:OnEnable()
 --	self:RawHook("Minimap_SetPing", true)
 	self:RawHook("Minimap_OnClick", true)
 
+	LSM.RegisterCallback(self, "LibSharedMedia_Registered", "MediaRegistered")
+
 	_G.MINIMAPPING_TIMER = self.db.profile.MINIMAPPING_TIMER
 	_G.MINIMAPPING_FADE_TIMER = self.db.profile.MINIMAPPING_FADE_TIMER
 end
@@ -169,6 +171,13 @@ function Ping:SetMovable(value)
 
 	if value then frame:RegisterForDrag("LeftButton")
 	else frame:RegisterForDrag() end
+end
+
+
+function Ping:MediaRegistered(_, mediaType, mediaName)
+	if mediaType == "font" and mediaName == self.db.profile.font then
+		self:SetFont()
+	end
 end
 
 function Ping:SetFont(value)
