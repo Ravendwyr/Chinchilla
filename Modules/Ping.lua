@@ -143,8 +143,8 @@ function Ping:MINIMAP_PING(event, unit)
 
 	frame:SetScale(self.db.profile.scale)
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel() + 7)
-	frame:SetWidth(frame.text:GetWidth() + 12)
-	frame:SetHeight(frame.text:GetHeight() + 12)
+	frame:SetWidth(frame.text:GetWidth() + 16)
+	frame:SetHeight(frame.text:GetHeight() + 14)
 
 	frame:SetBackdropColor(unpack(self.db.profile.background))
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))

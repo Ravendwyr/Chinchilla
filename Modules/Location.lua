@@ -194,8 +194,8 @@ function Location:Update()
 	frame:SetPoint("CENTER", MinimapCluster, "CENTER", self.db.profile.positionX+9/scale, self.db.profile.positionY+4/scale)
 
 	frame.text:SetText(GetMinimapZoneText())
-	frame:SetWidth(frame.text:GetWidth() + 12)
-	frame:SetHeight(frame.text:GetHeight() + 12)
+	frame:SetWidth(frame.text:GetWidth() + 16)
+	frame:SetHeight(frame.text:GetHeight() + 14)
 
 	local pvpType = GetZonePVPInfo()
 

@@ -137,8 +137,8 @@ function Coordinates:Update()
 	frame.text:SetTextColor(unpack(self.db.profile.textColor))
 
 	frame:SetFrameLevel(MinimapCluster:GetFrameLevel() + 7)
-	frame:SetWidth(frame.text:GetWidth() + 12)
-	frame:SetHeight(frame.text:GetHeight() + 12)
+	frame:SetWidth(frame.text:GetWidth() + 16)
+	frame:SetHeight(frame.text:GetHeight() + 14)
 
 	backdrop.edgeFile = LSM:Fetch("border", self.db.profile.borderTexture, true)
 	backdrop.bgFile = LSM:Fetch("background", self.db.profile.backgroundTexture, true)
