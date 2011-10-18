@@ -43,6 +43,7 @@ function Ping:OnEnable()
 			insets = { left = 4, right = 4, top = 4, bottom = 4 },
 		})
 
+		frame:SetFrameLevel(MinimapCluster:GetFrameLevel() + 7)
 		frame:SetWidth(1)
 		frame:SetHeight(1)
 
