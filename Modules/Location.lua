@@ -16,7 +16,9 @@ function Location:OnInitialize()
 			positionY = 70,
 			showClose = true,
 			font = LSM.DefaultMedia.font,
+			backgroundTexture = "Blizzard Tooltip",
 			background = { TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1 },
+			borderTexture = "Blizzard Tooltip",
 			border = { TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1 },
 			enabled = true,
 		},
@@ -27,23 +29,18 @@ function Location:OnInitialize()
 	end
 end
 
-local frame
+local frame, backdrop
 function Location:OnEnable()
+	backdrop = {
+		bgFile = LSM:Fetch("background", self.db.profile.backgroundTexture, true),
+		edgeFile = LSM:Fetch("border", self.db.profile.borderTexture, true),
+		insets = { left = 4, right = 4, top = 4, bottom = 4 },
+		edgeSize = 16,
+	}
+
 	if not frame then
 		frame = CreateFrame("Frame", "Chinchilla_Location_Frame", MinimapCluster)
-		frame:SetBackdrop({
-			bgFile = [[Interface\Tooltips\UI-Tooltip-Background]],
-			edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
-			tile = true,
-			tileSize = 16,
-			edgeSize = 16,
-			insets = {
-				left = 4,
-				right = 4,
-				top = 4,
-				bottom = 4
-			}
-		})
+		frame:SetBackdrop(backdrop)
 
 		frame:SetWidth(1)
 		frame:SetHeight(1)
@@ -141,10 +138,12 @@ end
 
 
 function Location:MediaRegistered(_, mediaType, fontName)
-	if mediaType ~= "font" then return end
-
-	if fontName == self.db.profile.font then
-		self:SetFont(fontName)
+	if mediaType == "font" and mediaName == self.db.profile.font then
+		self:SetFont()
+	elseif mediaType == "background" and mediaName == self.db.profile.backgroundTexture then
+		self:SetBackground()
+	elseif mediaType == "border" and mediaName == self.db.profile.borderTexture then
+		self:SetBorder()
 	end
 end
 
@@ -157,6 +156,24 @@ function Location:SetFont(font)
 	self:Update()
 end
 
+function Location:SetBackground(value)
+	if value then self.db.profile.backgroundTexture = value
+	else value = self.db.profile.backgroundTexture end
+
+	backdrop.bgFile = LSM:Fetch("background", value, true)
+
+	frame:SetBackdrop(backdrop)
+end
+
+function Location:SetBorder(value)
+	if value then self.db.profile.borderTexture = value
+	else value = self.db.profile.borderTexture end
+
+	backdrop.edgeFile = LSM:Fetch("border", value, true)
+
+	frame:SetBackdrop(backdrop)
+end
+
 
 function Location:Update()
 	if not self:IsEnabled() then
@@ -166,7 +183,7 @@ function Location:Update()
 	local scale = self.db.profile.scale
 
 	frame:SetScale(scale)
-	frame:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
+	frame:SetFrameLevel(MinimapCluster:GetFrameLevel() + 7)
 
 	frame.closeButton:SetFrameLevel(MinimapCluster:GetFrameLevel()+7)
 
@@ -208,87 +225,10 @@ end
 
 function Location:GetOptions()
 	return {
-		scale = {
-			name = L["Size"],
-			desc = L["Set the size of the location display."],
-			type = 'range',
-			min = 0.25,
-			max = 4,
-			step = 0.01,
-			bigStep = 0.05,
-			isPercent = true,
-			get = function(info)
-				return self.db.profile.scale
-			end,
-			set = function(info, value)
-				self.db.profile.scale = value
-				self:Update()
-			end,
-		},
-		background = {
-			name = L["Background"],
-			desc = L["Set the background color"],
-			type = 'color',
-			hasAlpha = true,
-			get = function(info)
-				return unpack(self.db.profile.background)
-			end,
-			set = function(info, r, g, b, a)
-				local t = self.db.profile.background
-				t[1] = r
-				t[2] = g
-				t[3] = b
-				t[4] = a
-				self:Update()
-			end
-		},
-		border = {
-			name = L["Border"],
-			desc = L["Set the border color"],
-			type = 'color',
-			hasAlpha = true,
-			get = function(info)
-				return unpack(self.db.profile.border)
-			end,
-			set = function(info, r, g, b, a)
-				local t = self.db.profile.border
-				t[1] = r
-				t[2] = g
-				t[3] = b
-				t[4] = a
-				self:Update()
-			end
-		},
-		font = {
-			name = L["Font"],
-			type = 'select',
-			dialogControl = 'LSM30_Font',
-			values = AceGUIWidgetLSMlists.font,
-			get = function() return self.db.profile.font or LSM.DefaultMedia.font end,
-			set = function(_, value) self:SetFont(value) end,
-		},
-		showClose = {
-			name = L["Show close button"],
-			desc = L["Show the button to hide the minimap"],
-			type = 'toggle',
-			get = function(info)
-				return self.db.profile.showClose
-			end,
-			set = function(info, value)
-				self.db.profile.showClose = value
-				if frame then
-					if value then
-						frame.closeButton:Show()
-					else
-						frame.closeButton:Hide()
-					end
-				end
-			end
-		},
 		position = {
 			name = L["Position"],
 			desc = L["Set the position of the location indicator"],
-			type = 'group',
+			type = 'group', order = 1,
 			inline = true,
 			args = {
 				movable = {
@@ -341,6 +281,106 @@ function Location:GetOptions()
 					order = 3,
 				},
 			},
+		},
+		backgroundTexture = {
+			name = L["Background"],
+			type = "select", dialogControl = 'LSM30_Background',
+			order = 2, width = "double",
+			values = AceGUIWidgetLSMlists.background,
+			get = function() return self.db.profile.backgroundTexture end,
+			set = function(_, value)
+				self:SetBackground(value)
+			end,
+		},
+		background = {
+			name = L["Background"],
+			desc = L["Set the background color"],
+			type = 'color', order = 3,
+			hasAlpha = true,
+			get = function(info)
+				return unpack(self.db.profile.background)
+			end,
+			set = function(info, r, g, b, a)
+				local t = self.db.profile.background
+				t[1] = r
+				t[2] = g
+				t[3] = b
+				t[4] = a
+				self:Update()
+			end,
+		},
+		borderTexture = {
+			name = L["Border"],
+			type = "select", dialogControl = 'LSM30_Border',
+			order = 4, width = "double",
+			values = AceGUIWidgetLSMlists.border,
+			get = function() return self.db.profile.borderTexture end,
+			set = function(_, value)
+				self:SetBorder(value)
+			end,
+		},
+		border = {
+			name = L["Border"],
+			desc = L["Set the border color"],
+			type = 'color', order = 5,
+			hasAlpha = true,
+			get = function(info)
+				return unpack(self.db.profile.border)
+			end,
+			set = function(info, r, g, b, a)
+				local t = self.db.profile.border
+				t[1] = r
+				t[2] = g
+				t[3] = b
+				t[4] = a
+				self:Update()
+			end,
+			hidden = function(info)
+				return self.db.profile.chat
+			end,
+		},
+		font = {
+			name = L["Font"],
+			type = 'select', width = "double", order = 6,
+			dialogControl = 'LSM30_Font',
+			values = AceGUIWidgetLSMlists.font,
+			get = function() return self.db.profile.font or LSM.DefaultMedia.font end,
+			set = function(_, value) self:SetFont(value) end,
+		},
+		showClose = {
+			name = L["Show close button"],
+			desc = L["Show the button to hide the minimap"],
+			type = 'toggle', order = 7,
+			get = function(info)
+				return self.db.profile.showClose
+			end,
+			set = function(info, value)
+				self.db.profile.showClose = value
+				if frame then
+					if value then
+						frame.closeButton:Show()
+					else
+						frame.closeButton:Hide()
+					end
+				end
+			end
+		},
+		scale = {
+			name = L["Size"],
+			desc = L["Set the size of the location display."],
+			type = 'range', order = 8,
+			min = 0.25,
+			max = 4,
+			step = 0.01,
+			bigStep = 0.05,
+			isPercent = true,
+			get = function(info)
+				return self.db.profile.scale
+			end,
+			set = function(info, value)
+				self.db.profile.scale = value
+				self:Update()
+			end,
 		},
 	}
 end
