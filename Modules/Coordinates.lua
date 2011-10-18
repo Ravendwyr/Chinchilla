@@ -164,124 +164,10 @@ end
 
 function Coordinates:GetOptions()
 	return {
-		precision = {
-			name = L["Precision"],
-			desc = L["Set the amount of numbers past the decimal place to show."],
-			type = 'range',
-			min = 0,
-			max = 3,
-			step = 1,
-			get = function(info)
-				return self.db.profile.precision
-			end,
-			set = function(info, value)
-				self.db.profile.precision = value
-				self:Update()
-			end,
-		},
-		scale = {
-			name = L["Size"],
-			desc = L["Set the size of the coordinate display."],
-			type = 'range',
-			min = 0.25,
-			max = 4,
-			step = 0.01,
-			bigStep = 0.05,
-			isPercent = true,
-			get = function(info)
-				return self.db.profile.scale
-			end,
-			set = function(info, value)
-				self.db.profile.scale = value
-				self:Update()
-			end,
-		},
-		backgroundTexture = {
-			name = L["Background"],
-			type = "select", dialogControl = 'LSM30_Background',
-			values = AceGUIWidgetLSMlists.background,
-			get = function() return self.db.profile.backgroundTexture end,
-			set = function(_, value)
-				self.db.profile.backgroundTexture = value
-				self:Update()
-			end,
-		},
-		background = {
-			name = L["Background"],
-			desc = L["Set the background color"],
-			type = 'color',
-			hasAlpha = true,
-			get = function(info)
-				return unpack(self.db.profile.background)
-			end,
-			set = function(info, r, g, b, a)
-				local t = self.db.profile.background
-				t[1] = r
-				t[2] = g
-				t[3] = b
-				t[4] = a
-				self:Update()
-			end,
-		},
-		borderTexture = {
-			name = L["Border"],
-			type = "select", dialogControl = 'LSM30_Border',
-			values = AceGUIWidgetLSMlists.border,
-			get = function() return self.db.profile.borderTexture end,
-			set = function(_, value)
-				self.db.profile.borderTexture = value
-				self:Update()
-			end,
-		},
-		border = {
-			name = L["Border"],
-			desc = L["Set the border color"],
-			type = 'color',
-			hasAlpha = true,
-			get = function(info)
-				return unpack(self.db.profile.border)
-			end,
-			set = function(info, r, g, b, a)
-				local t = self.db.profile.border
-				t[1] = r
-				t[2] = g
-				t[3] = b
-				t[4] = a
-				self:Update()
-			end,
-		},
-		font = {
-			name = L["Font"],
-			type = 'select',
-			dialogControl = 'LSM30_Font',
-			values = AceGUIWidgetLSMlists.font,
-			get = function() return self.db.profile.font or LSM.DefaultMedia.font end,
-			set = function(_, value)
-				self.db.profile.font = value
-				self:Update()
-			end,
-		},
-		textColor = {
-			name = L["Text"],
-			desc = L["Set the text color"],
-			type = 'color',
-			hasAlpha = true,
-			get = function(info)
-				return unpack(self.db.profile.textColor)
-			end,
-			set = function(info, r, g, b, a)
-				local t = self.db.profile.textColor
-				t[1] = r
-				t[2] = g
-				t[3] = b
-				t[4] = a
-				self:Update()
-			end,
-		},
 		position = {
 			name = L["Position"],
 			desc = L["Set the position of the coordinate indicator"],
-			type = 'group',
+			type = 'group', order = 1,
 			inline = true,
 			args = {
 				movable = {
@@ -334,6 +220,122 @@ function Coordinates:GetOptions()
 					order = 3,
 				},
 			},
+		},
+		backgroundTexture = {
+			name = L["Background"],
+			type = "select", dialogControl = 'LSM30_Background',
+			order = 2, width = "double",
+			values = AceGUIWidgetLSMlists.background,
+			get = function() return self.db.profile.backgroundTexture end,
+			set = function(_, value)
+				self.db.profile.backgroundTexture = value
+				self:Update()
+			end,
+		},
+		background = {
+			name = L["Background"],
+			desc = L["Set the background color"],
+			type = 'color', order = 3,
+			hasAlpha = true,
+			get = function(info)
+				return unpack(self.db.profile.background)
+			end,
+			set = function(info, r, g, b, a)
+				local t = self.db.profile.background
+				t[1] = r
+				t[2] = g
+				t[3] = b
+				t[4] = a
+				self:Update()
+			end,
+		},
+		borderTexture = {
+			name = L["Border"],
+			type = "select", dialogControl = 'LSM30_Border',
+			order = 4, width = "double",
+			values = AceGUIWidgetLSMlists.border,
+			get = function() return self.db.profile.borderTexture end,
+			set = function(_, value)
+				self.db.profile.borderTexture = value
+				self:Update()
+			end,
+		},
+		border = {
+			name = L["Border"],
+			desc = L["Set the border color"],
+			type = 'color', order = 5,
+			hasAlpha = true,
+			get = function(info)
+				return unpack(self.db.profile.border)
+			end,
+			set = function(info, r, g, b, a)
+				local t = self.db.profile.border
+				t[1] = r
+				t[2] = g
+				t[3] = b
+				t[4] = a
+				self:Update()
+			end,
+		},
+		font = {
+			name = L["Font"],
+			type = 'select', order = 6, width = "double",
+			dialogControl = 'LSM30_Font',
+			values = AceGUIWidgetLSMlists.font,
+			get = function() return self.db.profile.font or LSM.DefaultMedia.font end,
+			set = function(_, value)
+				self.db.profile.font = value
+				self:Update()
+			end,
+		},
+		textColor = {
+			name = L["Text"],
+			desc = L["Set the text color"],
+			type = 'color', order = 7,
+			hasAlpha = true,
+			get = function(info)
+				return unpack(self.db.profile.textColor)
+			end,
+			set = function(info, r, g, b, a)
+				local t = self.db.profile.textColor
+				t[1] = r
+				t[2] = g
+				t[3] = b
+				t[4] = a
+				self:Update()
+			end,
+		},
+		precision = {
+			name = L["Precision"],
+			desc = L["Set the amount of numbers past the decimal place to show."],
+			type = 'range', order = 8,
+			min = 0,
+			max = 3,
+			step = 1,
+			get = function(info)
+				return self.db.profile.precision
+			end,
+			set = function(info, value)
+				self.db.profile.precision = value
+				self:Update()
+			end,
+		},
+		scale = {
+			name = L["Size"],
+			desc = L["Set the size of the coordinate display."],
+			type = 'range', order = 9,
+			min = 0.25,
+			max = 4,
+			step = 0.01,
+			bigStep = 0.05,
+			isPercent = true,
+			get = function(info)
+				return self.db.profile.scale
+			end,
+			set = function(info, value)
+				self.db.profile.scale = value
+				self:Update()
+			end,
 		},
 	}
 end
