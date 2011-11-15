@@ -29,8 +29,8 @@ function Expander:Refresh()
 		if not cluster then
 			cluster = CreateFrame("Frame", nil, UIParent)
 			cluster:SetFrameStrata("LOW")
-			cluster:SetWidth(140 * self.db.profile.scale)
-			cluster:SetHeight(140 * self.db.profile.scale)
+			cluster:SetWidth(168 * self.db.profile.scale)
+			cluster:SetHeight(168 * self.db.profile.scale)
 			cluster:SetScale(1.2)
 			cluster:SetPoint("CENTER")
 
@@ -132,8 +132,8 @@ end
 function Expander:SetSizes()
 	if not cluster or not minimap then return end
 
-	cluster:SetWidth(140 * self.db.profile.scale)
-	cluster:SetHeight(140 * self.db.profile.scale)
+	cluster:SetWidth(168 * self.db.profile.scale)
+	cluster:SetHeight(168 * self.db.profile.scale)
 	cluster:SetScale(1.2)
 
 	minimap:SetWidth(140 * self.db.profile.scale)
