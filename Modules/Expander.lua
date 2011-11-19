@@ -21,7 +21,7 @@ function Expander:OnInitialize()
 end
 
 
-local cluster, minimap, button, overlay
+local cluster, minimap, button, overlay, GM2
 local show = false
 
 function Expander:Refresh()
@@ -63,7 +63,11 @@ function Expander:Refresh()
 
 		minimap:SetZoom(z)
 
-		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(cluster) end
+		if GM2 then
+			GM2:ReparentMinimapPins(cluster)
+			GM2:UpdateMiniMap(true)
+		end
+
 		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(cluster) end
 		if overlay and overlay.SetMinimapFrame then overlay:SetMinimapFrame(cluster) end
 		if TomTom and TomTom.ReparentMinimap then TomTom:ReparentMinimap(cluster) end
@@ -80,7 +84,11 @@ function Expander:Refresh()
 
 		Minimap:SetZoom(z, true)
 
-		if GatherMate2 then GatherMate2:GetModule("Display"):ReparentMinimapPins(Minimap) end
+		if GM2 then
+			GM2:ReparentMinimapPins(Minimap)
+			GM2:UpdateMiniMap(true)
+		end
+
 		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(Minimap) end
 		if overlay and overlay.SetMinimapFrame then overlay:SetMinimapFrame(Minimap) end
 		if TomTom and TomTom.ReparentMinimap then TomTom:ReparentMinimap(Minimap) end
@@ -118,8 +126,12 @@ function Expander:OnEnable()
 		end)
 	end
 
-	if _NPCScan and _NPCScan.Overlay and not overlay then
+	if _NPCScan and _NPCScan.Overlay then
 		overlay = _NPCScan.Overlay.Modules.List["Minimap"]
+	end
+
+	if GatherMate2 then
+		GM2 = GatherMate2:GetModule("Display")
 	end
 end
 
