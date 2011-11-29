@@ -296,16 +296,9 @@ function MoveButtons:Update()
 end
 
 
--- FOUR POINT THREE COMPAT LAYER
-local searchStatus = _G.LFGSearchStatus or _G.LFDSearchStatus
--- FOUR POINT THREE COMPAT LAYER
-
-
 function MoveButtons:PositionLFD()
-	-- FOUR POINT THREE COMPAT LAYER
-	searchStatus:ClearAllPoints()
-	searchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
-	-- FOUR POINT THREE COMPAT LAYER
+	LFGSearchStatus:ClearAllPoints()
+	LFGSearchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
 end
 
 local function angle_get(info)

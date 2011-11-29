@@ -183,11 +183,6 @@ function Chinchilla:OpenConfig()
 end
 
 
--- FOUR POINT THREE COMPAT LAYER
-local searchStatus = _G.LFGSearchStatus or _G.LFDSearchStatus
--- FOUR POINT THREE COMPAT LAYER
-
-
 function Chinchilla:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("Chinchilla2DB", { profile = { mouseButton = "RightButton", trackButton = "MiddleButton" }}, 'Default')
 
@@ -209,15 +204,13 @@ function Chinchilla:OnEnable()
 
 	MinimapCluster:EnableMouse(false)
 
-	-- FOUR POINT THREE COMPAT LAYER
-	searchStatus:SetClampedToScreen(true)
-	-- FOUR POINT THREE COMPAT LAYER
-
 	MiniMapWorldMapButton:SetNormalTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
+
+	LFGSearchStatus:SetClampedToScreen(true)
 end
 
 function Chinchilla:OnDisable()
@@ -226,12 +219,10 @@ function Chinchilla:OnDisable()
 	MiniMapWorldMapButton:SetNormalTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
 
-	-- FOUR POINT THREE COMPAT LAYER
-	searchStatus:SetClampedToScreen(false)
-	-- FOUR POINT THREE COMPAT LAYER
-
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
+
+	LFGSearchStatus:SetClampedToScreen(false)
 end
 
 function Chinchilla:OnProfileUpdate()
