@@ -1,8 +1,10 @@
 Version 2.5
 - Updated for WoW 4.3.0.
 - Added font, border and background selection options to the Ping, Location and Coordinates modules.
+- Fixed _NPCScan.Overlay support in the Expander module (it wasn't centered properly).
+- Fixed GatherMate2 support in the Expander module (the blips didn't update properly when switching maps).
 - Tidied up some of the config sections to make it look better.
-- Disabled sending test Minimap pings when changing the config while in a group.
+- Disabled sending test pings when changing the config while in a group to prevent spam.
 
 Version 2.4.2
 - Fixed an oversight which caused the "Unread Invites Only" option to not function properly.
