@@ -133,23 +133,23 @@ function TrackingDots:GetOptions()
 
 	do
 		local texCoords = {
-			{ 0, 0.125, 0, 0.25 },    -- party
-			{ 0.5, 0.625, 0, 0.25 },  -- friend
-			{ 0.375, 0.5, 0, 0.25 },  -- neutral
-			{ 0.25, 0.375, 0, 0.25 }, -- enemy
+			{ 0, 0.125, 0, 0.125 },    -- party
+			{ 0.5, 0.625, 0, 0.125 },  -- friend
+			{ 0.375, 0.5, 0, 0.125 },  -- neutral
+			{ 0.25, 0.375, 0, 0.125 }, -- enemy
 
-			{ 0.875, 1, 0, 0.25 },    -- friendly npc
-			{ 0.75, 0.875, 0, 0.25 }, -- neutral npc
-			{ 0.625, 0.75, 0, 0.25 }, -- enemy npc
+			{ 0.875, 1, 0, 0.125 },    -- friendly npc
+			{ 0.75, 0.875, 0, 0.125 }, -- neutral npc
+			{ 0.625, 0.75, 0, 0.125 }, -- enemy npc
 
-			{ 0, 0.125, 0.25, 0.5 },    -- tracked object
+			{ 0, 0.125, 0.125, 0.25 },    -- tracked object
 
-			{ 0.125, 0.25, 0.25, 0.5 }, -- quest available
-			{ 0.25, 0.375, 0.25, 0.5 }, -- quest complete
-			{ 0.375, 0.5, 0.25, 0.5 },  -- daily quest available
-			{ 0.5, 0.625, 0.25, 0.5 },  -- daily quest complete
+			{ 0.125, 0.25, 0.125, 0.25 }, -- quest available
+			{ 0.25, 0.375, 0.125, 0.25 }, -- quest complete
+			{ 0.375, 0.5, 0.125, 0.25 },  -- daily quest available
+			{ 0.5, 0.625, 0.125, 0.25 },  -- daily quest complete
 
-			{ 0.625, 0.75, 0.25, 0.5 }, -- undiscovered flight point
+			{ 0.625, 0.75, 0.125, 0.25 }, -- undiscovered flight point
 		}
 
 		local min, max, floor = math.min, math.max, math.floor
