@@ -114,7 +114,7 @@ end
 
 function TrackingDots:GetOptions()
 	local function image()
-		return getBlipTexture(self.db.profile.trackingDotStyle), 256, 256
+		return getBlipTexture(self.db.profile.trackingDotStyle), 256, 160
 	end
 
 	return {
@@ -152,6 +152,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			image = image,
 			order = 3,
+			imageCoords = { 0, 1, 0, 0.625 },
 		},
 	}
 end
