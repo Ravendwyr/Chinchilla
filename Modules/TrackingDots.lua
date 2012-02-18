@@ -37,7 +37,7 @@ TrackingDots:AddTrackingDotStyle("Charmed",      L["Charmed"],			[[Interface\Add
 function TrackingDots:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("TrackingDots", {
 		profile = {
-			trackingDotStyle = "Blizzard", blink = true,
+			trackingDotStyle = "Blizzard", blink = true, blinkRate = 0.5,
 			enabled = true,
 		},
 	})
@@ -97,14 +97,15 @@ function TrackingDots:Blink()
 end
 
 function TrackingDots:SetBlinking(_, value)
-	self.db.profile.blink = value
+	if value ~= nil then self.db.profile.blink = value
+	else value = self.db.profile.blink end
 
 	if not self:IsEnabled() then
 		value = false
 	end
 
 	if value then
-		self:ScheduleRepeatingTimer("Blink", 0.5)
+		self:ScheduleRepeatingTimer("Blink", self.db.profile.blinkRate)
 	else
 		Minimap:SetBlipTexture(blipFile)
 		self:CancelAllTimers()
@@ -118,6 +119,31 @@ function TrackingDots:GetOptions()
 	end
 
 	return {
+		blink = {
+			name = L["Blinking Blips"],
+			desc = L["Make the minimap blips flash to make them more noticable."],
+			type = 'toggle',
+			get = function(info)
+				return self.db.profile.blink
+			end,
+			set = "SetBlinking",
+			order = 2,
+		},
+		blinkRate = {
+			name = L["Blink Rate"],
+			desc = L["Set how fast the blips flash."],
+			type = 'range',
+			min = 0.1, max = 2, step = 0.1,
+			order = 3,
+			get = function() return self.db.profile.blinkRate end,
+			set = function(_, value)
+				self.db.profile.blinkRate = value
+
+				self:CancelAllTimers()
+				self:SetBlinking()
+			end,
+			disabled = function() return not self.db.profile.blink end,
+		},
 		style = {
 			name = L["Style"],
 			desc = L["Set the style of how the tracking dots should look."],
@@ -135,24 +161,14 @@ function TrackingDots:GetOptions()
 			set = function(info, value)
 				self:SetBlipTexture(value)
 			end,
-			order = 1,
-		},
-		blink = {
-			name = L["Blinking Blips"],
-			desc = L["Make the minimap blips flash to make them more noticable."],
-			type = 'toggle',
-			get = function(info)
-				return self.db.profile.blink
-			end,
-			set = "SetBlinking",
-			order = 2,
+			order = 4,
 		},
 		preview = {
 			name = " ", -- deliberate, otherwise it won't align properly
 			type = 'description',
 			image = image,
-			order = 3,
 			imageCoords = { 0, 1, 0, 0.625 },
+			order = 5,
 		},
 	}
 end
