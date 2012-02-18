@@ -61,6 +61,7 @@ end
 local function getBlipTexture(name)
 	local style = trackingDotStyles[name] or trackingDotStyles["Blizzard"]
 	local texture = style and style[2] or [[Interface\MiniMap\ObjectIcons]]
+
 	return texture
 end
 
@@ -79,6 +80,8 @@ function TrackingDots:SetBlipTexture(name)
 	end
 
 	Minimap:SetBlipTexture(blipFile)
+
+	LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
 end
 
 
@@ -110,136 +113,8 @@ end
 
 
 function TrackingDots:GetOptions()
-	local AceGUI = LibStub("AceGUI-3.0")
-
-	local previewValues = {
-		L["Party member or pet"],
-		L["Friendly player"],
-		L["Neutral player"],
-		L["Enemy player"],
-
-		L["Friendly npc"],
-		L["Neutral npc"],
-		L["Enemy npc"],
-
-		L["Tracked resource"],
-
-		L["Available quest"],
-		L["Completed quest"],
-		L["Available daily quest"],
-		L["Completed daily quest"],
-
-		L["New flight path"],
-	}
-
-	do
-		local texCoords = {
-			{ 0, 0.125, 0, 0.125 },    -- party
-			{ 0.5, 0.625, 0, 0.125 },  -- friend
-			{ 0.375, 0.5, 0, 0.125 },  -- neutral
-			{ 0.25, 0.375, 0, 0.125 }, -- enemy
-
-			{ 0.875, 1, 0, 0.125 },    -- friendly npc
-			{ 0.75, 0.875, 0, 0.125 }, -- neutral npc
-			{ 0.625, 0.75, 0, 0.125 }, -- enemy npc
-
-			{ 0, 0.125, 0.125, 0.25 },    -- tracked object
-
-			{ 0.125, 0.25, 0.125, 0.25 }, -- quest available
-			{ 0.25, 0.375, 0.125, 0.25 }, -- quest complete
-			{ 0.375, 0.5, 0.125, 0.25 },  -- daily quest available
-			{ 0.5, 0.625, 0.125, 0.25 },  -- daily quest complete
-
-			{ 0.625, 0.75, 0.125, 0.25 }, -- undiscovered flight point
-		}
-
-		local min, max, floor = math.min, math.max, math.floor
-
-		do
-			local widgetType = "Chinchilla_TrackingDots_Item_Select"
-			local widgetVersion = 1
-
-			local function SetText(self, text, ...)
-				if text and text ~= "" then
-					self.texture:SetTexture(getBlipTexture(TrackingDots.db.profile.trackingDotStyle))
-					self.texture:SetTexCoord(unpack(texCoords[text]))
-				end
-
-				self.text:SetText(previewValues[text] or "")
-			end
-
-			local function Constructor()
-				local self = AceGUI:Create("Dropdown-Item-Toggle")
-				self.useHighlight = false
-				self.type = widgetType
-				self.SetText = SetText
-
-				local texture = self.frame:CreateTexture(nil, "BACKGROUND")
-				texture:SetTexture(0, 0, 0, 0)
-				texture:SetPoint("BOTTOMRIGHT", self.frame, "TOPLEFT", 22, -17)
-				texture:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 6, -1)
-				self.texture = texture
-
-				return self
-			end
-
-			AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
-		end
-
-		do
-			local widgetType = "Chinchilla_TrackingDots_Select"
-			local widgetVersion = 1
-
-			local function SetText(self, text)
-				self.text:SetText(text or "")
-			end
-
-			local function AddListItem(self, value, text)
-				local item = AceGUI:Create("Chinchilla_TrackingDots_Item_Select")
-				item.disabled = true
-				item:SetText(text)
-				item.userdata.obj = self
-				item.userdata.value = value
-				self.pullout:AddItem(item)
-			end
-
-			local sortlist = {}
-			local function SetList(self, list)
-				self.list = list
-				self.pullout:Clear()
-
-				for v in pairs(self.list) do
-					sortlist[#sortlist + 1] = v
-				end
-
-				table.sort(sortlist)
-
-				for i, value in pairs(sortlist) do
-					AddListItem(self, value, value)
-					sortlist[i] = nil
-				end
-			end
-
-			local function Constructor()
-				local self = AceGUI:Create("Dropdown")
-				self.type = widgetType
-				self.SetText = SetText
-				self.SetList = SetList
-
-				local left = _G[self.dropdown:GetName() .. "Left"]
-				local middle = _G[self.dropdown:GetName() .. "Middle"]
-				local right = _G[self.dropdown:GetName() .. "Right"]
-
-				local texture = self.dropdown:CreateTexture(nil, "ARTWORK")
-				texture:SetPoint("BOTTOMRIGHT", right, "BOTTOMRIGHT", -39, 26)
-				texture:SetPoint("TOPLEFT", left, "TOPLEFT", 24, -24)
-				self.texture = texture
-
-				return self
-			end
-
-			AceGUI:RegisterWidgetType(widgetType, Constructor, widgetVersion)
-		end
+	local function image()
+		return getBlipTexture(self.db.profile.trackingDotStyle), 256, 256
 	end
 
 	return {
@@ -260,15 +135,7 @@ function TrackingDots:GetOptions()
 			set = function(info, value)
 				self:SetBlipTexture(value)
 			end,
-			order = 2,
-		},
-		preview = {
-			name = L["Preview"],
-			desc = L["See how the tracking dots will look"],
-			type = 'select',
-			values = previewValues,
-			order = 3,
-			dialogControl = "Chinchilla_TrackingDots_Select",
+			order = 1,
 		},
 		blink = {
 			name = L["Blinking Blips"],
@@ -278,6 +145,13 @@ function TrackingDots:GetOptions()
 				return self.db.profile.blink
 			end,
 			set = "SetBlinking",
+			order = 2,
+		},
+		preview = {
+			name = " ", -- deliberate, otherwise it won't align properly
+			type = 'description',
+			image = image,
+			order = 3,
 		},
 	}
 end
