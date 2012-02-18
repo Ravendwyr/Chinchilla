@@ -27,7 +27,7 @@ end
 
 
 local timerID
-function AutoZoom:Minimap_SetZoom(_, zoomLevel, ignore)
+function AutoZoom:Minimap_SetZoom(_, zoomLevel)
 	if zoomLevel == 0 then return end
 
 	if timerID then
