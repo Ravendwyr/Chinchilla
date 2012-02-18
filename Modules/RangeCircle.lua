@@ -54,7 +54,7 @@ local minimapSize = { -- radius of minimap
 	},
 }
 
-local texture, indoors
+local texture
 local inCombat = not not InCombatLockdown()
 
 function RangeCircle:OnEnable()
@@ -65,7 +65,7 @@ function RangeCircle:OnEnable()
 
 	texture:Show()
 
-	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
+	self:RegisterEvent("MINIMAP_UPDATE_ZOOM", "Update")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:Update()
@@ -87,32 +87,20 @@ function RangeCircle:PLAYER_REGEN_DISABLED()
 	self:Update()
 end
 
-function RangeCircle:MINIMAP_UPDATE_ZOOM()
-	local zoom = Minimap:GetZoom()
-
-	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1, true)
-	end
-
-	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
-	Minimap:SetZoom(zoom, true)
-
-	self:Update()
-end
 
 function RangeCircle:Update()
 	if not self:IsEnabled() then
 		return
 	end
 
-	local style = styles[self.db.profile[inCombat and 'combatStyle' or 'style']] or styles.Solid
+	local style = styles[self.db.profile[inCombat and "combatStyle" or "style"]] or styles.Solid
 	local tex = style and style[2] or [[Interface\AddOns\Chinchilla\Art\Range-Solid]]
 
 	texture:SetTexture(tex)
-	texture:SetVertexColor(unpack(self.db.profile[inCombat and 'combatColor' or 'color']))
+	texture:SetVertexColor(unpack(self.db.profile[inCombat and "combatColor" or "color"]))
 
-	local radius = minimapSize[indoors and "indoor" or "outdoor"][Minimap:GetZoom()]
-	local range = self.db.profile[inCombat and 'combatRange' or 'range']
+	local radius = minimapSize[IsIndoors() and "indoor" or "outdoor"][Minimap:GetZoom()]
+	local range = self.db.profile[inCombat and "combatRange" or "range"]
 	local minimapWidth = Minimap:GetWidth()
 	local size = minimapWidth * range/radius
 

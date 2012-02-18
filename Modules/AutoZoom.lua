@@ -21,26 +21,25 @@ end
 
 
 function AutoZoom:OnEnable()
+	timerID = self:ScheduleTimer("ZoomOut", self.db.profile.time)
 	self:SecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
 end
 
 
 local timerID
 function AutoZoom:Minimap_SetZoom(_, zoomLevel, ignore)
-	if ignore then return end
+	if zoomLevel == 0 then return end
 
-	if zoomLevel ~= 0 then
-		if timerID then
-			self:CancelTimer(timerID, true)
-			timerID = nil
-		end
-
-		timerID = self:ScheduleTimer("ZoomOut", self.db.profile.time)
+	if timerID then
+		self:CancelTimer(timerID, true)
+		timerID = nil
 	end
+
+	timerID = self:ScheduleTimer("ZoomOut", self.db.profile.time)
 end
 
 function AutoZoom:ZoomOut()
-	Minimap:SetZoom(0, true)
+	Minimap:SetZoom(0)
 	timerID = nil
 end
 
@@ -53,8 +52,7 @@ function AutoZoom:GetOptions()
 			type = 'range',
 			min = 1,
 			max = 60,
-			step = 0.1,
-			bigStep = 1,
+			step = 1,
 			get = function(info)
 				return self.db.profile.time
 			end,

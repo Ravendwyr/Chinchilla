@@ -55,13 +55,7 @@ function Expander:Refresh()
 
 		cluster:Show()
 		minimap:Show()
-
-		local z = minimap:GetZoom()
-
-		if z > 2 then minimap:SetZoom(z-1)
-		else minimap:SetZoom(z+1) end
-
-		minimap:SetZoom(z)
+		minimap:SetZoom(minimap:GetZoom())
 
 		if GM2 then
 			GM2:ReparentMinimapPins(cluster)
@@ -76,13 +70,7 @@ function Expander:Refresh()
 		minimap:Hide()
 
 		MinimapCluster:Show()
-
-		local z = Minimap:GetZoom()
-
-		if z > 2 then Minimap:SetZoom(z-1, true)
-		else Minimap:SetZoom(z+1, true) end
-
-		Minimap:SetZoom(z, true)
+		Minimap:SetZoom(Minimap:GetZoom())
 
 		if GM2 then
 			GM2:ReparentMinimapPins(Minimap)

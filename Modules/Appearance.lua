@@ -130,17 +130,8 @@ function Appearance:OnDisable()
 	end
 end
 
-local indoors
+
 function Appearance:MINIMAP_UPDATE_ZOOM()
-	local zoom = Minimap:GetZoom()
-
-	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1, true)
-	end
-
-	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
-	Minimap:SetZoom(zoom, true)
-
 	if InCombatLockdown() then self:SetCombatAlpha()
 	else self:SetAlpha() end
 end
@@ -155,6 +146,7 @@ function Appearance:PLAYER_REGEN_DISABLED()
 	inCombat = true
 	self:SetCombatAlpha()
 end
+
 
 local minimapButtons = {}
 do
@@ -195,6 +187,7 @@ do
 		end
 	end
 end
+
 
 function Appearance:OnRotateMinimapUpdate(value)
 	rotateMinimap = value
@@ -245,10 +238,6 @@ function Appearance:SetScale(value)
 	end
 
 	MinimapCluster:SetScale(value)
-
-	local zoom = Minimap:GetZoom()
-	Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1, true)
-	Minimap:SetZoom(zoom, true)
 end
 
 function Appearance:SetBlipScale(value)
@@ -262,7 +251,7 @@ function Appearance:SetAlpha(value)
 	if value then self.db.profile.alpha = value
 	else value = self.db.profile.alpha end
 
-	if not self:IsEnabled() or indoors then value = 1 end
+	if not self:IsEnabled() or IsIndoors() then value = 1 end
 
 	if inCombat then self:SetCombatAlpha()
 	else MinimapCluster:SetAlpha(value) end
@@ -273,7 +262,7 @@ function Appearance:SetCombatAlpha(value)
 	else value = self.db.profile.combatAlpha end
 
 	if not inCombat then return end
-	if not self:IsEnabled() or indoors then value = 1 end
+	if not self:IsEnabled() or IsIndoors() then value = 1 end
 
 	MinimapCluster:SetAlpha(value)
 end
