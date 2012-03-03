@@ -115,10 +115,29 @@ end
 
 function TrackingDots:GetOptions()
 	local function image()
-		return getBlipTexture(self.db.profile.trackingDotStyle), 256, 160
+		return getBlipTexture(self.db.profile.trackingDotStyle), 24, 24
 	end
 
 	return {
+		style = {
+			name = L["Style"],
+			desc = L["Set the style of how the tracking dots should look."],
+			type = 'select',
+			values = function()
+				local t = {}
+				for k, v in pairs(trackingDotStyles) do
+					t[k] = v[1]
+				end
+				return t
+			end,
+			get = function(info)
+				return self.db.profile.trackingDotStyle
+			end,
+			set = function(info, value)
+				self:SetBlipTexture(value)
+			end,
+			order = 1,
+		},
 		blink = {
 			name = L["Blinking Blips"],
 			desc = L["Make the minimap blips flash to make them more noticable."],
@@ -144,31 +163,110 @@ function TrackingDots:GetOptions()
 			end,
 			disabled = function() return not self.db.profile.blink end,
 		},
-		style = {
-			name = L["Style"],
-			desc = L["Set the style of how the tracking dots should look."],
-			type = 'select',
-			values = function()
-				local t = {}
-				for k, v in pairs(trackingDotStyles) do
-					t[k] = v[1]
-				end
-				return t
-			end,
-			get = function(info)
-				return self.db.profile.trackingDotStyle
-			end,
-			set = function(info, value)
-				self:SetBlipTexture(value)
-			end,
+
+		preview1 = {
+			name = L["Party member or pet"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0, 0.125, 0, 0.125 },
 			order = 4,
 		},
-		preview = {
-			name = " ", -- deliberate, otherwise it won't align properly
+		preview2 = {
+			name = L["Friendly player"],
 			type = 'description',
+			fontSize = "medium",
 			image = image,
-			imageCoords = { 0, 1, 0, 0.625 },
+			imageCoords = { 0.5, 0.625, 0, 0.125 },
 			order = 5,
+		},
+		preview3 = {
+			name = L["Neutral player"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.375, 0.5, 0, 0.125 },
+			order = 6,
+		},
+		preview4 = {
+			name = L["Enemy player"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.25, 0.375, 0, 0.125 },
+			order = 7,
+		},
+		preview5 = {
+			name = L["Friendly npc"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.875, 1, 0, 0.125 },
+			order = 8,
+		},
+		preview6 = {
+			name = L["Neutral npc"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.75, 0.875, 0, 0.125 },
+			order = 9,
+		},
+		preview7 = {
+			name = L["Enemy npc"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.625, 0.75, 0, 0.125 },
+			order = 10,
+		},
+		preview8 = {
+			name = L["Tracked resource"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0, 0.125, 0.125, 0.25 },
+			order = 11,
+		},
+		preview9 = {
+			name = L["Available quest"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.125, 0.25, 0.125, 0.25 },
+			order = 12,
+		},
+		preview10 = {
+			name = L["Completed quest"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.25, 0.375, 0.125, 0.25 },
+			order = 13,
+		},
+		preview11 = {
+			name = L["Available daily quest"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.375, 0.5, 0.125, 0.25 },
+			order = 14,
+		},
+		preview12 = {
+			name = L["Completed daily quest"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.5, 0.625, 0.125, 0.25 },
+			order = 15,
+		},
+		preview13 = {
+			name = L["New flight path"],
+			type = 'description',
+			fontSize = "medium",
+			image = image,
+			imageCoords = { 0.625, 0.75, 0.125, 0.25 },
+			order = 16,
 		},
 	}
 end
