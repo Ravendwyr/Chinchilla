@@ -1,3 +1,8 @@
+Version 2.5.1
+- Added "Charmed" minimap blip theme.
+- Blip previews in the Tracking Dots config are now embedded in the frame instead of in a dropdown menu.
+- Use the IsIndoors() API instead of abusing Minimap:SetZoom().
+
 Version 2.5
 - Updated for WoW 4.3.0.
 - Added font, border and background selection options to the Ping, Location and Coordinates modules.
