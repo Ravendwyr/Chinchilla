@@ -1,3 +1,6 @@
+Version 2.5.2
+- Blinking blips are now off by default.
+
 Version 2.5.1
 - Added "Charmed" minimap blip theme.
 - Blip previews in the Tracking Dots config are now embedded in the frame instead of in a dropdown menu.

@@ -37,7 +37,7 @@ TrackingDots:AddTrackingDotStyle("Charmed",      L["Charmed"],			[[Interface\Add
 function TrackingDots:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("TrackingDots", {
 		profile = {
-			trackingDotStyle = "Blizzard", blink = true, blinkRate = 0.5,
+			trackingDotStyle = "Blizzard", blink = false, blinkRate = 0.5,
 			enabled = true,
 		},
 	})
