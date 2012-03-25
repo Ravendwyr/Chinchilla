@@ -310,13 +310,13 @@ function ShowHide:GetOptions()
 			type = 'toggle',
 			order = 2,
 			get = get, set = set,
+			width = "double",
 			disabled = function() return self.db.profile.dayNight == false end,
 		},
 		tutorial = {
 			name = L["A gold tick means the button will be shown at all times. A silver tick means the button will be shown when you hover the cursor over the minimap. An empty tickbox means the button will not be shown at all."],
 			type = "description",
 			order = 3,
-			hidden = function() return not self.db.profile.onMouseOver end,
 		},
 		battleground = {
 			name = L["Battleground"],
