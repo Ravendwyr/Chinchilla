@@ -1,4 +1,6 @@
 
+local MISTS_OF_PANDARIA = GetBuildInfo():match("5") and true or false
+
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
@@ -210,7 +212,11 @@ function Chinchilla:OnEnable()
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
 
-	LFGSearchStatus:SetClampedToScreen(true)
+	if MISTS_OF_PANDARIA then
+		QueueStatusMinimapButton:SetClampedToScreen(true)
+	else
+		LFGSearchStatus:SetClampedToScreen(true)
+	end
 end
 
 function Chinchilla:OnDisable()
@@ -222,7 +228,11 @@ function Chinchilla:OnDisable()
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
 
-	LFGSearchStatus:SetClampedToScreen(false)
+	if MISTS_OF_PANDARIA then
+		QueueStatusMinimapButton:SetClampedToScreen(false)
+	else
+		LFGSearchStatus:SetClampedToScreen(false)
+	end
 end
 
 function Chinchilla:OnProfileUpdate()

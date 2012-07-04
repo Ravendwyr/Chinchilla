@@ -1,4 +1,6 @@
 
+local MISTS_OF_PANDARIA = GetBuildInfo():match("5") and true or false
+
 local MoveButtons = Chinchilla:NewModule("MoveButtons")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
@@ -12,7 +14,7 @@ local buttons = {
 	guilddifficulty = GuildInstanceDifficulty,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
-	lfg = MiniMapLFGFrame,
+	lfg = MISTS_OF_PANDARIA and QueueStatusMinimapButton or MiniMapLFGFrame,
 	dayNight = GameTimeFrame,
 	clock = TimeManagerClockButton,
 	track = MiniMapTracking,
@@ -21,6 +23,7 @@ local buttons = {
 	zoomOut = MinimapZoomOut,
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
+
 
 local buttonReverse = {}
 for k,v in pairs(buttons) do
@@ -221,6 +224,7 @@ local function button_OnDragStop(this)
 	button_OnUpdate(this)
 end
 
+
 -- yoinked from Tekkub's Cork
 local function GetTipAnchor(frame)
 	local x,y = frame:GetCenter()
@@ -230,6 +234,7 @@ local function GetTipAnchor(frame)
 	return vhalf..hhalf, frame, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
 end
 -- end yoink
+
 
 function MoveButtons:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("MoveButtons", {
@@ -297,9 +302,15 @@ end
 
 
 function MoveButtons:PositionLFD()
-	LFGSearchStatus:ClearAllPoints()
-	LFGSearchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
+	if MISTS_OF_PANDARIA then
+		QueueStatusFrame:ClearAllPoints()
+		QueueStatusFrame:SetPoint(GetTipAnchor(QueueStatusMinimapButton))
+	else
+		LFGSearchStatus:ClearAllPoints()
+		LFGSearchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
+	end
 end
+
 
 local function angle_get(info)
 	local key = info[#info - 1]
