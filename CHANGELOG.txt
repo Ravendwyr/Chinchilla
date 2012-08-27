@@ -1,3 +1,6 @@
+Version 2.5.4
+- Updated for Patch 5.0.4.
+
 Version 2.5.3
 - New package with updated libraries in an effort to reduce taint.
 
@@ -10,7 +13,7 @@ Version 2.5.1
 - Use the IsIndoors() API instead of abusing Minimap:SetZoom().
 
 Version 2.5
-- Updated for WoW 4.3.0.
+- Updated for Patch 4.3.0.
 - Added font, border and background selection options to the Ping, Location and Coordinates modules.
 - Fixed _NPCScan.Overlay support in the Expander module (it wasn't centered properly).
 - Fixed GatherMate2 support in the Expander module (the blips didn't update properly when switching maps).
@@ -24,12 +27,12 @@ Version 2.4.1
 - Fixed a bug caused by Blizzard's awful coding which caused errors on startup for some users.
 
 Version 2.4
-- Updated for WoW 4.2.0.
-- Special thanks to Fyreuni, _Lizzia and palmetto_rose for their support!
+- Updated for Patch 4.2.0.
+- Special thanks to Fyreuni for her support!
 - Removed movement support for PlayerPowerBarAlt as it proved too problematic to maintain. Download the "BetterPowerBarAlt" addon instead.
 - Removed some leftover debug in the Appearance module.
 - Removed some fail code from the Show/Hide module.
-- Added support for TomTom, NPC Scan and NPC Scan Overlay to the Expander module.
+- Added support for TomTom, _NPCScan and _NPCScan.Overlay to the Expander module.
 - Added support for blinking minimap node icons.
 - Added an icon for Ampere.
 - Fixed boss frames not obeying their show/hide setting.
@@ -37,7 +40,7 @@ Version 2.4
 - Fixed a bug with the movie recording button which caused it to show up all the time.
 
 Version 2.3.2
-- Updated for WoW 4.1.0.
+- Updated for Patch 4.1.0.
 - Fixed a typo which broke the Lock button in the Move Buttons module. Thanks to Mysteeq for reporting.
 - Fixed some odd behaviour in the Expander module caused by a copy/paste fail.
 - Fixed a bug which prevented Boss Frames from staying disabled.
@@ -73,7 +76,7 @@ Version 2.2.1
 - The guild instance difficulty flag now inherits the same settings as the regular instance difficulty flag.
 
 Version 2.2
-- Updated for WoW 4.0.1.
+- Updated for Patch 4.0.1.
 
 Version 2.1.6
 - Fixed a bug I introduced in Version 2.1.5 causing the minimap to go blank when indoors. I tried to make something better, but it didn't work. :(
@@ -118,13 +121,13 @@ Version 2.1
 - Removed all leftover references to the pre-3.3 LFG minimap button.
 
 Version 2.0.9
-- Updated for WoW 3.3.0.
+- Updated for Patch 3.3.0.
 - Added support for the new LFD/LFR minimap button.
 - Fixed a bug caused by Blizzard removing the minimap toggle button.
 - The quest tracker is movable once again, seeing as Blizzard have decided to lock it back under the minimap.
 
 Version 2.0.8
-- Updated for WoW 3.2.0.
+- Updated for Patch 3.2.0.
 
 Version 2.0.7
 - Updated tracking dot images to the new 3.1 layout. Nandini blip users rejoice!
