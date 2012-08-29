@@ -151,25 +151,46 @@ function Location:SetFont(font)
 	if font then self.db.profile.font = font
 	else font = self.db.profile.font end
 
-	frame.text:SetFont( LSM:Fetch("font", font, true), 11 )
+	font = LSM:Fetch("font", font, true)
+
+	if not font then
+		self.db.profile.font = LSM.DefaultMedia.font
+		font = LSM:Fetch("font", LSM.DefaultMedia.font, true)
+	end
+
+	frame.text:SetFont(font, 11)
 
 	self:Update()
 end
 
-function Location:SetBackground(value)
-	if value then self.db.profile.backgroundTexture = value
-	else value = self.db.profile.backgroundTexture end
+function Location:SetBackground(bgFile)
+	if bgFile then self.db.profile.backgroundTexture = bgFile
+	else bgFile = self.db.profile.backgroundTexture end
 
-	backdrop.bgFile = LSM:Fetch("background", value, true)
+	bgFile = LSM:Fetch("background", bgFile, true)
+
+	if not bgFile then
+		self.db.profile.backgroundTexture = "Blizzard Tooltip"
+		bgFile = LSM:Fetch("background", "Blizzard Tooltip", true)
+	end
+
+	backdrop.bgFile = bgFile
 
 	frame:SetBackdrop(backdrop)
 end
 
-function Location:SetBorder(value)
-	if value then self.db.profile.borderTexture = value
-	else value = self.db.profile.borderTexture end
+function Location:SetBorder(edgeFile)
+	if edgeFile then self.db.profile.borderTexture = edgeFile
+	else edgeFile = self.db.profile.borderTexture end
 
-	backdrop.edgeFile = LSM:Fetch("border", value, true)
+	edgeFile = LSM:Fetch("border", edgeFile, true)
+
+	if not edgeFile then
+		self.db.profile.borderTexture = "Blizzard Tooltip"
+		edgeFile = LSM:Fetch("border", "Blizzard Tooltip", true)
+	end
+
+	backdrop.edgeFile = edgeFile
 
 	frame:SetBackdrop(backdrop)
 end
