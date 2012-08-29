@@ -1,6 +1,4 @@
 
-local MISTS_OF_PANDARIA = GetBuildInfo():match("5") and true or false
-
 local MoveButtons = Chinchilla:NewModule("MoveButtons")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
@@ -14,7 +12,7 @@ local buttons = {
 	guilddifficulty = GuildInstanceDifficulty,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
-	lfg = MISTS_OF_PANDARIA and QueueStatusMinimapButton or MiniMapLFGFrame,
+	lfg = QueueStatusMinimapButton,
 	dayNight = GameTimeFrame,
 	clock = TimeManagerClockButton,
 	track = MiniMapTracking,
@@ -302,13 +300,8 @@ end
 
 
 function MoveButtons:PositionLFD()
-	if MISTS_OF_PANDARIA then
-		QueueStatusFrame:ClearAllPoints()
-		QueueStatusFrame:SetPoint(GetTipAnchor(QueueStatusMinimapButton))
-	else
-		LFGSearchStatus:ClearAllPoints()
-		LFGSearchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
-	end
+	QueueStatusFrame:ClearAllPoints()
+	QueueStatusFrame:SetPoint(GetTipAnchor(QueueStatusMinimapButton))
 end
 
 
