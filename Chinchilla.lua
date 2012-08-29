@@ -209,8 +209,6 @@ function Chinchilla:OnEnable()
 
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
-
-	QueueStatusFrame:SetClampedToScreen(true)
 end
 
 function Chinchilla:OnDisable()
@@ -221,8 +219,6 @@ function Chinchilla:OnDisable()
 
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 	self:SecureHook("SetCVar")
-
-	QueueStatusFrame:SetClampedToScreen(false)
 end
 
 function Chinchilla:OnProfileUpdate()

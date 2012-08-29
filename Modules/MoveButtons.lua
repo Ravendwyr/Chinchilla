@@ -223,17 +223,6 @@ local function button_OnDragStop(this)
 end
 
 
--- yoinked from Tekkub's Cork
-local function GetTipAnchor(frame)
-	local x,y = frame:GetCenter()
-	if not x or not y then return "TOPLEFT", frame, "BOTTOMLEFT" end
-	local hhalf = (x > UIParent:GetWidth()*2/3) and "RIGHT" or (x < UIParent:GetWidth()/3) and "LEFT" or ""
-	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
-	return vhalf..hhalf, frame, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
-end
--- end yoink
-
-
 function MoveButtons:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("MoveButtons", {
 		profile = {
@@ -257,7 +246,6 @@ function MoveButtons:OnInitialize()
 end
 
 function MoveButtons:OnEnable()
-	self:PositionLFD()
 	self:SetLocked()
 	self:Update()
 end
@@ -296,12 +284,6 @@ function MoveButtons:Update()
 			v:SetClampedToScreen(false)
 		end
 	end
-end
-
-
-function MoveButtons:PositionLFD()
-	QueueStatusFrame:ClearAllPoints()
-	QueueStatusFrame:SetPoint(GetTipAnchor(QueueStatusMinimapButton))
 end
 
 
@@ -417,8 +399,6 @@ local function x_set(info, value)
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 	end
-
-	if key == "lfg" then MoveButtons:PositionLFD() end
 end
 
 local function y_set(info, value)
@@ -444,8 +424,6 @@ local function y_set(info, value)
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 	end
-
-	if key == "lfg" then MoveButtons:PositionLFD() end
 end
 
 
