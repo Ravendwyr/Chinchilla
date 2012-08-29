@@ -165,7 +165,7 @@ end
 
 
 local function test()
-	if GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0 then return end -- prevent ping spam in groups
+	if GetNumGroupMembers() > 0 then return end -- prevent ping spam in groups
 
 	allowNextPlayerPing = true
 	Minimap:PingLocation(0, 0)
@@ -302,7 +302,7 @@ function Ping:GetOptions()
 			type = 'execute',
 			func = test,
 			order = 1,
-			disabled = function() return (GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0) end,
+			disabled = function() return GetNumGroupMembers() > 0 end,
 		},
 		chat = {
 			name = L["Show in chat"],
