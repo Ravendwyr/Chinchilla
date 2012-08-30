@@ -195,7 +195,44 @@ function ShowHide:SetFrameShown(key, frame)
 	elseif key == "mail" then
 		if HasNewMail() then frame:Show() end
 	elseif key == "lfg" then
-		if GetLFGMode() then frame:Show() end
+		-- there must be a better way to do this
+		local showMinimapButton = false
+
+		-- try each LFG type
+		for i=1, NUM_LE_LFG_CATEGORYS do
+			local mode, submode = GetLFGMode(i)
+			if mode then
+				showMinimapButton = true
+			end
+		end
+
+		-- try all PvP queues
+		for i=1, GetMaxBattlefieldID() do
+			local status, mapName, instanceID, levelRangeMin, levelRangeMax, teamSize, registeredMatch, eligibleInQueue, waitingOnOtherActivity = GetBattlefieldStatus(i)
+			if status and status ~= "none" then
+				showMinimapButton = true
+			end
+		end
+
+		-- try all World PvP queues
+		for i=1, MAX_WORLD_PVP_QUEUES do
+			local status, mapName, queueID = GetWorldPVPQueueStatus(i)
+			if status and status ~= "none" then
+				showMinimapButton = true
+			end
+		end
+
+		-- World PvP areas we're currently in
+		if CanHearthAndResurrectFromArea() then
+			showMinimapButton = true
+		end
+
+		-- Pet Battle PvP Queue
+		if C_PetBattles.GetPVPMatchmakingInfo() then
+			showMinimapButton = true
+		end
+
+		if showMinimapButton then frame:Show() end
 	elseif key == "difficulty" and self.db.profile[key] then
 		MiniMapInstanceDifficulty_Update()
 	elseif key == "record" then
