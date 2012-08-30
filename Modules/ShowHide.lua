@@ -318,28 +318,28 @@ function ShowHide:GetOptions()
 			name = L["North"],
 			desc = L["Show the north symbol on the minimap"],
 			type = 'toggle',
-			order = 5,
+			order = 4,
 			get = get, set = set,
 		},
 		difficulty = {
 			name = L["Instance difficulty"],
 			desc = L["Show the instance difficulty flag on the minimap"],
 			type = 'toggle',
-			order = 6,
+			order = 5,
 			get = get, set = set,
 		},
 		locationText = {
 			name = L["Location text"],
 			desc = L["Show the location text above the minimap"],
 			type = 'toggle',
-			order = 7,
+			order = 6,
 			get = get, set = set,
 		},
 		locationBar = {
 			name = L["Location bar"],
 			desc = L["Show the location bar above the minimap"],
 			type = 'toggle',
-			order = 8,
+			order = 7,
 			get = get, set = set,
 			disabled = function()
 				return not self.db.profile.locationText
@@ -350,7 +350,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the world map button"],
 			type = 'toggle',
 			tristate = true,
-			order = 9,
+			order = 8,
 			get = get, set = set,
 		},
 		mail = {
@@ -358,7 +358,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the mail indicator"],
 			type = 'toggle',
 			tristate = true,
-			order = 10,
+			order = 9,
 			get = get, set = set,
 		},
 		lfg = {
@@ -366,7 +366,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the looking for group indicator"],
 			type = 'toggle',
 			tristate = true,
-			order = 11,
+			order = 10,
 			get = get, set = set,
 		},
 		track = {
@@ -374,7 +374,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the tracking indicator"],
 			type = 'toggle',
 			tristate = true,
-			order = 12,
+			order = 11,
 			get = get, set = set,
 		},
 		clock = {
@@ -382,7 +382,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the clock"],
 			type = 'toggle',
 			tristate = true,
-			order = 13,
+			order = 12,
 			get = get, set = function(info, value)
 				if TITAN_CLOCK_ID then
 					if value == true or value == nil then
@@ -400,7 +400,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the calendar"],
 			type = 'toggle',
 			tristate = true,
-			order = 14,
+			order = 13,
 			get = get, set = function(info, value)
 				if TITAN_CLOCK_ID then
 					if value == true or value == nil then
@@ -418,7 +418,7 @@ function ShowHide:GetOptions()
 			desc = L["Show the voice chat button"],
 			type = 'toggle',
 			tristate = true,
-			order = 15,
+			order = 14,
 			get = get, set = set,
 		},
 		zoom = {
@@ -426,28 +426,28 @@ function ShowHide:GetOptions()
 			desc = L["Show the zoom in and out buttons"],
 			type = 'toggle',
 			tristate = true,
-			order = 16,
+			order = 15,
 			get = get, set = set,
 		},
 		vehicleSeats = {
 			name = L["Vehicle seats"],
 			desc = L["Show the vehicle seats indicator"],
 			type = 'toggle',
-			order = 17,
+			order = 16,
 			get = get, set = set,
 		},
 		boss = {
 			name = L["Boss frames"],
 			desc = L["Show the boss unit frames"],
 			type = 'toggle',
-			order = 18,
+			order = 17,
 			get = get, set = set,
 		},
 		record = IsMacClient() and {
 			name = L["Recording"],
 			desc = L["Show the recording button"],
 			type = 'toggle',
-			order = 19,
+			order = 18,
 			get = function() return GetCVar("MovieRecordingIcon") == "1" and true or false end,
 			set = function(_, value)
 				if value then SetCVar("MovieRecordingIcon", "1")
