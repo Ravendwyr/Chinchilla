@@ -7,7 +7,6 @@ MoveButtons.desc = L["Move buttons around the minimap"]
 
 
 local buttons = {
-	battleground = MiniMapBattlefieldFrame,
 	difficulty = MiniMapInstanceDifficulty,
 	guilddifficulty = GuildInstanceDifficulty,
 	map = MiniMapWorldMapButton,
@@ -547,13 +546,6 @@ function MoveButtons:GetOptions()
 				self:SetRadius(value)
 			end,
 		},
-		battleground = buttons.battleground and {
-			name = L["Battleground"],
-			desc = L["Set the position of the battleground indicator"],
-			type = 'group',
-			inline = true,
-			args = args,
-		} or nil,
 		map = buttons.map and {
 			name = L["World map"],
 			desc = L["Set the position of the world map button"],

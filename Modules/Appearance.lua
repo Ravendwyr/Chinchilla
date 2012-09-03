@@ -473,7 +473,6 @@ function Appearance:SetBorderColor(r, g, b, a)
 end
 
 local buttonBorderTextures = {
-	MiniMapBattlefieldBorder,
 	MiniMapWorldBorder,
 	MiniMapMailBorder,
 	MiniMapTrackingButtonBorder,
