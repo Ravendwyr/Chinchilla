@@ -167,14 +167,7 @@ function Location:SetBackground(bgFile)
 	if bgFile then self.db.profile.backgroundTexture = bgFile
 	else bgFile = self.db.profile.backgroundTexture end
 
-	bgFile = LSM:Fetch("background", bgFile, true)
-
-	if not bgFile then
-		self.db.profile.backgroundTexture = "Blizzard Tooltip"
-		bgFile = LSM:Fetch("background", "Blizzard Tooltip", true)
-	end
-
-	backdrop.bgFile = bgFile
+	backdrop.bgFile = LSM:Fetch("background", bgFile, true)
 
 	frame:SetBackdrop(backdrop)
 end
@@ -183,14 +176,7 @@ function Location:SetBorder(edgeFile)
 	if edgeFile then self.db.profile.borderTexture = edgeFile
 	else edgeFile = self.db.profile.borderTexture end
 
-	edgeFile = LSM:Fetch("border", edgeFile, true)
-
-	if not edgeFile then
-		self.db.profile.borderTexture = "Blizzard Tooltip"
-		edgeFile = LSM:Fetch("border", "Blizzard Tooltip", true)
-	end
-
-	backdrop.edgeFile = edgeFile
+	backdrop.edgeFile = LSM:Fetch("border", edgeFile, true)
 
 	frame:SetBackdrop(backdrop)
 end
