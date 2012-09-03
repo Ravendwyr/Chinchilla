@@ -1,3 +1,8 @@
+Version 2.5.6
+- Fixed an error with the new LFG minimap button when set to show on mouseover.
+- Fixed a very silly bug that prevented users from choosing "None" as a border or background.
+- Removed options for the Battleground minimap button as was merged into the LFG button in Patch 5.0.4.
+
 Version 2.5.5
 - Fixed an error in the Ping module. Thanks to Spiderkeg for reporting it.
 - Fixed an error in the Location module caused when a SharedMedia font can't be found.
