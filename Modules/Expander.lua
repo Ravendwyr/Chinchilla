@@ -12,6 +12,7 @@ function Expander:OnInitialize()
 			enabled = true,
 			key = false, toggle = true,
 			scale = 3, alpha = 1,
+			anchor = "CENTER", x = 0, y = 0,
 		},
 	})
 
@@ -22,40 +23,31 @@ end
 
 
 local cluster, minimap, button, overlay, GM2
-local show = false
+local show, locked = false, true
 
 function Expander:Refresh()
+	if not minimap then
+		minimap = CreateFrame("Minimap", "Chinchilla_Expander_Minimap", cluster)
+		minimap:SetFrameStrata("BACKGROUND")
+		minimap:SetWidth(140 * self.db.profile.scale)
+		minimap:SetHeight(140 * self.db.profile.scale)
+		minimap:SetScale(1.2)
+		minimap:SetPoint("CENTER")
+		minimap:SetAlpha(self.db.profile.alpha)
+		minimap:EnableMouse(false)
+		minimap:EnableMouseWheel(false)
+		minimap:EnableKeyboard(false)
+
+		setmetatable(cluster, { __index = minimap })
+
+		cluster.GetScale = function() return 1 end
+	end
+
 	if show then
-		if not cluster then
-			cluster = CreateFrame("Frame", nil, UIParent)
-			cluster:SetFrameStrata("LOW")
-			cluster:SetWidth(168 * self.db.profile.scale)
-			cluster:SetHeight(168 * self.db.profile.scale)
-			cluster:SetScale(1.2)
-			cluster:SetPoint("CENTER")
-
-			minimap = CreateFrame("Minimap", "Chinchilla_Expander_Minimap", cluster)
-			minimap:SetFrameStrata("BACKGROUND")
-			minimap:SetWidth(140 * self.db.profile.scale)
-			minimap:SetHeight(140 * self.db.profile.scale)
-			minimap:SetScale(1.2)
-			minimap:SetPoint("CENTER")
-			minimap:SetAlpha(self.db.profile.alpha)
-
-			minimap:EnableMouse(false)
-			minimap:EnableMouseWheel(false)
-			minimap:EnableKeyboard(false)
-
-			setmetatable(cluster, { __index = minimap })
-
-			cluster.GetScale = function() return 1 end
-		end
-
-		MinimapCluster:Hide()
+		Minimap:Hide()
 
 		cluster:Show()
 		minimap:Show()
-		minimap:SetZoom(minimap:GetZoom())
 
 		if GM2 then
 			GM2:ReparentMinimapPins(cluster)
@@ -69,8 +61,7 @@ function Expander:Refresh()
 		cluster:Hide()
 		minimap:Hide()
 
-		MinimapCluster:Show()
-		Minimap:SetZoom(Minimap:GetZoom())
+		Minimap:Show()
 
 		if GM2 then
 			GM2:ReparentMinimapPins(Minimap)
@@ -85,6 +76,19 @@ end
 
 
 function Expander:OnEnable()
+	if not cluster then
+		cluster = CreateFrame("Frame", nil, UIParent)
+		cluster:Hide()
+		cluster:SetClampedToScreen(true)
+		cluster:SetFrameStrata("BACKGROUND")
+		cluster:SetWidth(168 * self.db.profile.scale)
+		cluster:SetHeight(168 * self.db.profile.scale)
+		cluster:SetScale(1.2)
+		cluster:SetPoint(self.db.profile.anchor, "UIParent", self.db.profile.anchor, self.db.profile.x, self.db.profile.y)
+	end
+
+	self:SetLocked(true)
+
 	if not button then
 		button = CreateFrame("Button", "Chinchilla_Expander_Button")
 	end
@@ -130,15 +134,54 @@ end
 
 
 function Expander:SetSizes()
-	if not cluster or not minimap then return end
+	if cluster then
+		cluster:SetWidth(168 * self.db.profile.scale)
+		cluster:SetHeight(168 * self.db.profile.scale)
+		cluster:SetScale(1.2)
+	end
 
-	cluster:SetWidth(168 * self.db.profile.scale)
-	cluster:SetHeight(168 * self.db.profile.scale)
-	cluster:SetScale(1.2)
+	if minimap then
+		minimap:SetWidth(140 * self.db.profile.scale)
+		minimap:SetHeight(140 * self.db.profile.scale)
+		minimap:SetScale(1.2)
+	end
+end
 
-	minimap:SetWidth(140 * self.db.profile.scale)
-	minimap:SetHeight(140 * self.db.profile.scale)
-	minimap:SetScale(1.2)
+
+local function StartMoving()
+	cluster:StartMoving()
+end
+
+local function StopMoving()
+	cluster:StopMovingOrSizing()
+
+	local anchor, _, _, x, y = cluster:GetPoint()
+
+	Expander.db.profile.anchor = anchor
+	Expander.db.profile.x = x
+	Expander.db.profile.y = y
+end
+
+function Expander:IsLocked()
+	return locked
+end
+
+function Expander:SetLocked(value)
+	locked = value
+
+	if not locked then
+		cluster:SetMovable(true)
+		cluster:RegisterForDrag("LeftButton")
+		cluster:SetScript("OnMouseDown", StartMoving)
+		cluster:SetScript("OnMouseUp", StopMoving)
+		cluster:EnableMouse(true)
+	else
+		cluster:SetMovable()
+		cluster:RegisterForDrag()
+		cluster:SetScript("OnMouseDown", nil)
+		cluster:SetScript("OnMouseUp", nil)
+		cluster:EnableMouse(false)
+	end
 end
 
 
@@ -163,11 +206,24 @@ function Expander:GetOptions()
 			end,
 			disabled = function() return InCombatLockdown() or not self:IsEnabled() end,
 		},
+		movable = {
+			name = L["Movable"],
+			desc = L["Allow the minimap to be movable so you can drag it where you want"],
+			type = 'toggle',
+			order = 2,
+			width = 'double',
+			get = function()
+				return not self:IsLocked()
+			end,
+			set = function(_, value)
+				self:SetLocked(not value)
+			end,
+		},
 		scale = {
 			name = L["Size"],
 			desc = L["The size of the expanded minimap"],
 			type = 'range',
-			order = 2,
+			order = 3,
 			min = 0.5,
 			max = 8,
 			step = 0.01,
@@ -182,7 +238,7 @@ function Expander:GetOptions()
 		alpha = {
 			name = L["Opacity"],
 			type = 'range',
-			order = 3,
+			order = 4,
 			min = 0,
 			max = 1,
 			step = 0.01,
@@ -193,11 +249,12 @@ function Expander:GetOptions()
 				if minimap then minimap:SetAlpha(value) end
 			end,
 		},
+
 		toggle = {
 			name = L["Toggle"],
 			desc = L["Choose to toggle the expanded minimap or only keep it shown while pressing the button down."],
 			type = 'toggle',
-			order = 4,
+			order = 5,
 			get = function() return self.db.profile.toggle end,
 			set = function(_, value) self.db.profile.toggle = value end,
 		},
