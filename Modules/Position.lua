@@ -138,7 +138,7 @@ function Position:OnEnable()
 
 	self:SetMinimapPosition()
 
-	for i=1, 4, 1 do
+	for i=1, 5, 1 do
 		_G["Boss"..i.."TargetFrame"]:ClearAllPoints()
 		_G["Boss"..i.."TargetFrame"]:SetParent(Chinchilla_BossAnchor)
 		_G["Boss"..i.."TargetFrame"]:SetPoint("TOP", i == 1 and Chinchilla_BossAnchor or _G["Boss"..(i-1).."TargetFrame"], i == 1 and "TOP" or "BOTTOM")
