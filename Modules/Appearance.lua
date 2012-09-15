@@ -76,6 +76,8 @@ local cornerTextures = {}
 local fullTexture
 
 local inCombat = InCombatLockdown()
+local indoors
+
 function Appearance:OnEnable()
 	self:SetScale()
 	self:SetFrameStrata()
@@ -251,7 +253,14 @@ function Appearance:SetAlpha(value)
 	if value then self.db.profile.alpha = value
 	else value = self.db.profile.alpha end
 
-	if not self:IsEnabled() or IsIndoors() then value = 1 end
+	local zoom = Minimap:GetZoom()
+	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
+		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
+	end
+	indoors = GetCVar("minimapZoom")+0 == Minimap:GetZoom() and false or true
+	Minimap:SetZoom(zoom)
+
+	if not self:IsEnabled() or indoors then value = 1 end
 
 	if inCombat then self:SetCombatAlpha()
 	else MinimapCluster:SetAlpha(value) end
@@ -262,7 +271,15 @@ function Appearance:SetCombatAlpha(value)
 	else value = self.db.profile.combatAlpha end
 
 	if not inCombat then return end
-	if not self:IsEnabled() or IsIndoors() then value = 1 end
+
+	local zoom = Minimap:GetZoom()
+	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
+		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
+	end
+	indoors = GetCVar("minimapZoom")+0 == Minimap:GetZoom() and false or true
+	Minimap:SetZoom(zoom)
+
+	if not self:IsEnabled() or indoors then value = 1 end
 
 	MinimapCluster:SetAlpha(value)
 end

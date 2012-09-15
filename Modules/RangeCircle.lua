@@ -56,6 +56,7 @@ local minimapSize = { -- radius of minimap
 
 local texture
 local inCombat = not not InCombatLockdown()
+local indoors
 
 function RangeCircle:OnEnable()
 	if not texture then
@@ -99,7 +100,16 @@ function RangeCircle:Update()
 	texture:SetTexture(tex)
 	texture:SetVertexColor(unpack(self.db.profile[inCombat and "combatColor" or "color"]))
 
-	local radius = minimapSize[IsIndoors() and "indoor" or "outdoor"][Minimap:GetZoom()]
+	local zoom = Minimap:GetZoom()
+	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
+		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
+	end
+	indoors = GetCVar("minimapZoom")+0 == Minimap:GetZoom() and false or true
+	Minimap:SetZoom(zoom)
+
+	if not self:IsEnabled() or indoors then value = 1 end
+
+	local radius = minimapSize[indoors and "indoor" or "outdoor"][Minimap:GetZoom()]
 	local range = self.db.profile[inCombat and "combatRange" or "range"]
 	local minimapWidth = Minimap:GetWidth()
 	local size = minimapWidth * range/radius
