@@ -170,8 +170,6 @@ function Position:OnEnable()
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
 	self:SecureHook(WatchFrame, "SetPoint", "WatchFrame_SetPoint")
---	self:SecureHook(Boss1TargetFrame, "SetPoint", "BossFrame_SetPoint")
---	self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	self:SecureHook("WorldStateAlwaysUpFrame_Update")
 end
@@ -198,7 +196,6 @@ function Position:OnDisable()
 	WorldStateAlwaysUpFrame:EnableMouse(true)
 
 	self:SetLocked()
---	self:RawHook("WatchFrame_GetRemainingSpace", "WatchFrame_GetRemainingSpace", true)
 
 	Minimap:SetClampedToScreen(false)
 end
@@ -320,14 +317,6 @@ function Position:WatchFrame_SetPoint(this)
 	self:SetFramePosition('questWatch')
 end
 
--- function Position:BossFrame_SetPoint(this)
---	if shouldntSetPoint then return end
---	self:SetFramePosition('boss')
--- end
-
--- function Position:WatchFrame_GetRemainingSpace(...)
--- 	return 500
--- end
 
 function Position:VehicleSeatIndicator_SetPoint(this)
 	if shouldntSetPoint then return end
