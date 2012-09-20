@@ -13,8 +13,6 @@ function ShowHide:OnInitialize()
 
 			boss = true,
 			north = true,
-			locationBar = true,
-			locationText = true,
 			difficulty = true,
 			map = true,
 			mail = true,
@@ -69,11 +67,6 @@ function ShowHide:OnEnable()
 	self:RegisterEvent("CALENDAR_ACTION_PENDING", "UpdateCalendar")
 	self:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES", "UpdateCalendar")
 
-	framesShown[MinimapZoneTextButton] = not not MinimapZoneTextButton:IsShown() -- to ensure a boolean
-
-	self:SecureHook(MinimapZoneTextButton, "Show", "MinimapZoneTextButton_Show")
-	self:SecureHook(MinimapZoneTextButton, "Hide", "MinimapZoneTextButton_Hide")
-
 	self:Update()
 end
 
@@ -82,11 +75,6 @@ function ShowHide:OnDisable()
 		if framesShown[v] then
 			v:Show()
 		end
-	end
-
-	if framesShown[MinimapZoneTextButton] then
-		MinimapBorderTop:Show()
-		MinimapZoneTextButton:Show()
 	end
 end
 
@@ -113,22 +101,6 @@ function ShowHide:Update()
 				framesShown[frame] = true
 			end
 		end
-	end
-
-	if Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled() then
-		MinimapBorderTop:Hide()
-		MinimapZoneTextButton:Hide()
-	elseif not self.db.profile.locationBar then
-		MinimapBorderTop:Hide()
-
-		if not self.db.profile.locationText then
-			MinimapZoneTextButton:Hide()
-		else
-			MinimapZoneTextButton:Show()
-		end
-	else
-		MinimapBorderTop:Show()
-		MinimapZoneTextButton:Show()
 	end
 end
 
@@ -162,20 +134,6 @@ function ShowHide:frame_Show(object)
 end
 
 function ShowHide:frame_Hide(object)
-	framesShown[object] = false
-end
-
-
-function ShowHide:MinimapZoneTextButton_Show(object)
-	if not self.db.profile.locationText or ( Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled() ) then
-		MinimapBorderTop:Hide()
-		MinimapZoneTextButton:Hide()
-	end
-
-	framesShown[object] = true
-end
-
-function ShowHide:MinimapZoneTextButton_Hide(object)
 	framesShown[object] = false
 end
 
@@ -364,23 +322,6 @@ function ShowHide:GetOptions()
 			type = 'toggle',
 			order = 5,
 			get = get, set = set,
-		},
-		locationText = {
-			name = L["Location text"],
-			desc = L["Show the location text above the minimap"],
-			type = 'toggle',
-			order = 6,
-			get = get, set = set,
-		},
-		locationBar = {
-			name = L["Location bar"],
-			desc = L["Show the location bar above the minimap"],
-			type = 'toggle',
-			order = 7,
-			get = get, set = set,
-			disabled = function()
-				return not self.db.profile.locationText
-			end,
 		},
 		map = {
 			name = L["World map"],

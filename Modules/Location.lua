@@ -117,9 +117,6 @@ function Location:OnEnable()
 
 	LSM.RegisterCallback(self, "LibSharedMedia_Registered", "MediaRegistered")
 
-	MinimapBorderTop:Hide()
-	MinimapZoneTextButton:Hide()
-
 	if Chinchilla:GetModule("ShowHide", true) then
 		Chinchilla:GetModule("ShowHide"):Update()
 	end
@@ -127,9 +124,6 @@ end
 
 function Location:OnDisable()
 	frame:Hide()
-
-	MinimapBorderTop:Show()
-	MinimapZoneTextButton:Show()
 
 	if Chinchilla:GetModule("ShowHide", true) then
 		Chinchilla:GetModule("ShowHide"):Update()
