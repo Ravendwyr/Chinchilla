@@ -149,7 +149,7 @@ function Chinchilla:OpenConfig()
 		local t = module.GetOptions and module:GetOptions() or {}
 
 		for option, args in pairs(t) do
-			if not args.disabled then
+			if type(args.disabled) == "nil" then
 				args.disabled = function() return not module:IsEnabled() end
 			end
 		end

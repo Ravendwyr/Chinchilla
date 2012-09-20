@@ -288,10 +288,6 @@ function Appearance:SetFrameStrata(value)
 	if value then self.db.profile.strata = value
 	else value = self.db.profile.strata end
 
-	if not self:IsEnabled() then
-		value = "BACKGROUND"
-	end
-
 	MinimapCluster:SetFrameStrata(value)
 end
 
@@ -626,12 +622,13 @@ function Appearance:GetOptions()
 			-- 	"FULLSCREEN_DIALOG",
 			-- 	"TOOLTIP"
 			-- },
+			disabled = false,
 			get = function()
 				return self.db.profile.strata
 			end,
 			set = function(_, value)
 				self:SetFrameStrata(value)
-			end
+			end,
 		},
 		frameLevel = {
 			name = L["Frame level"],
