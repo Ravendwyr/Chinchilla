@@ -26,6 +26,7 @@ function Position:OnInitialize()
 			capture = { "TOPRIGHT", -9, -190 },
 			worldState = { "TOP", 0, -50 },
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
+			ticketStatus = { "TOPRIGHT", -180, 0 },
 			boss = { "TOPRIGHT", 55, -236 },
 		}
 	})
@@ -150,6 +151,7 @@ function Position:OnEnable()
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
+	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
 
@@ -168,6 +170,7 @@ function Position:OnEnable()
   	MinimapCluster:StopMovingOrSizing()
 
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
+	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
 	self:SecureHook(WatchFrame, "SetPoint", "WatchFrame_SetPoint")
 	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
@@ -188,6 +191,7 @@ function Position:OnDisable()
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
+	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
 
@@ -317,6 +321,10 @@ function Position:WatchFrame_SetPoint(this)
 	self:SetFramePosition('questWatch')
 end
 
+function Position:TicketStatusFrame_SetPoint(this)
+	if shouldntSetPoint then return end
+	self:SetFramePosition('ticketStatus')
+end
 
 function Position:VehicleSeatIndicator_SetPoint(this)
 	if shouldntSetPoint then return end
@@ -350,6 +358,7 @@ local nameToFrame = {
 	questWatch = WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
+	ticketStatus = TicketStatusFrame,
 }
 
 
@@ -435,6 +444,7 @@ local nameToNiceName = {
 	capture = L["Capture bar"],
 	vehicleSeats = L["Vehicle seats"],
 	boss = L["Boss frames"],
+	ticketStatus = L["Ticket status"],
 }
 
 function Position:ShowFrameMover(frame, value, force)
@@ -942,6 +952,49 @@ function Position:GetOptions()
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the capture bar."],
+					type = 'range',
+					softMin = y_min,
+					softMax = y_max,
+					step = 1,
+					bigStep = 5,
+					-- stepBasis = 0,
+					get = y_get,
+					set = y_set,
+					order = 4,
+					disabled = isDisabled,
+				},
+			},
+			disabled = InCombatLockdown,
+		},
+		ticketStatus = {
+			name = L["Ticket status"],
+			type = 'group',
+			inline = true,
+			args = {
+				movable = {
+					name = L["Movable"],
+					desc = L["Show a frame that is movable to show where you want the ticket status indicator to be"],
+					type = 'toggle',
+					order = 1,
+					get = movable_get,
+					set = movable_set,
+				},
+				x = {
+					name = L["Horizontal position"],
+					desc = L["Set the position on the x-axis for the ticket status indicator."],
+					type = 'range',
+					softMin = x_min,
+					softMax = x_max,
+					step = 1,
+					bigStep = 5,
+					get = x_get,
+					set = x_set,
+					order = 3,
+					disabled = isDisabled,
+				},
+				y = {
+					name = L["Vertical position"],
+					desc = L["Set the position on the y-axis for the ticket status indicator."],
 					type = 'range',
 					softMin = y_min,
 					softMax = y_max,
