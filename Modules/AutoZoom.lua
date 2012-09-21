@@ -27,8 +27,8 @@ end
 
 
 local timerID
-function AutoZoom:Minimap_SetZoom(_, zoomLevel)
-	if zoomLevel == 0 then return end
+function AutoZoom:Minimap_SetZoom(_, zoomLevel, ignore)
+	if zoomLevel == 0 or ignore then return end
 
 	if timerID then
 		self:CancelTimer(timerID, true)
@@ -39,7 +39,7 @@ function AutoZoom:Minimap_SetZoom(_, zoomLevel)
 end
 
 function AutoZoom:ZoomOut()
-	Minimap:SetZoom(0)
+	Minimap:SetZoom(0, true)
 	timerID = nil
 end
 

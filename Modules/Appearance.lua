@@ -134,6 +134,15 @@ end
 
 
 function Appearance:MINIMAP_UPDATE_ZOOM()
+	local zoom = Minimap:GetZoom()
+
+	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
+		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1, true)
+	end
+
+	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
+	Minimap:SetZoom(zoom, true)
+
 	if InCombatLockdown() then self:SetCombatAlpha()
 	else self:SetAlpha() end
 end
@@ -253,13 +262,6 @@ function Appearance:SetAlpha(value)
 	if value then self.db.profile.alpha = value
 	else value = self.db.profile.alpha end
 
-	local zoom = Minimap:GetZoom()
-	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
-	end
-	indoors = GetCVar("minimapZoom")+0 == Minimap:GetZoom() and false or true
-	Minimap:SetZoom(zoom)
-
 	if not self:IsEnabled() or indoors then value = 1 end
 
 	if inCombat then self:SetCombatAlpha()
@@ -271,14 +273,6 @@ function Appearance:SetCombatAlpha(value)
 	else value = self.db.profile.combatAlpha end
 
 	if not inCombat then return end
-
-	local zoom = Minimap:GetZoom()
-	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
-	end
-	indoors = GetCVar("minimapZoom")+0 == Minimap:GetZoom() and false or true
-	Minimap:SetZoom(zoom)
-
 	if not self:IsEnabled() or indoors then value = 1 end
 
 	MinimapCluster:SetAlpha(value)

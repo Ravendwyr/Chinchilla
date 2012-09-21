@@ -66,7 +66,7 @@ function RangeCircle:OnEnable()
 
 	texture:Show()
 
-	self:RegisterEvent("MINIMAP_UPDATE_ZOOM", "Update")
+	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:Update()
@@ -88,6 +88,19 @@ function RangeCircle:PLAYER_REGEN_DISABLED()
 	self:Update()
 end
 
+function RangeCircle:MINIMAP_UPDATE_ZOOM()
+	local zoom = Minimap:GetZoom()
+
+	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
+		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1, true)
+	end
+
+	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
+	Minimap:SetZoom(zoom, true)
+
+	self:Update()
+end
+
 
 function RangeCircle:Update()
 	if not self:IsEnabled() then
@@ -99,13 +112,6 @@ function RangeCircle:Update()
 
 	texture:SetTexture(tex)
 	texture:SetVertexColor(unpack(self.db.profile[inCombat and "combatColor" or "color"]))
-
-	local zoom = Minimap:GetZoom()
-	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
-	end
-	indoors = GetCVar("minimapZoom")+0 == Minimap:GetZoom() and false or true
-	Minimap:SetZoom(zoom)
 
 	if not self:IsEnabled() or indoors then value = 1 end
 

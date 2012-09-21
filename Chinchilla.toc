@@ -1,6 +1,5 @@
 ## Interface: 50001
 ## Title: Chinchilla
-## Version: @project-version@
 ## Notes: Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets.
 ## Notes-frFR: Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.
 ## Notes-deDE: Geniales Minikarten-Addon. *kauendes Geräusch* Es wird deine Futterkörner knabbern.
@@ -10,6 +9,7 @@
 ## Notes-zhCN: 很龙猫的小地图插件。*嚼嚼嚼*这龙猫嚼了你的干草球～
 ## Notes-zhTW: 很龍貓的小地圖插件。*嚼嚼嚼*這龍貓嚼了你的乾草球～
 ## Author: Ethan Centaurai, ckknight
+## Version: @project-version@
 ## X-Website: http://www.wowace.com/addons/chinchilla
 ## X-WoWIPortal: ckknight
 ## X-Category: Map
