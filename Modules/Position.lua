@@ -421,6 +421,8 @@ function Position:SetFramePosition(frame, point, x, y)
 		end
 	end
 
+	WatchFrame:SetPoint("BOTTOM", UIParent, "BOTTOM")
+
 	shouldntSetPoint = false
 end
 
