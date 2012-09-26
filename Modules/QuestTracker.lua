@@ -14,7 +14,7 @@ function QuestTracker:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("QuestTracker", {
 		profile = {
 			showTitle = true, showCollapseButton = true,
-			frameWidth = 204, frameHeight = 700,
+			frameHeight = 700,
 		},
 	})
 
@@ -27,13 +27,6 @@ function QuestTracker:OnEnable()
 	self:ToggleTitle()
 	self:ToggleButton()
 
-	WATCHFRAME_COLLAPSEDWIDTH = self.db.profile.frameWidth
-	WATCHFRAME_EXPANDEDWIDTH  = self.db.profile.frameWidth
-	WATCHFRAME_MAXLINEWIDTH   = self.db.profile.frameWidth - 8
-
-	WatchFrame_SetWidth = noop
-
-	WatchFrame:SetWidth(self.db.profile.frameWidth)
 	WatchFrame:SetHeight(self.db.profile.frameHeight)
 end
 
@@ -44,10 +37,6 @@ function QuestTracker:OnDisable()
 	WatchFrameCollapseExpandButton.Show = origCollapseShow
 	WatchFrameCollapseExpandButton:Show()
 
-	WATCHFRAME_COLLAPSEDWIDTH = 230
-
-	WatchFrame_SetWidth = origSetWidth
-	WatchFrame_SetWidth(GetCVar("watchFrameWidth"))
 	WatchFrame:SetHeight(height)
 end
 
@@ -98,22 +87,16 @@ function QuestTracker:GetOptions()
 			order = 2,
 		},
 		frameWidth = {
-			name = L["Width"],
-			desc = L["Set the width of the quest tracker."],
-			type = 'range',
-			min = 204,
-			max = floor(GetScreenWidth()),
-			step = 1,
-			bigStep = 5,
-			get = function(info) return self.db.profile.frameWidth end,
-			set = function(info, value)
-				self.db.profile.frameWidth = value
+			name = WATCH_FRAME_WIDTH_TEXT,
+			desc = OPTION_TOOLTIP_WATCH_FRAME_WIDTH,
+			type = 'toggle',
+			get = function() return GetCVar("watchFrameWidth") == "1" end,
+			set = function(_, value)
+				value = value == true and "1" or "0"
 
-				WATCHFRAME_COLLAPSEDWIDTH = value
-				WATCHFRAME_EXPANDEDWIDTH  = value
-				WATCHFRAME_MAXLINEWIDTH   = value - 8
-
-				WatchFrame:SetWidth(value)
+				WATCH_FRAME_WIDTH = value
+				SetCVar("watchFrameWidth", value)
+				WatchFrame_SetWidth(value)
 			end,
 			order = 3,
 		},
