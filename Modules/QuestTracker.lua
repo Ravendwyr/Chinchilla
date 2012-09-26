@@ -68,8 +68,8 @@ function QuestTracker:GetOptions()
 			name = L["Show title"],
 			desc = L["Show the title of the quest tracker."],
 			type = 'toggle',
-			get = function(info) return self.db.profile.showTitle end,
-			set = function(info, value)
+			get = function() return self.db.profile.showTitle end,
+			set = function(_, value)
 				self.db.profile.showTitle = value
 				self:ToggleTitle()
 			end,
@@ -79,8 +79,8 @@ function QuestTracker:GetOptions()
 			name = L["Show collapse button"],
 			desc = L["Show the collapse button on the quest tracker."],
 			type = 'toggle',
-			get = function(info) return self.db.profile.showCollapseButton end,
-			set = function(info, value)
+			get = function() return self.db.profile.showCollapseButton end,
+			set = function(_, value)
 				self.db.profile.showCollapseButton = value
 				self:ToggleButton()
 			end,
@@ -108,8 +108,8 @@ function QuestTracker:GetOptions()
 			max = floor(GetScreenHeight()),
 			step = 1,
 			bigStep = 5,
-			get = function(info) return self.db.profile.frameHeight end,
-			set = function(info, value)
+			get = function() return self.db.profile.frameHeight end,
+			set = function(_, value)
 				self.db.profile.frameHeight = value
 				WatchFrame:SetHeight(value)
 			end,
