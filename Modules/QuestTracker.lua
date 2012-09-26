@@ -6,8 +6,7 @@ QuestTracker.displayName = L["Quest Tracker"]
 QuestTracker.desc = L["Tweak the quest tracker"]
 
 local noop = function() end
-local origTitleShow, origCollapseShow = WatchFrameTitle.Show, WatchFrameCollapseExpandButton.Show
-local origSetWidth = WatchFrame_SetWidth
+local origCollapseShow = WatchFrameCollapseExpandButton.Show
 
 
 function QuestTracker:OnInitialize()
@@ -31,7 +30,6 @@ function QuestTracker:OnEnable()
 end
 
 function QuestTracker:OnDisable()
-	WatchFrameTitle.Show = origTitleShow
 	WatchFrameTitle:Show()
 
 	WatchFrameCollapseExpandButton.Show = origCollapseShow
@@ -41,11 +39,9 @@ end
 
 function QuestTracker:ToggleTitle()
 	if self.db.profile.showTitle then
-		WatchFrameTitle.Show = origTitleShow
 		WatchFrameTitle:Show()
 	else
 		WatchFrameTitle:Hide()
-		WatchFrameTitle.Show = noop
 	end
 end
 
