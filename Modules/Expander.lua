@@ -183,6 +183,8 @@ end
 function Expander:SetLocked(value)
 	locked = value
 
+	if not cluster then return end
+
 	if not locked then
 		cluster:SetMovable(true)
 		cluster:RegisterForDrag("LeftButton")
