@@ -36,8 +36,6 @@ function QuestTracker:OnDisable()
 
 	WatchFrameCollapseExpandButton.Show = origCollapseShow
 	WatchFrameCollapseExpandButton:Show()
-
-	WatchFrame:SetHeight(height)
 end
 
 
