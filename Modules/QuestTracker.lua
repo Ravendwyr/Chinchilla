@@ -27,24 +27,24 @@ function QuestTracker:OnEnable()
 end
 
 function QuestTracker:OnDisable()
-	WatchFrameTitle:Show()
-	WatchFrameCollapseExpandButton:Show()
+	WatchFrameTitle:SetAlpha(1)
+	WatchFrameCollapseExpandButton:SetAlpha(1)
 end
 
 
 function QuestTracker:ToggleTitle()
 	if self.db.profile.showTitle then
-		WatchFrameTitle:Show()
+		WatchFrameTitle:SetAlpha(1)
 	else
-		WatchFrameTitle:Hide()
+		WatchFrameTitle:SetAlpha(0)
 	end
 end
 
 function QuestTracker:ToggleButton()
 	if self.db.profile.showCollapseButton then
-		WatchFrameCollapseExpandButton:Show()
+		WatchFrameCollapseExpandButton:SetAlpha(1)
 	else
-		WatchFrameCollapseExpandButton:Hide()
+		WatchFrameCollapseExpandButton:SetAlpha(0)
 	end
 end
 
@@ -84,9 +84,6 @@ function QuestTracker:GetOptions()
 				WATCH_FRAME_WIDTH = value
 				SetCVar("watchFrameWidth", value)
 				WatchFrame_SetWidth(value)
-
-				-- we need this here as the collapse button can reappear when we change the WatchFrame width
-				self:ToggleButton()
 			end,
 			order = 3,
 		},
