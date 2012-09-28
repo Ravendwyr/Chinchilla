@@ -77,12 +77,12 @@ function QuestTracker:GetOptions()
 			name = WATCH_FRAME_WIDTH_TEXT,
 			desc = OPTION_TOOLTIP_WATCH_FRAME_WIDTH,
 			type = 'toggle',
-			get = function() return BlizzardOptionsPanel_GetCVarSafe("watchFrameWidth") == 1 end,
+			get = function() return GetCVar("watchFrameWidth") == "1" end,
 			set = function(_, value)
-				value = value == true and 1 or 0
+				value = value == true and "1" or "0"
 
 				WATCH_FRAME_WIDTH = value
-				BlizzardOptionsPanel_SetCVarSafe("watchFrameWidth", value)
+				SetCVar("watchFrameWidth", value)
 				WatchFrame_SetWidth(value)
 
 				-- we need this here as the collapse button can reappear when we change the WatchFrame width
