@@ -5,9 +5,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 QuestTracker.displayName = L["Quest Tracker"]
 QuestTracker.desc = L["Tweak the quest tracker"]
 
-local noop = function() end
-local origCollapseShow = WatchFrameCollapseExpandButton.Show
-
 
 function QuestTracker:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("QuestTracker", {
@@ -31,8 +28,6 @@ end
 
 function QuestTracker:OnDisable()
 	WatchFrameTitle:Show()
-
-	WatchFrameCollapseExpandButton.Show = origCollapseShow
 	WatchFrameCollapseExpandButton:Show()
 end
 
@@ -47,11 +42,9 @@ end
 
 function QuestTracker:ToggleButton()
 	if self.db.profile.showCollapseButton then
-		WatchFrameCollapseExpandButton.Show = origCollapseShow
 		WatchFrameCollapseExpandButton:Show()
 	else
 		WatchFrameCollapseExpandButton:Hide()
-		WatchFrameCollapseExpandButton.Show = noop
 	end
 end
 
@@ -84,13 +77,16 @@ function QuestTracker:GetOptions()
 			name = WATCH_FRAME_WIDTH_TEXT,
 			desc = OPTION_TOOLTIP_WATCH_FRAME_WIDTH,
 			type = 'toggle',
-			get = function() return GetCVar("watchFrameWidth") == "1" end,
+			get = function() return BlizzardOptionsPanel_GetCVarSafe("watchFrameWidth") == 1 end,
 			set = function(_, value)
-				value = value == true and "1" or "0"
+				value = value == true and 1 or 0
 
 				WATCH_FRAME_WIDTH = value
-				SetCVar("watchFrameWidth", value)
+				BlizzardOptionsPanel_SetCVarSafe("watchFrameWidth", value)
 				WatchFrame_SetWidth(value)
+
+				-- we need this here as the collapse button can reappear when we change the WatchFrame width
+				self:ToggleButton()
 			end,
 			order = 3,
 		},
