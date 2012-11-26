@@ -1,5 +1,5 @@
 
-local Appearance = Chinchilla:NewModule("Appearance", "AceEvent-3.0", "AceTimer-3.0")
+local Appearance = Chinchilla:NewModule("Appearance", "AceEvent-3.0", "LibShefkiTimer-1.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 Appearance.displayName = L["Appearance"]
@@ -57,14 +57,14 @@ function Appearance:AddBorderStyle(english, localized, round, square)
 end
 
 Chinchilla.AddBorderStyle = Appearance.AddBorderStyle
-Appearance:AddBorderStyle("None",	L["None"],	"", "")
-Appearance:AddBorderStyle("Blizzard",   L["Blizzard"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Blizzard-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Blizzard-Square")
-Appearance:AddBorderStyle("Thin",       L["Thin"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Thin-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Thin-Square")
-Appearance:AddBorderStyle("Alliance",   L["Alliance"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Alliance-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Alliance-Square")
-Appearance:AddBorderStyle("Tooltip",    L["Tooltip"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Tooltip-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Tooltip-Square")
-Appearance:AddBorderStyle("Tubular",    L["Tubular"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Tubular-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Tubular-Square")
-Appearance:AddBorderStyle("Flat",       L["Flat"],	"Interface\\AddOns\\Chinchilla\\Art\\Border-Flat-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Flat-Square")
-Appearance:AddBorderStyle("Chinchilla",   "Chinchilla",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Round",	"Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Square")
+Appearance:AddBorderStyle(NONE,             NONE,             "", "")
+Appearance:AddBorderStyle(FACTION_ALLIANCE, FACTION_ALLIANCE, "Interface\\AddOns\\Chinchilla\\Art\\Border-Alliance-Round",   "Interface\\AddOns\\Chinchilla\\Art\\Border-Alliance-Square")
+Appearance:AddBorderStyle("Blizzard",       L["Blizzard"],    "Interface\\AddOns\\Chinchilla\\Art\\Border-Blizzard-Round",   "Interface\\AddOns\\Chinchilla\\Art\\Border-Blizzard-Square")
+Appearance:AddBorderStyle("Thin",           L["Thin"],        "Interface\\AddOns\\Chinchilla\\Art\\Border-Thin-Round",       "Interface\\AddOns\\Chinchilla\\Art\\Border-Thin-Square")
+Appearance:AddBorderStyle("Tooltip",        L["Tooltip"],     "Interface\\AddOns\\Chinchilla\\Art\\Border-Tooltip-Round",    "Interface\\AddOns\\Chinchilla\\Art\\Border-Tooltip-Square")
+Appearance:AddBorderStyle("Tubular",        L["Tubular"],     "Interface\\AddOns\\Chinchilla\\Art\\Border-Tubular-Round",    "Interface\\AddOns\\Chinchilla\\Art\\Border-Tubular-Square")
+Appearance:AddBorderStyle("Flat",			L["Flat"],        "Interface\\AddOns\\Chinchilla\\Art\\Border-Flat-Round",       "Interface\\AddOns\\Chinchilla\\Art\\Border-Flat-Square")
+Appearance:AddBorderStyle("Chinchilla",	      "Chinchilla",	  "Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Round", "Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Square")
 
 local RotateBorder_frame = CreateFrame("Frame")
 RotateBorder_frame:Hide()

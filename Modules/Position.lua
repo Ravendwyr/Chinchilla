@@ -438,7 +438,7 @@ local function mover_OnDragStop(this)
 end
 
 local nameToNiceName = {
-	durability = L["Durability"],
+	durability = DURABILITY,
 	questWatch = L["Quest tracker"],
 	worldState = L["World state"],
 	capture = L["Capture bar"],

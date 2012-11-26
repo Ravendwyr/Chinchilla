@@ -1,5 +1,5 @@
 
-local AutoZoom = Chinchilla:NewModule("AutoZoom", "AceHook-3.0", "AceTimer-3.0")
+local AutoZoom = Chinchilla:NewModule("AutoZoom", "AceHook-3.0", "LibShefkiTimer-1.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 AutoZoom.displayName = L["Auto zoom"]

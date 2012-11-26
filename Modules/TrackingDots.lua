@@ -1,5 +1,5 @@
 
-local TrackingDots = Chinchilla:NewModule("TrackingDots", "AceTimer-3.0")
+local TrackingDots = Chinchilla:NewModule("TrackingDots", "LibShefkiTimer-1.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 TrackingDots.displayName = L["Tracking dots"]
