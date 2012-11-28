@@ -15,8 +15,7 @@
 ## X-Category: Map
 ## X-Icon: Interface\AddOns\Chinchilla\Art\icon
 ## SavedVariables: Chinchilla2DB
-## OptionalDeps: !Swatter, !BugGrabber, Ace3, LibSharedMedia-3.0, Blizzard_TimeManager, TitanClock, GatherMate2
-
+## OptionalDeps: !BugGrabber, LibStub, Ace3, LibShefkiTimer-1.0, LibSharedMedia-3.0, Blizzard_TimeManager, TitanClock, GatherMate2
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
