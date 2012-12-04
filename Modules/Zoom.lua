@@ -20,30 +20,26 @@ function Zoom:OnInitialize()
 end
 
 
-local timerID, frame
-function Zoom:OnEnable()
-	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_WheelZoom_Frame", Minimap)
-		frame:SetAllPoints(Minimap)
-		frame:SetScript("OnMouseWheel", function(this, change)
-			if change > 0 then
-				Minimap_ZoomIn()
-			else
-				Minimap_ZoomOut()
-			end
-		end)
+local function OnMouseWheel(_, delta)
+	if delta > 0 then
+		Minimap_ZoomIn()
+	else
+		Minimap_ZoomOut()
 	end
+end
 
-	frame:Show()
-	frame:EnableMouseWheel(true)
+local timerID
+function Zoom:OnEnable()
+	Minimap:SetScript("OnMouseWheel", OnMouseWheel)
+	Minimap:EnableMouseWheel(true)
 
 	timerID = self:ScheduleTimer("ZoomOut", self.db.profile.time)
 	self:SecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
 end
 
 function Zoom:OnDisable()
-	frame:Hide()
-	frame:EnableMouseWheel(false)
+	Minimap:SetScript("OnMouseWheel", nil)
+	Minimap:EnableMouseWheel(false)
 end
 
 
