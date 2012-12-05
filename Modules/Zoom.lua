@@ -33,7 +33,7 @@ function Zoom:OnEnable()
 	Minimap:SetScript("OnMouseWheel", OnMouseWheel)
 	Minimap:EnableMouseWheel(true)
 
-	timerID = self:ScheduleTimer("ZoomOut", self.db.profile.time)
+	timerID = self:ScheduleTimer("ZoomOut", self.db.profile.autoZoomTime)
 	self:SecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
 end
 
