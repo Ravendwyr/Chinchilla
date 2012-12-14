@@ -27,23 +27,30 @@ function QuestTracker:OnEnable()
 end
 
 function QuestTracker:OnDisable()
-	WatchFrameTitle:SetAlpha(1)
+	WatchFrameHeader:EnableMouse(true)
+	WatchFrameHeader:SetAlpha(1)
+
+	WatchFrameCollapseExpandButton:EnableMouse(true)
 	WatchFrameCollapseExpandButton:SetAlpha(1)
 end
 
 
 function QuestTracker:ToggleTitle()
 	if self.db.profile.showTitle then
-		WatchFrameTitle:SetAlpha(1)
+		WatchFrameHeader:EnableMouse(true)
+		WatchFrameHeader:SetAlpha(1)
 	else
-		WatchFrameTitle:SetAlpha(0)
+		WatchFrameHeader:EnableMouse(false)
+		WatchFrameHeader:SetAlpha(0)
 	end
 end
 
 function QuestTracker:ToggleButton()
 	if self.db.profile.showCollapseButton then
+		WatchFrameCollapseExpandButton:EnableMouse(true)
 		WatchFrameCollapseExpandButton:SetAlpha(1)
 	else
+		WatchFrameCollapseExpandButton:EnableMouse(false)
 		WatchFrameCollapseExpandButton:SetAlpha(0)
 	end
 end
