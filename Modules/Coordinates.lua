@@ -132,7 +132,7 @@ function Coordinates:Update()
 
 	frame:SetScale(self.db.profile.scale)
 
-	frame.text:SetFont(LSM:Fetch("font", self.db.profile.font, true), 11)
+	frame.text:SetFont(LSM:Fetch("font", self.db.profile.font), 11)
 	frame.text:SetText(coordString:format(12.345, 23.456))
 	frame.text:SetTextColor(unpack(self.db.profile.textColor))
 
@@ -140,8 +140,8 @@ function Coordinates:Update()
 	frame:SetWidth(frame.text:GetWidth() + 16)
 	frame:SetHeight(frame.text:GetHeight() + 14)
 
-	backdrop.edgeFile = LSM:Fetch("border", self.db.profile.borderTexture, true)
-	backdrop.bgFile = LSM:Fetch("background", self.db.profile.backgroundTexture, true)
+	backdrop.edgeFile = LSM:Fetch("border", self.db.profile.borderTexture)
+	backdrop.bgFile = LSM:Fetch("background", self.db.profile.backgroundTexture)
 
 	frame:SetBackdrop(backdrop)
 	frame:SetBackdropColor(unpack(self.db.profile.background))

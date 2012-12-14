@@ -195,14 +195,14 @@ function Ping:SetFont(value)
 	if value then self.db.profile.font = value
 	else value = self.db.profile.font end
 
-	frame.text:SetFont( LSM:Fetch("font", value, true), 11 )
+	frame.text:SetFont(LSM:Fetch("font", value), 11)
 end
 
 function Ping:SetBackground(value)
 	if value then self.db.profile.backgroundTexture = value
 	else value = self.db.profile.backgroundTexture end
 
-	backdrop.bgFile = LSM:Fetch("background", value, true)
+	backdrop.bgFile = LSM:Fetch("background", value)
 
 	frame:SetBackdrop(backdrop)
 end
@@ -211,7 +211,7 @@ function Ping:SetBorder(value)
 	if value then self.db.profile.borderTexture = value
 	else value = self.db.profile.borderTexture end
 
-	backdrop.edgeFile = LSM:Fetch("border", value, true)
+	backdrop.edgeFile = LSM:Fetch("border", value)
 
 	frame:SetBackdrop(backdrop)
 end

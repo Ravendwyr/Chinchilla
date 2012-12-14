@@ -145,14 +145,7 @@ function Location:SetFont(font)
 	if font then self.db.profile.font = font
 	else font = self.db.profile.font end
 
-	font = LSM:Fetch("font", font, true)
-
-	if not font then
-		self.db.profile.font = LSM.DefaultMedia.font
-		font = LSM:Fetch("font", LSM.DefaultMedia.font, true)
-	end
-
-	frame.text:SetFont(font, 11)
+	frame.text:SetFont(LSM:Fetch("font", font), 11)
 
 	self:Update()
 end
@@ -161,7 +154,7 @@ function Location:SetBackground(bgFile)
 	if bgFile then self.db.profile.backgroundTexture = bgFile
 	else bgFile = self.db.profile.backgroundTexture end
 
-	backdrop.bgFile = LSM:Fetch("background", bgFile, true)
+	backdrop.bgFile = LSM:Fetch("background", bgFile)
 
 	frame:SetBackdrop(backdrop)
 end
@@ -170,7 +163,7 @@ function Location:SetBorder(edgeFile)
 	if edgeFile then self.db.profile.borderTexture = edgeFile
 	else edgeFile = self.db.profile.borderTexture end
 
-	backdrop.edgeFile = LSM:Fetch("border", edgeFile, true)
+	backdrop.edgeFile = LSM:Fetch("border", edgeFile)
 
 	frame:SetBackdrop(backdrop)
 end
