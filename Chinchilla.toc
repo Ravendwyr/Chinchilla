@@ -46,6 +46,7 @@ Locale\zhTW.lua
 Chinchilla.lua
 
 Modules\Appearance.lua
+Modules\AutoZoom.lua
 Modules\Compass.lua
 Modules\Coordinates.lua
 Modules\Expander.lua
@@ -57,4 +58,4 @@ Modules\QuestTracker.lua
 Modules\RangeCircle.lua
 Modules\ShowHide.lua
 Modules\TrackingDots.lua
-Modules\Zoom.lua
+Modules\WheelZoom.lua
