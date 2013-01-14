@@ -1,5 +1,5 @@
 
-local Appearance = Chinchilla:NewModule("Appearance", "AceEvent-3.0", "LibShefkiTimer-1.0")
+local Appearance = Chinchilla:NewModule("Appearance", "AceEvent-3.0", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 Appearance.displayName = L["Appearance"]

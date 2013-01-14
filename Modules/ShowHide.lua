@@ -1,5 +1,5 @@
 
-local ShowHide = Chinchilla:NewModule("ShowHide", "AceEvent-3.0", "AceHook-3.0", "LibShefkiTimer-1.0")
+local ShowHide = Chinchilla:NewModule("ShowHide", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 ShowHide.displayName = L["Show / Hide"]

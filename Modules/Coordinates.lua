@@ -1,5 +1,5 @@
 
-local Coordinates = Chinchilla:NewModule("Coordinates", "LibShefkiTimer-1.0")
+local Coordinates = Chinchilla:NewModule("Coordinates", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 local LSM = LibStub("LibSharedMedia-3.0")
