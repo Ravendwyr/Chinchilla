@@ -77,7 +77,7 @@ function Zoom:GetOptions()
 		autoZoom = {
 			name = L["Auto zoom"],
 			desc = L["Automatically zoom out after a specified time."],
-			type = 'toggle', order = 1,
+			type = 'toggle', order = 2,
 			get = function() return self.db.profile.autoZoom end,
 			set = function(_, value) self.db.profile.autoZoom = value end,
 		},
