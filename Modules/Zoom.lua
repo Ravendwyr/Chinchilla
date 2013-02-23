@@ -1,5 +1,5 @@
 
-local Zoom = Chinchilla:NewModule("Zoom", "AceHook-3.0", "AceTimer-3.0")
+local Zoom = Chinchilla:NewModule("Zoom", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 Zoom.displayName = L["Zoom"]
