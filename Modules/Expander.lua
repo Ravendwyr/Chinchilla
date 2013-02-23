@@ -72,10 +72,10 @@ function Expander:Refresh()
 
 		local z = Minimap:GetZoom()
 
-		if z > 2 then Minimap:SetZoom(z-1, true)
-		else Minimap:SetZoom(z+1, true) end
+		if z > 2 then Minimap:SetZoom(z-1)
+		else Minimap:SetZoom(z+1) end
 
-		Minimap:SetZoom(z, true)
+		Minimap:SetZoom(z)
 
 		if GM2 then
 			GM2:ReparentMinimapPins(Minimap)

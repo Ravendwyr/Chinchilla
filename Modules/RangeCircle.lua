@@ -92,11 +92,11 @@ function RangeCircle:MINIMAP_UPDATE_ZOOM()
 	local zoom = Minimap:GetZoom()
 
 	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1, true)
+		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
 	end
 
 	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
-	Minimap:SetZoom(zoom, true)
+	Minimap:SetZoom(zoom)
 
 	self:Update()
 end
