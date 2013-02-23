@@ -88,6 +88,7 @@ function Zoom:GetOptions()
 			min = 1, max = 60, step = 1,
 			get = function() return self.db.profile.autoZoomTime end,
 			set = function(_, value) self.db.profile.autoZoomTime = value end,
+			disabled = function() return not self.db.profile.autoZoom end,
 		},
 	}
 end
