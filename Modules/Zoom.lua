@@ -9,6 +9,17 @@ Zoom.desc = L["Use the mouse wheel to zoom in and out on the minimap."]
 -- some of the code in this module was inspired by SexyMap (written by Funkeh`)
 -- and is used with his permission.
 
+local timerID
+local function OnMouseWheel(_, delta)
+	if not Zoom.db.profile.wheelZoom then return end
+
+	if delta > 0 then
+		Minimap_ZoomIn()
+	else
+		Minimap_ZoomOut()
+	end
+end
+
 
 function Zoom:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Zoom", {
@@ -23,16 +34,6 @@ function Zoom:OnInitialize()
 	end
 end
 
-
-local function OnMouseWheel(_, delta)
-	if delta > 0 then
-		Minimap_ZoomIn()
-	else
-		Minimap_ZoomOut()
-	end
-end
-
-local timerID
 function Zoom:OnEnable()
 	Minimap:SetScript("OnMouseWheel", OnMouseWheel)
 	Minimap:EnableMouseWheel(true)
@@ -66,18 +67,27 @@ end
 
 function Zoom:GetOptions()
 	return {
-		time = {
+		wheelZoom = {
+			name = L["Wheel zoom"],
+			desc = L["Use the mouse wheel to zoom in and out on the minimap."],
+			type = 'toggle', order = 1,
+			get = function() return self.db.profile.wheelZoom end,
+			set = function(_, value) self.db.profile.wheelZoom = value end,
+		},
+		autoZoom = {
+			name = L["Auto zoom"],
+			desc = L["Automatically zoom out after a specified time."],
+			type = 'toggle', order = 1,
+			get = function() return self.db.profile.autoZoom end,
+			set = function(_, value) self.db.profile.autoZoom = value end,
+		},
+		autoZoomTime = {
 			name = L["Time to zoom"],
 			desc = L["Set the time it takes between manually zooming in and automatically zooming out"],
-			type = 'range',
+			type = 'range', order = 3,
 			min = 1, max = 60, step = 1,
-			order = 3,
-			get = function()
-				return self.db.profile.autoZoomTime
-			end,
-			set = function(_, value)
-				self.db.profile.autoZoomTime = value
-			end,
+			get = function() return self.db.profile.autoZoomTime end,
+			set = function(_, value) self.db.profile.autoZoomTime = value end,
 		},
 	}
 end
