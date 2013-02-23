@@ -6,17 +6,26 @@ Zoom.displayName = L["Zoom"]
 Zoom.desc = L["Use the mouse wheel to zoom in and out on the minimap."]
 
 
--- some of the code in this module was inspired by SexyMap (written by Funkeh`)
--- and is used with his permission.
+-- some of the code in this module was inspired by SexyMap
+-- and is used with permission from Funkeh`
 
 local timerID
 local function OnMouseWheel(_, delta)
 	if not Zoom.db.profile.wheelZoom then return end
 
 	if delta > 0 then
-		Minimap_ZoomIn()
+		MinimapZoomIn:Click()
 	else
-		Minimap_ZoomOut()
+		MinimapZoomOut:Click()
+	end
+
+	if Zoom.db.profile.autoZoom then
+		if timerID then
+			Zoom:CancelTimer(timerID, true)
+			timerID = nil
+		end
+
+		timerID = Zoom:ScheduleTimer("ZoomOut", Zoom.db.profile.autoZoomTime)
 	end
 end
 
@@ -38,8 +47,6 @@ function Zoom:OnEnable()
 	Minimap:SetScript("OnMouseWheel", OnMouseWheel)
 	Minimap:EnableMouseWheel(true)
 
-	self:SecureHook(Minimap, "SetZoom", "Minimap_SetZoom")
-
 	if self.db.profile.autoZoom then
 		timerID = self:ScheduleTimer("ZoomOut", self.db.profile.autoZoomTime)
 	end
@@ -51,21 +58,11 @@ function Zoom:OnDisable()
 end
 
 
-function Zoom:Minimap_SetZoom(_, zoomLevel, ignore)
-	if zoomLevel == 0 or ignore then return end
-
-	if timerID then
-		self:CancelTimer(timerID, true)
-		timerID = nil
-	end
-
-	if self.db.profile.autoZoom then
-		timerID = self:ScheduleTimer("ZoomOut", self.db.profile.autoZoomTime)
-	end
-end
-
 function Zoom:ZoomOut()
-	Minimap:SetZoom(0, true)
+	for i = 1, 5 do
+		MinimapZoomOut:Click()
+	end
+
 	timerID = nil
 end
 
