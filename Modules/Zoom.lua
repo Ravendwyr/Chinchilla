@@ -6,6 +6,10 @@ Zoom.displayName = L["Zoom"]
 Zoom.desc = L["Use the mouse wheel to zoom in and out on the minimap."]
 
 
+-- some of the code in this module was inspired by SexyMap (written by Funkeh`)
+-- and is used with his permission.
+
+
 function Zoom:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Zoom", {
 		profile = {
