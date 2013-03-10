@@ -38,7 +38,6 @@ Locale\enUS.lua
 Locale\deDE.lua
 Locale\frFR.lua
 Locale\esES.lua
-Locale\esMX.lua
 Locale\itIT.lua
 Locale\koKR.lua
 Locale\ruRU.lua
