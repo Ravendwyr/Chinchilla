@@ -4,6 +4,7 @@
 ## Notes-frFR: Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.
 ## Notes-deDE: Geniales Minikarten-Addon. *kauendes Geräusch* Es wird deine Futterkörner knabbern.
 ## Notes-esES: ncreible addon del minimapa. *Sonido elástico*.
+## Notes-itIT: Addon per la minimappa fantasmagorico.
 ## Notes-koKR: 미니맵 확장 애드온 입니다.
 ## Notes-ruRU: Полнофункциональный аддон для миникарты и элементов её окружающих.
 ## Notes-zhCN: 很龙猫的小地图插件。*嚼嚼嚼*这龙猫嚼了你的干草球～
@@ -38,6 +39,7 @@ Locale\deDE.lua
 Locale\frFR.lua
 Locale\esES.lua
 Locale\esMX.lua
+Locale\itIT.lua
 Locale\koKR.lua
 Locale\ruRU.lua
 Locale\zhCN.lua
