@@ -268,7 +268,7 @@ function ShowHide:GetOptions()
 	local function get(info)
 		local key = info[#info]
 
-		if self.db.profile.onMouseOver and self.db.profile[key] == "mouseover" then
+		if info.option.tristate and self.db.profile[key] == "mouseover" then
 			return nil
 		else
 			return not not self.db.profile[key]
@@ -279,7 +279,7 @@ function ShowHide:GetOptions()
 		local key = info[#info]
 
 		if value == nil then
-			if self.db.profile.onMouseOver then value = "mouseover"
+			if info.option.tristate then value = "mouseover"
 			else value = false end
 		end
 
@@ -343,7 +343,6 @@ function ShowHide:GetOptions()
 			name = L["LFG"],
 			desc = L["Show the looking for group indicator"],
 			type = 'toggle',
-			tristate = true,
 			order = 10,
 			get = get, set = set,
 		},
