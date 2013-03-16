@@ -59,7 +59,7 @@ end
 
 
 function Zoom:ZoomOut()
-	for i = 1, 5 do
+	for _ = 1, 5 do
 		MinimapZoomOut:Click()
 	end
 

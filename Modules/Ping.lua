@@ -106,7 +106,7 @@ local allowNextPlayerPing = false
 local frameTimerID, msgTimerID
 local lastPingedBy = ""
 
-function Ping:MINIMAP_PING(event, unit)
+function Ping:MINIMAP_PING(_, unit)
 	if UnitIsUnit("player", unit) and not allowNextPlayerPing then return end
 
 	allowNextPlayerPing = false
@@ -308,10 +308,10 @@ function Ping:GetOptions()
 			name = L["Show in chat"],
 			desc = L["Show who pinged in chat instead of in a frame on the minimap."],
 			type = 'toggle',
-			get = function(info)
+			get = function()
 				return self.db.profile.chat
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self.db.profile.chat = value
 			end,
 			width = "double",
@@ -325,10 +325,10 @@ function Ping:GetOptions()
 			max = 30,
 			step = 0.1,
 			bigStep = 1,
-			get = function(info)
+			get = function()
 				return self.db.profile.MINIMAPPING_TIMER
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self.db.profile.MINIMAPPING_TIMER = value
 				_G.MINIMAPPING_TIMER = value
 				test()
@@ -343,10 +343,10 @@ function Ping:GetOptions()
 			max = 5,
 			step = 0.1,
 			bigStep = 0.5,
-			get = function(info)
+			get = function()
 				return self.db.profile.MINIMAPPING_FADE_TIMER
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self.db.profile.MINIMAPPING_FADE_TIMER = value
 				_G.MINIMAPPING_FADE_TIMER = value
 				test()
@@ -362,14 +362,14 @@ function Ping:GetOptions()
 			step = 0.01,
 			bigStep = 0.05,
 			isPercent = true,
-			get = function(info)
+			get = function()
 				return self.db.profile.scale
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self.db.profile.scale = value
 				test()
 			end,
-			hidden = function(info)
+			hidden = function()
 				return self.db.profile.chat
 			end,
 			order = 5,
@@ -380,7 +380,7 @@ function Ping:GetOptions()
 			type = 'group',
 			inline = true,
 			order = 6,
-			hidden = function(info)
+			hidden = function()
 				return self.db.profile.chat
 			end,
 			args = {
@@ -388,14 +388,14 @@ function Ping:GetOptions()
 					name = L["Movable"],
 					desc = L["Allow the ping indicator to be moved"],
 					type = 'toggle',
-					get = function(info)
+					get = function()
 						return frame and frame:IsMovable()
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						self:SetMovable(value)
 					end,
 					order = 1,
-					disabled = function(info)
+					disabled = function()
 						return not frame
 					end,
 				},
@@ -407,10 +407,10 @@ function Ping:GetOptions()
 					max = math.floor(GetScreenWidth()/5 + 0.5)*5,
 					step = 1,
 					bigStep = 5,
-					get = function(info)
+					get = function()
 						return self.db.profile.positionX
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						self.db.profile.positionX = value
 						test()
 					end,
@@ -424,10 +424,10 @@ function Ping:GetOptions()
 					max = math.floor(GetScreenHeight()/5 + 0.5)*5,
 					step = 1,
 					bigStep = 5,
-					get = function(info)
+					get = function()
 						return self.db.profile.positionY
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						self.db.profile.positionY = value
 						test()
 					end,
@@ -444,7 +444,7 @@ function Ping:GetOptions()
 			set = function(_, value)
 				self:SetBackground(value)
 			end,
-			hidden = function(info)
+			hidden = function()
 				return self.db.profile.chat
 			end,
 		},
@@ -453,10 +453,10 @@ function Ping:GetOptions()
 			desc = L["Set the background color"],
 			type = 'color', order = 8,
 			hasAlpha = true,
-			get = function(info)
+			get = function()
 				return unpack(self.db.profile.background)
 			end,
-			set = function(info, r, g, b, a)
+			set = function(_, r, g, b, a)
 				local t = self.db.profile.background
 				t[1] = r
 				t[2] = g
@@ -464,7 +464,7 @@ function Ping:GetOptions()
 				t[4] = a
 				test()
 			end,
-			hidden = function(info)
+			hidden = function()
 				return self.db.profile.chat
 			end,
 		},
@@ -477,7 +477,7 @@ function Ping:GetOptions()
 			set = function(_, value)
 				self:SetBorder(value)
 			end,
-			hidden = function(info)
+			hidden = function()
 				return self.db.profile.chat
 			end,
 		},
@@ -486,10 +486,10 @@ function Ping:GetOptions()
 			desc = L["Set the border color"],
 			type = 'color', order = 10,
 			hasAlpha = true,
-			get = function(info)
+			get = function()
 				return unpack(self.db.profile.border)
 			end,
-			set = function(info, r, g, b, a)
+			set = function(_, r, g, b, a)
 				local t = self.db.profile.border
 				t[1] = r
 				t[2] = g
@@ -497,7 +497,7 @@ function Ping:GetOptions()
 				t[4] = a
 				test()
 			end,
-			hidden = function(info)
+			hidden = function()
 				return self.db.profile.chat
 			end,
 		},
@@ -508,7 +508,7 @@ function Ping:GetOptions()
 			values = AceGUIWidgetLSMlists.font,
 			get = function() return self.db.profile.font or LSM.DefaultMedia.font end,
 			set = function(_, value) self:SetFont(value) end,
-			hidden = function(info)
+			hidden = function()
 				return self.db.profile.chat
 			end,
 		},
@@ -517,10 +517,10 @@ function Ping:GetOptions()
 			desc = L["Set the text color"],
 			type = 'color', order = 12,
 			hasAlpha = true,
-			get = function(info)
+			get = function()
 				return unpack(self.db.profile.textColor)
 			end,
-			set = function(info, r, g, b, a)
+			set = function(_, r, g, b, a)
 				local t = self.db.profile.textColor
 				t[1] = r
 				t[2] = g
@@ -528,7 +528,7 @@ function Ping:GetOptions()
 				t[4] = a
 				test()
 			end,
-			hidden = function(info)
+			hidden = function()
 				return self.db.profile.chat
 			end,
 		},

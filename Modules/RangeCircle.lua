@@ -181,7 +181,7 @@ function RangeCircle:GetOptions()
 			type = 'select',
 			name = L["Style"],
 			desc = L["What texture style to use for the circle"],
-			values = function(info)
+			values = function()
 				local t = {}
 				for k,v in pairs(styles) do
 					t[k] = v[1]

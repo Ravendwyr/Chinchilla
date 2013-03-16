@@ -25,7 +25,7 @@ function Chinchilla:AddTrackingDotStyle()
 end
 
 function Chinchilla:CallMethodOnAllModules(method, ...)
-	for name, module in self:IterateModules() do
+	for _, module in self:IterateModules() do
 		if type(module[method]) == "function" then
 			module[method](module, ...)
 		end
@@ -65,7 +65,7 @@ function Chinchilla:OpenConfig()
 				get = function()
 					local current, max = 0, 0
 
-					for name, module in Chinchilla:IterateModules(false) do
+					for _, module in Chinchilla:IterateModules(false) do
 						if type(module.IsLocked) == "function" then
 							local locked = module:IsLocked()
 
@@ -148,7 +148,7 @@ function Chinchilla:OpenConfig()
 	for key, module in Chinchilla:IterateModules() do
 		local t = module.GetOptions and module:GetOptions() or {}
 
-		for option, args in pairs(t) do
+		for _, args in pairs(t) do
 			if type(args.disabled) == "nil" then
 				args.disabled = function() return not module:IsEnabled() end
 			end
@@ -226,7 +226,7 @@ function Chinchilla:OnDisable()
 end
 
 function Chinchilla:OnProfileUpdate()
-	for name, module in self:IterateModules() do
+	for _, module in self:IterateModules() do
 		module:Disable()
 
 		if module.db.profile.enabled then

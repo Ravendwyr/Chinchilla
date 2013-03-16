@@ -380,14 +380,12 @@ local function x_set(info, value)
 		return
 	end
 
+
 	local key = info[#info - 1]
 	local data = MoveButtons.db.profile[key]
 	local y = y_get(info)
-	local point, x, y = getPointXY(buttons[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
 
-	data[1] = point
-	data[2] = x
-	data[3] = y
+	data[1], data[2], data[3] = getPointXY(buttons[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
 
 	if key == "difficulty" then
 		MiniMapInstanceDifficulty:ClearAllPoints()
@@ -408,11 +406,8 @@ local function y_set(info, value)
 	local key = info[#info - 1]
 	local data = MoveButtons.db.profile[key]
 	local x = x_get(info)
-	local point, x, y = getPointXY(buttons[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
 
-	data[1] = point
-	data[2] = x
-	data[3] = y
+	data[1], data[2], data[3] = getPointXY(buttons[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
 
 	if key == "difficulty" then
 		MiniMapInstanceDifficulty:ClearAllPoints()
@@ -442,14 +437,14 @@ function MoveButtons:SetLocked(value)
 	end
 
 	if value then
-		for k, v in pairs(buttons) do
+		for _, v in pairs(buttons) do
 			v:SetMovable(false)
 			v:RegisterForDrag()
 			v:SetScript("OnDragStart", nil)
 			v:SetScript("OnDragStop", nil)
 		end
 	else
-		for k, v in pairs(buttons) do
+		for _, v in pairs(buttons) do
 			v:SetMovable(true)
 			v:RegisterForDrag("LeftButton")
 			v:SetScript("OnDragStart", button_OnDragStart)
@@ -527,7 +522,7 @@ function MoveButtons:GetOptions()
 			type = 'toggle',
 			order = 2,
 			get = "IsLocked",
-			set = function(info, value)
+			set = function(_, value)
 				self:SetLocked(value)
 			end,
 		},
@@ -539,10 +534,10 @@ function MoveButtons:GetOptions()
 			min = 60,
 			max = 100,
 			step = 1,
-			get = function(info)
+			get = function()
 				return self.db.profile.radius
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self:SetRadius(value)
 			end,
 		},

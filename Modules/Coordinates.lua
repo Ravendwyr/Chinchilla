@@ -174,10 +174,10 @@ function Coordinates:GetOptions()
 					name = L["Movable"],
 					desc = L["Allow the coordinate indicator to be moved"],
 					type = 'toggle',
-					get = function(info)
+					get = function()
 						return frame and frame:IsMovable()
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						self:SetMovable(value)
 					end,
 					order = 1,
@@ -193,10 +193,10 @@ function Coordinates:GetOptions()
 					max = math.floor(GetScreenWidth()/5 + 0.5)*5,
 					step = 1,
 					bigStep = 5,
-					get = function(info)
+					get = function()
 						return self.db.profile.positionX
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						self.db.profile.positionX = value
 						self:Update()
 					end,
@@ -210,10 +210,10 @@ function Coordinates:GetOptions()
 					max = math.floor(GetScreenHeight()/5 + 0.5)*5,
 					step = 1,
 					bigStep = 5,
-					get = function(info)
+					get = function()
 						return self.db.profile.positionY
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						self.db.profile.positionY = value
 						self:Update()
 					end,
@@ -237,10 +237,10 @@ function Coordinates:GetOptions()
 			desc = L["Set the background color"],
 			type = 'color', order = 3,
 			hasAlpha = true,
-			get = function(info)
+			get = function()
 				return unpack(self.db.profile.background)
 			end,
-			set = function(info, r, g, b, a)
+			set = function(_, r, g, b, a)
 				local t = self.db.profile.background
 				t[1] = r
 				t[2] = g
@@ -265,10 +265,10 @@ function Coordinates:GetOptions()
 			desc = L["Set the border color"],
 			type = 'color', order = 5,
 			hasAlpha = true,
-			get = function(info)
+			get = function()
 				return unpack(self.db.profile.border)
 			end,
-			set = function(info, r, g, b, a)
+			set = function(_, r, g, b, a)
 				local t = self.db.profile.border
 				t[1] = r
 				t[2] = g
@@ -293,10 +293,10 @@ function Coordinates:GetOptions()
 			desc = L["Set the text color"],
 			type = 'color', order = 7,
 			hasAlpha = true,
-			get = function(info)
+			get = function()
 				return unpack(self.db.profile.textColor)
 			end,
-			set = function(info, r, g, b, a)
+			set = function(_, r, g, b, a)
 				local t = self.db.profile.textColor
 				t[1] = r
 				t[2] = g
@@ -312,10 +312,10 @@ function Coordinates:GetOptions()
 			min = 0,
 			max = 3,
 			step = 1,
-			get = function(info)
+			get = function()
 				return self.db.profile.precision
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self.db.profile.precision = value
 				self:Update()
 			end,
@@ -329,10 +329,10 @@ function Coordinates:GetOptions()
 			step = 0.01,
 			bigStep = 0.05,
 			isPercent = true,
-			get = function(info)
+			get = function()
 				return self.db.profile.scale
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self.db.profile.scale = value
 				self:Update()
 			end,

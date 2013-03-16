@@ -71,7 +71,7 @@ function ShowHide:OnEnable()
 end
 
 function ShowHide:OnDisable()
-	for k, v in pairs(frames) do
+	for _, v in pairs(frames) do
 		if framesShown[v] then
 			v:Show()
 		end
@@ -158,7 +158,7 @@ function ShowHide:SetFrameShown(key, frame)
 
 		-- try each LFG type
 		for i=1, NUM_LE_LFG_CATEGORYS do
-			local mode, submode = GetLFGMode(i)
+			local mode = GetLFGMode(i)
 			if mode then
 				showMinimapButton = true
 			end
@@ -166,7 +166,7 @@ function ShowHide:SetFrameShown(key, frame)
 
 		-- try all PvP queues
 		for i=1, GetMaxBattlefieldID() do
-			local status, mapName, instanceID, levelRangeMin, levelRangeMax, teamSize, registeredMatch, eligibleInQueue, waitingOnOtherActivity = GetBattlefieldStatus(i)
+			local status = GetBattlefieldStatus(i)
 			if status and status ~= "none" then
 				showMinimapButton = true
 			end
@@ -174,7 +174,7 @@ function ShowHide:SetFrameShown(key, frame)
 
 		-- try all World PvP queues
 		for i=1, MAX_WORLD_PVP_QUEUES do
-			local status, mapName, queueID = GetWorldPVPQueueStatus(i)
+			local status = GetWorldPVPQueueStatus(i)
 			if status and status ~= "none" then
 				showMinimapButton = true
 			end

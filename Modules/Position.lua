@@ -37,7 +37,7 @@ function Position:OnInitialize()
 end
 
 
-local function Minimap_OnDragStart(this)
+local function Minimap_OnDragStart()
 	MinimapCluster:StartMoving()
 end
 
@@ -123,7 +123,7 @@ local function getPointXY(frame, newX, newY)
 	return point, x/scale, y/scale
 end
 
-local function Minimap_OnDragStop(this)
+local function Minimap_OnDragStop()
 	MinimapCluster:StopMovingOrSizing()
 
 	local point, x, y = getPointXY(MinimapCluster)
@@ -311,37 +311,37 @@ function Position:SetMinimapPosition(point, x, y)
 end
 
 local shouldntSetPoint = false
-function Position:DurabilityFrame_SetPoint(this)
+function Position:DurabilityFrame_SetPoint()
 	if shouldntSetPoint then return end
 	self:SetFramePosition('durability')
 end
 
-function Position:WatchFrame_SetPoint(this)
+function Position:WatchFrame_SetPoint()
 	if shouldntSetPoint then return end
 	self:SetFramePosition('questWatch')
 end
 
-function Position:TicketStatusFrame_SetPoint(this)
+function Position:TicketStatusFrame_SetPoint()
 	if shouldntSetPoint then return end
 	self:SetFramePosition('ticketStatus')
 end
 
-function Position:VehicleSeatIndicator_SetPoint(this)
+function Position:VehicleSeatIndicator_SetPoint()
 	if shouldntSetPoint then return end
 	self:SetFramePosition('vehicleSeats')
 end
 
-function Position:WorldStateAlwaysUpFrame_SetPoint(this)
+function Position:WorldStateAlwaysUpFrame_SetPoint()
 	if shouldntSetPoint then return end
 	self:SetFramePosition('worldState')
 end
 
-function Position:WorldStateCaptureBar_SetPoint(this)
+function Position:WorldStateCaptureBar_SetPoint()
 	if shouldntSetPoint then return end
 	self:SetFramePosition('capture')
 end
 
-function Position:WorldStateAlwaysUpFrame_Update(this)
+function Position:WorldStateAlwaysUpFrame_Update()
 	while numHookedCaptureFrames < NUM_EXTENDED_UI_FRAMES do
 		numHookedCaptureFrames = numHookedCaptureFrames + 1
 
@@ -608,9 +608,11 @@ function Position:GetOptions()
 	end
 
 	local function x_set(info, value)
+    local point, x
 		local key = info[#info - 1]
 		local y = y_get(info)
-		local point, x, y = getPointXY(movers[key] or nameToFrame[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
+
+    point, x, y = getPointXY(movers[key] or nameToFrame[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
 
 		if key == "minimap" then
 			self:SetMinimapPosition(point, x, y)
@@ -620,9 +622,11 @@ function Position:GetOptions()
 	end
 
 	local function y_set(info, value)
+    local point, y
 		local key = info[#info - 1]
 		local x = x_get(info)
-		local point, x, y = getPointXY(movers[key] or nameToFrame[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
+    
+		point, x, y = getPointXY(movers[key] or nameToFrame[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
 
 		if key == "minimap" then
 			self:SetMinimapPosition(point, x, y)
@@ -631,7 +635,7 @@ function Position:GetOptions()
 		end
 	end
 
-	local function isDisabled(info, value)
+	local function isDisabled(info)
 		return not movable_get(info)
 	end
 

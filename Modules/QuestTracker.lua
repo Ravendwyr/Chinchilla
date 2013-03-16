@@ -99,7 +99,7 @@ function QuestTracker:GetOptions()
 			desc = L["Set the height of the quest tracker."],
 			type = 'range',
 			min = 140,
-			max = floor(GetScreenHeight()),
+			max = math.floor(GetScreenHeight()),
 			step = 1,
 			bigStep = 5,
 			get = function() return self.db.profile.frameHeight end,

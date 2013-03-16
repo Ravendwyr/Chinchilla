@@ -170,10 +170,10 @@ function Compass:GetOptions()
 			min = 50,
 			max = 100,
 			step = 1,
-			get = function(info)
+			get = function()
 				return self.db.profile.radius
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self:SetRadius(value)
 			end,
 		},
@@ -182,10 +182,10 @@ function Compass:GetOptions()
 			desc = L["Color of the indicators"],
 			type = 'color',
 			hasAlpha = true,
-			get = function(info)
+			get = function()
 				return unpack(self.db.profile.color)
 			end,
-			set = function(info, r, g, b, a)
+			set = function(_, r, g, b, a)
 				self:SetColor(r, g, b, a)
 			end,
 		},
@@ -196,10 +196,10 @@ function Compass:GetOptions()
 			min = 6,
 			max = 24,
 			step = 1,
-			get = function(info)
+			get = function()
 				return self.db.profile.fontSize
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self:SetFontSize(value)
 			end,
 		},
@@ -212,10 +212,10 @@ function Compass:GetOptions()
 			step = 0.01,
 			bigStep = 0.05,
 			isPercent = true,
-			get = function(info)
+			get = function()
 				return self.db.profile.nonNorthSize
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self:SetNonNorthSize(value)
 			end,
 		},

@@ -130,10 +130,10 @@ function TrackingDots:GetOptions()
 				end
 				return t
 			end,
-			get = function(info)
+			get = function()
 				return self.db.profile.trackingDotStyle
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self:SetBlipTexture(value)
 			end,
 			order = 1,
@@ -142,7 +142,7 @@ function TrackingDots:GetOptions()
 			name = L["Blinking Blips"],
 			desc = L["Make the minimap blips flash to make them more noticable."],
 			type = 'toggle',
-			get = function(info)
+			get = function()
 				return self.db.profile.blink
 			end,
 			set = "SetBlinking",

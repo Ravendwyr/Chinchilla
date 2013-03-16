@@ -96,7 +96,7 @@ function Appearance:OnEnable()
 			fullTexture:Show()
 		end
 	else
-		for i,v in ipairs(cornerTextures) do
+		for _, v in ipairs(cornerTextures) do
 			v:Show()
 		end
 	end
@@ -123,7 +123,7 @@ function Appearance:OnDisable()
 		fullTexture:Hide()
 	end
 
-	for i,v in ipairs(cornerTextures) do
+	for _, v in ipairs(cornerTextures) do
 		v:Hide()
 	end
 
@@ -208,7 +208,7 @@ function Appearance:OnRotateMinimapUpdate(value)
 			fullTexture:Show()
 		end
 
-		for i,v in ipairs(cornerTextures) do
+		for _, v in ipairs(cornerTextures) do
 			v:Hide()
 		end
 	else
@@ -216,7 +216,7 @@ function Appearance:OnRotateMinimapUpdate(value)
 			fullTexture:Hide()
 		end
 
-		for i,v in ipairs(cornerTextures) do
+		for _, v in ipairs(cornerTextures) do
 			v:Show()
 		end
 	end
@@ -441,7 +441,7 @@ function Appearance:SetBorderRadius(value)
 	else return end
 
 	if cornerTextures[1] then
-		for i,v in ipairs(cornerTextures) do
+		for _, v in ipairs(cornerTextures) do
 			v:SetWidth(value)
 			v:SetHeight(value)
 		end
@@ -470,7 +470,7 @@ function Appearance:SetBorderColor(r, g, b, a)
 		return
 	end
 
-	for i,v in ipairs(cornerTextures) do
+	for _, v in ipairs(cornerTextures) do
 		v:SetVertexColor(r, g, b, a)
 	end
 
@@ -496,7 +496,7 @@ function Appearance:SetButtonBorderAlpha(alpha)
 		alpha = 1
 	end
 
-	for i, v in ipairs(buttonBorderTextures) do
+	for _, v in ipairs(buttonBorderTextures) do
 		v:SetAlpha(alpha)
 	end
 
@@ -655,7 +655,7 @@ function Appearance:GetOptions()
 					return shape
 				end
 			end,
-			set = function(info, value)
+			set = function(_, value)
 				self:SetShape(value)
 			end,
 		},
