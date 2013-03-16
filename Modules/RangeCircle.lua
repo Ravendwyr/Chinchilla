@@ -113,7 +113,7 @@ function RangeCircle:Update()
 	texture:SetTexture(tex)
 	texture:SetVertexColor(unpack(self.db.profile[inCombat and "combatColor" or "color"]))
 
-	if not self:IsEnabled() or indoors then value = 1 end
+--	if not self:IsEnabled() or indoors then value = 1 end
 
 	local radius = minimapSize[indoors and "indoor" or "outdoor"][Minimap:GetZoom()]
 	local range = self.db.profile[inCombat and "combatRange" or "range"]
