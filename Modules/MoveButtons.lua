@@ -164,9 +164,32 @@ local function getPointXY(frame, x, y)
 	return point, x/scale, y/scale
 end
 
+
+-- yoinked from Tekkub's Cork
+local function GetTipAnchor(frame)
+	local x, y = frame:GetCenter()
+
+	if not x or not y then return "TOPLEFT", "BOTTOMLEFT" end
+
+	local hhalf = (x > UIParent:GetWidth()*2/3) and "RIGHT" or (x < UIParent:GetWidth()/3) and "LEFT" or ""
+	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
+
+	return vhalf..hhalf, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
+end
+-- end yoink
+
+local function PositionLFD()
+	local point1, point2 = GetTipAnchor(QueueStatusMinimapButton)
+
+	QueueStatusFrame:ClearAllPoints()
+	QueueStatusFrame:SetPoint(point1, QueueStatusMinimapButton, point2)
+end
+
+
 local function button_OnUpdate(this)
 	this:ClearAllPoints()
 
+	local k = buttonReverse[this]
 	local x, y = GetCursorPosition()
 	local scale = UIParent:GetEffectiveScale()
 	local deg
@@ -175,11 +198,8 @@ local function button_OnUpdate(this)
 
 	if not IsAltKeyDown() then
 		deg = math.floor(getAngle(x, y) + 0.5)
-		local k = buttonReverse[this]
 		MoveButtons.db.profile[k] = deg
 	else
-		local k = buttonReverse[this]
-
 		deg = MoveButtons.db.profile[k]
 
 		if type(deg) ~= "table" then
@@ -203,6 +223,8 @@ local function button_OnUpdate(this)
 	end
 
 	LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
+
+	if k == "lfg" then PositionLFD() end
 end
 
 local function button_OnDragStart(this)
@@ -247,6 +269,8 @@ end
 function MoveButtons:OnEnable()
 	self:SetLocked()
 	self:Update()
+
+	Chinchilla:SecureHook("QueueStatusFrame_Update", PositionLFD)
 end
 
 function MoveButtons:OnDisable()
@@ -309,6 +333,8 @@ local function angle_set(info, value)
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
 	end
+
+	if key == "lfg" then PositionLFD() end
 end
 
 local function attach_get(info)
@@ -331,6 +357,8 @@ local function attach_set(info, value)
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(MoveButtons.db.profile[key]))
 	end
+
+	if key == "lfg" then PositionLFD() end
 end
 
 local function x_get(info)
@@ -380,7 +408,6 @@ local function x_set(info, value)
 		return
 	end
 
-
 	local key = info[#info - 1]
 	local data = MoveButtons.db.profile[key]
 	local y = y_get(info)
@@ -396,6 +423,8 @@ local function x_set(info, value)
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 	end
+
+	if key == "lfg" then PositionLFD() end
 end
 
 local function y_set(info, value)
@@ -418,6 +447,8 @@ local function y_set(info, value)
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
 	end
+
+	if key == "lfg" then PositionLFD() end
 end
 
 
