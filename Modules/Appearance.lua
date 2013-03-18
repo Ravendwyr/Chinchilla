@@ -282,6 +282,8 @@ function Appearance:SetFrameStrata(value)
 	if value then self.db.profile.strata = value
 	else value = self.db.profile.strata end
 
+	Minimap:SetFrameStrata(value)
+	MinimapBackdrop:SetFrameStrata(value)
 	MinimapCluster:SetFrameStrata(value)
 end
 
