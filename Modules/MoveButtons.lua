@@ -270,7 +270,9 @@ function MoveButtons:OnEnable()
 	self:SetLocked()
 	self:Update()
 
-	Chinchilla:SecureHook("QueueStatusFrame_Update", PositionLFD)
+	if not Chinchilla:IsHooked("QueueStatusFrame_Update") then
+		Chinchilla:SecureHook("QueueStatusFrame_Update", PositionLFD)
+	end
 end
 
 function MoveButtons:OnDisable()
