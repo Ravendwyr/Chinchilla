@@ -26,7 +26,6 @@ function Appearance:OnInitialize()
 			borderColor = { 1, 1, 1, 1 },
 			buttonBorderAlpha = 1,
 			strata = "BACKGROUND",
-			frameLevel = 1,
 			shape = "CORNER-BOTTOMLEFT",
 			borderStyle = "Blizzard",
 			borderRadius = 80,
@@ -81,7 +80,6 @@ local indoors
 function Appearance:OnEnable()
 	self:SetScale()
 	self:SetFrameStrata()
-	self:SetFrameLevel()
 	self:SetShape()
 	self:SetBorderColor()
 	self:SetButtonBorderAlpha()
@@ -110,7 +108,6 @@ end
 function Appearance:OnDisable()
 	self:SetScale()
 	self:SetFrameStrata()
-	self:SetFrameLevel()
 	self:SetShape()
 	self:SetBorderColor()
 	self:SetButtonBorderAlpha()
@@ -222,7 +219,6 @@ function Appearance:OnRotateMinimapUpdate(value)
 	end
 
 	self:SetShape()
-	Minimap:SetFrameLevel(MinimapCluster:GetFrameLevel()+1)
 end
 
 function Appearance:SetScale(value)
@@ -287,16 +283,6 @@ function Appearance:SetFrameStrata(value)
 	MinimapCluster:SetFrameStrata(value)
 end
 
-function Appearance:SetFrameLevel(value)
-	if value then self.db.profile.frameLevel = value
-	else value = self.db.profile.frameLevel end
-
-	if not self:IsEnabled() then
-		value = 1
-	end
-
-	MinimapCluster:SetFrameLevel(value)
-end
 
 local roundShapes = {
 	{
@@ -624,20 +610,6 @@ function Appearance:GetOptions()
 			end,
 			set = function(_, value)
 				self:SetFrameStrata(value)
-			end,
-		},
-		frameLevel = {
-			name = L["Frame level"],
-			desc = L["Set which frame level the minimap is layered on in relation to others in your interface."],
-			type = 'range',
-			min = 0,
-			max = 50,
-			step = 1,
-			get = function()
-				return self.db.profile.frameLevel
-			end,
-			set = function(_, value)
-				self:SetFrameLevel(value)
 			end,
 		},
 		shape = {
