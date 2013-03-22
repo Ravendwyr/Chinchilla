@@ -164,11 +164,6 @@ function Position:OnEnable()
 
 	Minimap:SetClampedToScreen(true)
 
-	-- hack so that frame positioning doesn't break
-	MinimapCluster:SetMovable(true)
-	MinimapCluster:StartMoving()
-  	MinimapCluster:StopMovingOrSizing()
-
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
@@ -625,7 +620,7 @@ function Position:GetOptions()
     local point, y
 		local key = info[#info - 1]
 		local x = x_get(info)
-    
+
 		point, x, y = getPointXY(movers[key] or nameToFrame[key], x + GetScreenWidth()/2, value + GetScreenHeight()/2)
 
 		if key == "minimap" then
