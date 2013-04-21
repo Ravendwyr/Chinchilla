@@ -485,8 +485,7 @@ function Appearance:SetButtonBorderAlpha(alpha)
 	end
 
 	for _, v in ipairs(buttonBorderTextures) do
-		if not _G[v] then print(v.." doesn't exist!")
-		else _G[v]:SetAlpha(alpha) end
+		if _G[v] then _G[v]:SetAlpha(alpha) end
 	end
 
 	for k, v in pairs(minimapButtons) do
