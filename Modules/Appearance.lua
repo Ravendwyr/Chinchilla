@@ -467,13 +467,13 @@ function Appearance:SetBorderColor(r, g, b, a)
 	end
 end
 
+
 local buttonBorderTextures = {
-	MiniMapWorldBorder,
-	MiniMapMailBorder,
-	MiniMapTrackingButtonBorder,
-	MiniMapVoiceChatFrameBorder,
-	MiniMapLFGFrameBorder,
-	MiniMapRecordingBorder,
+	"MiniMapMailBorder",
+	"MiniMapTrackingButtonBorder",
+	"MiniMapVoiceChatFrameBorder",
+	"QueueStatusMinimapButtonBorder",
+	"MiniMapRecordingBorder",
 }
 
 function Appearance:SetButtonBorderAlpha(alpha)
@@ -485,7 +485,8 @@ function Appearance:SetButtonBorderAlpha(alpha)
 	end
 
 	for _, v in ipairs(buttonBorderTextures) do
-		v:SetAlpha(alpha)
+		if not _G[v] then print(v.." doesn't exist!")
+		else _G[v]:SetAlpha(alpha) end
 	end
 
 	for k, v in pairs(minimapButtons) do
@@ -494,6 +495,7 @@ function Appearance:SetButtonBorderAlpha(alpha)
 		end
 	end
 end
+
 
 function Appearance:GetOptions()
 	local shape_choices = {
