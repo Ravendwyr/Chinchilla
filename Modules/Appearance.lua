@@ -586,26 +586,10 @@ function Appearance:GetOptions()
 			desc = L["Set which layer the minimap is layered on in relation to others in your interface."],
 			type = 'select',
 			values = {
-				BACKGROUND = L["Background"],
 				LOW = L["Low"],
 				MEDIUM = L["Medium"],
 				HIGH = L["High"],
-				DIALOG = L["Dialog"],
-				FULLSCREEN = L["Fullscreen"],
-				FULLSCREEN_DIALOG = L["Fullscreen-dialog"],
-				TOOLTIP = L["Tooltip"]
 			},
-			-- choiceOrder = {
-			-- 	"BACKGROUND",
-			-- 	"LOW",
-			-- 	"MEDIUM",
-			-- 	"HIGH",
-			-- 	"DIALOG",
-			-- 	"FULLSCREEN",
-			-- 	"FULLSCREEN_DIALOG",
-			-- 	"TOOLTIP"
-			-- },
-			disabled = false,
 			get = function()
 				return self.db.profile.strata
 			end,
