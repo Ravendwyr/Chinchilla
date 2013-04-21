@@ -25,7 +25,7 @@ function Appearance:OnInitialize()
 			combatAlpha = 1,
 			borderColor = { 1, 1, 1, 1 },
 			buttonBorderAlpha = 1,
-			strata = "BACKGROUND",
+			strata = "LOW",
 			shape = "CORNER-BOTTOMLEFT",
 			borderStyle = "Blizzard",
 			borderRadius = 80,
