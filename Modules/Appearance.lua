@@ -41,15 +41,15 @@ end
 local borderStyles = {}
 function Appearance:AddBorderStyle(english, localized, round, square)
 	if type(english) ~= "string" then
-		error(("Bad argument #2 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(english)), 2)
+		error(("Bad argument #1 to `AddBorderStyle'. Expected string, got %q."):format(type(english)), 2)
 	elseif borderStyles[english] then
-		error(("Bad argument #2 to `AddBorderStyle'. %q already provided"):format(english), 2)
+		error(("Bad argument #1 to `AddBorderStyle'. Style %q already exists."):format(english), 2)
 	elseif type(localized) ~= "string" then
-		error(("Bad argument #3 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(localized)), 2)
+		error(("Bad argument #2 to `AddBorderStyle'. Expected string, got %q."):format(type(localized)), 2)
 	elseif type(round) ~= "string" then
-		error(("Bad argument #4 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(round)), 2)
+		error(("Bad argument #3 to `AddBorderStyle'. Expected string, got %q."):format(type(round)), 2)
 	elseif type(square) ~= "string" then
-		error(("Bad argument #5 to `AddBorderStyle'. Expected %q, got %q"):format("string", type(square)), 2)
+		error(("Bad argument #4 to `AddBorderStyle'. Expected string, got %q."):format(type(square)), 2)
 	end
 
 	borderStyles[english] = { localized, round, square }
