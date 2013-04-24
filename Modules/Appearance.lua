@@ -102,7 +102,7 @@ function Appearance:OnEnable()
 	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
-	self:ScheduleRepeatingTimer("RecheckMinimapButtons", 1)
+	self:RegisterEvent("ADDON_LOADED", "RecheckMinimapButtons")
 end
 
 function Appearance:OnDisable()
