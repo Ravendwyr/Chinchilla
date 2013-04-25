@@ -172,6 +172,16 @@ do
 		local found = false
 
 		for _, v in ipairs(tmp) do
+			local childName = v:GetName() or ""
+
+			if childName:find("^LibDBIcon10_") then
+				found = true
+				minimapButtons[childName] = true
+
+				print("Adding "..childName.." to known minimap buttons list.")
+			end
+		end
+--[[
 			if minimapButtons[v] == nil then
 				if (v:GetObjectType() == "Frame" or v:GetObjectType() == "Button") and v:GetName() then
 					local name = v:GetName()
@@ -187,7 +197,7 @@ do
 				end
 			end
 		end
-
+]]--
 		wipe(tmp)
 
 		if found then
@@ -489,9 +499,15 @@ function Appearance:SetButtonBorderAlpha(alpha)
 	end
 
 	for k, v in pairs(minimapButtons) do
-		if v then
-			_G[k:GetName() .. "Overlay"]:SetAlpha(alpha)
-		end
+		for _, region in ipairs({ _G[k]:GetRegions() }) do
+			if region:GetTexture() == "Interface\\Minimap\\MiniMap-TrackingBorder" then
+  				region:SetAlpha(alpha)
+  			end
+  		end
+
+--		if v then
+--			_G[k:GetName() .. "Overlay"]:SetAlpha(alpha)
+--		end
 	end
 end
 
