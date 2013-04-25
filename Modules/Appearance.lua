@@ -177,8 +177,6 @@ do
 			if childName:find("^LibDBIcon10_") then
 				found = true
 				minimapButtons[childName] = true
-
-				print("Adding "..childName.." to known minimap buttons list.")
 			end
 		end
 --[[
