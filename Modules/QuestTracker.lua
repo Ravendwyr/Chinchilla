@@ -9,6 +9,7 @@ QuestTracker.desc = L["Tweak the quest tracker"]
 function QuestTracker:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("QuestTracker", {
 		profile = {
+			enabled = true,
 			showTitle = true, showCollapseButton = true,
 			frameHeight = 700,
 		},
