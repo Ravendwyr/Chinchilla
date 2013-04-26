@@ -136,7 +136,7 @@ function Appearance:ADDON_LOADED()
 
 	iconLib = iconLib or LibStub("LibDBIcon-1.0", true)
 
-	if iconLib then
+	if iconLib and iconLib.RegisterCallback then
 		iconLib.RegisterCallback(self, "LibDBIcon_IconCreated", "RecheckMinimapButtons")
 	end
 end
