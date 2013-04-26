@@ -102,7 +102,7 @@ function Appearance:OnEnable()
 	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
-	self:RegisterEvent("ADDON_LOADED", "RecheckMinimapButtons")
+	self:RegisterEvent("ADDON_LOADED")
 end
 
 function Appearance:OnDisable()
@@ -129,6 +129,17 @@ function Appearance:OnDisable()
 	end
 end
 
+
+local iconLib
+function Appearance:ADDON_LOADED()
+	self:RecheckMinimapButtons()
+
+	iconLib = iconLib or LibStub("LibDBIcon-1.0", true)
+
+	if iconLib then
+		iconLib:RegisterCallback(self, "LibDBIcon_IconCreated", "RecheckMinimapButtons")
+	end
+end
 
 function Appearance:MINIMAP_UPDATE_ZOOM()
 	local zoom = Minimap:GetZoom()
@@ -492,10 +503,12 @@ function Appearance:SetButtonBorderAlpha(alpha)
 		alpha = 1
 	end
 
+	-- FrameXML buttons
 	for _, v in ipairs(buttonBorderTextures) do
 		if _G[v] then _G[v]:SetAlpha(alpha) end
 	end
 
+	-- LibDBIcon-1.0 buttons
 	for k, v in pairs(minimapButtons) do
 		for _, region in ipairs({ _G[k]:GetRegions() }) do
 			if region:GetTexture() == "Interface\\Minimap\\MiniMap-TrackingBorder" then
