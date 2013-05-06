@@ -6,14 +6,43 @@ ShowHide.displayName = L["Show / Hide"]
 ShowHide.desc = L["Show and hide interface elements of the minimap"]
 
 
+local frames = {
+--	boss = "Chinchilla_BossAnchor",
+	difficulty = "MiniMapInstanceDifficulty",
+	guilddifficulty = "GuildInstanceDifficulty",
+	north = "MinimapNorthTag",
+	map = "MiniMapWorldMapButton",
+	mail = "MiniMapMailFrame",
+	lfg = "QueueStatusMinimapButton",
+	dayNight = "GameTimeFrame",
+	track = "MiniMapTracking",
+	voice = "MiniMapVoiceChatFrame",
+	zoomIn = "MinimapZoomIn",
+	zoomOut = "MinimapZoomOut",
+--	vehicleSeats = "VehicleSeatIndicator",
+	clock = "TimeManagerClockButton",
+	record = IsMacClient() and "MiniMapRecordingButton" or nil,
+}
+
+
+function ShowHide:ShowFrame(frame)
+	_G[frame]:SetAlpha(1)
+end
+
+function ShowHide:HideFrame(frame)
+	_G[frame]:SetAlpha(0)
+end
+
+
 function ShowHide:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
 		profile = {
 			enabled = true,
 			onMouseOver = true, calendarInviteOnly = false,
+
 			boss = true, north = true, difficulty = true, map = true,
 			mail = true, lfg = true, dayNight = true, track = true,
-			voice = true, zoom = true, clock = true, vehicleSeats = true,
+			voice = true, zoom = true, clock = true, -- vehicleSeats = true,
 		},
 	})
 
@@ -22,51 +51,12 @@ function ShowHide:OnInitialize()
 	end
 end
 
-local frames = {
-	boss = Chinchilla_BossAnchor,
-	difficulty = MiniMapInstanceDifficulty,
-	guilddifficulty = GuildInstanceDifficulty,
-	north = MinimapNorthTag,
-	map = MiniMapWorldMapButton,
-	mail = MiniMapMailFrame,
-	lfg = QueueStatusMinimapButton,
-	dayNight = GameTimeFrame,
-	track = MiniMapTracking,
-	voice = MiniMapVoiceChatFrame,
-	zoomIn = MinimapZoomIn,
-	zoomOut = MinimapZoomOut,
---	vehicleSeats = VehicleSeatIndicator,
-	clock = TimeManagerClockButton,
-	record = IsMacClient() and MiniMapRecordingButton or nil,
-}
-
-local framesShown = {}
-
 function ShowHide:OnEnable()
-	if self.db.profile.onMouseOver then
-		self:HookScript(Minimap, "OnEnter")
-		self:HookScript(Minimap, "OnLeave")
-	end
-
-	for k, v in pairs(frames) do
-		framesShown[v] = v:IsShown()
-
-		self:SecureHook(frames[k], "Show", "frame_Show")
-		self:SecureHook(frames[k], "Hide", "frame_Hide")
-	end
-
 	self:RegisterEvent("CALENDAR_ACTION_PENDING", "UpdateCalendar")
 	self:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES", "UpdateCalendar")
 
+	self:UpdateMouseover()
 	self:Update()
-end
-
-function ShowHide:OnDisable()
-	for _, v in pairs(frames) do
-		if framesShown[v] then
-			v:Show()
-		end
-	end
 end
 
 
@@ -80,170 +70,28 @@ function ShowHide:Update()
 			key = "difficulty"
 		end
 
-		local value = self.db.profile[key]
-
-		if value == true then
---			if framesShown[frame] then
-				self:SetFrameShown(key, frame)
---			end
-		else -- Minimap:IsMouseOver() isn't going to return true when settings are being changed, so just hide the buttons
-		 	if frame:IsShown() then
-				frame:Hide()
-				framesShown[frame] = true
-			end
+		if self.db.profile[key] == true then
+			self:ShowFrame(frame)
+		else
+			-- Minimap:IsMouseOver() isn't going to return true with the config open, so just hide the button
+		 	self:HideFrame(frame)
 		end
 	end
 end
 
 function ShowHide:UpdateCalendar()
-	self:SetFrameShown("dayNight", GameTimeFrame)
-end
+	if not self.db.profile.calendarInviteOnly then return end
 
-
-function ShowHide:frame_Show(object)
-	local object_k
-
-	for k, v in pairs(frames) do
-		if v == object then
-			if k == "zoomIn" or k == "zoomOut" then
-				object_k = "zoom"
-			elseif k == "guilddifficulty" then
-				object_k = "difficulty"
-			else
-				object_k = k
-			end
-
-			break
-		end
-	end
-
-	if self.db.profile[object_k] == false or ( self.db.profile[object_k] == "mouseover" and not Minimap:IsMouseOver() ) then
-		object:Hide()
-	end
-
-	framesShown[object] = true
-end
-
-function ShowHide:frame_Hide(object)
-	framesShown[object] = false
-end
-
-
-function ShowHide:SetFrameShown(key, frame)
-	if key == "dayNight" then
-		if self.db.profile.calendarInviteOnly then
-			if CalendarGetNumPendingInvites() > 0 then
-				frame:Show()
-			else
-				frame:Hide()
-				framesShown[frame] = true
-			end
-		else
-			frame:Show()
-		end
-	elseif key == "mail" then
-		if HasNewMail() then frame:Show() end
-	elseif key == "lfg" then
-		-- there must be a better way to do this
-		local showMinimapButton = false
-
-		-- try each LFG type
-		for i=1, NUM_LE_LFG_CATEGORYS do
-			local mode = GetLFGMode(i)
-			if mode then
-				showMinimapButton = true
-			end
-		end
-
-		-- try all PvP queues
-		for i=1, GetMaxBattlefieldID() do
-			local status = GetBattlefieldStatus(i)
-			if status and status ~= "none" then
-				showMinimapButton = true
-			end
-		end
-
-		-- try all World PvP queues
-		for i=1, MAX_WORLD_PVP_QUEUES do
-			local status = GetWorldPVPQueueStatus(i)
-			if status and status ~= "none" then
-				showMinimapButton = true
-			end
-		end
-
-		-- World PvP areas we're currently in
-		if CanHearthAndResurrectFromArea() then
-			showMinimapButton = true
-		end
-
-		-- Pet Battle PvP Queue
-		if C_PetBattles.GetPVPMatchmakingInfo() then
-			showMinimapButton = true
-		end
-
-		if showMinimapButton then frame:Show() end
-	elseif key == "difficulty" and self.db.profile[key] then
-		MiniMapInstanceDifficulty_Update()
-	elseif key == "record" then
-		if GetCVar("MovieRecordingIcon") == "1" and MovieRecording_IsRecording() then
-			frame:Show()
-		else
-			frame:Hide()
-		end
+	if CalendarGetNumPendingInvites() > 0 then
+		self:ShowFrame("GameTimeFrame")
 	else
-		frame:Show()
+		self:HideFrame("GameTimeFrame")
 	end
 end
 
-
-local timerID = nil
-function ShowHide:OnEnter()
-	if timerID then
-		self:CancelTimer(timerID)
-		timerID = nil
-	end
-
-	local realKey
-
-	for key, frame in pairs(frames) do
-		-- we don't bother with "guilddifficulty" -> "difficulty" here as the instance flag is not yet tristate
-		if key == "zoomIn" or key == "zoomOut" then
-			realKey = "zoom"
-		else
-			realKey = key
-		end
-
-		if self.db.profile[realKey] == "mouseover" then
-			self:SetFrameShown(realKey, frame)
-		end
-	end
-end
-
-function ShowHide:OnLeave()
-	timerID = self:ScheduleTimer("HideAll", 3)
-end
-
-function ShowHide:HideAll()
-	local realKey
-
-	for key, frame in pairs(frames) do
-		if key == "zoomIn" or key == "zoomOut" then
-			realKey = "zoom"
-		else
-			realKey = key
-		end
-
-		if self.db.profile[realKey] == "mouseover" then
-			frame:Hide()
-			framesShown[frame] = true
-		end
-	end
-
-	timerID = nil
-end
-
-function ShowHide:OnMouseOverUpdate(info, value)
-	if info then self.db.profile.onMouseOver = value end
+function ShowHide:UpdateMouseover(info, value)
+	if info then self.db.profile.onMouseOver = value
+	else value = self.db.profile.onMouseOver end
 
 	if value then
 		self:HookScript(Minimap, "OnEnter")
@@ -255,6 +103,45 @@ function ShowHide:OnMouseOverUpdate(info, value)
 end
 
 
+local timerID = nil
+function ShowHide:OnEnter()
+	if timerID then
+		self:CancelTimer(timerID)
+		timerID = nil
+	end
+
+	for key, frame in pairs(frames) do
+		-- we don't bother with "guilddifficulty" -> "difficulty" here as the dungeon difficulty flag thing isn't tristate
+		if key == "zoomIn" or key == "zoomOut" then
+			key = "zoom"
+		end
+
+		if self.db.profile[key] == "mouseover" then
+			self:ShowFrame(frame)
+		end
+	end
+end
+
+function ShowHide:OnLeave()
+	timerID = self:ScheduleTimer("HideAllMouseoverButtons", 3)
+end
+
+function ShowHide:HideAllMouseoverButtons()
+	for key, frame in pairs(frames) do
+		-- we don't bother with "guilddifficulty" -> "difficulty" here as the dungeon difficulty flag thing isn't tristate
+		if key == "zoomIn" or key == "zoomOut" then
+			key = "zoom"
+		end
+
+		if self.db.profile[key] == "mouseover" then
+			self:HideFrame(frame)
+		end
+	end
+
+	timerID = nil
+end
+
+
 function ShowHide:GetOptions()
 	local function get(info)
 		local key = info[#info]
@@ -262,7 +149,7 @@ function ShowHide:GetOptions()
 		if info.option.tristate and self.db.profile[key] == "mouseover" then
 			return nil
 		else
-			return not not self.db.profile[key]
+			return not not self.db.profile[key] -- to force a boolean
 		end
 	end
 
@@ -284,7 +171,7 @@ function ShowHide:GetOptions()
 			desc = L["Only show certain buttons when the cursor is hovering over the minimap."],
 			type = 'toggle',
 			order = 1,
-			get = get, set = "OnMouseOverUpdate",
+			get = get, set = "UpdateMouseover",
 		},
 		calendarInviteOnly = {
 			name = L["Unread Invites Only"],
@@ -292,10 +179,9 @@ function ShowHide:GetOptions()
 			type = 'toggle',
 			order = 2,
 			get = get, set = set,
-			width = "double",
 			disabled = function() return self.db.profile.dayNight == false end,
 		},
-		tutorial = {
+		description = {
 			name = L["A gold tick means the button will be shown at all times. A silver tick means the button will be shown when you hover the cursor over the minimap. An empty tickbox means the button will not be shown at all."],
 			type = "description",
 			order = 3,
@@ -405,7 +291,6 @@ function ShowHide:GetOptions()
 			order = 16,
 			get = get, set = set,
 		},
-]]--
 		boss = {
 			name = L["Boss frames"],
 			desc = L["Show the boss unit frames"],
@@ -413,6 +298,7 @@ function ShowHide:GetOptions()
 			order = 17,
 			get = get, set = set,
 		},
+]]--
 		record = IsMacClient() and {
 			name = L["Recording"],
 			desc = L["Show the recording button"],
