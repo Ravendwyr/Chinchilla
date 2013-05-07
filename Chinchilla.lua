@@ -211,9 +211,6 @@ function Chinchilla:OnDisable()
 
 	MiniMapWorldMapButton:SetNormalTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
-
-	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
-	self:SecureHook("SetCVar")
 end
 
 function Chinchilla:OnProfileUpdate()
