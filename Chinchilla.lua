@@ -190,7 +190,7 @@ end
 
 function Chinchilla:OnEnable()
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("Chinchilla", Chinchilla.CreateConfig)
-	AceConfigDialog:SetDefaultSize("Chinchilla", 800, 500)
+	AceConfigDialog:SetDefaultSize("Chinchilla", 750, 500)
 
 	_G["SLASH_CHINCHILLA1"] = "/chinchilla"
 	_G["SLASH_CHINCHILLA2"] = "/chin"
