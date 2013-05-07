@@ -193,7 +193,6 @@ end
 
 function Chinchilla:OnEnable()
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("Chinchilla", Chinchilla.OpenConfig)
-	AceConfigDialog:AddToBlizOptions("Chinchilla", L["Chinchilla Minimap"])
 	AceConfigDialog:SetDefaultSize("Chinchilla", 800, 500)
 
 	_G["SLASH_CHINCHILLA1"] = "/chinchilla"
