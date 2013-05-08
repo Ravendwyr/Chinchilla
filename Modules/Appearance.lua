@@ -177,23 +177,7 @@ do
 				minimapButtons[childName] = true
 			end
 		end
---[[
-			if minimapButtons[v] == nil then
-				if (v:GetObjectType() == "Frame" or v:GetObjectType() == "Button") and v:GetName() then
-					local name = v:GetName()
 
-					if name:find("MinimapButton$") and _G[name .. "Overlay"] then
-						minimapButtons[v] = true
-						found = true
-					else
-						minimapButtons[v] = false
-					end
-				else
-					minimapButtons[v] = false
-				end
-			end
-		end
-]]--
 		wipe(tmp)
 
 		if found then
@@ -422,10 +406,6 @@ function Appearance:SetButtonBorderAlpha(alpha)
   				region:SetAlpha(alpha)
   			end
   		end
-
---		if v then
---			_G[k:GetName() .. "Overlay"]:SetAlpha(alpha)
---		end
 	end
 end
 
