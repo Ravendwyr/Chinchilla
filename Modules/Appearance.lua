@@ -15,7 +15,7 @@ for i = 1, Minimap:GetNumPoints() do
 end
 
 
-local rotateMinimap = GetCVar("rotateMinimap") == "1"
+local rotateMinimap = GetCVar("rotateMinimap")
 function Appearance:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Appearance", {
 		profile = {
@@ -65,15 +65,7 @@ Appearance:AddBorderStyle("Tubular",        L["Tubular"],     "Interface\\AddOns
 Appearance:AddBorderStyle("Flat",			L["Flat"],        "Interface\\AddOns\\Chinchilla\\Art\\Border-Flat-Round",       "Interface\\AddOns\\Chinchilla\\Art\\Border-Flat-Square")
 Appearance:AddBorderStyle("Chinchilla",	      "Chinchilla",	  "Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Round", "Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Square")
 
-local RotateBorder_frame = CreateFrame("Frame")
-RotateBorder_frame:Hide()
-RotateBorder_frame:SetScript("OnUpdate", function()
-	Appearance:RotateBorder()
-end)
-
 local cornerTextures = {}
-local fullTexture
-
 local inCombat = InCombatLockdown()
 local indoors
 
@@ -89,20 +81,15 @@ function Appearance:OnEnable()
 
 	MinimapBorder:Hide()
 
-	if rotateMinimap then
-		if fullTexture then
-			fullTexture:Show()
-		end
-	else
 		for _, v in ipairs(cornerTextures) do
 			v:Show()
 		end
-	end
 
 	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("ADDON_LOADED")
+	self:RegisterEvent("CVAR_UPDATE")
 end
 
 function Appearance:OnDisable()
@@ -115,10 +102,6 @@ function Appearance:OnDisable()
 	MinimapBorder:Show()
 	MinimapCluster:SetAlpha(1)
 	Minimap:SetMaskTexture([[Textures\MinimapMask]])
-
-	if fullTexture then
-		fullTexture:Hide()
-	end
 
 	for _, v in ipairs(cornerTextures) do
 		v:Hide()
@@ -139,6 +122,10 @@ function Appearance:ADDON_LOADED()
 	if iconLib and iconLib.RegisterCallback then
 		iconLib.RegisterCallback(self, "LibDBIcon_IconCreated", "RecheckMinimapButtons")
 	end
+end
+
+function Appearance:CVAR_UPDATE(_, key, value)
+	if key == "ROTATE_MINIMAP" then rotateMinimap = value end
 end
 
 function Appearance:MINIMAP_UPDATE_ZOOM()
@@ -215,30 +202,6 @@ do
 	end
 end
 
-
-function Appearance:OnRotateMinimapUpdate(value)
-	rotateMinimap = value
-
-	if value then
-		if fullTexture then
-			fullTexture:Show()
-		end
-
-		for _, v in ipairs(cornerTextures) do
-			v:Hide()
-		end
-	else
-		if fullTexture then
-			fullTexture:Hide()
-		end
-
-		for _, v in ipairs(cornerTextures) do
-			v:Show()
-		end
-	end
-
-	self:SetShape()
-end
 
 function Appearance:SetScale(value)
 	if value then self.db.profile.scale = value
@@ -350,23 +313,6 @@ function Appearance:SetShape(shape)
 		return
 	end
 
-	if rotateMinimap and shape ~= "SQUARE" then
-		RotateBorder_frame:Show()
-		shape = "ROUND"
-	else
-		RotateBorder_frame:Hide()
-	end
-
-	if rotateMinimap then
-		if not fullTexture then
-			local borderRadius = self.db.profile.borderRadius
-
-			fullTexture = MinimapBackdrop:CreateTexture("Chinchilla_Appearance_MinimapFullTexture", "ARTWORK")
-			fullTexture:SetWidth(borderRadius*2 * 2^0.5)
-			fullTexture:SetHeight(borderRadius*2 * 2^0.5)
-			fullTexture:SetPoint("CENTER", Minimap, "CENTER")
-		end
-	else
 		if not cornerTextures[1] then
 			local borderRadius = self.db.profile.borderRadius
 
@@ -389,29 +335,14 @@ function Appearance:SetShape(shape)
 			cornerTextures[4]:SetPoint("TOPLEFT", Minimap, "CENTER")
 			cornerTextures[4]:SetTexCoord(0.5, 1, 0.5, 1)
 		end
-	end
 
 	local borderStyle = borderStyles[self.db.profile.borderStyle] or borderStyles.Blizzard
 	local round = borderStyle and borderStyle[2] or [[Interface\AddOns\Chinchilla\Art\Border-Blizzard-Round]]
 	local square = borderStyle and borderStyle[3] or [[Interface\AddOns\Chinchilla\Art\Border-Blizzard-Square]]
 
-	if rotateMinimap then
-		fullTexture:SetTexture(shape ~= "SQUARE" and round or square)
-		fullTexture:SetTexCoord(
-			0.5 - 0.5^0.5, 0.5 - 0.5^0.5,
-			0.5 - 0.5^0.5, 0.5 + 0.5^0.5,
-			0.5 + 0.5^0.5, 0.5 - 0.5^0.5,
-			0.5 + 0.5^0.5, 0.5 + 0.5^0.5
-		)
-
-		if shape ~= "SQUARE" then
-			self:RotateBorder()
-		end
-	else
 		for i,v in ipairs(cornerTextures) do
 			v:SetTexture(roundShapes[i][shape] and round or square)
 		end
-	end
 
 	self:SetBorderColor() -- prevent border reverting to white, not sure if there's a way around this
 	Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Art\Mask-]] .. shape)
@@ -419,21 +350,6 @@ function Appearance:SetShape(shape)
 	if Chinchilla:GetModule("MoveButtons", true) then
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
-end
-
-local math_pi = math.pi
-local math_cos = math.cos
-local math_sin = math.sin
-
-function Appearance:RotateBorder()
-	local angle = GetPlayerFacing()
-
-	fullTexture:SetTexCoord(
-		math_cos(angle + math_pi*3/4) + 0.5, -math_sin(angle + math_pi*3/4) + 0.5,
-		math_cos(angle - math_pi*3/4) + 0.5, -math_sin(angle - math_pi*3/4) + 0.5,
-		math_cos(angle + math_pi*1/4) + 0.5, -math_sin(angle + math_pi*1/4) + 0.5,
-		math_cos(angle - math_pi*1/4) + 0.5, -math_sin(angle - math_pi*1/4) + 0.5
-	)
 end
 
 function Appearance:SetBorderStyle(style)
@@ -452,11 +368,6 @@ function Appearance:SetBorderRadius(value)
 			v:SetWidth(value)
 			v:SetHeight(value)
 		end
-	end
-
-	if fullTexture then
-		fullTexture:SetWidth(value*2 * 2^0.5)
-		fullTexture:SetHeight(value*2 * 2^0.5)
 	end
 end
 
@@ -479,10 +390,6 @@ function Appearance:SetBorderColor(r, g, b, a)
 
 	for _, v in ipairs(cornerTextures) do
 		v:SetVertexColor(r, g, b, a)
-	end
-
-	if fullTexture then
-		fullTexture:SetVertexColor(r, g, b, a)
 	end
 end
 
@@ -629,12 +536,12 @@ function Appearance:GetOptions()
 			desc = L["Set the shape of the minimap."],
 			type = 'select',
 			values = function()
-				return rotateMinimap and shape_choices_alt or shape_choices
+				return rotateMinimap == "1" and shape_choices_alt or shape_choices
 			end,
 			get = function()
 				local shape = self.db.profile.shape
 
-				if rotateMinimap then
+				if rotateMinimap == "1" then
 					if shape == "SQUARE" then return "SQUARE"
 					else return "ROUND" end
 				else
@@ -710,7 +617,7 @@ end
 function _G.GetMinimapShape()
 	if not Appearance.db then return "ROUND" end
 
-	if Appearance:IsEnabled() and not rotateMinimap then
+	if Appearance:IsEnabled() and rotateMinimap == "0" then
 		return Appearance.db.profile.shape
 	else
 		if Appearance.db.profile.shape == "SQUARE" then return "SQUARE"
