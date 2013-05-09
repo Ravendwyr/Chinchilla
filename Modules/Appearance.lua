@@ -15,7 +15,7 @@ for i = 1, Minimap:GetNumPoints() do
 end
 
 
-local rotateMinimap = GetCVar("rotateMinimap")
+local rotateMinimap
 function Appearance:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Appearance", {
 		profile = {
@@ -70,6 +70,8 @@ local inCombat = InCombatLockdown()
 local indoors
 
 function Appearance:OnEnable()
+	rotateMinimap = GetCVar("rotateMinimap")
+
 	self:SetScale()
 	self:SetFrameStrata()
 	self:SetShape()
