@@ -1,5 +1,5 @@
 
-local Compass = Chinchilla:NewModule("Compass")
+local Compass = Chinchilla:NewModule("Compass", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 Compass.displayName = L["Compass"]
@@ -27,7 +27,7 @@ local frame
 local function repositionCompass()
 	local angle = 0
 
-	if rotateMinimap then
+	if rotateMinimap == "1" then
 		angle = -GetPlayerFacing()
 	end
 
@@ -65,29 +65,32 @@ function Compass:OnEnable()
 
 	frame:Show()
 
-	rotateMinimap = GetCVar("rotateMinimap") == "1" -- delay CVar check otherwise compass won't rotate after exitting
+	rotateMinimap = GetCVar("rotateMinimap")
 	repositionCompass()
 
-	if rotateMinimap then
+	if rotateMinimap == "1" then
 		frame:SetScript("OnUpdate", repositionCompass)
 	end
 
+	self:RegisterEvent("CVAR_UPDATE")
 	self:SetFontSize()
 	self:SetColor()
 end
 
 function Compass:OnDisable()
+	frame:SetScript("OnUpdate", nil)
 	frame:Hide()
 
 	MinimapCompassTexture:SetAlpha(1)
 	MinimapNorthTag:SetAlpha(1)
 end
 
-function Compass:OnRotateMinimapUpdate(value)
-	rotateMinimap = value
 
-	if self:IsEnabled() then
-		if value then
+function Compass:CVAR_UPDATE(_, key, value)
+	if key == "ROTATE_MINIMAP" then
+		rotateMinimap = value
+
+		if value == "1" then
 			frame:SetScript("OnUpdate", repositionCompass)
 		else
 			frame:SetScript("OnUpdate", nil)
@@ -95,6 +98,7 @@ function Compass:OnRotateMinimapUpdate(value)
 		end
 	end
 end
+
 
 function Compass:SetRadius(value)
 	self.db.profile.radius = value
