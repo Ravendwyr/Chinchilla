@@ -32,12 +32,6 @@ function Chinchilla:CallMethodOnAllModules(method, ...)
 	end
 end
 
-function Chinchilla:SetCVar(key, value)
-	if key == "rotateMinimap" then
-		self:CallMethodOnAllModules("OnRotateMinimapUpdate", value == "1")
-	end
-end
-
 function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 	if button == self.db.profile.mouseButton then
 		AceConfigDialog:Open("Chinchilla")
@@ -201,7 +195,6 @@ function Chinchilla:OnEnable()
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
-	self:SecureHook("SetCVar")
 end
 
 function Chinchilla:OnDisable()
