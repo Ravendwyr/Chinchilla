@@ -23,22 +23,8 @@ function Compass:OnInitialize()
 end
 
 local rotateMinimap
-local function hideBlizzDirections()
-	MinimapCompassTexture:Hide()
-	MinimapNorthTag:Hide()
-end
-
-local hideBlizzDirections_frame = CreateFrame("Frame")
-hideBlizzDirections_frame:Hide()
-hideBlizzDirections_frame:SetScript("OnUpdate", function(self)
-	self:Hide()
-	hideBlizzDirections()
-end)
-
 local frame
 local function repositionCompass()
-	hideBlizzDirections_frame:Show()
-
 	local angle = 0
 
 	if rotateMinimap then
@@ -74,7 +60,9 @@ function Compass:OnEnable()
 		west:SetText("W")
 	end
 
-	hideBlizzDirections()
+	MinimapCompassTexture:SetAlpha(0)
+	MinimapNorthTag:SetAlpha(0)
+
 	frame:Show()
 
 	rotateMinimap = GetCVar("rotateMinimap") == "1" -- delay CVar check otherwise compass won't rotate after exitting
@@ -91,11 +79,8 @@ end
 function Compass:OnDisable()
 	frame:Hide()
 
-	if rotateMinimap then
-		MinimapCompassTexture:Show()
-	else
-		MinimapNorthTag:Show()
-	end
+	MinimapCompassTexture:SetAlpha(1)
+	MinimapNorthTag:SetAlpha(1)
 end
 
 function Compass:OnRotateMinimapUpdate(value)
