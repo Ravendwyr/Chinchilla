@@ -11,7 +11,6 @@ function QuestTracker:OnInitialize()
 		profile = {
 			enabled = true,
 			showTitle = true, showCollapseButton = true,
-			frameHeight = 700,
 		},
 	})
 
@@ -23,8 +22,6 @@ end
 function QuestTracker:OnEnable()
 	self:ToggleTitle()
 	self:ToggleButton()
-
-	WatchFrame:SetHeight(self.db.profile.frameHeight)
 end
 
 function QuestTracker:OnDisable()
@@ -94,21 +91,6 @@ function QuestTracker:GetOptions()
 				WatchFrame_SetWidth(value)
 			end,
 			order = 3,
-		},
-		frameHeight = {
-			name = L["Height"],
-			desc = L["Set the height of the quest tracker."],
-			type = 'range',
-			min = 140,
-			max = math.floor(GetScreenHeight()),
-			step = 1,
-			bigStep = 5,
-			get = function() return self.db.profile.frameHeight end,
-			set = function(_, value)
-				self.db.profile.frameHeight = value
-				WatchFrame:SetHeight(value)
-			end,
-			order = 4,
 		},
 	}
 end
