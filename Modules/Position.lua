@@ -154,7 +154,7 @@ function Position:OnEnable()
 	-- hack so that frame positioning doesn't break
 	MinimapCluster:SetMovable(true)
 	MinimapCluster:StartMoving()
-  	MinimapCluster:StopMovingOrSizing()
+	MinimapCluster:StopMovingOrSizing()
 
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
@@ -595,11 +595,11 @@ function Position:GetOptions()
 	end
 
 	local function x_set(info, value)
-    local point, x
+	local point, x
 		local key = info[#info - 1]
 		local y = y_get(info)
 
-    point, x, y = getPointXY(movers[key] or nameToFrame[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
+		point, x, y = getPointXY(movers[key] or nameToFrame[key], value + GetScreenWidth()/2, y + GetScreenHeight()/2)
 
 		if key == "minimap" then
 			self:SetMinimapPosition(point, x, y)
@@ -609,7 +609,7 @@ function Position:GetOptions()
 	end
 
 	local function y_set(info, value)
-    local point, y
+	local point, y
 		local key = info[#info - 1]
 		local x = x_get(info)
 
