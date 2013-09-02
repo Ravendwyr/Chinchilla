@@ -1,3 +1,5 @@
+if IsAddOnLoaded("MoveAnything") then return end
+
 
 local MoveButtons = Chinchilla:NewModule("MoveButtons")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
