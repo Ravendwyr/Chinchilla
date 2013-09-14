@@ -19,17 +19,11 @@ local rotateMinimap
 function Appearance:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Appearance", {
 		profile = {
-			scale = 1,
-			blipScale = 1,
-			alpha = 1,
-			combatAlpha = 1,
-			borderColor = { 1, 1, 1, 1 },
-			buttonBorderAlpha = 1,
-			strata = "LOW",
-			shape = "CORNER-BOTTOMLEFT",
-			borderStyle = "Blizzard",
-			borderRadius = 80,
 			enabled = true,
+			scale = 1, blipScale = 1, alpha = 1, combatAlpha = 1,
+			borderColor = { 1, 1, 1, 1 }, buttonBorderAlpha = 1,
+			strata = "LOW", shape = "CORNER-BOTTOMLEFT",
+			borderStyle = "Blizzard", borderRadius = 80,
 		},
 	})
 
