@@ -7,7 +7,11 @@ ShowHide.desc = L["Show and hide interface elements of the minimap"]
 
 
 local frames = {
---	boss = "Chinchilla_BossAnchor",
+	boss1 = "Boss1TargetFrame",
+	boss2 = "Boss2TargetFrame",
+	boss3 = "Boss3TargetFrame",
+	boss4 = "Boss4TargetFrame",
+	boss5 = "Boss5TargetFrame",
 	difficulty = "MiniMapInstanceDifficulty",
 	guilddifficulty = "GuildInstanceDifficulty",
 	north = "MinimapNorthTag",
@@ -66,6 +70,8 @@ function ShowHide:Update()
 	for key, frame in pairs(frames) do
 		if key == "zoomOut" or key == "zoomIn" then
 			key = "zoom"
+		elseif key:find("^boss") then
+			key = "boss"
 		elseif key == "guilddifficulty" then
 			key = "difficulty"
 		end
@@ -291,6 +297,7 @@ function ShowHide:GetOptions()
 			order = 16,
 			get = get, set = set,
 		},
+]]--
 		boss = {
 			name = L["Boss frames"],
 			desc = L["Show the boss unit frames"],
@@ -298,7 +305,6 @@ function ShowHide:GetOptions()
 			order = 17,
 			get = get, set = set,
 		},
-]]--
 		record = IsMacClient() and {
 			name = L["Recording"],
 			desc = L["Show the recording button"],
