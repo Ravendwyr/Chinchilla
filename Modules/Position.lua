@@ -21,7 +21,7 @@ function Position:OnInitialize()
 			worldState = { "TOP", 0, -50 },
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
 			ticketStatus = { "TOPRIGHT", -180, 0 },
---			boss = { "TOPRIGHT", 55, -236 },
+			boss = { "TOPRIGHT", 55, -236 },
 		}
 	})
 
@@ -134,7 +134,7 @@ function Position:OnEnable()
 	self:SetMinimapPosition()
 
 	-- in alphabetical order, as they should be
---	self:SetFramePosition('boss')
+	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
@@ -174,7 +174,7 @@ function Position:OnDisable()
 	self:ShowFrameMover('worldState', false)
 
 	-- in alphabetical order, as they should be
---	self:SetFramePosition('boss')
+	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
@@ -340,7 +340,7 @@ end
 local movers = {}
 local nameToFrame = {
 	minimap = MinimapCluster,
---	boss = Boss1TargetFrame,
+	boss = Boss1TargetFrame,
 	durability = DurabilityFrame,
 	questWatch = WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,
@@ -430,7 +430,7 @@ local nameToNiceName = {
 	worldState = L["World state"],
 	capture = L["Capture bar"],
 	vehicleSeats = L["Vehicle seats"],
---	boss = L["Boss frames"],
+	boss = L["Boss frames"],
 	ticketStatus = L["Ticket status"],
 }
 
@@ -780,7 +780,6 @@ function Position:GetOptions()
 			},
 			disabled = InCombatLockdown,
 		},
---[[
 		boss = {
 			name = L["Boss frames"],
 			desc = L["Position of the boss unit frames on the screen"],
@@ -826,7 +825,6 @@ function Position:GetOptions()
 			disabled = InCombatLockdown,
 --			disabled = function() return not self:IsEnabled() or not Chinchilla_BossAnchor:IsShown() end,
 		},
-]]--
 		vehicleSeats = {
 			name = L["Vehicle seats"],
 			desc = L["Position of the vehicle seat indicator on the screen"],
