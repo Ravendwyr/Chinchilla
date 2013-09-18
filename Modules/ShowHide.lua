@@ -68,7 +68,7 @@ function ShowHide:Update()
 	if not self:IsEnabled() then return end
 
 	for key, frame in pairs(frames) do
-		if key == "zoomOut" or key == "zoomIn" then
+		if key:find("^zoom") then
 			key = "zoom"
 		elseif key:find("^boss") then
 			key = "boss"
@@ -117,8 +117,8 @@ function ShowHide:OnEnter()
 	end
 
 	for key, frame in pairs(frames) do
-		-- we don't bother with "guilddifficulty" -> "difficulty" here as the dungeon difficulty flag thing isn't tristate
-		if key == "zoomIn" or key == "zoomOut" then
+		-- we don't do "guilddifficulty" -> "difficulty" or "bossN" -> "boss" here as those frames are not tristate
+		if key:find("^zoom") then
 			key = "zoom"
 		end
 
@@ -134,8 +134,8 @@ end
 
 function ShowHide:HideAllMouseoverButtons()
 	for key, frame in pairs(frames) do
-		-- we don't bother with "guilddifficulty" -> "difficulty" here as the dungeon difficulty flag thing isn't tristate
-		if key == "zoomIn" or key == "zoomOut" then
+		-- we don't do "guilddifficulty" -> "difficulty" or "bossN" -> "boss" here as those frames are not tristate
+		if key:find("^zoom") then
 			key = "zoom"
 		end
 
