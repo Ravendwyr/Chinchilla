@@ -23,7 +23,7 @@ local frames = {
 	voice = "MiniMapVoiceChatFrame",
 	zoomIn = "MinimapZoomIn",
 	zoomOut = "MinimapZoomOut",
---	vehicleSeats = "VehicleSeatIndicator",
+	vehicleSeats = "VehicleSeatIndicator",
 	clock = "TimeManagerClockButton",
 	record = IsMacClient() and "MiniMapRecordingButton" or nil,
 }
@@ -289,7 +289,6 @@ function ShowHide:GetOptions()
 			order = 15,
 			get = get, set = set,
 		},
---[[
 		vehicleSeats = {
 			name = L["Vehicle seats"],
 			desc = L["Show the vehicle seats indicator"],
@@ -297,7 +296,6 @@ function ShowHide:GetOptions()
 			order = 16,
 			get = get, set = set,
 		},
-]]--
 		boss = {
 			name = L["Boss frames"],
 			desc = L["Show the boss unit frames"],
