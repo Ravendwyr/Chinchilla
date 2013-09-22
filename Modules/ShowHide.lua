@@ -31,10 +31,12 @@ local frames = {
 
 function ShowHide:ShowFrame(frame)
 	_G[frame]:SetAlpha(1)
+	_G[frame]:Show()
 end
 
 function ShowHide:HideFrame(frame)
 	_G[frame]:SetAlpha(0)
+	_G[frame]:Hide()
 end
 
 
