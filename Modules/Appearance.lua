@@ -636,7 +636,7 @@ function Appearance:GetOptions()
 			name = WATCH_FRAME_WIDTH_TEXT,
 			desc = OPTION_TOOLTIP_WATCH_FRAME_WIDTH,
 			type = 'toggle',
-			get = function() return InterfaceOptionsObjectivesPanelWatchFrameWidth:GetChecked() end,
+			get = function() return GetCVar("watchFrameWidth") == "1" end,
 			set = function() InterfaceOptionsObjectivesPanelWatchFrameWidth:Click() end,
 		},
 	}
