@@ -310,11 +310,8 @@ function ShowHide:GetOptions()
 			desc = L["Show the recording button"],
 			type = 'toggle',
 			order = 18,
-			get = function() return GetCVar("MovieRecordingIcon") == "1" and true or false end,
-			set = function(_, value)
-				if value then SetCVar("MovieRecordingIcon", "1")
-				else SetCVar("MovieRecordingIcon", "0") end
-			end,
+			get = function() return GetCVar("MovieRecordingIcon") == "1" end,
+			set = function() MacOptionsFrameCheckButton2:Click() end,
 		} or nil,
 	}
 end
