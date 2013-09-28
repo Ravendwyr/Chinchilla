@@ -156,6 +156,7 @@ function Position:OnEnable()
 	MinimapCluster:StartMoving()
 	MinimapCluster:StopMovingOrSizing()
 
+	self:SecureHook(Boss1TargetFrame, "SetPoint", "BossFrame_SetPoint")
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
@@ -298,6 +299,11 @@ function Position:SetMinimapPosition(point, x, y)
 end
 
 local shouldntSetPoint = false
+function Position:BossFrame_SetPoint()
+	if shouldntSetPoint then return end
+	self:SetFramePosition('boss')
+end
+
 function Position:DurabilityFrame_SetPoint()
 	if shouldntSetPoint then return end
 	self:SetFramePosition('durability')
