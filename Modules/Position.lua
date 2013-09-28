@@ -460,6 +460,7 @@ function Position:ShowFrameMover(frame, value, force)
 		if frame ~= 'capture' then
 			mover:SetFrameStrata(nameToFrame[frame]:GetFrameStrata())
 			mover:SetFrameLevel(nameToFrame[frame]:GetFrameLevel()+5)
+			mover:SetScale(nameToFrame[frame]:GetScale())
 		end
 
 		mover:SetClampedToScreen(self.db.profile.clamped)
