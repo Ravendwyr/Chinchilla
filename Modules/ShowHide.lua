@@ -6,6 +6,9 @@ ShowHide.displayName = L["Show / Hide"]
 ShowHide.desc = L["Show and hide interface elements of the minimap"]
 
 
+local ShowHideFrame = CreateFrame("Frame")
+ShowHideFrame:Hide()
+
 local frames = {
 	boss1 = "Boss1TargetFrame",
 	boss2 = "Boss2TargetFrame",
@@ -30,17 +33,19 @@ local frames = {
 
 
 function ShowHide:ShowFrame(frame)
-	_G[frame]:SetAlpha(1)
-	_G[frame]:Show()
+	_G[frame]:SetParent( _G[frame].__origParent )
 end
 
 function ShowHide:HideFrame(frame)
-	_G[frame]:SetAlpha(0)
-	_G[frame]:Hide()
+	_G[frame]:SetParent(ShowHideFrame)
 end
 
 
 function ShowHide:OnInitialize()
+	for _, frame in pairs(frames) do
+		_G[frame].__origParent = _G[frame]:GetParent():GetName()
+	end
+
 	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
 		profile = {
 			enabled = true,
