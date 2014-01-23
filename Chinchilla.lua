@@ -173,8 +173,6 @@ function Chinchilla:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileUpdate")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileUpdate")
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileUpdate")
-
-	WatchFrame:SetHeight(700)
 end
 
 function Chinchilla:OnEnable()
