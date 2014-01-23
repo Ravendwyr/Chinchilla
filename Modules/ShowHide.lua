@@ -10,11 +10,7 @@ local ShowHideFrame = CreateFrame("Frame")
 ShowHideFrame:Hide()
 
 local frames = {
-	boss1 = "Boss1TargetFrame",
-	boss2 = "Boss2TargetFrame",
-	boss3 = "Boss3TargetFrame",
-	boss4 = "Boss4TargetFrame",
-	boss5 = "Boss5TargetFrame",
+	boss = "Chinchilla_BossAnchor",
 	difficulty = "MiniMapInstanceDifficulty",
 	guilddifficulty = "GuildInstanceDifficulty",
 	north = "MinimapNorthTag",
@@ -77,8 +73,6 @@ function ShowHide:Update()
 	for key, frame in pairs(frames) do
 		if key:find("^zoom") then
 			key = "zoom"
-		elseif key:find("^boss") then
-			key = "boss"
 		elseif key == "guilddifficulty" then
 			key = "difficulty"
 		end

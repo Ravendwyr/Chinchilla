@@ -8,6 +8,12 @@ Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 local numHookedCaptureFrames = 0
 
+
+Chinchilla_BossAnchor = CreateFrame("Frame", nil, UIParent)
+Chinchilla_BossAnchor:SetWidth(200)
+Chinchilla_BossAnchor:SetHeight(350)
+
+
 function Position:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Position", {
 		profile = {
@@ -133,8 +139,15 @@ function Position:OnEnable()
 
 	self:SetMinimapPosition()
 
+	for i=1, 5, 1 do
+		_G["Boss"..i.."TargetFrame"]:ClearAllPoints()
+		_G["Boss"..i.."TargetFrame"]:SetParent(Chinchilla_BossAnchor)
+		_G["Boss"..i.."TargetFrame"]:SetPoint("TOP", i == 1 and Chinchilla_BossAnchor or _G["Boss"..(i-1).."TargetFrame"], i == 1 and "TOP" or "BOTTOM")
+		_G["Boss"..i.."TargetFrame"].SetPoint = function() end
+	end
+
 	-- in alphabetical order, as they should be
---	self:SetFramePosition('boss')
+	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
@@ -175,7 +188,7 @@ function Position:OnDisable()
 	self:ShowFrameMover('worldState', false)
 
 	-- in alphabetical order, as they should be
---	self:SetFramePosition('boss')
+	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
@@ -348,7 +361,7 @@ end
 local movers = {}
 local nameToFrame = {
 	minimap = MinimapCluster,
---	boss = Boss1TargetFrame,
+	boss = Chinchilla_BossAnchor,
 	durability = DurabilityFrame,
 	questWatch = WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,
@@ -438,7 +451,7 @@ local nameToNiceName = {
 	worldState = L["World state"],
 	capture = L["Capture bar"],
 	vehicleSeats = L["Vehicle seats"],
---	boss = L["Boss frames"],
+	boss = L["Boss frames"],
 	ticketStatus = L["Ticket status"],
 }
 
@@ -789,7 +802,6 @@ function Position:GetOptions()
 			},
 			disabled = InCombatLockdown,
 		},
---[[
 		boss = {
 			name = L["Boss frames"],
 			desc = L["Position of the boss unit frames on the screen"],
@@ -835,7 +847,6 @@ function Position:GetOptions()
 			disabled = InCombatLockdown,
 --			disabled = function() return not self:IsEnabled() or not Chinchilla_BossAnchor:IsShown() end,
 		},
-]]--
 		vehicleSeats = {
 			name = L["Vehicle seats"],
 			desc = L["Position of the vehicle seat indicator on the screen"],
