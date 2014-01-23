@@ -173,6 +173,17 @@ function Chinchilla:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileUpdate")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileUpdate")
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileUpdate")
+
+	Chinchilla_BossAnchor = CreateFrame("Frame", nil, UIParent)
+	Chinchilla_BossAnchor:SetWidth(200)
+	Chinchilla_BossAnchor:SetHeight(350)
+
+	for i=1, 5, 1 do
+		_G["Boss"..i.."TargetFrame"]:ClearAllPoints()
+		_G["Boss"..i.."TargetFrame"]:SetParent(Chinchilla_BossAnchor)
+		_G["Boss"..i.."TargetFrame"]:SetPoint("TOP", i == 1 and Chinchilla_BossAnchor or _G["Boss"..(i-1).."TargetFrame"], i == 1 and "TOP" or "BOTTOM")
+		_G["Boss"..i.."TargetFrame"].SetPoint = function() end
+	end
 end
 
 function Chinchilla:OnEnable()

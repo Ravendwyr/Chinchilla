@@ -8,12 +8,6 @@ Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 local numHookedCaptureFrames = 0
 
-
-Chinchilla_BossAnchor = CreateFrame("Frame", nil, UIParent)
-Chinchilla_BossAnchor:SetWidth(200)
-Chinchilla_BossAnchor:SetHeight(350)
-
-
 function Position:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Position", {
 		profile = {
@@ -138,13 +132,6 @@ function Position:OnEnable()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 
 	self:SetMinimapPosition()
-
-	for i=1, 5, 1 do
-		_G["Boss"..i.."TargetFrame"]:ClearAllPoints()
-		_G["Boss"..i.."TargetFrame"]:SetParent(Chinchilla_BossAnchor)
-		_G["Boss"..i.."TargetFrame"]:SetPoint("TOP", i == 1 and Chinchilla_BossAnchor or _G["Boss"..(i-1).."TargetFrame"], i == 1 and "TOP" or "BOTTOM")
-		_G["Boss"..i.."TargetFrame"].SetPoint = function() end
-	end
 
 	-- in alphabetical order, as they should be
 	self:SetFramePosition('boss')
