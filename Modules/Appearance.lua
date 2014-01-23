@@ -24,7 +24,6 @@ function Appearance:OnInitialize()
 			borderColor = { 1, 1, 1, 1 }, buttonBorderAlpha = 1,
 			strata = "LOW", shape = "CORNER-BOTTOMLEFT",
 			borderStyle = "Blizzard", borderRadius = 80,
-			showTitle = true, showCollapseButton = true,
 		},
 	})
 
@@ -72,8 +71,6 @@ function Appearance:OnEnable()
 	self:SetShape()
 	self:SetBorderColor()
 	self:SetButtonBorderAlpha()
-	self:ToggleTitle()
-	self:ToggleButton()
 
 	if inCombat then self:SetCombatAlpha()
 	else self:SetAlpha() end
@@ -97,8 +94,6 @@ function Appearance:OnDisable()
 	self:SetShape()
 	self:SetBorderColor()
 	self:SetButtonBorderAlpha()
-	self:ToggleTitle()
-	self:ToggleButton()
 
 	MinimapBorder:Show()
 	MinimapCluster:SetAlpha(1)
@@ -248,26 +243,6 @@ function Appearance:SetFrameStrata(value)
 	Minimap:SetFrameStrata(value)
 	MinimapBackdrop:SetFrameStrata(value)
 	MinimapCluster:SetFrameStrata(value)
-end
-
-function Appearance:ToggleTitle()
-	if self.db.profile.showTitle then
-		WatchFrameHeader:EnableMouse(true)
-		WatchFrameHeader:SetAlpha(1)
-	else
-		WatchFrameHeader:EnableMouse(false)
-		WatchFrameHeader:SetAlpha(0)
-	end
-end
-
-function Appearance:ToggleButton()
-	if self.db.profile.showCollapseButton then
-		WatchFrameCollapseExpandButton:EnableMouse(true)
-		WatchFrameCollapseExpandButton:SetAlpha(1)
-	else
-		WatchFrameCollapseExpandButton:EnableMouse(false)
-		WatchFrameCollapseExpandButton:SetAlpha(0)
-	end
 end
 
 
@@ -611,33 +586,6 @@ function Appearance:GetOptions()
 				self:SetButtonBorderAlpha(value)
 			end,
 			isPercent = true,
-		},
-		showTitle = {
-			name = L["Show title"],
-			desc = L["Show the title of the quest tracker."],
-			type = 'toggle',
-			get = function() return self.db.profile.showTitle end,
-			set = function(_, value)
-				self.db.profile.showTitle = value
-				self:ToggleTitle()
-			end,
-		},
-		showCollapseButton = {
-			name = L["Show collapse button"],
-			desc = L["Show the collapse button on the quest tracker."],
-			type = 'toggle',
-			get = function() return self.db.profile.showCollapseButton end,
-			set = function(_, value)
-				self.db.profile.showCollapseButton = value
-				self:ToggleButton()
-			end,
-		},
-		questFrameWidth = {
-			name = WATCH_FRAME_WIDTH_TEXT,
-			desc = OPTION_TOOLTIP_WATCH_FRAME_WIDTH,
-			type = 'toggle',
-			get = function() return GetCVar("watchFrameWidth") == "1" end,
-			set = function() InterfaceOptionsObjectivesPanelWatchFrameWidth:Click() end,
 		},
 	}
 end
