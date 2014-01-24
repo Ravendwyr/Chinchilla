@@ -167,16 +167,17 @@ function Chinchilla:CreateConfig()
 end
 
 
+Chinchilla_BossAnchor = CreateFrame("Frame", "Chinchilla_BossAnchor", UIParent)
+Chinchilla_BossAnchor:SetWidth(200)
+Chinchilla_BossAnchor:SetHeight(350)
+
+
 function Chinchilla:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("Chinchilla2DB", { profile = { mouseButton = "RightButton", trackButton = "MiddleButton" }}, 'Default')
 
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileUpdate")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileUpdate")
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileUpdate")
-
-	Chinchilla_BossAnchor = CreateFrame("Frame", nil, UIParent)
-	Chinchilla_BossAnchor:SetWidth(200)
-	Chinchilla_BossAnchor:SetHeight(350)
 
 	for i=1, 5, 1 do
 		_G["Boss"..i.."TargetFrame"]:ClearAllPoints()
