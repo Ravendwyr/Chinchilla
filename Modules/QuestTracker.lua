@@ -6,6 +6,12 @@ QuestTracker.displayName = L["Quest Tracker"]
 QuestTracker.desc = L["Tweak the quest tracker"]
 
 
+local button = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+local headers = {
+	"QuestHeader", "AchievementHeader",
+}
+
+
 function QuestTracker:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("QuestTracker", {
 		profile = {
@@ -25,35 +31,34 @@ function QuestTracker:OnEnable()
 	self:ToggleTitle()
 	self:ToggleCollapseButton()
 
-	WatchFrame:SetHeight(self.db.profile.frameHeight)
+	ObjectiveTrackerFrame:SetHeight(self.db.profile.frameHeight)
 end
 
 function QuestTracker:OnDisable()
-	WatchFrameHeader:EnableMouse(true)
-	WatchFrameHeader:SetAlpha(1)
+	for _, header in pairs(headers) do
+		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(1)
+	end
 
-	WatchFrameCollapseExpandButton:EnableMouse(true)
-	WatchFrameCollapseExpandButton:SetAlpha(1)
+	button:EnableMouse(true)
+	button:SetAlpha(1)
 end
 
 
 function QuestTracker:ToggleTitle()
-	if self.db.profile.showTitle then
-		WatchFrameHeader:EnableMouse(true)
-		WatchFrameHeader:SetAlpha(1)
-	else
-		WatchFrameHeader:EnableMouse(false)
-		WatchFrameHeader:SetAlpha(0)
+	local value = self.db.profile.showTitle
+	
+	for _, header in pairs(headers) do
+		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(value and 1 or 0)
 	end
 end
 
 function QuestTracker:ToggleCollapseButton()
 	if self.db.profile.showCollapseButton then
-		WatchFrameCollapseExpandButton:EnableMouse(true)
-		WatchFrameCollapseExpandButton:SetAlpha(1)
+		button:EnableMouse(true)
+		button:SetAlpha(1)
 	else
-		WatchFrameCollapseExpandButton:EnableMouse(false)
-		WatchFrameCollapseExpandButton:SetAlpha(0)
+		button:EnableMouse(false)
+		button:SetAlpha(0)
 	end
 end
 
@@ -100,7 +105,7 @@ function QuestTracker:GetOptions()
 			get = function() return self.db.profile.frameHeight end,
 			set = function(_, value)
 				self.db.profile.frameHeight = value
-				WatchFrame:SetHeight(value)
+				ObjectiveTrackerFrame:SetHeight(value)
 			end,
 			order = 4,
 		},
