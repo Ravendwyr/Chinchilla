@@ -87,14 +87,6 @@ function QuestTracker:GetOptions()
 			end,
 			order = 2,
 		},
-		frameWidth = {
-			name = WATCH_FRAME_WIDTH_TEXT,
-			desc = OPTION_TOOLTIP_WATCH_FRAME_WIDTH,
-			type = 'toggle',
-			get = function() return GetCVar("watchFrameWidth") == "1" end,
-			set = function() InterfaceOptionsObjectivesPanelWatchFrameWidth:Click() end,
-			order = 3,
-		},
 		frameHeight = {
 			name = L["Height"],
 			desc = L["Set the height of the quest tracker."],
@@ -107,7 +99,7 @@ function QuestTracker:GetOptions()
 				self.db.profile.frameHeight = value
 				ObjectiveTrackerFrame:SetHeight(value)
 			end,
-			order = 4,
+			order = 3,
 		},
 	}
 end
