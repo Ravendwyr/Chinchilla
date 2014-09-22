@@ -34,7 +34,9 @@ end
 
 function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 	if button == self.db.profile.mouseButton then
-		AceConfigDialog:Open("Chinchilla")
+		if not InCombatLockdown() then
+			AceConfigDialog:Open("Chinchilla")
+		end
 	elseif button == self.db.profile.trackButton then
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor", -10, -20)
 		PlaySound("igMainMenuOptionCheckBoxOn")
