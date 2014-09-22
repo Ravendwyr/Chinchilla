@@ -160,7 +160,8 @@ function Position:OnEnable()
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
-	self:SecureHook(ObjectiveTrackerFrame, "SetPoint", "WatchFrame_SetPoint")
+	self:SecureHook(WatchFrame, "SetPoint", "WatchFrame_SetPoint")
+--	self:SecureHook(ObjectiveTrackerFrame, "SetPoint", "WatchFrame_SetPoint")
 	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	self:SecureHook("WorldStateAlwaysUpFrame_Update")
 end
@@ -350,7 +351,8 @@ local nameToFrame = {
 	minimap = MinimapCluster,
 	boss = Chinchilla_BossAnchor,
 	durability = DurabilityFrame,
-	questWatch = ObjectiveTrackerFrame,
+	questWatch = WatchFrame,
+--	questWatch = ObjectiveTrackerFrame,
 	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
 	ticketStatus = TicketStatusFrame,

@@ -6,7 +6,8 @@ QuestTracker.displayName = L["Quest Tracker"]
 QuestTracker.desc = L["Tweak the quest tracker"]
 
 
-local button = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+-- local button = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+local button = _G.WatchFrameCollapseExpandButton
 local headers = {
 	"QuestHeader", "AchievementHeader", "ScenarioHeader",
 }
@@ -31,25 +32,37 @@ function QuestTracker:OnEnable()
 	self:ToggleTitle()
 	self:ToggleCollapseButton()
 
-	ObjectiveTrackerFrame:SetHeight(self.db.profile.frameHeight)
+	WatchFrame:SetHeight(self.db.profile.frameHeight)
+--	ObjectiveTrackerFrame:SetHeight(self.db.profile.frameHeight)
 end
 
 function QuestTracker:OnDisable()
-	for _, header in pairs(headers) do
-		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(1)
-	end
+--	for _, header in pairs(headers) do
+--		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(1)
+--	end
 
 	button:EnableMouse(true)
 	button:SetAlpha(1)
+
+	WatchFrameHeader:EnableMouse(true)
+	WatchFrameHeader:SetAlpha(1)
 end
 
 
 function QuestTracker:ToggleTitle()
 	local value = self.db.profile.showTitle
-	
-	for _, header in pairs(headers) do
-		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(value and 1 or 0)
+
+	if value then
+        WatchFrameHeader:EnableMouse(true)
+        WatchFrameHeader:SetAlpha(1)
+    else
+        WatchFrameHeader:EnableMouse(false)
+        WatchFrameHeader:SetAlpha(0)
 	end
+	
+--	for _, header in pairs(headers) do
+--		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(value and 1 or 0)
+--	end
 end
 
 function QuestTracker:ToggleCollapseButton()
@@ -97,7 +110,8 @@ function QuestTracker:GetOptions()
 			get = function() return self.db.profile.frameHeight end,
 			set = function(_, value)
 				self.db.profile.frameHeight = value
-				ObjectiveTrackerFrame:SetHeight(value)
+				WatchFrame:SetHeight(value)
+--				ObjectiveTrackerFrame:SetHeight(value)
 			end,
 			order = 3,
 		},
