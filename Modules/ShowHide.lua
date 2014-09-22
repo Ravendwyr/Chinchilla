@@ -6,9 +6,6 @@ ShowHide.displayName = L["Show / Hide"]
 ShowHide.desc = L["Show and hide interface elements of the minimap"]
 
 
-local ShowHideFrame = CreateFrame("Frame")
-ShowHideFrame:Hide()
-
 local frames = {
 	boss = "Chinchilla_BossAnchor",
 	difficulty = "MiniMapInstanceDifficulty",
@@ -28,20 +25,83 @@ local frames = {
 }
 
 
-function ShowHide:ShowFrame(frame)
-	_G[frame]:SetParent( _G[frame].__origParent )
+function ShowHide:ShowFrame(key, frame)
+	frame = _G[frame]
+	
+	self:Unhook(frame, "Show")
+	
+	if key == "dayNight" then
+		if self.db.profile.calendarInviteOnly then
+			if CalendarGetNumPendingInvites() > 0 then
+				frame:Show()
+			end
+		else
+			frame:Show()
+		end
+	elseif key == "mail" then
+		if HasNewMail() then frame:Show() end
+	elseif key == "lfg" then
+		-- there must be a better way to do this
+		local showMinimapButton = false
+
+		-- try each LFG type
+		for i=1, NUM_LE_LFG_CATEGORYS do
+			local mode = GetLFGMode(i)
+			if mode then
+				showMinimapButton = true
+			end
+		end
+
+		-- try all PvP queues
+		for i=1, GetMaxBattlefieldID() do
+			local status = GetBattlefieldStatus(i)
+			if status and status ~= "none" then
+				showMinimapButton = true
+			end
+		end
+
+		-- try all World PvP queues
+		for i=1, MAX_WORLD_PVP_QUEUES do
+			local status = GetWorldPVPQueueStatus(i)
+			if status and status ~= "none" then
+				showMinimapButton = true
+			end
+		end
+
+		-- World PvP areas we're currently in
+		if CanHearthAndResurrectFromArea() then
+			showMinimapButton = true
+		end
+
+		-- Pet Battle PvP Queue
+		if C_PetBattles.GetPVPMatchmakingInfo() then
+			showMinimapButton = true
+		end
+
+		if showMinimapButton then frame:Show() end
+	elseif key == "difficulty" and self.db.profile[key] then
+		MiniMapInstanceDifficulty_Update()
+	elseif key == "record" then
+		if GetCVar("MovieRecordingIcon") == "1" and MovieRecording_IsRecording() then
+			frame:Show()
+		end
+	else
+		frame:Show()
+	end
 end
 
-function ShowHide:HideFrame(frame)
-	_G[frame]:SetParent(ShowHideFrame)
+function ShowHide:HideFrame(key, frame)
+	frame = _G[frame]
+	
+	if not self:IsHooked(frame, "Show") then
+		self:SecureHook(frame, "Show", frame.Hide)
+	end
+	
+	frame:Hide()
 end
 
 
 function ShowHide:OnInitialize()
-	for _, frame in pairs(frames) do
-		_G[frame].__origParent = _G[frame]:GetParent():GetName()
-	end
-
 	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
 		profile = {
 			enabled = true,
@@ -78,10 +138,10 @@ function ShowHide:Update()
 		end
 
 		if self.db.profile[key] == true then
-			self:ShowFrame(frame)
+			self:ShowFrame(key, frame)
 		else
 			-- Minimap:IsMouseOver() isn't going to return true with the config open, so just hide the button
-		 	self:HideFrame(frame)
+		 	self:HideFrame(key, frame)
 		end
 	end
 end
@@ -124,7 +184,7 @@ function ShowHide:OnEnter()
 		end
 
 		if self.db.profile[key] == "mouseover" then
-			self:ShowFrame(frame)
+			self:ShowFrame(key, frame)
 		end
 	end
 end
@@ -141,7 +201,7 @@ function ShowHide:HideAllMouseoverButtons()
 		end
 
 		if self.db.profile[key] == "mouseover" then
-			self:HideFrame(frame)
+			self:HideFrame(key, frame)
 		end
 	end
 
