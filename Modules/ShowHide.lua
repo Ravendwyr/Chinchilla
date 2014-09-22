@@ -27,9 +27,9 @@ local frames = {
 
 function ShowHide:ShowFrame(key, frame)
 	frame = _G[frame]
-	
+
 	self:Unhook(frame, "Show")
-	
+
 	if key == "dayNight" then
 		if self.db.profile.calendarInviteOnly then
 			if CalendarGetNumPendingInvites() > 0 then
@@ -92,11 +92,11 @@ end
 
 function ShowHide:HideFrame(key, frame)
 	frame = _G[frame]
-	
+
 	if not self:IsHooked(frame, "Show") then
 		self:SecureHook(frame, "Show", frame.Hide)
 	end
-	
+
 	frame:Hide()
 end
 
