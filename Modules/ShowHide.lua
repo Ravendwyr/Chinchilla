@@ -79,7 +79,7 @@ function ShowHide:ShowFrame(key, frame)
 		end
 
 		if showMinimapButton then frame:Show() end
-	elseif key == "difficulty" and self.db.profile[key] then
+	elseif key == "difficulty" then
 		MiniMapInstanceDifficulty_Update()
 	elseif key == "record" then
 		if GetCVar("MovieRecordingIcon") == "1" and MovieRecording_IsRecording() then
