@@ -35,6 +35,8 @@ function ShowHide:ShowFrame(key, frame)
 		if self.db.profile.calendarInviteOnly then
 			if CalendarGetNumPendingInvites() > 0 then
 				frame:Show()
+			else
+				self:HideFrame("dayNight", "GameTimeFrame")
 			end
 		else
 			frame:Show()
