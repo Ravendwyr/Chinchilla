@@ -18,6 +18,7 @@ local buttons = {
 	voice = MiniMapVoiceChatFrame,
 	zoomIn = MinimapZoomIn,
 	zoomOut = MinimapZoomOut,
+--	garrison = GarrisonLandingPageMinimapButton,
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
@@ -623,6 +624,13 @@ function MoveButtons:GetOptions()
 			inline = true,
 			args = args,
 		} or nil,
+--		garrison = {
+--			name = L["Garrison"],
+--			desc = L["Set the position of the garrison report button"],
+--			type = 'group',
+--			inline = true,
+--			args = args,
+--		},
 		voice = buttons.voice and {
 			name = L["Voice chat"],
 			desc = L["Set the position of the voice chat button"],
