@@ -177,6 +177,7 @@ do
 		wipe(tmp)
 
 		if found then
+			self:SetScale()
 			self:SetButtonBorderAlpha()
 		end
 	end
