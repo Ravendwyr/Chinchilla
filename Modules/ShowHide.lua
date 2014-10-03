@@ -88,6 +88,8 @@ function ShowHide:ShowFrame(key, frame)
 		if GetCVar("MovieRecordingIcon") == "1" and MovieRecording_IsRecording() then
 			frame:Show()
 		end
+	elseif key == "voice" then
+		MiniMapVoiceChat_Update()
 	else
 		frame:Show()
 	end
