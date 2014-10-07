@@ -6,11 +6,8 @@ QuestTracker.displayName = L["Quest Tracker"]
 QuestTracker.desc = L["Tweak the quest tracker"]
 
 
--- local button = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
-local button = _G.WatchFrameCollapseExpandButton
-local headers = {
-	"QuestHeader", "AchievementHeader", "ScenarioHeader",
-}
+local toc = select(4, GetBuildInfo())
+local button, headers
 
 
 function QuestTracker:OnInitialize()
@@ -26,43 +23,65 @@ function QuestTracker:OnInitialize()
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
 	end
+
+	if toc == 60000 then
+		-- Warlords of Draenor
+		button = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+		headers = { "QuestHeader", "AchievementHeader", "ScenarioHeader" }
+	else
+		-- Mists of Pandaria
+		button = _G.WatchFrameCollapseExpandButton
+	end
 end
 
 function QuestTracker:OnEnable()
 	self:ToggleTitle()
 	self:ToggleCollapseButton()
 
-	WatchFrame:SetHeight(self.db.profile.frameHeight)
---	ObjectiveTrackerFrame:SetHeight(self.db.profile.frameHeight)
+	if toc == 60000 then
+		-- Warlords of Draenor
+		ObjectiveTrackerFrame:SetHeight(self.db.profile.frameHeight)
+	else
+		-- Mists of Pandaria
+		WatchFrame:SetHeight(self.db.profile.frameHeight)
+	end
 end
 
 function QuestTracker:OnDisable()
---	for _, header in pairs(headers) do
---		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(1)
---	end
-
 	button:EnableMouse(true)
 	button:SetAlpha(1)
 
-	WatchFrameHeader:EnableMouse(true)
-	WatchFrameHeader:SetAlpha(1)
+	if toc == 60000 then
+		-- Warlords of Draenor
+		for _, header in pairs(headers) do
+			_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(1)
+		end
+	else
+		-- Mists of Pandaria
+		WatchFrameHeader:EnableMouse(true)
+		WatchFrameHeader:SetAlpha(1)
+	end
 end
 
 
 function QuestTracker:ToggleTitle()
 	local value = self.db.profile.showTitle
 
-	if value then
-        WatchFrameHeader:EnableMouse(true)
-        WatchFrameHeader:SetAlpha(1)
-    else
-        WatchFrameHeader:EnableMouse(false)
-        WatchFrameHeader:SetAlpha(0)
+	if toc == 60000 then
+		-- Warlords of Draenor
+		for _, header in pairs(headers) do
+			_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(value and 1 or 0)
+		end
+	else
+		-- Mists of Pandaria
+		if value then
+			WatchFrameHeader:EnableMouse(true)
+			WatchFrameHeader:SetAlpha(1)
+		else
+			WatchFrameHeader:EnableMouse(false)
+			WatchFrameHeader:SetAlpha(0)
+		end
 	end
-	
---	for _, header in pairs(headers) do
---		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(value and 1 or 0)
---	end
 end
 
 function QuestTracker:ToggleCollapseButton()
@@ -110,8 +129,14 @@ function QuestTracker:GetOptions()
 			get = function() return self.db.profile.frameHeight end,
 			set = function(_, value)
 				self.db.profile.frameHeight = value
-				WatchFrame:SetHeight(value)
---				ObjectiveTrackerFrame:SetHeight(value)
+
+				if toc == 60000 then
+					-- Warlords of Draenor
+					ObjectiveTrackerFrame:SetHeight(value)
+				else
+					-- Mists of Pandaria
+					WatchFrame:SetHeight(value)
+				end
 			end,
 			order = 3,
 		},
