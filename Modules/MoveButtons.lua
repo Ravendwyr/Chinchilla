@@ -6,6 +6,7 @@ MoveButtons.displayName = L["Move Buttons"]
 MoveButtons.desc = L["Move buttons around the minimap"]
 
 
+local toc = select(4, GetBuildInfo())
 local buttons = {
 	difficulty = MiniMapInstanceDifficulty,
 	guilddifficulty = GuildInstanceDifficulty,
@@ -18,7 +19,7 @@ local buttons = {
 	voice = MiniMapVoiceChatFrame,
 	zoomIn = MinimapZoomIn,
 	zoomOut = MinimapZoomOut,
---	garrison = GarrisonLandingPageMinimapButton,
+	garrison = toc == 60000 and GarrisonLandingPageMinimapButton or nil,
 	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
@@ -624,13 +625,13 @@ function MoveButtons:GetOptions()
 			inline = true,
 			args = args,
 		} or nil,
---		garrison = {
---			name = L["Garrison"],
---			desc = L["Set the position of the garrison report button"],
---			type = 'group',
---			inline = true,
---			args = args,
---		},
+		garrison = toc == 60000 and {
+			name = L["Garrison"],
+			desc = L["Set the position of the garrison report button"],
+			type = 'group',
+			inline = true,
+			args = args,
+		} or nil,
 		voice = buttons.voice and {
 			name = L["Voice chat"],
 			desc = L["Set the position of the voice chat button"],
