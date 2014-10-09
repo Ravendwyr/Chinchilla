@@ -6,6 +6,7 @@ Position.displayName = L["Position"]
 Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 
+local toc = select(4, GetBuildInfo())
 local numHookedCaptureFrames = 0
 
 function Position:OnInitialize()
@@ -160,8 +161,7 @@ function Position:OnEnable()
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
-	self:SecureHook(WatchFrame, "SetPoint", "WatchFrame_SetPoint")
---	self:SecureHook(ObjectiveTrackerFrame, "SetPoint", "WatchFrame_SetPoint")
+	self:SecureHook(toc == 60000 and ObjectiveTrackerFrame or WatchFrame, "SetPoint", "WatchFrame_SetPoint")
 	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	self:SecureHook("WorldStateAlwaysUpFrame_Update")
 end
@@ -351,8 +351,7 @@ local nameToFrame = {
 	minimap = MinimapCluster,
 	boss = Chinchilla_BossAnchor,
 	durability = DurabilityFrame,
-	questWatch = WatchFrame,
---	questWatch = ObjectiveTrackerFrame,
+	questWatch = toc == 60000 and ObjectiveTrackerFrame or WatchFrame,
 	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
 	ticketStatus = TicketStatusFrame,
