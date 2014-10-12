@@ -200,7 +200,9 @@ function Appearance:SetScale(value)
 	Minimap:SetScale(blipScale)
 
 	for _, v in ipairs { Minimap:GetChildren() } do
-		v:SetScale(1 / blipScale)
+		if v:GetName() ~= "Chinchilla_Coordinates_Frame" then
+			v:SetScale(1 / blipScale)
+		end
 	end
 
 	for _, v in ipairs(MINIMAP_POINTS) do
