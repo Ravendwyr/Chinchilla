@@ -220,10 +220,11 @@ end
 
 function Chinchilla:OnProfileUpdate()
 	for _, module in self:IterateModules() do
+		-- lazy method, turn it off and back on again
 		module:Disable()
 
 		if module.db.profile.enabled then
-			module:Enable() -- simply reboot the module as I'm too lazy to add checks to everything
+			module:Enable()
 		end
 	end
 end
