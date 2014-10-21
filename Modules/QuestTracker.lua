@@ -6,7 +6,7 @@ QuestTracker.displayName = L["Quest Tracker"]
 QuestTracker.desc = L["Tweak the quest tracker"]
 
 
-local button = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+local button = _G.ObjectiveTrackerFrame.HeaderMenu
 local headers = { "QuestHeader", "AchievementHeader", "ScenarioHeader" }
 
 
