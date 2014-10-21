@@ -5,7 +5,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 ShowHide.displayName = L["Show / Hide"]
 ShowHide.desc = L["Show and hide interface elements of the minimap"]
 
-local toc = select(4, GetBuildInfo())
+
 local frames = {
 	boss = "Chinchilla_BossAnchor",
 	difficulty = "MiniMapInstanceDifficulty",
@@ -21,7 +21,7 @@ local frames = {
 	zoomOut = "MinimapZoomOut",
 	vehicleSeats = "VehicleSeatIndicator",
 	clock = "TimeManagerClockButton",
-	garrison = toc == 60000 and "GarrisonLandingPageMinimapButton" or nil,
+	garrison = "GarrisonLandingPageMinimapButton",
 	record = IsMacClient() and "MiniMapRecordingButton" or nil,
 }
 
@@ -303,14 +303,14 @@ function ShowHide:GetOptions()
 			order = 9,
 			get = get, set = set,
 		},
-		garrison = toc == 60000 and {
+		garrison = {
 			name = L["Garrison"],
 			desc = L["Show the garrison report button"],
 			type = 'toggle',
 			tristate = true,
 			order = 10,
 			get = get, set = set,
-		} or nil,
+		},
 		clock = {
 			name = L["Clock"],
 			desc = L["Show the clock"],
