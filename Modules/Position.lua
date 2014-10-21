@@ -1,7 +1,4 @@
 
-if _G.MovAny then return end
-
-
 local Position = Chinchilla:NewModule("Position", "AceEvent-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
