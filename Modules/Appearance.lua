@@ -86,6 +86,13 @@ function Appearance:OnEnable()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("ADDON_LOADED")
 	self:RegisterEvent("CVAR_UPDATE")
+
+	-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
+	-- Thank you Funkeh` for the code!
+	Minimap:SetArchBlobRingScalar(0)
+	Minimap:SetArchBlobRingAlpha(0)
+	Minimap:SetQuestBlobRingScalar(0)
+	Minimap:SetQuestBlobRingAlpha(0)
 end
 
 function Appearance:OnDisable()
@@ -106,6 +113,11 @@ function Appearance:OnDisable()
 	if Chinchilla:GetModule("MoveButtons", true) then
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
+
+	Minimap:SetArchBlobRingScalar(1)
+	Minimap:SetArchBlobRingAlpha(1)
+	Minimap:SetQuestBlobRingScalar(1)
+	Minimap:SetQuestBlobRingAlpha(1)
 end
 
 
