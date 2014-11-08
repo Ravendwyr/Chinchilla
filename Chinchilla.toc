@@ -53,7 +53,6 @@ Modules\Expander.lua
 Modules\Location.lua
 Modules\MoveButtons.lua
 Modules\Ping.lua
-Modules\QuestTracker.lua
 Modules\Position.lua
 Modules\RangeCircle.lua
 Modules\ShowHide.lua

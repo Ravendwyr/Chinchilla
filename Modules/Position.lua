@@ -16,7 +16,6 @@ function Position:OnInitialize()
 
 			minimap = { "TOPRIGHT", 0, 0 },
 			durability = { "TOPRIGHT", -143, -221 },
-			questWatch = { "TOPRIGHT", 0, -175 },
 			capture = { "TOPRIGHT", -9, -190 },
 			worldState = { "TOP", 0, -50 },
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
@@ -137,7 +136,6 @@ function Position:OnEnable()
 	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
-	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
@@ -160,7 +158,6 @@ function Position:OnEnable()
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
-	self:SecureHook(ObjectiveTrackerFrame, "SetPoint", "WatchFrame_SetPoint")
 	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
 	self:SecureHook("WorldStateAlwaysUpFrame_Update")
 end
@@ -178,7 +175,6 @@ function Position:OnDisable()
 	self:SetFramePosition('boss')
 	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
-	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
 	self:SetFramePosition('worldState')
@@ -311,11 +307,6 @@ function Position:DurabilityFrame_SetPoint()
 	self:SetFramePosition('durability')
 end
 
-function Position:WatchFrame_SetPoint()
-	if shouldntSetPoint then return end
-	self:SetFramePosition('questWatch')
-end
-
 function Position:TicketStatusFrame_SetPoint()
 	if shouldntSetPoint then return end
 	self:SetFramePosition('ticketStatus')
@@ -350,7 +341,6 @@ local nameToFrame = {
 	minimap = MinimapCluster,
 	boss = Chinchilla_BossAnchor,
 	durability = DurabilityFrame,
-	questWatch = ObjectiveTrackerFrame,
 	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
 	ticketStatus = TicketStatusFrame,
@@ -434,7 +424,6 @@ end
 
 local nameToNiceName = {
 	durability = DURABILITY,
-	questWatch = L["Quest tracker"],
 	worldState = L["World state"],
 	capture = L["Capture bar"],
 	vehicleSeats = L["Vehicle seats"],
@@ -731,50 +720,6 @@ function Position:GetOptions()
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the durability man."],
-					type = 'range',
-					softMin = y_min,
-					softMax = y_max,
-					step = 1,
-					bigStep = 5,
-					-- stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					order = 4,
-					disabled = isDisabled,
-				},
-			},
-			disabled = InCombatLockdown,
-		},
-		questWatch = {
-			name = L["Quest and achievement tracker"],
-			desc = L["Position of the quest/achievement tracker on the screen"],
-			type = 'group',
-			inline = true,
-			args = {
-				movable = {
-					name = L["Movable"],
-					desc = L["Show a frame that is movable to show where you want the quest tracker to be"],
-					type = 'toggle',
-					order = 1,
-					get = movable_get,
-					set = movable_set,
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the quest tracker."],
-					type = 'range',
-					softMin = x_min,
-					softMax = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					order = 3,
-					disabled = isDisabled,
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the quest tracker."],
 					type = 'range',
 					softMin = y_min,
 					softMax = y_max,
