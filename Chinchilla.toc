@@ -16,7 +16,7 @@
 ## X-Category: Map
 ## X-Icon: Interface\AddOns\Chinchilla\Art\icon
 ## SavedVariables: Chinchilla2DB
-## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, Blizzard_TimeManager, MoveAnything
+## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, Blizzard_TimeManager
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
