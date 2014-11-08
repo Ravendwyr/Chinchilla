@@ -457,6 +457,7 @@ function Appearance:GetOptions()
 				self:SetScale(value)
 			end,
 			isPercent = true,
+			order = 1,
 		},
 		blipScale = {
 			name = L["Blip size"],
@@ -473,38 +474,7 @@ function Appearance:GetOptions()
 				self:SetBlipScale(value)
 			end,
 			isPercent = true,
-		},
-		alpha = {
-			name = L["Opacity"],
-			desc = L["Set how transparent or opaque the minimap is when not in combat"],
-			type = 'range',
-			min = 0,
-			max = 1,
-			step = 0.01,
-			bigStep = 0.05,
-			get = function()
-				return self.db.profile.alpha
-			end,
-			set = function(_, value)
-				self:SetAlpha(value)
-			end,
-			isPercent = true,
-		},
-		combatAlpha = {
-			name = L["Combat opacity"],
-			desc = L["Set how transparent or opaque the minimap is when in combat"],
-			type = 'range',
-			min = 0,
-			max = 1,
-			step = 0.01,
-			bigStep = 0.05,
-			get = function()
-				return self.db.profile.combatAlpha
-			end,
-			set = function(_, value)
-				self:SetCombatAlpha(value)
-			end,
-			isPercent = true,
+			order = 2,
 		},
 		strata = {
 			name = L["Strata"],
@@ -521,6 +491,41 @@ function Appearance:GetOptions()
 			set = function(_, value)
 				self:SetFrameStrata(value)
 			end,
+			order = 3,
+		},
+		alpha = {
+			name = L["Opacity"],
+			desc = L["Set how transparent or opaque the minimap is when not in combat"],
+			type = 'range',
+			min = 0,
+			max = 1,
+			step = 0.01,
+			bigStep = 0.05,
+			get = function()
+				return self.db.profile.alpha
+			end,
+			set = function(_, value)
+				self:SetAlpha(value)
+			end,
+			isPercent = true,
+			order = 4,
+		},
+		combatAlpha = {
+			name = L["Combat opacity"],
+			desc = L["Set how transparent or opaque the minimap is when in combat"],
+			type = 'range',
+			min = 0,
+			max = 1,
+			step = 0.01,
+			bigStep = 0.05,
+			get = function()
+				return self.db.profile.combatAlpha
+			end,
+			set = function(_, value)
+				self:SetCombatAlpha(value)
+			end,
+			isPercent = true,
+			order = 5,
 		},
 		shape = {
 			name = L["Shape"],
@@ -542,6 +547,7 @@ function Appearance:GetOptions()
 			set = function(_, value)
 				self:SetShape(value)
 			end,
+			order = 6,
 		},
 		borderAlpha = {
 			name = L["Border color"],
@@ -554,6 +560,7 @@ function Appearance:GetOptions()
 			set = function(_, ...)
 				self:SetBorderColor(...)
 			end,
+			order = 7,
 		},
 		borderStyle = {
 			name = L["Border style"],
@@ -570,6 +577,7 @@ function Appearance:GetOptions()
 			set = function(_, value)
 				self:SetBorderStyle(value)
 			end,
+			order = 8,
 		},
 		borderRadius = {
 			name = L["Border radius"],
@@ -585,6 +593,7 @@ function Appearance:GetOptions()
 			set = function(_, value)
 				self:SetBorderRadius(value)
 			end,
+			order = 9,
 		},
 		buttonBorderAlpha = {
 			name = L["Button border opacity"],
@@ -601,6 +610,7 @@ function Appearance:GetOptions()
 				self:SetButtonBorderAlpha(value)
 			end,
 			isPercent = true,
+			order = 10,
 		},
 	}
 end
