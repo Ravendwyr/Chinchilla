@@ -24,6 +24,7 @@ function Appearance:OnInitialize()
 			borderColor = { 1, 1, 1, 1 }, buttonBorderAlpha = 1,
 			strata = "LOW", shape = "CORNER-BOTTOMLEFT",
 			borderStyle = "Blizzard", borderRadius = 80,
+			showTitle = true, showCollapseButton = true,
 		},
 	})
 
@@ -63,6 +64,9 @@ local cornerTextures = {}
 local inCombat = InCombatLockdown()
 local indoors
 
+local questButton = _G.ObjectiveTrackerFrame.HeaderMenu
+local questHeaders = { "QuestHeader", "AchievementHeader", "ScenarioHeader" }
+
 function Appearance:OnEnable()
 	rotateMinimap = GetCVar("rotateMinimap")
 
@@ -71,6 +75,8 @@ function Appearance:OnEnable()
 	self:SetShape()
 	self:SetBorderColor()
 	self:SetButtonBorderAlpha()
+	self:ToggleTitle()
+	self:ToggleCollapseButton()
 
 	if inCombat then self:SetCombatAlpha()
 	else self:SetAlpha() end
@@ -101,6 +107,13 @@ function Appearance:OnDisable()
 	self:SetShape()
 	self:SetBorderColor()
 	self:SetButtonBorderAlpha()
+
+	questButton:EnableMouse(true)
+	questButton:SetAlpha(1)
+
+	for _, header in pairs(questHeaders) do
+		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(1)
+	end
 
 	MinimapBorder:Show()
 	MinimapCluster:SetAlpha(1)
@@ -421,6 +434,25 @@ function Appearance:SetButtonBorderAlpha(alpha)
 end
 
 
+function Appearance:ToggleTitle()
+	local value = self.db.profile.showTitle
+
+	for _, header in pairs(questHeaders) do
+		_G.ObjectiveTrackerBlocksFrame[header]:SetAlpha(value and 1 or 0)
+	end
+end
+
+function Appearance:ToggleCollapseButton()
+	if self.db.profile.showCollapseButton then
+		questButton:EnableMouse(true)
+		questButton:SetAlpha(1)
+	else
+		questButton:EnableMouse(false)
+		questButton:SetAlpha(0)
+	end
+end
+
+
 function Appearance:GetOptions()
 	local shape_choices = {
 		["ROUND"] = L["Round"],
@@ -611,6 +643,28 @@ function Appearance:GetOptions()
 			end,
 			isPercent = true,
 			order = 10,
+		},
+		showTitle = {
+			name = L["Show quest headers"],
+			desc = L["Show the category banners on the quest tracker."],
+			type = 'toggle',
+			get = function() return self.db.profile.showTitle end,
+			set = function(_, value)
+				self.db.profile.showTitle = value
+				self:ToggleTitle()
+			end,
+			order = 11,
+		},
+		showCollapseButton = {
+			name = L["Show quest collapse button"],
+			desc = L["Show the collapse button on the quest tracker."],
+			type = 'toggle',
+			get = function() return self.db.profile.showCollapseButton end,
+			set = function(_, value)
+				self.db.profile.showCollapseButton = value
+				self:ToggleCollapseButton()
+			end,
+			order = 12,
 		},
 	}
 end
