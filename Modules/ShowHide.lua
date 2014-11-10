@@ -98,6 +98,8 @@ end
 function ShowHide:HideFrame(key, frame)
 	frame = _G[frame]
 
+	if frame.isMoving then return end
+
 	if not self:IsHooked(frame, "Show") then
 		self:SecureHook(frame, "Show", frame.Hide)
 	end
