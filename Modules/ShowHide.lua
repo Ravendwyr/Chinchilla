@@ -183,9 +183,10 @@ function ShowHide:OnEnter()
 	end
 
 	for key, frame in pairs(frames) do
-		-- we don't do "guilddifficulty" -> "difficulty" or "bossN" -> "boss" here as those frames are not tristate
-		if key:find("^zoom") then
+		if key:find("^zoom") then -- zoomIn/zoomOut -> zoom
 			key = "zoom"
+		elseif key:find("difficulty") then -- guilddifficulty -> difficulty
+			key = "difficulty"
 		end
 
 		if self.db.profile[key] == "mouseover" then
@@ -200,9 +201,10 @@ end
 
 function ShowHide:HideAllMouseoverButtons()
 	for key, frame in pairs(frames) do
-		-- we don't do "guilddifficulty" -> "difficulty" or "bossN" -> "boss" here as those frames are not tristate
-		if key:find("^zoom") then
+		if key:find("^zoom") then -- zoomIn/zoomOut -> zoom
 			key = "zoom"
+		elseif key:find("difficulty") then -- guilddifficulty -> difficulty
+			key = "difficulty"
 		end
 
 		if self.db.profile[key] == "mouseover" then
@@ -269,6 +271,7 @@ function ShowHide:GetOptions()
 			name = L["Instance difficulty"],
 			desc = L["Show the instance difficulty flag on the minimap"],
 			type = 'toggle',
+			tristate = true,
 			order = 5,
 			get = get, set = set,
 		},
