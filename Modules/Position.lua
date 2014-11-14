@@ -411,11 +411,11 @@ function Position:SetFramePosition(frame, point, x, y)
 				_G["WorldStateCaptureBar" .. i]:SetPoint(point, UIParent, point, x, y)
 			end
 		elseif frame == "questWatch" then
-			if IsAddOnLoaded("MoveAnything") or IsAddOnLoaded("Quester") then return end
-
-			nameToFrame[frame]:ClearAllPoints()
-			nameToFrame[frame]:SetPoint(point, UIParent, point, x, y)
-			nameToFrame[frame]:SetPoint("BOTTOM", UIParent, "BOTTOM")
+			if not IsAddOnLoaded("MoveAnything") and not IsAddOnLoaded("Quester") then
+				nameToFrame[frame]:ClearAllPoints()
+				nameToFrame[frame]:SetPoint(point, UIParent, point, x, y)
+				nameToFrame[frame]:SetPoint("BOTTOM", UIParent, "BOTTOM")
+			end
 		else
 			nameToFrame[frame]:ClearAllPoints()
 			nameToFrame[frame]:SetPoint(point, UIParent, point, x, y)
