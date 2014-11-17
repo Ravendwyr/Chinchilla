@@ -54,6 +54,7 @@ Modules\Location.lua
 Modules\MoveButtons.lua
 Modules\Ping.lua
 Modules\Position.lua
+Modules\QuestTracker.lua
 Modules\RangeCircle.lua
 Modules\ShowHide.lua
 Modules\TrackingDots.lua

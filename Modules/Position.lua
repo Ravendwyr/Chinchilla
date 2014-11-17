@@ -407,12 +407,6 @@ function Position:SetFramePosition(frame, point, x, y)
 				_G["WorldStateCaptureBar" .. i]:ClearAllPoints()
 				_G["WorldStateCaptureBar" .. i]:SetPoint(point, UIParent, point, x, y)
 			end
-		elseif frame == "questWatch" then
-			if not IsAddOnLoaded("MoveAnything") and not IsAddOnLoaded("Quester") then
-				nameToFrame[frame]:ClearAllPoints()
-				nameToFrame[frame]:SetPoint(point, UIParent, point, x, y)
-				nameToFrame[frame]:SetPoint("BOTTOM", UIParent, "BOTTOM")
-			end
 		else
 			nameToFrame[frame]:ClearAllPoints()
 			nameToFrame[frame]:SetPoint(point, UIParent, point, x, y)
@@ -792,7 +786,7 @@ function Position:GetOptions()
 					disabled = isDisabled,
 				},
 			},
-			disabled = function() return ( InCombatLockdown() or IsAddOnLoaded("MoveAnything") or IsAddOnLoaded("Quester") ) and true or false end,
+			disabled = InCombatLockdown,
 		},
 		boss = {
 			name = L["Boss frames"],
