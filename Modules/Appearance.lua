@@ -235,6 +235,7 @@ function Appearance:SetScale(value)
 	end
 
 	MinimapCluster:SetScale(value)
+	ObjectiveTrackerFrame:GetSize()
 end
 
 function Appearance:SetBlipScale(value)

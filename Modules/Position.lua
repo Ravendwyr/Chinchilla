@@ -149,8 +149,6 @@ function Position:OnEnable()
 	self:SetLocked()
 	self:UpdateClamp()
 
-	Minimap:SetClampedToScreen(true)
-
 	-- hack so that frame positioning doesn't break
 	MinimapCluster:SetMovable(true)
 	MinimapCluster:StartMoving()
@@ -188,8 +186,6 @@ function Position:OnDisable()
 	WorldStateAlwaysUpFrame:EnableMouse(true)
 
 	self:SetLocked()
-
-	Minimap:SetClampedToScreen(false)
 end
 
 
@@ -296,6 +292,7 @@ function Position:SetMinimapPosition(point, x, y)
 	end
 
 	lastQuadrant = quadrant
+	ObjectiveTrackerFrame:GetSize()
 end
 
 local shouldntSetPoint = false
@@ -539,6 +536,8 @@ function Position:UpdateClamp(info, value)
 			frame:SetClampedToScreen(value)
 		end
 	end
+
+	ObjectiveTrackerFrame:GetSize()
 end
 
 
