@@ -38,6 +38,12 @@ function Expander:Refresh()
 		minimap:EnableMouseWheel(false)
 		minimap:EnableKeyboard(false)
 
+		-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
+		minimap:SetArchBlobRingScalar(0)
+		minimap:SetArchBlobRingAlpha(0)
+		minimap:SetQuestBlobRingScalar(0)
+		minimap:SetQuestBlobRingAlpha(0)
+
 		setmetatable(cluster, { __index = minimap })
 
 		cluster.GetScale = function() return 1 end
