@@ -117,7 +117,7 @@ function Ping:MINIMAP_PING(_, unit)
 	end
 
 	local _, class = UnitClass(unit)
-	local color = RAID_CLASS_COLORS[class]
+	local color = RAID_CLASS_COLORS[class] or self.db.profile.textColor
 
 	if self.db.profile.chat then
 		if msgTimerID or lastPingedBy == name then return end
