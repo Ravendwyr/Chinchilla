@@ -206,9 +206,6 @@ function Chinchilla:OnEnable()
 	MiniMapWorldMapButton:SetNormalTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 
-	GarrisonLandingPageMinimapButton:UnregisterEvent("GARRISON_HIDE_LANDING_PAGE")
-	GarrisonLandingPageMinimapButton:UnregisterEvent("GARRISON_SHOW_LANDING_PAGE")
-
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 end
 
@@ -219,9 +216,6 @@ function Chinchilla:OnDisable()
 
 	MiniMapWorldMapButton:SetNormalTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
-
-	GarrisonLandingPageMinimapButton:RegisterEvent("GARRISON_HIDE_LANDING_PAGE")
-	GarrisonLandingPageMinimapButton:RegisterEvent("GARRISON_SHOW_LANDING_PAGE")
 end
 
 function Chinchilla:OnProfileUpdate()
