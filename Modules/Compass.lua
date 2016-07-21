@@ -40,7 +40,7 @@ end
 
 function Compass:OnEnable()
 	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_Compass_Frame", Minimap)
+		frame = CreateFrame("Frame", "Chinchilla_Compass_Frame", MinimapBackdrop)
 		frame:SetAllPoints()
 
 		local north = frame:CreateFontString(frame:GetName() .. "_North", "ARTWORK", "GameFontNormal")
