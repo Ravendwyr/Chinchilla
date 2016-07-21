@@ -52,7 +52,7 @@ function Coordinates:OnEnable()
 	}
 
 	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_Coordinates_Frame", Minimap)
+		frame = CreateFrame("Frame", "Chinchilla_Coordinates_Frame", MinimapBackdrop)
 		frame:SetBackdrop(backdrop)
 
 		frame:SetWidth(1)
