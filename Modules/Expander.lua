@@ -7,6 +7,9 @@ Expander.desc = L["Show an expanded minimap on keypress"]
 
 
 function Expander:OnInitialize()
+	GameTimeFrame:SetParent(MinimapBackdrop)
+	TimeManagerClockButton:SetParent(MinimapBackdrop)
+
 	self.db = Chinchilla.db:RegisterNamespace("Expander", {
 		profile = {
 			enabled = true,
@@ -22,95 +25,67 @@ function Expander:OnInitialize()
 end
 
 
-local cluster, minimap, button, overlay, GM2
-local show, locked = false, true
+local DBI = LibStub("LibDBIcon-1.0", true)
+
+local show, button
+local origPoint, origParent, origAnchor, origX, origY
+local origHeight, origWidth
 
 function Expander:Refresh()
-	if not minimap then
-		minimap = CreateFrame("Minimap", "Chinchilla_Expander_Minimap", cluster)
-		minimap:SetFrameStrata("BACKGROUND")
-		minimap:SetWidth(140 * self.db.profile.scale)
-		minimap:SetHeight(140 * self.db.profile.scale)
-		minimap:SetScale(1.2)
-		minimap:SetPoint("CENTER")
-		minimap:SetAlpha(self.db.profile.alpha)
-		minimap:EnableMouse(false)
-		minimap:EnableMouseWheel(false)
-		minimap:EnableKeyboard(false)
-
-		-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
-		minimap:SetArchBlobRingScalar(0)
-		minimap:SetArchBlobRingAlpha(0)
-		minimap:SetQuestBlobRingScalar(0)
-		minimap:SetQuestBlobRingAlpha(0)
-
-		setmetatable(cluster, { __index = minimap })
-
-		cluster.GetScale = function() return 1 end
-	end
-
 	if show then
-		Minimap:Hide()
+		Minimap:SetWidth(140 * self.db.profile.scale)
+		Minimap:SetHeight(140 * self.db.profile.scale)
+		Minimap:SetScale(1.2)
 
-		cluster:Show()
-		minimap:Show()
+		Minimap:ClearAllPoints()
+		Minimap:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+		Minimap:SetAlpha(self.db.profile.alpha)
 
-		local z = minimap:GetZoom()
+		Minimap:EnableMouse(false)
 
-		if z > 2 then minimap:SetZoom(z-1)
-		else minimap:SetZoom(z+1) end
+		MinimapBackdrop:Hide()
 
-		minimap:SetZoom(z)
+		Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Art\Mask-Square]])
 
-		if GM2 then
-			GM2:ReparentMinimapPins(cluster)
-			GM2:UpdateMiniMap(true)
+		if DBI then
+			for icon in pairs(DBI.objects) do
+				DBI.objects[icon]:Hide()
+			end
 		end
-
-		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(cluster) end
-		if overlay and overlay.SetMinimapFrame then overlay:SetMinimapFrame(cluster) end
-		if TomTom and TomTom.ReparentMinimap then TomTom:ReparentMinimap(cluster) end
 	else
-		cluster:Hide()
-		minimap:Hide()
+		Minimap:SetWidth(origWidth)
+		Minimap:SetHeight(origHeight)
+		Minimap:SetScale(1)
 
-		Minimap:Show()
+		Minimap:ClearAllPoints()
+		Minimap:SetPoint(origPoint, origParent, origAnchor, origX, origY)
+		Minimap:SetAlpha(1)
 
-		local z = Minimap:GetZoom()
+		Minimap:EnableMouse(true)
 
-		if z > 2 then Minimap:SetZoom(z-1)
-		else Minimap:SetZoom(z+1) end
+		MinimapBackdrop:Show()
 
-		Minimap:SetZoom(z)
-
-		if GM2 then
-			GM2:ReparentMinimapPins(Minimap)
-			GM2:UpdateMiniMap(true)
+		if Chinchilla:GetModule("Appearance") then
+			Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Art\Mask-]] .. Chinchilla:GetModule("Appearance").db.profile.shape)
+		else
+			Minimap:SetMaskTexture([[Textures\MinimapMask]])
 		end
 
-		if Routes and Routes.ReparentMinimap then Routes:ReparentMinimap(Minimap) end
-		if overlay and overlay.SetMinimapFrame then overlay:SetMinimapFrame(Minimap) end
-		if TomTom and TomTom.ReparentMinimap then TomTom:ReparentMinimap(Minimap) end
+		if DBI then
+			for icon in pairs(DBI.objects) do
+				DBI.objects[icon]:Show()
+			end
+		end
 	end
 end
 
 
 function Expander:OnEnable()
-	if not cluster then
-		cluster = CreateFrame("Frame", nil, UIParent)
-		cluster:Hide()
-		cluster:SetClampedToScreen(true)
-		cluster:SetFrameStrata("BACKGROUND")
-		cluster:SetWidth(168 * self.db.profile.scale)
-		cluster:SetHeight(168 * self.db.profile.scale)
-		cluster:SetScale(1.2)
-		cluster:SetPoint(self.db.profile.anchor, "UIParent", self.db.profile.anchor, self.db.profile.x, self.db.profile.y)
-	end
-
-	self:SetLocked(true)
+	origPoint, origParent, origAnchor, origX, origY = Minimap:GetPoint()
+	origHeight, origWidth = Minimap:GetSize()
 
 	if not button then
-		button = CreateFrame("Button", "Chinchilla_Expander_Button")
+		button = CreateFrame("Button", "Chinchilla_Expander_Button") -- button use for keybinding hax0rz
 	end
 
 	button:SetScript("OnMouseDown", function()
@@ -137,37 +112,15 @@ function Expander:OnEnable()
 			this:Hide()
 		end)
 	end
-
-	if _NPCScan and _NPCScan.Overlay then
-		overlay = _NPCScan.Overlay.Modules.List["Minimap"]
-	end
-
-	if GatherMate2 then
-		GM2 = GatherMate2:GetModule("Display")
-	end
 end
+
 
 function Expander:OnDisable()
 	button:SetScript("OnMouseDown", nil)
 	button:SetScript("OnMouseUp", nil)
 end
 
-
-function Expander:SetSizes()
-	if cluster then
-		cluster:SetWidth(168 * self.db.profile.scale)
-		cluster:SetHeight(168 * self.db.profile.scale)
-		cluster:SetScale(1.2)
-	end
-
-	if minimap then
-		minimap:SetWidth(140 * self.db.profile.scale)
-		minimap:SetHeight(140 * self.db.profile.scale)
-		minimap:SetScale(1.2)
-	end
-end
-
-
+--[[
 local function StartMoving()
 	cluster:StartMoving()
 end
@@ -181,31 +134,7 @@ local function StopMoving()
 	Expander.db.profile.x = x
 	Expander.db.profile.y = y
 end
-
-function Expander:IsLocked()
-	return locked
-end
-
-function Expander:SetLocked(value)
-	locked = value
-
-	if not cluster then return end
-
-	if not locked then
-		cluster:SetMovable(true)
-		cluster:RegisterForDrag("LeftButton")
-		cluster:SetScript("OnMouseDown", StartMoving)
-		cluster:SetScript("OnMouseUp", StopMoving)
-		cluster:EnableMouse(true)
-	else
-		cluster:SetMovable()
-		cluster:RegisterForDrag()
-		cluster:SetScript("OnMouseDown", nil)
-		cluster:SetScript("OnMouseUp", nil)
-		cluster:EnableMouse(false)
-	end
-end
-
+]]
 
 function Expander:GetOptions()
 	return {
@@ -228,6 +157,7 @@ function Expander:GetOptions()
 			end,
 			disabled = function() return InCombatLockdown() or not self:IsEnabled() end,
 		},
+--[[
 		movable = {
 			name = L["Movable"],
 			desc = L["Allow the minimap to be movable so you can drag it where you want"],
@@ -241,6 +171,7 @@ function Expander:GetOptions()
 				self:SetLocked(not value)
 			end,
 		},
+]]
 		scale = {
 			name = L["Size"],
 			desc = L["The size of the expanded minimap"],
@@ -254,7 +185,18 @@ function Expander:GetOptions()
 			get = function() return self.db.profile.scale end,
 			set = function(_, value)
 				self.db.profile.scale = value
-				self:SetSizes()
+
+				if show then
+					Minimap:SetWidth(140 * self.db.profile.scale)
+					Minimap:SetHeight(140 * self.db.profile.scale)
+
+					local z = Minimap:GetZoom()
+
+					if z > 2 then Minimap:SetZoom(z-1)
+					else Minimap:SetZoom(z+1) end
+
+					Minimap:SetZoom(z)
+				end
 			end,
 		},
 		alpha = {
@@ -268,7 +210,10 @@ function Expander:GetOptions()
 			get = function() return self.db.profile.alpha end,
 			set = function(_, value)
 				self.db.profile.alpha = value
-				if minimap then minimap:SetAlpha(value) end
+
+				if show then
+					Minimap:SetAlpha(value)
+				end
 			end,
 		},
 
