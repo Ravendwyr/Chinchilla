@@ -83,6 +83,11 @@ function Expander:Refresh()
 			end
 		end
 	end
+
+	local z = Minimap:GetZoom()
+	if z > 2 then Minimap:SetZoom(z-1)
+	else Minimap:SetZoom(z+1) end
+	Minimap:SetZoom(z)
 end
 
 
