@@ -25,6 +25,7 @@ function Expander:OnInitialize()
 end
 
 
+local Appearance
 local DBI = LibStub("LibDBIcon-1.0", true)
 
 local show, button
@@ -33,6 +34,9 @@ local origHeight, origWidth
 
 function Expander:Refresh()
 	if show then
+		origPoint, origParent, origAnchor, origX, origY = Minimap:GetPoint()
+		origHeight, origWidth = Minimap:GetSize()
+
 		Minimap:SetWidth(140 * self.db.profile.scale)
 		Minimap:SetHeight(140 * self.db.profile.scale)
 		Minimap:SetScale(1.2)
@@ -81,8 +85,7 @@ end
 
 
 function Expander:OnEnable()
-	origPoint, origParent, origAnchor, origX, origY = Minimap:GetPoint()
-	origHeight, origWidth = Minimap:GetSize()
+	Appearance = Chinchilla:GetModule("Appearance", true)
 
 	if not button then
 		button = CreateFrame("Button", "Chinchilla_Expander_Button") -- button use for keybinding hax0rz
