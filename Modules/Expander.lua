@@ -30,16 +30,17 @@ local DBI = LibStub("LibDBIcon-1.0", true)
 
 local show, button
 local origPoint, origParent, origAnchor, origX, origY
-local origHeight, origWidth
+local origHeight, origWidth, origScale
 
 function Expander:Refresh()
 	if show then
 		origPoint, origParent, origAnchor, origX, origY = Minimap:GetPoint()
 		origHeight, origWidth = Minimap:GetSize()
+		origScale = MinimapCluster:GetScale()
 
 		Minimap:SetWidth(140 * self.db.profile.scale)
 		Minimap:SetHeight(140 * self.db.profile.scale)
-		Minimap:SetScale(1.2)
+		MinimapCluster:SetScale(1.2)
 
 		Minimap:ClearAllPoints()
 		Minimap:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
@@ -59,7 +60,6 @@ function Expander:Refresh()
 	else
 		Minimap:SetWidth(origWidth)
 		Minimap:SetHeight(origHeight)
-		Minimap:SetScale(1)
 
 		Minimap:ClearAllPoints()
 		Minimap:SetPoint(origPoint, origParent, origAnchor, origX, origY)
@@ -70,8 +70,10 @@ function Expander:Refresh()
 		MinimapBackdrop:Show()
 
 		if Appearance then
+			Appearance:SetScale()
 			Appearance:SetShape()
 		else
+			MinimapCluster:SetScale(origScale)
 			Minimap:SetMaskTexture([[Textures\MinimapMask]])
 		end
 
