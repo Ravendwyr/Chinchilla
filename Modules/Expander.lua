@@ -69,8 +69,8 @@ function Expander:Refresh()
 
 		MinimapBackdrop:Show()
 
-		if Chinchilla:GetModule("Appearance") then
-			Minimap:SetMaskTexture([[Interface\AddOns\Chinchilla\Art\Mask-]] .. Chinchilla:GetModule("Appearance").db.profile.shape)
+		if Appearance then
+			Appearance:SetShape()
 		else
 			Minimap:SetMaskTexture([[Textures\MinimapMask]])
 		end
