@@ -40,7 +40,6 @@ function Expander:Refresh()
 
 		Minimap:SetWidth(140 * self.db.profile.scale)
 		Minimap:SetHeight(140 * self.db.profile.scale)
-		MinimapCluster:SetScale(1.2)
 
 		Minimap:ClearAllPoints()
 		Minimap:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
@@ -58,9 +57,6 @@ function Expander:Refresh()
 			end
 		end
 	else
-		Minimap:SetWidth(origWidth)
-		Minimap:SetHeight(origHeight)
-
 		Minimap:ClearAllPoints()
 		Minimap:SetPoint(origPoint, origParent, origAnchor, origX, origY)
 
@@ -73,7 +69,8 @@ function Expander:Refresh()
 			Appearance:SetScale()
 			Appearance:SetShape()
 		else
-			MinimapCluster:SetScale(origScale)
+			Minimap:SetWidth(origWidth)
+			Minimap:SetHeight(origHeight)
 			Minimap:SetMaskTexture([[Textures\MinimapMask]])
 			Minimap:SetAlpha(1)
 		end
