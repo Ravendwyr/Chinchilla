@@ -63,18 +63,19 @@ function Expander:Refresh()
 
 		Minimap:ClearAllPoints()
 		Minimap:SetPoint(origPoint, origParent, origAnchor, origX, origY)
-		Minimap:SetAlpha(1)
 
 		Minimap:EnableMouse(true)
 
 		MinimapBackdrop:Show()
 
 		if Appearance then
+			Appearance:SetAlpha()
 			Appearance:SetScale()
 			Appearance:SetShape()
 		else
 			MinimapCluster:SetScale(origScale)
 			Minimap:SetMaskTexture([[Textures\MinimapMask]])
+			Minimap:SetAlpha(1)
 		end
 
 		if DBI then

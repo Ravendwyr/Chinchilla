@@ -239,7 +239,7 @@ function Appearance:SetAlpha(value)
 	if not self:IsEnabled() or indoors then value = 1 end
 
 	if inCombat then self:SetCombatAlpha()
-	else MinimapCluster:SetAlpha(value) end
+	else Minimap:SetAlpha(value) end
 end
 
 function Appearance:SetCombatAlpha(value)
@@ -249,7 +249,7 @@ function Appearance:SetCombatAlpha(value)
 	if not inCombat then return end
 	if not self:IsEnabled() or indoors then value = 1 end
 
-	MinimapCluster:SetAlpha(value)
+	Minimap:SetAlpha(value)
 end
 
 function Appearance:SetFrameStrata(value)
