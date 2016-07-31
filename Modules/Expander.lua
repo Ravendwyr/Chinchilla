@@ -30,13 +30,12 @@ local DBI = LibStub("LibDBIcon-1.0", true)
 
 local show, button
 local origPoint, origParent, origAnchor, origX, origY
-local origHeight, origWidth, origScale, origStrata, origWheel
+local origHeight, origWidth, origStrata, origWheel
 
 function Expander:Refresh()
 	if show then
 		origPoint, origParent, origAnchor, origX, origY = Minimap:GetPoint()
 		origHeight, origWidth = Minimap:GetSize()
-		origScale = MinimapCluster:GetScale()
 		origStrata = MinimapCluster:GetFrameStrata()
 		origWheel = Minimap:IsMouseWheelEnabled()
 
