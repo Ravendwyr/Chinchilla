@@ -30,7 +30,7 @@ local DBI = LibStub("LibDBIcon-1.0", true)
 
 local show, button
 local origPoint, origParent, origAnchor, origX, origY
-local origHeight, origWidth, origScale, origStrata
+local origHeight, origWidth, origScale, origStrata, origWheel
 
 function Expander:Refresh()
 	if show then
@@ -38,6 +38,7 @@ function Expander:Refresh()
 		origHeight, origWidth = Minimap:GetSize()
 		origScale = MinimapCluster:GetScale()
 		origStrata = MinimapCluster:GetFrameStrata()
+		origWheel = Minimap:IsMouseWheelEnabled()
 
 		Minimap:SetWidth(140 * self.db.profile.scale)
 		Minimap:SetHeight(140 * self.db.profile.scale)
@@ -51,6 +52,7 @@ function Expander:Refresh()
 		MinimapCluster:SetFrameStrata(self.db.profile.strata)
 
 		Minimap:EnableMouse(false)
+		Minimap:EnableMouseWheel(false)
 
 		MinimapBackdrop:Hide()
 
@@ -66,6 +68,7 @@ function Expander:Refresh()
 		Minimap:SetPoint(origPoint, origParent, origAnchor, origX, origY)
 
 		Minimap:EnableMouse(true)
+		Minimap:EnableMouseWheel(origWheel)
 
 		MinimapBackdrop:Show()
 
