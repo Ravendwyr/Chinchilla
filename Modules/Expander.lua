@@ -14,7 +14,7 @@ function Expander:OnInitialize()
 		profile = {
 			enabled = true,
 			key = false, toggle = true,
-			scale = 3, alpha = 1,
+			scale = 3, alpha = 1, strata = "LOW",
 			anchor = "CENTER", x = 0, y = 0,
 		},
 	})
@@ -30,13 +30,14 @@ local DBI = LibStub("LibDBIcon-1.0", true)
 
 local show, button
 local origPoint, origParent, origAnchor, origX, origY
-local origHeight, origWidth, origScale
+local origHeight, origWidth, origScale, origStrata
 
 function Expander:Refresh()
 	if show then
 		origPoint, origParent, origAnchor, origX, origY = Minimap:GetPoint()
 		origHeight, origWidth = Minimap:GetSize()
 		origScale = MinimapCluster:GetScale()
+		origStrata = MinimapCluster:GetFrameStrata()
 
 		Minimap:SetWidth(140 * self.db.profile.scale)
 		Minimap:SetHeight(140 * self.db.profile.scale)
@@ -44,6 +45,10 @@ function Expander:Refresh()
 		Minimap:ClearAllPoints()
 		Minimap:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 		Minimap:SetAlpha(self.db.profile.alpha)
+
+		Minimap:SetFrameStrata(self.db.profile.strata)
+		MinimapBackdrop:SetFrameStrata(self.db.profile.strata)
+		MinimapCluster:SetFrameStrata(self.db.profile.strata)
 
 		Minimap:EnableMouse(false)
 
@@ -66,11 +71,15 @@ function Expander:Refresh()
 
 		if Appearance then
 			Appearance:SetAlpha()
+			Appearance:SetFrameStrata()
 			Appearance:SetScale()
 			Appearance:SetShape()
 		else
 			Minimap:SetWidth(origWidth)
 			Minimap:SetHeight(origHeight)
+			Minimap:SetFrameStrata(origStrata)
+			MinimapBackdrop:SetFrameStrata(origStrata)
+			MinimapCluster:SetFrameStrata(origStrata)
 			Minimap:SetMaskTexture([[Textures\MinimapMask]])
 			Minimap:SetAlpha(1)
 		end
@@ -232,6 +241,29 @@ function Expander:GetOptions()
 					Minimap:SetAlpha(value)
 				end
 			end,
+		},
+		strata = {
+			name = L["Strata"],
+			desc = L["Set which layer the minimap is layered on in relation to others in your interface."],
+			type = 'select',
+			values = {
+				LOW = L["Low"],
+				MEDIUM = L["Medium"],
+				HIGH = L["High"],
+			},
+			get = function()
+				return self.db.profile.strata
+			end,
+			set = function(_, value)
+				self.db.profile.strata = value
+
+				if show then
+					Minimap:SetFrameStrata(self.db.profile.strata)
+					MinimapBackdrop:SetFrameStrata(self.db.profile.strata)
+					MinimapCluster:SetFrameStrata(self.db.profile.strata)
+				end
+			end,
+			order = 5,
 		},
 	}
 end
