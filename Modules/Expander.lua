@@ -168,6 +168,15 @@ function Expander:GetOptions()
 			end,
 			disabled = function() return InCombatLockdown() or not self:IsEnabled() end,
 		},
+		toggle = {
+			name = L["Toggle"],
+			desc = L["Choose to toggle the expanded minimap or only keep it shown while pressing the button down."],
+			type = 'toggle',
+			order = 2,
+			width = "double",
+			get = function() return self.db.profile.toggle end,
+			set = function(_, value) self.db.profile.toggle = value end,
+		},
 --[[
 		movable = {
 			name = L["Movable"],
@@ -226,15 +235,6 @@ function Expander:GetOptions()
 					Minimap:SetAlpha(value)
 				end
 			end,
-		},
-
-		toggle = {
-			name = L["Toggle"],
-			desc = L["Choose to toggle the expanded minimap or only keep it shown while pressing the button down."],
-			type = 'toggle',
-			order = 5,
-			get = function() return self.db.profile.toggle end,
-			set = function(_, value) self.db.profile.toggle = value end,
 		},
 	}
 end
