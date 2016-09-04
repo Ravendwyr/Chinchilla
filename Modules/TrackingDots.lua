@@ -6,6 +6,7 @@ TrackingDots.displayName = L["Tracking dots"]
 TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
 
 local blipFile = ""
+local blizzardBlips = "Interface\\MiniMap\\ObjectIconsAtlas"
 local trackingDotStyles = {}
 
 function TrackingDots:AddTrackingDotStyle(english, localized, texture)
@@ -24,14 +25,14 @@ end
 
 Chinchilla.AddTrackingDotStyle = TrackingDots.AddTrackingDotStyle
 
-TrackingDots:AddTrackingDotStyle("Blizzard",     L["Blizzard"],			[[Interface\MiniMap\ObjectIcons]])
-TrackingDots:AddTrackingDotStyle("Nandini",        "Nandini",			[[Interface\AddOns\Chinchilla\Art\Blip-Nandini]])
-TrackingDots:AddTrackingDotStyle("NandiniNew",     "Nandini New",		[[Interface\AddOns\Chinchilla\Art\Blip-Nandini-New]])
-TrackingDots:AddTrackingDotStyle("BlizzardBig",  L["Big Blizzard"],		[[Interface\AddOns\Chinchilla\Art\Blip-BlizzardBig]])
-TrackingDots:AddTrackingDotStyle("BlizzardBigR", L["Blizzard, Big Resources"],	[[Interface\AddOns\Chinchilla\Art\Blip-BlizzardBigR]])
-TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"],		[[Interface\AddOns\Chinchilla\Art\Blip-GlassSpheres]])
-TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"],		[[Interface\AddOns\Chinchilla\Art\Blip-SolidSpheres]])
-TrackingDots:AddTrackingDotStyle("Charmed",      L["Charmed"],			[[Interface\AddOns\Chinchilla\Art\Blip-Charmed]])
+TrackingDots:AddTrackingDotStyle("Blizzard",     L["Blizzard"],                blizzardBlips)
+TrackingDots:AddTrackingDotStyle("Nandini",        "Nandini",                  [[Interface\AddOns\Chinchilla\Art\Blip-Nandini]])
+TrackingDots:AddTrackingDotStyle("NandiniNew",     "Nandini New",              [[Interface\AddOns\Chinchilla\Art\Blip-Nandini-New]])
+TrackingDots:AddTrackingDotStyle("BlizzardBig",  L["Big Blizzard"],            [[Interface\AddOns\Chinchilla\Art\Blip-BlizzardBig]])
+TrackingDots:AddTrackingDotStyle("BlizzardBigR", L["Blizzard, Big Resources"], [[Interface\AddOns\Chinchilla\Art\Blip-BlizzardBigR]])
+TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"],           [[Interface\AddOns\Chinchilla\Art\Blip-GlassSpheres]])
+TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"],           [[Interface\AddOns\Chinchilla\Art\Blip-SolidSpheres]])
+TrackingDots:AddTrackingDotStyle("Charmed",      L["Charmed"],                 [[Interface\AddOns\Chinchilla\Art\Blip-Charmed]])
 
 
 function TrackingDots:OnInitialize()
@@ -60,7 +61,7 @@ end
 
 local function getBlipTexture(name)
 	local style = trackingDotStyles[name] or trackingDotStyles["Blizzard"]
-	local texture = style and style[2] or [[Interface\MiniMap\ObjectIcons]]
+	local texture = style and style[2] or blizzardBlips
 
 	return texture
 end
@@ -73,10 +74,10 @@ function TrackingDots:SetBlipTexture(name)
 		self.db.profile.trackingDotStyle = name
 	end
 
-	blipFile = getBlipTexture(name)
-
 	if not self:IsEnabled() then
-		blipFile = [[Interface\MiniMap\ObjectIcons]]
+		blipFile = blizzardBlips
+	else
+		blipFile = getBlipTexture(name)
 	end
 
 	Minimap:SetBlipTexture(blipFile)
