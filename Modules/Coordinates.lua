@@ -64,7 +64,7 @@ function Coordinates:OnEnable()
 
 		function frame:Update()
 			local x, y = GetPlayerMapPosition("player")
-			if x == 0 and y == 0 then
+			if not x or not y then
 				-- instance or can't get coords
 				self:Hide()
 			else
