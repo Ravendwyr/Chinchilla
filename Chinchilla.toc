@@ -47,7 +47,6 @@ Locale\zhTW.lua
 Chinchilla.lua
 
 Modules\Appearance.lua
-Modules\Compass.lua
 Modules\Coordinates.lua
 Modules\Expander.lua
 Modules\Location.lua
