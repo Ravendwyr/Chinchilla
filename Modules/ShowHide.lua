@@ -25,7 +25,6 @@ local frames = {
 	vehicleSeats = "VehicleSeatIndicator",
 	clock = "TimeManagerClockButton",
 	garrison = "GarrisonLandingPageMinimapButton",
-	record = IsMacClient() and "MiniMapRecordingButton" or nil,
 }
 
 
@@ -317,13 +316,5 @@ function ShowHide:GetOptions()
 			order = 16,
 			get = get, set = set,
 		},
-		record = IsMacClient() and {
-			name = L["Recording"],
-			desc = L["Show the recording button"],
-			type = 'toggle',
-			order = 17,
-			get = function() return GetCVar("MovieRecordingIcon") == "1" end,
-			set = function() MacOptionsFrameCheckButton2:Click() end,
-		} or nil,
 	}
 end

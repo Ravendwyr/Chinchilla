@@ -19,7 +19,6 @@ local buttons = {
 	zoomIn = MinimapZoomIn,
 	zoomOut = MinimapZoomOut,
 	garrison = GarrisonLandingPageMinimapButton,
-	record = IsMacClient() and MiniMapRecordingButton or nil,
 }
 
 
@@ -648,13 +647,6 @@ function MoveButtons:GetOptions()
 		zoomOut = buttons.zoomOut and {
 			name = L["Zoom out"],
 			desc = L["Set the position of the zoom out button"],
-			type = 'group',
-			inline = true,
-			args = args,
-		} or nil,
-		record = buttons.record and {
-			name = L["Recording"],
-			desc = L["Set the position of the recording button"],
 			type = 'group',
 			inline = true,
 			args = args,

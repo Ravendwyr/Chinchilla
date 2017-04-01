@@ -395,7 +395,6 @@ local buttonBorderTextures = {
 	"MiniMapTrackingButtonBorder",
 	"MiniMapVoiceChatFrameBorder",
 	"QueueStatusMinimapButtonBorder",
-	"MiniMapRecordingBorder",
 }
 
 function Appearance:SetButtonBorderAlpha(alpha)
