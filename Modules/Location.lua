@@ -82,12 +82,12 @@ function Location:OnEnable()
 
 		closeButton:SetScript("OnClick", function(this)
 			if Minimap:IsShown() then
-				PlaySound("igMiniMapClose")
+				PlaySound(SOUNDKIT.IG_MINIMAP_CLOSE)
 				Minimap:Hide()
 				this:SetNormalTexture("Interface\\Buttons\\UI-Panel-ExpandButton-Up")
 				this:SetPushedTexture("Interface\\Buttons\\UI-Panel-ExpandButton-Down")
 			else
-				PlaySound("igMiniMapOpen")
+				PlaySound(SOUNDKIT.IG_MINIMAP_OPEN)
 				Minimap:Show()
 				this:SetNormalTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Up")
 				this:SetPushedTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Down")
