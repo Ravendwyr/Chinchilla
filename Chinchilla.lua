@@ -39,7 +39,7 @@ function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 		end
 	elseif button == self.db.profile.trackButton then
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor", -10, -20)
-		PlaySound("igMainMenuOptionCheckBoxOn")
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
 	else
 		return self.hooks[this].OnMouseUp(this, button, ...)
 	end
