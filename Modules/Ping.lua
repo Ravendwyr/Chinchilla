@@ -269,7 +269,7 @@ function Ping:Minimap_SetPing(x, y, playSound)
 	MinimapPing:Show()
 
 	if playSound then
-		PlaySound("MapPing")
+		PlaySound(SOUNDKIT.MAP_PING)
 	end
 end
 ]]--
