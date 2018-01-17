@@ -164,7 +164,7 @@ function TrackingDots:GetOptions()
 			end,
 			disabled = function() return not self.db.profile.blink end,
 		},
-
+--[[
 		preview1 = {
 			-- ["PartyMember"]
 			name = L["Party member or pet"],
@@ -282,5 +282,6 @@ function TrackingDots:GetOptions()
 			imageCoords = { 0.818359, 0.880859, 0.199219, 0.261719 },
 			order = 16,
 		},
+]]
 	}
 end
