@@ -164,14 +164,13 @@ function TrackingDots:GetOptions()
 			end,
 			disabled = function() return not self.db.profile.blink end,
 		},
---[[
 		preview1 = {
 			-- ["PartyMember"]
 			name = L["Party member or pet"],
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.353516, 0.416016, 0.53125, 0.59375 },
+			imageCoords = { 0.867188, 0.929688, 0.195312, 0.257812 },
 			order = 4,
 		},
 		preview2 = {
@@ -180,7 +179,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.353516, 0.416016, 0.796875, 0.859375 },
+			imageCoords = { 0.203125, 0.265625, 0.394531, 0.457031 },
 			order = 5,
 		},
 		preview3 = {
@@ -189,7 +188,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.353516, 0.416016, 0.863281, 0.925781 },
+			imageCoords = { 0.203125, 0.265625, 0.460938, 0.523438 },
 			order = 6,
 		},
 		preview4 = {
@@ -198,7 +197,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.353516, 0.416016, 0.730469, 0.792969 },
+			imageCoords = { 0.203125, 0.265625, 0.328125, 0.390625 },
 			order = 7,
 		},
 		preview5 = {
@@ -207,7 +206,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.751953, 0.814453, 0.332031, 0.394531 },
+			imageCoords = { 0.535156, 0.597656, 0.195312, 0.257812 },
 			order = 8,
 		},
 		preview6 = {
@@ -216,7 +215,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.818359, 0.880859, 0.332031, 0.394531 },
+			imageCoords = { 0.601562, 0.664062, 0.195312, 0.257812 },
 			order = 9,
 		},
 		preview7 = {
@@ -225,7 +224,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.685547, 0.748047, 0.332031, 0.39453 },
+			imageCoords = { 0.46875, 0.53125, 0.195312, 0.257812 },
 			order = 10,
 		},
 		preview8 = {
@@ -234,7 +233,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.353516, 0.416016, 0.464844, 0.527344 },
+			imageCoords = { 0.800781, 0.863281, 0.195312, 0.257812 },
 			order = 11,
 		},
 		preview9 = {
@@ -243,7 +242,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.419922, 0.482422, 0.796875, 0.859375 },
+			imageCoords = { 0.734375, 0.796875, 0.261719, 0.324219 },
 			order = 12,
 		},
 		preview10 = {
@@ -252,7 +251,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.552734, 0.615234, 0.464844, 0.527344 },
+			imageCoords = { 0.269531, 0.332031, 0.328125, 0.390625 },
 			order = 13,
 		},
 		preview11 = {
@@ -261,7 +260,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.419922, 0.482422, 0.597656, 0.660156 },
+			imageCoords = { 0.535156, 0.597656, 0.261719, 0.324219 },
 			order = 14,
 		},
 		preview12 = {
@@ -270,7 +269,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.419922, 0.482422, 0.929688, 0.992188 },
+			imageCoords = { 0.867188, 0.929688, 0.261719, 0.324219 },
 			order = 15,
 		},
 		preview13 = {
@@ -279,9 +278,8 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.818359, 0.880859, 0.199219, 0.261719 },
+			imageCoords = { 0.136719, 0.199219, 0.195312, 0.257812 },
 			order = 16,
 		},
-]]
 	}
 end
