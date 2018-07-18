@@ -19,7 +19,6 @@ local frames = {
 	lfg = "QueueStatusMinimapButton",
 	dayNight = "GameTimeFrame",
 	track = "MiniMapTracking",
-	voice = "MiniMapVoiceChatFrame",
 	zoomIn = "MinimapZoomIn",
 	zoomOut = "MinimapZoomOut",
 	vehicleSeats = "VehicleSeatIndicator",
@@ -285,14 +284,6 @@ function ShowHide:GetOptions()
 
 				set(info, value)
 			end,
-		},
-		voice = {
-			name = L["Voice chat"],
-			desc = L["Show the voice chat button"],
-			type = 'toggle',
-			tristate = true,
-			order = 13,
-			get = get, set = set,
 		},
 		zoom = {
 			name = L["Zoom"],
