@@ -89,7 +89,7 @@ end
 function ShowHide:UpdateCalendar()
 	if not self.db.profile.calendarInviteOnly then return end
 
-	if CalendarGetNumPendingInvites() > 0 then
+	if C_Calendar.GetNumPendingInvites() > 0 then
 		self:ShowFrame("GameTimeFrame")
 	else
 		self:HideFrame("GameTimeFrame")
