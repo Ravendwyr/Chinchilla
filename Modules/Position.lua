@@ -17,8 +17,6 @@ function Position:OnInitialize()
 			minimap = { "TOPRIGHT", 0, 0 },
 			durability = { "TOPRIGHT", -143, -221 },
 			questWatch = { "TOPRIGHT", 0, -175 },
-			capture = { "TOPRIGHT", -9, -190 },
-			worldState = { "TOP", 0, -50 },
 			vehicleSeats = { "TOPRIGHT", -50, -250 },
 			ticketStatus = { "TOPRIGHT", -180, 0 },
 			boss = { "TOPRIGHT", 55, -236 },
@@ -135,16 +133,10 @@ function Position:OnEnable()
 
 	-- in alphabetical order, as they should be
 	self:SetFramePosition('boss')
-	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
-	self:SetFramePosition('worldState')
-
-	WorldStateAlwaysUpFrame:SetWidth(200)
-	WorldStateAlwaysUpFrame:SetHeight(60)
-	WorldStateAlwaysUpFrame:EnableMouse(false)
 
 	self:SetLocked()
 	self:UpdateClamp()
@@ -159,8 +151,6 @@ function Position:OnEnable()
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
 	self:SecureHook(ObjectiveTrackerFrame, "SetPoint", "WatchFrame_SetPoint")
-	self:SecureHook(WorldStateAlwaysUpFrame, "SetPoint", "WorldStateAlwaysUpFrame_SetPoint")
-	self:SecureHook("WorldStateAlwaysUpFrame_Update")
 end
 
 
@@ -174,16 +164,10 @@ function Position:OnDisable()
 
 	-- in alphabetical order, as they should be
 	self:SetFramePosition('boss')
-	self:SetFramePosition('capture')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
 	self:SetFramePosition('vehicleSeats')
-	self:SetFramePosition('worldState')
-
-	WorldStateAlwaysUpFrame:SetWidth(10)
-	WorldStateAlwaysUpFrame:SetHeight(10)
-	WorldStateAlwaysUpFrame:EnableMouse(true)
 
 	self:SetLocked()
 end
@@ -296,12 +280,6 @@ function Position:SetMinimapPosition(point, x, y)
 end
 
 local shouldntSetPoint = false
---[[
-function Position:BossFrame_SetPoint()
-	if shouldntSetPoint then return end
-	self:SetFramePosition('boss')
-end
-]]--
 
 function Position:DurabilityFrame_SetPoint()
 	if shouldntSetPoint then return end
@@ -323,32 +301,12 @@ function Position:VehicleSeatIndicator_SetPoint()
 	self:SetFramePosition('vehicleSeats')
 end
 
-function Position:WorldStateAlwaysUpFrame_SetPoint()
-	if shouldntSetPoint then return end
-	self:SetFramePosition('worldState')
-end
-
-function Position:WorldStateCaptureBar_SetPoint()
-	if shouldntSetPoint then return end
-	self:SetFramePosition('capture')
-end
-
-function Position:WorldStateAlwaysUpFrame_Update()
-	while numHookedCaptureFrames < NUM_EXTENDED_UI_FRAMES do
-		numHookedCaptureFrames = numHookedCaptureFrames + 1
-
-		self:SecureHook(_G["WorldStateCaptureBar" .. numHookedCaptureFrames], "SetPoint", "WorldStateCaptureBar_SetPoint")
-		self:WorldStateCaptureBar_SetPoint()
-	end
-end
-
 local movers = {}
 local nameToFrame = {
 	minimap = MinimapCluster,
 	boss = Chinchilla_BossAnchor,
 	durability = DurabilityFrame,
 	questWatch = ObjectiveTrackerFrame,
-	worldState = WorldStateAlwaysUpFrame,
 	vehicleSeats = VehicleSeatIndicator,
 	ticketStatus = TicketStatusFrame,
 }
@@ -402,15 +360,8 @@ function Position:SetFramePosition(frame, point, x, y)
 		movers[frame]:ClearAllPoints()
 		movers[frame]:SetPoint(point, UIParent, point, x, y)
 	else
-		if frame == "capture" then
-			for i = 1, NUM_EXTENDED_UI_FRAMES do
-				_G["WorldStateCaptureBar" .. i]:ClearAllPoints()
-				_G["WorldStateCaptureBar" .. i]:SetPoint(point, UIParent, point, x, y)
-			end
-		else
-			nameToFrame[frame]:ClearAllPoints()
-			nameToFrame[frame]:SetPoint(point, UIParent, point, x, y)
-		end
+		nameToFrame[frame]:ClearAllPoints()
+		nameToFrame[frame]:SetPoint(point, UIParent, point, x, y)
 	end
 
 	shouldntSetPoint = false
@@ -432,8 +383,6 @@ end
 local nameToNiceName = {
 	durability = DURABILITY,
 	questWatch = L["Quest tracker"],
-	worldState = L["World state"],
-	capture = L["Capture bar"],
 	vehicleSeats = L["Vehicle seats"],
 	boss = L["Boss frames"],
 	ticketStatus = L["Ticket status"],
@@ -456,11 +405,9 @@ function Position:ShowFrameMover(frame, value, force)
 		mover.name = frame
 		mover.restoreAfterCombat = false
 
-		if frame ~= 'capture' then
-			mover:SetFrameStrata(nameToFrame[frame]:GetFrameStrata())
-			mover:SetFrameLevel(nameToFrame[frame]:GetFrameLevel()+5)
-			mover:SetScale(nameToFrame[frame]:GetScale())
-		end
+		mover:SetFrameStrata(nameToFrame[frame]:GetFrameStrata())
+		mover:SetFrameLevel(nameToFrame[frame]:GetFrameLevel()+5)
+		mover:SetScale(nameToFrame[frame]:GetScale())
 
 		mover:SetClampedToScreen(self.db.profile.clamped)
 		mover:EnableMouse(true)
@@ -484,13 +431,8 @@ function Position:ShowFrameMover(frame, value, force)
 			self:SetFramePosition(frame, nil, nil, nil)
 		end
 	else
-		if frame == 'capture' then
-			mover:SetWidth(173)
-			mover:SetHeight(26)
-		else
-			mover:SetWidth(nameToFrame[frame]:GetWidth())
-			mover:SetHeight(nameToFrame[frame]:GetHeight())
-		end
+		mover:SetWidth(nameToFrame[frame]:GetWidth())
+		mover:SetHeight(nameToFrame[frame]:GetHeight())
 
 		shouldntSetPoint = true
 
@@ -501,15 +443,8 @@ function Position:ShowFrameMover(frame, value, force)
 		local point, x, y = data[1], data[2], data[3]
 		mover:SetPoint(point, UIParent, point, x, y)
 
-		if frame == "capture" then
-			for i = 1, NUM_EXTENDED_UI_FRAMES do
-				_G["WorldStateCaptureBar" .. i]:ClearAllPoints()
-				_G["WorldStateCaptureBar" .. i]:SetAllPoints(mover)
-			end
-		else
-			nameToFrame[frame]:ClearAllPoints()
-			nameToFrame[frame]:SetAllPoints(mover)
-		end
+		nameToFrame[frame]:ClearAllPoints()
+		nameToFrame[frame]:SetAllPoints(mover)
 
 		shouldntSetPoint = false
 	end
@@ -863,94 +798,6 @@ function Position:GetOptions()
 				y = {
 					name = L["Vertical position"],
 					desc = L["Set the position on the y-axis for the vehicle seat indicator."],
-					type = 'range',
-					softMin = y_min,
-					softMax = y_max,
-					step = 1,
-					bigStep = 5,
-					-- stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					order = 4,
-					disabled = isDisabled,
-				},
-			},
-			disabled = InCombatLockdown,
-		},
-		worldState = {
-			name = L["World state"],
-			desc = L["Position of the world state indicator on the screen"],
-			type = 'group',
-			inline = true,
-			args = {
-				movable = {
-					name = L["Movable"],
-					desc = L["Show a frame that is movable to show where you want the world state indicator to be"],
-					type = 'toggle',
-					order = 1,
-					get = movable_get,
-					set = movable_set,
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the world state indicator."],
-					type = 'range',
-					softMin = x_min,
-					softMax = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					order = 3,
-					disabled = isDisabled,
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the world state indicator."],
-					type = 'range',
-					softMin = y_min,
-					softMax = y_max,
-					step = 1,
-					bigStep = 5,
-					-- stepBasis = 0,
-					get = y_get,
-					set = y_set,
-					order = 4,
-					disabled = isDisabled,
-				},
-			},
-			disabled = InCombatLockdown,
-		},
-		capture = {
-			name = L["Capture bar"],
-			desc = L["Position of the capture bar on the screen"],
-			type = 'group',
-			inline = true,
-			args = {
-				movable = {
-					name = L["Movable"],
-					desc = L["Show a frame that is movable to show where you want the capture bar to be"],
-					type = 'toggle',
-					order = 1,
-					get = movable_get,
-					set = movable_set,
-				},
-				x = {
-					name = L["Horizontal position"],
-					desc = L["Set the position on the x-axis for the capture bar."],
-					type = 'range',
-					softMin = x_min,
-					softMax = x_max,
-					step = 1,
-					bigStep = 5,
-					get = x_get,
-					set = x_set,
-					order = 3,
-					disabled = isDisabled,
-				},
-				y = {
-					name = L["Vertical position"],
-					desc = L["Set the position on the y-axis for the capture bar."],
 					type = 'range',
 					softMin = y_min,
 					softMax = y_max,
