@@ -48,7 +48,7 @@ function ShowHide:OnInitialize()
 
 			boss = true, north = true, difficulty = true, map = true,
 			mail = true, lfg = true, dayNight = true, track = true,
-			voice = true, zoom = true, clock = true, vehicleSeats = true,
+			zoom = true, clock = true, vehicleSeats = true,
 			garrison = true,
 		},
 	})
