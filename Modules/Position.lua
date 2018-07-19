@@ -356,6 +356,9 @@ function Position:SetFramePosition(frame, point, x, y)
 
 	shouldntSetPoint = true
 
+	nameToFrame[frame]:SetMovable(true)
+	nameToFrame[frame]:SetResizable(true)
+
 	if movers[frame] and movers[frame]:IsShown() then
 		movers[frame]:ClearAllPoints()
 		movers[frame]:SetPoint(point, UIParent, point, x, y)
@@ -363,6 +366,8 @@ function Position:SetFramePosition(frame, point, x, y)
 		nameToFrame[frame]:ClearAllPoints()
 		nameToFrame[frame]:SetPoint(point, UIParent, point, x, y)
 	end
+
+	nameToFrame[frame]:SetUserPlaced(true)
 
 	shouldntSetPoint = false
 end
