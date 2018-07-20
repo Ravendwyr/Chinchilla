@@ -583,7 +583,7 @@ function Position:GetOptions()
 			get = function() return self.db.profile.clamped end,
 			set = "UpdateClamp",
 		},
-		minimap = {
+--[[		minimap = {
 			name = L["Minimap"],
 			desc = L["Position of the minimap on the screen"],
 			type = 'group',
@@ -634,7 +634,7 @@ function Position:GetOptions()
 				},
 			},
 			disabled = InCombatLockdown,
-		},
+]]--		},
 		durability = {
 			name = L["Durability"],
 			desc = L["Position of the metal durability man on the screen"],
