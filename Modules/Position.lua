@@ -30,7 +30,7 @@ end
 
 
 local function Minimap_OnDragStart()
-	MinimapCluster:StartMoving()
+	Minimap:StartMoving()
 end
 
 local function getPointXY(frame, newX, newY)
@@ -52,7 +52,7 @@ local function getPointXY(frame, newX, newY)
 		x = x - frame:GetWidth()/2*scale
 		point = "LEFT"
 
-		if frame == MinimapCluster then
+		if frame == Minimap then
 			if x < -35*scale then
 				x = -35*scale
 			end
@@ -68,7 +68,7 @@ local function getPointXY(frame, newX, newY)
 		point = "RIGHT"
 		x = x - width + frame:GetWidth()/2*scale
 
-		if frame == MinimapCluster then
+		if frame == Minimap then
 			if x > 17*scale then
 				x = 17*scale
 			end
@@ -83,7 +83,7 @@ local function getPointXY(frame, newX, newY)
 		y = y - frame:GetHeight()/2*scale
 		point = "BOTTOM" .. point
 
-		if frame == MinimapCluster then
+		if frame == Minimap then
 			if y < -30*scale then
 				y = -30*scale
 			end
@@ -101,7 +101,7 @@ local function getPointXY(frame, newX, newY)
 		point = "TOP" .. point
 		y = y - height + frame:GetHeight()/2*scale
 
-		if frame == MinimapCluster then
+		if frame == Minimap then
 			if y > 22*scale then
 				y = 22*scale
 			end
@@ -116,9 +116,9 @@ local function getPointXY(frame, newX, newY)
 end
 
 local function Minimap_OnDragStop()
-	MinimapCluster:StopMovingOrSizing()
+	Minimap:StopMovingOrSizing()
 
-	local point, x, y = getPointXY(MinimapCluster)
+	local point, x, y = getPointXY(Minimap)
 	Position:SetMinimapPosition(point, x, y)
 
 	LibStub("AceConfigRegistry-3.0"):NotifyChange("Chinchilla")
@@ -140,11 +140,6 @@ function Position:OnEnable()
 
 	self:SetLocked()
 	self:UpdateClamp()
-
-	-- hack so that frame positioning doesn't break
-	MinimapCluster:SetMovable(true)
-	MinimapCluster:StartMoving()
-	MinimapCluster:StopMovingOrSizing()
 
 --	self:SecureHook(Boss1TargetFrame, "SetPoint", "BossFrame_SetPoint")
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
@@ -208,7 +203,7 @@ function Position:SetLocked(value)
 		Minimap:SetScript("OnDragStop", nil)
 		MinimapZoneTextButton:SetScript("OnDragStart", nil)
 		MinimapZoneTextButton:SetScript("OnDragStop", nil)
-		MinimapCluster:SetMovable(false)
+		Minimap:SetMovable(false)
 	else
 		Minimap:RegisterForDrag("LeftButton")
 		MinimapZoneTextButton:RegisterForDrag("LeftButton")
@@ -216,7 +211,7 @@ function Position:SetLocked(value)
 		Minimap:SetScript("OnDragStop", Minimap_OnDragStop)
 		MinimapZoneTextButton:SetScript("OnDragStart", Minimap_OnDragStart)
 		MinimapZoneTextButton:SetScript("OnDragStop", Minimap_OnDragStop)
-		MinimapCluster:SetMovable(true)
+		Minimap:SetMovable(true)
 	end
 end
 
@@ -244,11 +239,11 @@ function Position:SetMinimapPosition(point, x, y)
 		point, x, y = "TOPRIGHT", 0, 0
 	end
 
-	MinimapCluster:ClearAllPoints()
-	MinimapCluster:SetPoint(point, UIParent, point, x, y)
+	Minimap:ClearAllPoints()
+	Minimap:SetPoint(point, UIParent, point, x, y)
 
-	local x, y = MinimapCluster:GetCenter()
-	local scale = MinimapCluster:GetEffectiveScale() / UIParent:GetEffectiveScale()
+	local x, y = Minimap:GetCenter()
+	local scale = Minimap:GetEffectiveScale() / UIParent:GetEffectiveScale()
 	x = x*scale
 	y = y*scale
 
@@ -303,7 +298,7 @@ end
 
 local movers = {}
 local nameToFrame = {
-	minimap = MinimapCluster,
+	minimap = Minimap,
 	boss = Chinchilla_BossAnchor,
 	durability = DurabilityFrame,
 	questWatch = ObjectiveTrackerFrame,
