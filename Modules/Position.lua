@@ -125,6 +125,7 @@ local function Minimap_OnDragStop()
 end
 
 
+local orig_SetBottom = _G.MinimapCluster.GetBottom
 function Position:OnEnable()
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -151,6 +152,11 @@ function Position:OnEnable()
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
 	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
 	self:SecureHook(ObjectiveTrackerFrame, "SetPoint", "WatchFrame_SetPoint")
+
+	-- fuck you Blizzard
+	_G.MinimapCluster.GetBottom = function()
+		return floor(GetScreenHeight() - MinimapCluster:GetHeight())
+	end
 end
 
 
@@ -170,6 +176,8 @@ function Position:OnDisable()
 	self:SetFramePosition('vehicleSeats')
 
 	self:SetLocked()
+
+	_G.MinimapCluster.GetBottom = orig_SetBottom
 end
 
 
