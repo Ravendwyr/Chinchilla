@@ -67,19 +67,18 @@ function Coordinates:OnEnable()
 
 		function frame:Update()
 			local uiMapID = GetBestMapForUnit("player")
-			local coords = GetPlayerMapPosition(uiMapID, "player")
+			if not uiMapID then self:Hide() return end
 
-			if not coords then
-				-- instance or can't get coords
-				self:Hide()
-			else
-				if not self:IsShown() then
-					self:Show()
-					Coordinates:Update()
-					return
-				end
-				text:SetText(coordString:format(coords.x*100, coords.y*100))
+			local coords = GetPlayerMapPosition(uiMapID, "player")
+			if not coords then self:Hide() return end
+
+			if not self:IsShown() then
+				self:Show()
+				Coordinates:Update()
+				return
 			end
+
+			text:SetText(coordString:format(coords.x*100, coords.y*100))
 		end
 
 		frame:SetScript("OnDragStart", function(this) this:StartMoving() end)
