@@ -28,17 +28,29 @@ local frames = {
 
 
 function ShowHide:ShowFrame(frame)
-	_G[frame]:SetParent( _G[frame].__origParent )
+	if _G[frame] then
+		_G[frame]:SetParent( _G[frame].__origParent )
+	else
+		print("Chinchilla:", frame, "has changed or no longer exists. Please notify the addon author.")
+	end
 end
 
 function ShowHide:HideFrame(frame)
-	_G[frame]:SetParent(ShowHideFrame)
+	if _G[frame] then
+		_G[frame]:SetParent(ShowHideFrame)
+	else
+		print("Chinchilla:", frame, "has changed or no longer exists. Please notify the addon author.")
+	end
 end
 
 
 function ShowHide:OnInitialize()
 	for _, frame in pairs(frames) do
-		_G[frame].__origParent = _G[frame]:GetParent():GetName()
+		if _G[frame] then
+			_G[frame].__origParent = _G[frame]:GetParent():GetName()
+		else
+			print("Chinchilla:", frame, "has changed or no longer exists. Please notify the addon author.")
+		end
 	end
 
 	self.db = Chinchilla.db:RegisterNamespace("ShowHide", {
