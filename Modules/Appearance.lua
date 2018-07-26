@@ -236,10 +236,19 @@ function Appearance:SetAlpha(value)
 	if value then self.db.profile.alpha = value
 	else value = self.db.profile.alpha end
 
-	if not self:IsEnabled() or indoors then value = 1 end
+	if not self:IsEnabled() then value = 1 end
+	if indoors then
+		if value > 0 then value = 1 end
+	end
 
 	if inCombat then self:SetCombatAlpha()
-	else Minimap:SetAlpha(value) end
+	else
+		Minimap:SetAlpha(value)
+
+		-- to work around a Blizzard bug where the minimap loses its image when indoors with an alpha setting below 1
+		Minimap:SetZoom(Minimap:GetZoom() + 1)
+		Minimap:SetZoom(Minimap:GetZoom() - 1)
+	end
 end
 
 function Appearance:SetCombatAlpha(value)
@@ -247,9 +256,16 @@ function Appearance:SetCombatAlpha(value)
 	else value = self.db.profile.combatAlpha end
 
 	if not inCombat then return end
-	if not self:IsEnabled() or indoors then value = 1 end
+	if not self:IsEnabled() then value = 1 end
+	if indoors then
+		if value > 0 then value = 1 end
+	end
 
 	Minimap:SetAlpha(value)
+
+	-- to work around a Blizzard bug where the minimap loses its image when indoors with an alpha setting below 1
+	Minimap:SetZoom(Minimap:GetZoom() + 1)
+	Minimap:SetZoom(Minimap:GetZoom() - 1)
 end
 
 function Appearance:SetFrameStrata(value)
