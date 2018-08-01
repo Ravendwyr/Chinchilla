@@ -185,7 +185,7 @@ function Location:Update()
 	frame:SetBackdropBorderColor(unpack(self.db.profile.border))
 
 	frame:ClearAllPoints()
-	frame:SetPoint("CENTER", MinimapCluster, "CENTER", self.db.profile.positionX+9/scale, self.db.profile.positionY+4/scale)
+	frame:SetPoint("CENTER", Minimap, "CENTER", self.db.profile.positionX+9/scale, self.db.profile.positionY+4/scale)
 
 	frame.text:SetText(GetMinimapZoneText())
 	frame:SetWidth(frame.text:GetWidth() + 16)

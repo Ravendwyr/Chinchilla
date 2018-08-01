@@ -103,7 +103,7 @@ function Appearance:OnDisable()
 	self:SetButtonBorderAlpha()
 
 	MinimapBorder:Show()
-	MinimapCluster:SetAlpha(1)
+	Minimap:SetAlpha(1)
 	Minimap:SetMaskTexture([[Textures\MinimapMask]])
 
 	for _, v in ipairs(cornerTextures) do
@@ -221,7 +221,7 @@ function Appearance:SetScale(value)
 		Minimap:SetPoint(v[1], v[2], v[3], v[4]/blipScale, v[5]/blipScale)
 	end
 
-	MinimapCluster:SetScale(value)
+	Minimap:SetScale(value)
 	ObjectiveTrackerFrame:GetSize()
 end
 
@@ -274,7 +274,7 @@ function Appearance:SetFrameStrata(value)
 
 	Minimap:SetFrameStrata(value)
 	MinimapBackdrop:SetFrameStrata(value)
-	MinimapCluster:SetFrameStrata(value)
+--	MinimapCluster:SetFrameStrata(value)
 end
 
 
