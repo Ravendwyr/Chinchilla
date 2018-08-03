@@ -132,6 +132,9 @@ end
 
 
 function Expander:OnDisable()
+	show = false
+	self:Refresh()
+
 	button:SetScript("OnMouseDown", nil)
 	button:SetScript("OnMouseUp", nil)
 end
@@ -180,7 +183,12 @@ function Expander:GetOptions()
 			order = 2,
 			width = "double",
 			get = function() return self.db.profile.toggle end,
-			set = function(_, value) self.db.profile.toggle = value end,
+			set = function(_, value)
+				self.db.profile.toggle = value
+
+				show = false
+				self:Refresh()
+			end,
 		},
 --[[
 		movable = {
