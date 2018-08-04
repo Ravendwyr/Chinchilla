@@ -34,6 +34,10 @@ local origHeight, origWidth, origWheel
 
 function Expander:Refresh()
 	if show then
+		origPoint, origParent, origAnchor, origX, origY = Minimap:GetPoint()
+		origHeight, origWidth = Minimap:GetSize()
+		origWheel = Minimap:IsMouseWheelEnabled()
+
 		Minimap:SetWidth(140 * self.db.profile.scale)
 		Minimap:SetHeight(140 * self.db.profile.scale)
 
@@ -57,7 +61,7 @@ function Expander:Refresh()
 			end
 		end
 	else
-		if Position then
+		if Position and Position:IsEnabled() then
 			Position:SetMinimapPosition()
 		else
 			Minimap:ClearAllPoints()
