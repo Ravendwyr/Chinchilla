@@ -39,7 +39,7 @@ function Location:OnEnable()
 	}
 
 	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_Location_Frame", MinimapBackdrop)
+		frame = CreateFrame("Frame", "Chinchilla_Location_Frame", MinimapCluster)
 		frame:SetBackdrop(backdrop)
 
 		frame:SetWidth(1)
