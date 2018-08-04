@@ -221,7 +221,7 @@ function Appearance:SetScale(value)
 		Minimap:SetPoint(v[1], v[2], v[3], v[4]/blipScale, v[5]/blipScale)
 	end
 
-	Minimap:SetScale(value)
+	MinimapCluster:SetScale(value)
 	ObjectiveTrackerFrame:GetSize()
 end
 
