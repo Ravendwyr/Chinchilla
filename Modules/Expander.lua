@@ -61,6 +61,9 @@ function Expander:Refresh()
 			end
 		end
 	else
+		Minimap:SetWidth(origWidth)
+		Minimap:SetHeight(origHeight)
+
 		if Position and Position:IsEnabled() then
 			Position:SetMinimapPosition()
 		else
@@ -76,11 +79,8 @@ function Expander:Refresh()
 		if Appearance then
 			Appearance:SetAlpha()
 			Appearance:SetFrameStrata()
-			Appearance:SetScale()
 			Appearance:SetShape()
 		else
-			Minimap:SetWidth(origWidth)
-			Minimap:SetHeight(origHeight)
 			Minimap:SetFrameStrata(origStrata)
 			MinimapBackdrop:SetFrameStrata(origStrata)
 			Minimap:SetMaskTexture([[Textures\MinimapMask]])

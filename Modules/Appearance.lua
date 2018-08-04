@@ -200,13 +200,14 @@ function Appearance:SetScale(value)
 	if value then self.db.profile.scale = value
 	else value = self.db.profile.scale end
 
-	local blipScale = self.db.profile.blipScale
+--	local blipScale = self.db.profile.blipScale
 
 	if not self:IsEnabled() then
 		value = 1
-		blipScale = 1
+--		blipScale = 1
 	end
 
+--[[
 	Minimap:SetWidth(DEFAULT_MINIMAP_WIDTH / blipScale)
 	Minimap:SetHeight(DEFAULT_MINIMAP_HEIGHT / blipScale)
 	Minimap:SetScale(blipScale)
@@ -220,17 +221,20 @@ function Appearance:SetScale(value)
 	for _, v in ipairs(MINIMAP_POINTS) do
 		Minimap:SetPoint(v[1], v[2], v[3], v[4]/blipScale, v[5]/blipScale)
 	end
+]]--
 
-	MinimapCluster:SetScale(value)
+	Minimap:SetScale(value)
 	ObjectiveTrackerFrame:GetSize()
 end
 
+--[[
 function Appearance:SetBlipScale(value)
 	if value then
 		self.db.profile.blipScale = value
 		self:SetScale(nil)
 	end
 end
+]]--
 
 function Appearance:SetAlpha(value)
 	if value then self.db.profile.alpha = value
@@ -475,6 +479,7 @@ function Appearance:GetOptions()
 			isPercent = true,
 			order = 1,
 		},
+--[[
 		blipScale = {
 			name = L["Blip size"],
 			desc = L["Set how large the blips on the minimap are"],
@@ -492,6 +497,7 @@ function Appearance:GetOptions()
 			isPercent = true,
 			order = 2,
 		},
+]]--
 		strata = {
 			name = L["Strata"],
 			desc = L["Set which layer the minimap is layered on in relation to others in your interface."],
