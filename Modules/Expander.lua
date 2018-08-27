@@ -57,7 +57,7 @@ function Expander:Refresh()
 
 		if DBI then
 			for icon in pairs(DBI.objects) do
-				DBI.objects[icon]:Hide()
+				DBI:Hide(icon)
 			end
 		end
 	else
@@ -89,7 +89,7 @@ function Expander:Refresh()
 
 		if DBI then
 			for icon in pairs(DBI.objects) do
-				DBI.objects[icon]:Show()
+				DBI:Refresh(icon)
 			end
 		end
 	end
