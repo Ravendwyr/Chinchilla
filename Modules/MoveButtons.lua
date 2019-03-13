@@ -9,6 +9,7 @@ MoveButtons.desc = L["Move buttons around the minimap"]
 local buttons = {
 	difficulty = MiniMapInstanceDifficulty,
 	guilddifficulty = GuildInstanceDifficulty,
+	challengedifficulty = MiniMapChallengeMode,
 	map = MiniMapWorldMapButton,
 	mail = MiniMapMailFrame,
 	lfg = QueueStatusMinimapButton,
@@ -280,6 +281,7 @@ function MoveButtons:OnDisable()
 
 	for k, v in pairs(buttons) do
 		if k == "guilddifficulty" then k = "difficulty" end
+		if k == "challengedifficulty" then k = "difficulty" end
 
 		local deg = buttonStarts[k]
 
@@ -292,6 +294,7 @@ end
 function MoveButtons:Update()
 	for k, v in pairs(buttons) do
 		if k == "guilddifficulty" then k = "difficulty" end
+		if k == "challengedifficulty" then k = "difficulty" end
 
 		local deg = self.db.profile[k] or buttonStarts[k]
 
@@ -331,6 +334,8 @@ local function angle_set(info, value)
 		MiniMapInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
 		GuildInstanceDifficulty:ClearAllPoints()
 		GuildInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+		MiniMapChallengeMode:ClearAllPoints()
+		MiniMapChallengeMode:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
 	else
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
@@ -421,6 +426,8 @@ local function x_set(info, value)
 		MiniMapInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
 		GuildInstanceDifficulty:ClearAllPoints()
 		GuildInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
+		MiniMapChallengeMode:ClearAllPoints()
+		MiniMapChallengeMode:SetPoint("CENTER", UIParent, unpack(data))
 	else
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
@@ -445,6 +452,8 @@ local function y_set(info, value)
 		MiniMapInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
 		GuildInstanceDifficulty:ClearAllPoints()
 		GuildInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
+		MiniMapChallengeMode:ClearAllPoints()
+		MiniMapChallengeMode:SetPoint("CENTER", UIParent,  unpack(data))
 	else
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
