@@ -26,9 +26,10 @@ local rotateMinimap
 local frame
 local function repositionCompass()
 	local angle = 0
+	local facing = GetPlayerFacing() or 0
 
 	if rotateMinimap == "1" then
-		angle = -GetPlayerFacing() or angle
+		angle = -facing or angle
 	end
 
 	local radius = Compass.db.profile.radius
