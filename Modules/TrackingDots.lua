@@ -250,7 +250,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.829102, 0.860352, 0.00195312, 0.0644531 },
+			imageCoords = { 0.862305, 0.893555, 0.00195312, 0.0644531 },
 			order = 12,
 		},
 		preview10 = {
@@ -259,7 +259,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.961914, 0.993164, 0.00195312, 0.0644531 },
+			imageCoords = { 0.530273, 0.561523, 0.134766, 0.197266 },
 			order = 13,
 		},
 		preview11 = {
@@ -277,7 +277,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.895508, 0.926758, 0.00195312, 0.0644531 },
+			imageCoords = { 0.928711, 0.959961, 0.00195312, 0.0644531 },
 			order = 15,
 		},
 		preview13 = {
