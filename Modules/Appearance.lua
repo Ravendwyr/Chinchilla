@@ -146,13 +146,14 @@ function Appearance:MINIMAP_UPDATE_ZOOM()
 	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
 	Minimap:SetZoom(zoom)
 
-	if InCombatLockdown() then self:SetCombatAlpha()
+	if inCombat then self:SetCombatAlpha()
 	else self:SetAlpha() end
 end
 
 
 function Appearance:PLAYER_REGEN_ENABLED()
 	inCombat = false
+	self:SetScale()
 	self:SetAlpha()
 end
 
@@ -197,6 +198,8 @@ end
 
 
 function Appearance:SetScale(value)
+	if inCombat then return end
+
 	if value then self.db.profile.scale = value
 	else value = self.db.profile.scale end
 
