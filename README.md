@@ -4,8 +4,8 @@ Minimap addon of awesomeness. Chinchilla alters the default minimap in a way to 
 
 [![Twitter](https://img.shields.io/twitter/follow/ravendwyr.svg?label=Twitter&style=popout)](https://twitter.com/Ravendwyr)
 [![Discord](https://img.shields.io/discord/299308204393889802.svg?label=Discord&style=popout)](https://discord.gg/XC2REFu)
-[![Version](https://img.shields.io/github/tag-date/ethancentaurai/chinchilla.svg?label=Version&style=popout)](https://www.curseforge.com/wow/addons/chinchilla/files)
-[![Tracker](https://img.shields.io/github/issues/ethancentaurai/chinchilla.svg?label=Issues&style=popout)](https://github.com/EthanCentaurai/Chinchilla/issues)
+[![Version](https://img.shields.io/github/tag-date/ravendwyr/chinchilla.svg?label=Version&style=popout)](https://www.curseforge.com/wow/addons/chinchilla/files)
+[![Tracker](https://img.shields.io/github/issues/ravendwyr/chinchilla.svg?label=Issues&style=popout)](https://github.com/Ravendwyr/Chinchilla/issues)
 
 ***
 
@@ -40,4 +40,4 @@ Click [here](https://www.wowace.com/projects/chinchilla/localization) to help tr
 Chinchilla Minimap has been developed by many different people over the years, including but not limited to the following:
 
 * Original creator and maintainer - ckknight
-* Current maintainer - EthanCentaurai
+* Current maintainer - Ravendwyr
