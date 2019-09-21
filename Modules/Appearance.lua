@@ -77,9 +77,9 @@ function Appearance:OnEnable()
 
 	MinimapBorder:Hide()
 
-		for _, v in ipairs(cornerTextures) do
-			v:Show()
-		end
+	for _, v in ipairs(cornerTextures) do
+		v:Show()
+	end
 
 	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -89,10 +89,12 @@ function Appearance:OnEnable()
 
 	-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
 	-- Thank you Funkeh` for the code!
-	Minimap:SetArchBlobRingScalar(0)
-	Minimap:SetArchBlobRingAlpha(0)
-	Minimap:SetQuestBlobRingScalar(0)
-	Minimap:SetQuestBlobRingAlpha(0)
+	if not Chinchilla:IsClassic() then
+		Minimap:SetArchBlobRingScalar(0)
+		Minimap:SetArchBlobRingAlpha(0)
+		Minimap:SetQuestBlobRingScalar(0)
+		Minimap:SetQuestBlobRingAlpha(0)
+	end
 end
 
 function Appearance:OnDisable()
@@ -114,10 +116,12 @@ function Appearance:OnDisable()
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
 
-	Minimap:SetArchBlobRingScalar(1)
-	Minimap:SetArchBlobRingAlpha(1)
-	Minimap:SetQuestBlobRingScalar(1)
-	Minimap:SetQuestBlobRingAlpha(1)
+	if not Chinchilla:IsClassic() then
+		Minimap:SetArchBlobRingScalar(1)
+		Minimap:SetArchBlobRingAlpha(1)
+		Minimap:SetQuestBlobRingScalar(1)
+		Minimap:SetQuestBlobRingAlpha(1)
+	end
 end
 
 
@@ -227,7 +231,12 @@ function Appearance:SetScale(value)
 ]]--
 
 	Minimap:SetScale(value)
-	ObjectiveTrackerFrame:GetSize()
+
+	if Chinchilla:IsClassic() then
+		QuestWatchFrame:GetSize()
+	else
+		ObjectiveTrackerFrame:GetSize()
+	end
 end
 
 --[[

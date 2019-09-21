@@ -45,6 +45,10 @@ function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 	end
 end
 
+function Chinchilla:IsClassic()
+	return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+end
+
 
 function Chinchilla:CreateConfig()
 	local options = {
@@ -181,6 +185,7 @@ function Chinchilla:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileUpdate")
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileUpdate")
 
+	-- these frames still exist in Classic although probably not being used
 	for i=1, 5, 1 do
 		_G["Boss"..i.."TargetFrame"]:ClearAllPoints()
 		_G["Boss"..i.."TargetFrame"]:SetParent(Chinchilla_BossAnchor)
@@ -203,6 +208,7 @@ function Chinchilla:OnEnable()
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()
 
+	-- this button still exists in Classic
 	MiniMapWorldMapButton:SetNormalTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 

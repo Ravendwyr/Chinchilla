@@ -9,22 +9,7 @@ ShowHide.desc = L["Show and hide interface elements of the minimap"]
 local ShowHideFrame = CreateFrame("Frame")
 ShowHideFrame:Hide()
 
-local frames = {
-	boss = "Chinchilla_BossAnchor",
-	difficulty = "MiniMapInstanceDifficulty",
-	guilddifficulty = "GuildInstanceDifficulty",
-	north = "MinimapNorthTag",
-	map = "MiniMapWorldMapButton",
-	mail = "MiniMapMailFrame",
-	lfg = "QueueStatusMinimapButton",
-	dayNight = "GameTimeFrame",
-	track = "MiniMapTracking",
-	zoomIn = "MinimapZoomIn",
-	zoomOut = "MinimapZoomOut",
-	vehicleSeats = "VehicleSeatIndicator",
-	clock = "TimeManagerClockButton",
-	garrison = "GarrisonLandingPageMinimapButton",
-}
+local frames
 
 
 function ShowHide:ShowFrame(frame)
@@ -45,6 +30,36 @@ end
 
 
 function ShowHide:OnInitialize()
+	if Chinchilla:IsClassic() then
+		frames = {
+			north = "MinimapNorthTag",
+			map = "MiniMapWorldMapButton",
+			mail = "MiniMapMailFrame",
+			dayNight = "GameTimeFrame",
+			track = "MiniMapTrackingFrame",
+			zoomIn = "MinimapZoomIn",
+			zoomOut = "MinimapZoomOut",
+			clock = "TimeManagerClockButton",
+		}
+	else
+		frames = {
+			boss = "Chinchilla_BossAnchor",
+			difficulty = "MiniMapInstanceDifficulty",
+			guilddifficulty = "GuildInstanceDifficulty",
+			north = "MinimapNorthTag",
+			map = "MiniMapWorldMapButton",
+			mail = "MiniMapMailFrame",
+			lfg = "QueueStatusMinimapButton",
+			dayNight = "GameTimeFrame",
+			track = "MiniMapTracking",
+			zoomIn = "MinimapZoomIn",
+			zoomOut = "MinimapZoomOut",
+			vehicleSeats = "VehicleSeatIndicator",
+			clock = "TimeManagerClockButton",
+			garrison = "GarrisonLandingPageMinimapButton",
+		}
+	end
+
 	for _, frame in pairs(frames) do
 		if _G[frame] then
 			_G[frame].__origParent = _G[frame]:GetParent():GetName()
@@ -71,8 +86,10 @@ function ShowHide:OnInitialize()
 end
 
 function ShowHide:OnEnable()
-	self:RegisterEvent("CALENDAR_ACTION_PENDING", "UpdateCalendar")
-	self:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES", "UpdateCalendar")
+	if not Chinchilla:IsClassic() then
+		self:RegisterEvent("CALENDAR_ACTION_PENDING", "UpdateCalendar")
+		self:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES", "UpdateCalendar")
+	end
 
 	self:UpdateMouseover()
 	self:Update()

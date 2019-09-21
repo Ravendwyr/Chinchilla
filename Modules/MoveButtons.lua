@@ -6,29 +6,10 @@ MoveButtons.displayName = L["Move Buttons"]
 MoveButtons.desc = L["Move buttons around the minimap"]
 
 
-local buttons = {
-	difficulty = MiniMapInstanceDifficulty,
-	guilddifficulty = GuildInstanceDifficulty,
-	challengedifficulty = MiniMapChallengeMode,
-	map = MiniMapWorldMapButton,
-	mail = MiniMapMailFrame,
-	lfg = QueueStatusMinimapButton,
-	dayNight = GameTimeFrame,
-	clock = TimeManagerClockButton,
-	track = MiniMapTracking,
-	voice = MiniMapVoiceChatFrame,
-	zoomIn = MinimapZoomIn,
-	zoomOut = MinimapZoomOut,
-	garrison = GarrisonLandingPageMinimapButton,
-}
-
-
-local buttonReverse = {}
-for k,v in pairs(buttons) do
-	buttonReverse[v] = k
-end
-
+local buttons
 local buttonStarts = {}
+local buttonReverse = {}
+
 
 local function getOffset(deg)
 	local angle = math.rad(deg)
@@ -258,6 +239,39 @@ function MoveButtons:OnInitialize()
 		self:SetEnabledState(false)
 	end
 
+	if Chinchilla:IsClassic() then
+		buttons = {
+			map = MiniMapWorldMapButton,
+			mail = MiniMapMailFrame,
+			dayNight = GameTimeFrame,
+			clock = TimeManagerClockButton,
+			track = MiniMapTrackingFrame,
+			voice = MiniMapVoiceChatFrame,
+			zoomIn = MinimapZoomIn,
+			zoomOut = MinimapZoomOut,
+		}
+	else
+		buttons = {
+			difficulty = MiniMapInstanceDifficulty,
+			guilddifficulty = GuildInstanceDifficulty,
+			challengedifficulty = MiniMapChallengeMode,
+			map = MiniMapWorldMapButton,
+			mail = MiniMapMailFrame,
+			lfg = QueueStatusMinimapButton,
+			dayNight = GameTimeFrame,
+			clock = TimeManagerClockButton,
+			track = MiniMapTracking,
+			voice = MiniMapVoiceChatFrame,
+			zoomIn = MinimapZoomIn,
+			zoomOut = MinimapZoomOut,
+			garrison = GarrisonLandingPageMinimapButton,
+		}
+	end
+
+	for k, v in pairs(buttons) do
+		buttonReverse[v] = k
+	end
+
 	for k, v in pairs(buttons) do
 		if type(self.db.profile[v]) == "table" and #self.db.profile[v] == 2 then
 			table.insert(self.db.profile[v], "BOTTOMLEFT")
@@ -271,7 +285,7 @@ function MoveButtons:OnEnable()
 	self:SetLocked()
 	self:Update()
 
-	if not Chinchilla:IsHooked("QueueStatusFrame_Update") then
+	if not Chinchilla:IsClassic() and not Chinchilla:IsHooked("QueueStatusFrame_Update") then
 		Chinchilla:SecureHook("QueueStatusFrame_Update", PositionLFD)
 	end
 end
@@ -632,13 +646,13 @@ function MoveButtons:GetOptions()
 			inline = true,
 			args = args,
 		} or nil,
-		garrison = {
+		garrison = buttons.garrison and {
 			name = L["Garrison"],
 			desc = L["Set the position of the garrison report button"],
 			type = 'group',
 			inline = true,
 			args = args,
-		},
+		} or nil,
 		voice = buttons.voice and {
 			name = L["Voice chat"],
 			desc = L["Set the position of the voice chat button"],
@@ -661,5 +675,4 @@ function MoveButtons:GetOptions()
 			args = args,
 		} or nil,
 	}
-
 end

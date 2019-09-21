@@ -6,6 +6,7 @@ Position.displayName = L["Position"]
 Position.desc = L["Allow for moving of the minimap and surrounding frames"]
 
 
+local nameToFrame
 local numHookedCaptureFrames = 0
 
 function Position:OnInitialize()
@@ -22,6 +23,24 @@ function Position:OnInitialize()
 			boss = { "TOPRIGHT", 55, -236 },
 		}
 	})
+
+	if Chinchilla:IsClassic() then
+		nameToFrame = {
+			minimap = Minimap,
+			durability = DurabilityFrame,
+			questWatch = QuestWatchFrame,
+			ticketStatus = TicketStatusFrame,
+		}
+	else
+		nameToFrame = {
+			minimap = Minimap,
+			boss = Chinchilla_BossAnchor,
+			durability = DurabilityFrame,
+			questWatch = ObjectiveTrackerFrame,
+			vehicleSeats = VehicleSeatIndicator,
+			ticketStatus = TicketStatusFrame,
+		}
+	end
 
 	if not self.db.profile.enabled then
 		self:SetEnabledState(false)
@@ -133,11 +152,14 @@ function Position:OnEnable()
 	self:SetMinimapPosition()
 
 	-- in alphabetical order, as they should be
-	self:SetFramePosition('boss')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
-	self:SetFramePosition('vehicleSeats')
+
+	if not Chinchilla:IsClassic() then
+		self:SetFramePosition('boss')
+		self:SetFramePosition('vehicleSeats')
+	end
 
 	self:SetLocked()
 	self:UpdateClamp()
@@ -150,8 +172,13 @@ function Position:OnEnable()
 --	self:SecureHook(Boss1TargetFrame, "SetPoint", "BossFrame_SetPoint")
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
-	self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
-	self:SecureHook(ObjectiveTrackerFrame, "SetPoint", "WatchFrame_SetPoint")
+
+	if Chinchilla:IsClassic() then
+		self:SecureHook(QuestWatchFrame, "SetPoint", "WatchFrame_SetPoint")
+	else
+		self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
+		self:SecureHook(ObjectiveTrackerFrame, "SetPoint", "WatchFrame_SetPoint")
+	end
 
 	-- fuck you Blizzard
 --	_G.MinimapCluster.GetBottom = function()
@@ -165,15 +192,19 @@ function Position:OnDisable()
 
 	self:ShowFrameMover('capture', false)
 	self:ShowFrameMover('durability', false)
-	self:ShowFrameMover('vehicleSeats', false)
 	self:ShowFrameMover('worldState', false)
 
 	-- in alphabetical order, as they should be
-	self:SetFramePosition('boss')
 	self:SetFramePosition('durability')
 	self:SetFramePosition('questWatch')
 	self:SetFramePosition('ticketStatus')
-	self:SetFramePosition('vehicleSeats')
+
+	if not Chinchilla:IsClassic() then
+		self:SetFramePosition('boss')
+		self:SetFramePosition('vehicleSeats')
+
+		self:ShowFrameMover('vehicleSeats', false)
+	end
 
 	self:SetLocked()
 
@@ -284,7 +315,12 @@ function Position:SetMinimapPosition(point, x, y)
 	end
 
 	lastQuadrant = quadrant
-	ObjectiveTrackerFrame:GetSize()
+
+	if Chinchilla:IsClassic() then
+		QuestWatchFrame:GetSize()
+	else
+		ObjectiveTrackerFrame:GetSize()
+	end
 end
 
 local shouldntSetPoint = false
@@ -310,15 +346,6 @@ function Position:VehicleSeatIndicator_SetPoint()
 end
 
 local movers = {}
-local nameToFrame = {
-	minimap = Minimap,
-	boss = Chinchilla_BossAnchor,
-	durability = DurabilityFrame,
-	questWatch = ObjectiveTrackerFrame,
-	vehicleSeats = VehicleSeatIndicator,
-	ticketStatus = TicketStatusFrame,
-}
-
 
 function Position:PLAYER_REGEN_DISABLED()
 	for _, mover in pairs(movers) do
@@ -342,6 +369,7 @@ function Position:SetFramePosition(frame, point, x, y)
 	if point then
 		self.db.profile[frame][1] = point
 	else
+		assert(self.db.profile[frame], frame)
 		point = self.db.profile[frame][1]
 	end
 
@@ -364,6 +392,7 @@ function Position:SetFramePosition(frame, point, x, y)
 
 	shouldntSetPoint = true
 
+	assert(nameToFrame[frame], frame)
 	nameToFrame[frame]:SetMovable(true)
 	nameToFrame[frame]:SetResizable(true)
 
@@ -479,7 +508,11 @@ function Position:UpdateClamp(info, value)
 		end
 	end
 
-	ObjectiveTrackerFrame:GetSize()
+	if Chinchilla:IsClassic() then
+		QuestWatchFrame:GetSize()
+	else
+		ObjectiveTrackerFrame:GetSize()
+	end
 end
 
 
@@ -648,7 +681,7 @@ function Position:GetOptions()
 			},
 			disabled = InCombatLockdown,
 ]]--		},
-		durability = {
+		durability = nameToFrame["durability"] and {
 			name = L["Durability"],
 			desc = L["Position of the metal durability man on the screen"],
 			type = 'group',
@@ -691,8 +724,8 @@ function Position:GetOptions()
 				},
 			},
 			disabled = InCombatLockdown,
-		},
-		questWatch = {
+		} or nil,
+		questWatch = nameToFrame["questWatch"] and {
 			name = L["Quest and achievement tracker"],
 			desc = L["Position of the quest/achievement tracker on the screen"],
 			type = 'group',
@@ -735,8 +768,8 @@ function Position:GetOptions()
 				},
 			},
 			disabled = InCombatLockdown,
-		},
-		boss = {
+		} or nil,
+		boss = nameToFrame["boss"] and {
 			name = L["Boss frames"],
 			desc = L["Position of the boss unit frames on the screen"],
 			type = 'group',
@@ -780,8 +813,8 @@ function Position:GetOptions()
 			},
 			disabled = InCombatLockdown,
 --			disabled = function() return not self:IsEnabled() or not Chinchilla_BossAnchor:IsShown() end,
-		},
-		vehicleSeats = {
+		} or nil,
+		vehicleSeats = nameToFrame["vehicle"] and {
 			name = L["Vehicle seats"],
 			desc = L["Position of the vehicle seat indicator on the screen"],
 			type = 'group',
@@ -824,8 +857,8 @@ function Position:GetOptions()
 				},
 			},
 			disabled = InCombatLockdown,
-		},
-		ticketStatus = {
+		} or nil,
+		ticketStatus = nameToFrame["ticketStatus"] and {
 			name = L["Ticket status"],
 			type = 'group',
 			inline = true,
@@ -867,6 +900,6 @@ function Position:GetOptions()
 				},
 			},
 			disabled = InCombatLockdown,
-		},
+		} or nil,
 	}
 end
