@@ -224,61 +224,61 @@ function ShowHide:GetOptions()
 			type = "description",
 			order = 3,
 		},
-		north = {
+		north = frames.north and {
 			name = L["North"],
 			desc = L["Show the north symbol on the minimap"],
 			type = 'toggle',
 			order = 4,
 			get = get, set = set,
-		},
-		difficulty = {
+		} or nil,
+		difficulty = frames.difficulty and {
 			name = L["Instance difficulty"],
 			desc = L["Show the instance difficulty flag on the minimap"],
 			type = 'toggle',
 			tristate = true,
 			order = 5,
 			get = get, set = set,
-		},
-		map = {
+		} or nil,
+		map = frames.map and {
 			name = L["World map"],
 			desc = L["Show the world map button"],
 			type = 'toggle',
 			tristate = true,
 			order = 6,
 			get = get, set = set,
-		},
-		mail = {
+		} or nil,
+		mail = frames.mail and {
 			name = L["Mail"],
 			desc = L["Show the mail indicator"],
 			type = 'toggle',
 			tristate = true,
 			order = 7,
 			get = get, set = set,
-		},
-		lfg = {
+		} or nil,
+		lfg = frames.lfg and {
 			name = L["LFG"],
 			desc = L["Show the looking for group indicator"],
 			type = 'toggle',
 			order = 8,
 			get = get, set = set,
-		},
-		track = {
+		} or nil,
+		track = frames.track and {
 			name = L["Tracking"],
 			desc = L["Show the tracking indicator"],
 			type = 'toggle',
 			tristate = true,
 			order = 9,
 			get = get, set = set,
-		},
-		garrison = {
+		} or nil,
+		garrison = frames.garrison and {
 			name = L["Garrison"],
 			desc = L["Show the garrison report button"],
 			type = 'toggle',
 			tristate = true,
 			order = 10,
 			get = get, set = set,
-		},
-		clock = {
+		} or nil,
+		clock = frames.clock and {
 			name = L["Clock"],
 			desc = L["Show the clock"],
 			type = 'toggle',
@@ -295,8 +295,8 @@ function ShowHide:GetOptions()
 
 				set(info, value)
 			end,
-		},
-		dayNight = {
+		} or nil,
+		dayNight = frames.calendar and {
 			name = L["Calendar"],
 			desc = L["Show the calendar"],
 			type = 'toggle',
@@ -313,28 +313,28 @@ function ShowHide:GetOptions()
 
 				set(info, value)
 			end,
-		},
-		zoom = {
+		} or nil,
+		zoom = frames.zoomIn and {
 			name = L["Zoom"],
 			desc = L["Show the zoom in and out buttons"],
 			type = 'toggle',
 			tristate = true,
 			order = 14,
 			get = get, set = set,
-		},
-		vehicleSeats = {
+		} or nil,
+		vehicleSeats = frames.vehicleSeats and {
 			name = L["Vehicle seats"],
 			desc = L["Show the vehicle seats indicator"],
 			type = 'toggle',
 			order = 15,
 			get = get, set = set,
-		},
-		boss = {
+		} or nil,
+		boss = frames.boss and {
 			name = L["Boss frames"],
 			desc = L["Show the boss unit frames"],
 			type = 'toggle',
 			order = 16,
 			get = get, set = set,
-		},
+		} or nil,
 	}
 end
