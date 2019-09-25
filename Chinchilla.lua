@@ -208,6 +208,10 @@ function Chinchilla:OnEnable()
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()
 
+	if self:IsClassic() then
+		MinimapToggleButton:Hide()
+	end
+
 	-- this button still exists in Classic
 	MiniMapWorldMapButton:SetNormalTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
@@ -219,6 +223,10 @@ function Chinchilla:OnDisable()
 	MinimapCluster:EnableMouse(true)
 	MinimapBorderTop:Show()
 	MinimapZoneTextButton:Show()
+
+	if self:IsClassic() then
+		MinimapToggleButton:Show()
+	end
 
 	MiniMapWorldMapButton:SetNormalTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
