@@ -1,4 +1,4 @@
-## Interface: 80200
+## Interface: 80205
 ## Title: Chinchilla Minimap
 ## Notes: Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets.
 ## Notes-frFR: Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.
