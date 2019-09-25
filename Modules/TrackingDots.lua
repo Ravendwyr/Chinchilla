@@ -8,6 +8,7 @@ TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
 local blipFile = ""
 local blizzardBlips = "Interface\\MiniMap\\ObjectIconsAtlas"
 local trackingDotStyles = {}
+local prefix = Chinchilla:IsClassic() and "Classic-" or "Blip-"
 
 function TrackingDots:AddTrackingDotStyle(english, localized, texture)
 	if type(english) ~= "string" then
@@ -26,13 +27,13 @@ end
 Chinchilla.AddTrackingDotStyle = TrackingDots.AddTrackingDotStyle
 
 TrackingDots:AddTrackingDotStyle("Blizzard",     L["Blizzard"],                blizzardBlips)
-TrackingDots:AddTrackingDotStyle("Nandini",        "Nandini",                  [[Interface\AddOns\Chinchilla\Art\Blip-Nandini]])
-TrackingDots:AddTrackingDotStyle("NandiniNew",     "Nandini New",              [[Interface\AddOns\Chinchilla\Art\Blip-Nandini-New]])
-TrackingDots:AddTrackingDotStyle("BlizzardBig",  L["Big Blizzard"],            [[Interface\AddOns\Chinchilla\Art\Blip-BlizzardBig]])
-TrackingDots:AddTrackingDotStyle("BlizzardBigR", L["Blizzard, Big Resources"], [[Interface\AddOns\Chinchilla\Art\Blip-BlizzardBigR]])
-TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"],           [[Interface\AddOns\Chinchilla\Art\Blip-GlassSpheres]])
-TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"],           [[Interface\AddOns\Chinchilla\Art\Blip-SolidSpheres]])
-TrackingDots:AddTrackingDotStyle("Charmed",      L["Charmed"],                 [[Interface\AddOns\Chinchilla\Art\Blip-Charmed]])
+TrackingDots:AddTrackingDotStyle("Nandini",        "Nandini",                  "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."Nandini")
+TrackingDots:AddTrackingDotStyle("NandiniNew",     "Nandini New",              "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."Nandini-New")
+TrackingDots:AddTrackingDotStyle("BlizzardBig",  L["Big Blizzard"],            "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."BlizzardBig")
+TrackingDots:AddTrackingDotStyle("BlizzardBigR", L["Blizzard, Big Resources"], "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."BlizzardBigR")
+TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"],           "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."GlassSpheres")
+TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"],           "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."SolidSpheres")
+TrackingDots:AddTrackingDotStyle("Charmed",      L["Charmed"],                 "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."Charmed")
 
 
 function TrackingDots:OnInitialize()
@@ -91,7 +92,7 @@ function TrackingDots:Blink()
 	if show then
 		Minimap:SetBlipTexture(blipFile)
 	else
-		Minimap:SetBlipTexture([[Interface\AddOns\Chinchilla\Art\Blip-Blank]])
+		Minimap:SetBlipTexture("Interface\\AddOns\\Chinchilla\\Art\\Blip-Blank")
 	end
 
 	show = not show
@@ -178,7 +179,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.49707, 0.52832, 0.267578, 0.330078 },
+			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 372/512, 404/512 } or { 0.49707, 0.52832, 0.267578, 0.330078 },
 			order = 4,
 		},
 		preview2 = {
@@ -187,7 +188,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.49707, 0.52832, 0.533203, 0.595703 },
+			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 134/512, 166/512 } or { 0.49707, 0.52832, 0.533203, 0.595703 },
 			order = 5,
 		},
 		preview3 = {
@@ -196,7 +197,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.49707, 0.52832, 0.599609, 0.662109 },
+			imageCoords = Chinchilla:IsClassic() and { 168/512, 200/512, 134/512, 166/512 } or { 0.49707, 0.52832, 0.599609, 0.662109 },
 			order = 6,
 		},
 		preview4 = {
@@ -205,7 +206,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.49707, 0.52832, 0.466797, 0.529297 },
+			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 474/512, 506/512 } or { 0.49707, 0.52832, 0.466797, 0.529297 },
 			order = 7,
 		},
 		preview5 = {
@@ -214,7 +215,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.463867, 0.495117, 0.931641, 0.994141 },
+			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 202/512, 234/512 } or { 0.463867, 0.495117, 0.931641, 0.994141 },
 			order = 8,
 		},
 		preview6 = {
@@ -223,7 +224,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.49707, 0.52832, 0.00195312, 0.0644531 },
+			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 236/512, 268/512 } or { 0.49707, 0.52832, 0.00195312, 0.0644531 },
 			order = 9,
 		},
 		preview7 = {
@@ -232,7 +233,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.463867, 0.495117, 0.865234, 0.927734 },
+			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 168/512, 200/512 } or { 0.463867, 0.495117, 0.865234, 0.927734 },
 			order = 10,
 		},
 		preview8 = {
@@ -241,7 +242,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.49707, 0.52832, 0.201172, 0.263672 },
+			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 338/512, 370/512 } or { 0.49707, 0.52832, 0.201172, 0.263672 },
 			order = 11,
 		},
 		preview9 = {
@@ -250,7 +251,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.862305, 0.893555, 0.00195312, 0.0644531 },
+			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 338/512, 370/512 } or { 0.862305, 0.893555, 0.00195312, 0.0644531 },
 			order = 12,
 		},
 		preview10 = {
@@ -259,7 +260,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.530273, 0.561523, 0.134766, 0.197266 },
+			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 474/512, 506/512 } or { 0.530273, 0.561523, 0.134766, 0.197266 },
 			order = 13,
 		},
 		preview11 = {
@@ -268,7 +269,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.729492, 0.760742, 0.00195312, 0.0644531 },
+			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 236/512, 268/512 } or { 0.729492, 0.760742, 0.00195312, 0.0644531 },
 			order = 14,
 		},
 		preview12 = {
@@ -277,7 +278,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.928711, 0.959961, 0.00195312, 0.0644531 },
+			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 406/512, 438/512 } or { 0.928711, 0.959961, 0.00195312, 0.0644531 },
 			order = 15,
 		},
 		preview13 = {
@@ -286,7 +287,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = { 0.430664, 0.461914, 0.201172, 0.263672 },
+			imageCoords = Chinchilla:IsClassic() and { 66/512, 98/512, 406/512, 438/512 } or { 0.430664, 0.461914, 0.201172, 0.263672 },
 			order = 16,
 		},
 	}
