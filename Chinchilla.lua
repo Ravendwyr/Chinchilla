@@ -37,7 +37,7 @@ function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 		if not InCombatLockdown() then
 			AceConfigDialog:Open("Chinchilla")
 		end
-	elseif button == self.db.profile.trackButton then
+	elseif not self:IsClassic() and button == self.db.profile.trackButton then
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor", -10, -20)
 		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
 	else
@@ -112,7 +112,7 @@ function Chinchilla:CreateConfig()
 					Chinchilla.db.profile.mouseButton = value
 				end,
 			},
-			trackButton = {
+			trackButton = not Chinchilla:IsClassic() and {
 				name = L["Tracking"],
 				desc = L["Button to use on the minimap to toggle the tracking menu."],
 				type = "select",
@@ -130,7 +130,7 @@ function Chinchilla:CreateConfig()
 				set = function(_, value)
 					Chinchilla.db.profile.trackButton = value
 				end,
-			},
+			} or nil,
 			version = {
 				name = L["Version: %s"]:format(Chinchilla.version),
 				type = "description",
