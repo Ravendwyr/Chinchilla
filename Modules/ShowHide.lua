@@ -296,7 +296,7 @@ function ShowHide:GetOptions()
 				set(info, value)
 			end,
 		} or nil,
-		dayNight = frames.calendar and {
+		dayNight = frames.dayNight and {
 			name = L["Calendar"],
 			desc = L["Show the calendar"],
 			type = 'toggle',
