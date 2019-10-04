@@ -106,7 +106,9 @@ function Appearance:OnDisable()
 
 	MinimapBorder:Show()
 	Minimap:SetAlpha(1)
-	Minimap:SetMaskTexture([[Textures\MinimapMask]])
+
+	if Chinchilla:IsClassic() then Minimap:SetMaskTexture("Textures\\MinimapMask")
+	else Minimap:SetMaskTexture(186178) end
 
 	for _, v in ipairs(cornerTextures) do
 		v:Hide()
