@@ -2,7 +2,7 @@
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-Chinchilla = LibStub("AceAddon-3.0"):NewAddon("Chinchilla", "AceHook-3.0")
+Chinchilla = LibStub("AceAddon-3.0"):NewAddon("Chinchilla", "AceConsole-3.0", "AceHook-3.0")
 
 
 --[===[@non-debug@
@@ -35,7 +35,7 @@ end
 function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 	if button == self.db.profile.mouseButton then
 		if not InCombatLockdown() then
-			AceConfigDialog:Open("Chinchilla")
+			self:OpenConfig()
 		end
 	elseif not self:IsClassic() and button == self.db.profile.trackButton then
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor", -10, -20)
@@ -49,6 +49,9 @@ function Chinchilla:IsClassic()
 	return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 end
 
+function Chinchilla:OpenConfig()
+	AceConfigDialog:Open("Chinchilla")
+end
 
 function Chinchilla:CreateConfig()
 	local options = {
@@ -198,11 +201,8 @@ function Chinchilla:OnEnable()
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("Chinchilla", Chinchilla.CreateConfig)
 	AceConfigDialog:SetDefaultSize("Chinchilla", 800, 600)
 
-	_G["SLASH_CHINCHILLA1"] = "/chinchilla"
-	_G["SLASH_CHINCHILLA2"] = "/chin"
-
-	_G.hash_SlashCmdList["CHINCHILLA"] = nil
-	_G.SlashCmdList["CHINCHILLA"] = function() AceConfigDialog:Open("Chinchilla") end
+	self:RegisterChatCommand("chin", "OpenConfig")
+	self:RegisterChatCommand("chinchilla", "OpenConfig")
 
 	MinimapCluster:EnableMouse(false)
 	MinimapBorderTop:Hide()

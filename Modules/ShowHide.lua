@@ -16,7 +16,7 @@ function ShowHide:ShowFrame(frame)
 	if _G[frame] then
 		_G[frame]:SetParent( _G[frame].__origParent )
 	else
-		print("Chinchilla:", frame, "has changed or no longer exists. Please notify the addon author.")
+		Chinchilla:Print(frame, "has changed or no longer exists. Please notify the addon author.")
 	end
 end
 
@@ -24,7 +24,7 @@ function ShowHide:HideFrame(frame)
 	if _G[frame] then
 		_G[frame]:SetParent(ShowHideFrame)
 	else
-		print("Chinchilla:", frame, "has changed or no longer exists. Please notify the addon author.")
+		Chinchilla:Print(frame, "has changed or no longer exists. Please notify the addon author.")
 	end
 end
 
@@ -64,7 +64,7 @@ function ShowHide:OnInitialize()
 		if _G[frame] then
 			_G[frame].__origParent = _G[frame]:GetParent():GetName()
 		else
-			print("Chinchilla:", frame, "has changed or no longer exists. Please notify the addon author.")
+			Chinchilla:Print(frame, "has changed or no longer exists. Please notify the addon author.")
 		end
 	end
 

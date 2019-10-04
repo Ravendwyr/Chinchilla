@@ -122,7 +122,7 @@ function Ping:MINIMAP_PING(_, unit)
 	if self.db.profile.chat then
 		if msgTimerID or lastPingedBy == name then return end
 
-		DEFAULT_CHAT_FRAME:AddMessage(L["Minimap pinged by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)), 1, .7, 0)
+		Chinchilla:Print(L["Minimap pinged by %s"]:format(("|cff%02x%02x%02x%s|r"):format(color.r*255, color.g*255, color.b*255, name)), 1, .7, 0)
 
 		lastPingedBy = name
 		msgTimerID = self:ScheduleTimer("MessageTimer", 5)
