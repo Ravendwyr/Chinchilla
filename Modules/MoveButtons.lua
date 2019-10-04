@@ -270,9 +270,7 @@ function MoveButtons:OnInitialize()
 
 	for k, v in pairs(buttons) do
 		buttonReverse[v] = k
-	end
 
-	for k, v in pairs(buttons) do
 		if type(self.db.profile[v]) == "table" and #self.db.profile[v] == 2 then
 			table.insert(self.db.profile[v], "BOTTOMLEFT")
 		end
