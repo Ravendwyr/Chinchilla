@@ -15,16 +15,12 @@ local frames
 function ShowHide:ShowFrame(frame)
 	if _G[frame] then
 		_G[frame]:SetParent( _G[frame].__origParent )
-	else
-		Chinchilla:Print(frame, "has changed or no longer exists. Please notify the addon author.")
 	end
 end
 
 function ShowHide:HideFrame(frame)
 	if _G[frame] then
 		_G[frame]:SetParent(ShowHideFrame)
-	else
-		Chinchilla:Print(frame, "has changed or no longer exists. Please notify the addon author.")
 	end
 end
 
