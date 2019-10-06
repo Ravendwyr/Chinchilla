@@ -211,14 +211,14 @@ function ShowHide:GetOptions()
 			order = 1,
 			get = get, set = "UpdateMouseover",
 		},
-		calendarInviteOnly = {
+		calendarInviteOnly = not Chinchilla:IsClassic() and {
 			name = L["Unread Invites Only"],
 			desc = L["Only show the calendar when you have unread invites waiting for you."],
 			type = 'toggle',
 			order = 2,
 			get = get, set = set,
 			disabled = function() return self.db.profile.dayNight == false end,
-		},
+		} or nil,
 		description = {
 			name = L["A gold tick means the button will be shown at all times. A silver tick means the button will be shown when you hover the cursor over the minimap. An empty tickbox means the button will not be shown at all."],
 			type = "description",
