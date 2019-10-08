@@ -115,6 +115,19 @@ function TrackingDots:SetBlinking(_, value)
 end
 
 
+local function getAtlas(texture)
+	local _, left, right, top, bottom
+
+	if Chinchilla:IsClassic() then
+		_, _, _, left, right, top, bottom = GetAtlasInfo(texture)
+	else
+		local atlasInfo = C_Texture.GetAtlasInfo(texture)
+		left, right, top, bottom = atlasInfo.leftTexCoord, atlasInfo.rightTexCoord, atlasInfo.topTexCoord, atlasInfo.bottomTexCoord
+	end
+
+	return left, right, top, bottom
+end
+
 function TrackingDots:GetOptions()
 	local function image()
 		return getBlipTexture(self.db.profile.trackingDotStyle), 24, 24
@@ -179,7 +192,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 372/512, 404/512 } or { 0.49707, 0.52832, 0.267578, 0.330078 },
+			imageCoords = { getAtlas("PartyMember") },
 			order = 4,
 		},
 		preview2 = {
@@ -188,7 +201,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 134/512, 166/512 } or { 0.49707, 0.52832, 0.533203, 0.595703 },
+			imageCoords = { getAtlas("PlayerFriend") },
 			order = 5,
 		},
 		preview3 = {
@@ -197,7 +210,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 168/512, 200/512, 134/512, 166/512 } or { 0.49707, 0.52832, 0.599609, 0.662109 },
+			imageCoords = { getAtlas("PlayerNeutral") },
 			order = 6,
 		},
 		preview4 = {
@@ -206,7 +219,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 474/512, 506/512 } or { 0.49707, 0.52832, 0.466797, 0.529297 },
+			imageCoords = { getAtlas("PlayerEnemy") },
 			order = 7,
 		},
 		preview5 = {
@@ -215,7 +228,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 202/512, 234/512 } or { 0.463867, 0.495117, 0.931641, 0.994141 },
+			imageCoords = { getAtlas("MonsterFriend") },
 			order = 8,
 		},
 		preview6 = {
@@ -224,7 +237,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 236/512, 268/512 } or { 0.49707, 0.52832, 0.00195312, 0.0644531 },
+			imageCoords = { getAtlas("MonsterNeutral") },
 			order = 9,
 		},
 		preview7 = {
@@ -233,7 +246,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 168/512, 200/512 } or { 0.463867, 0.495117, 0.865234, 0.927734 },
+			imageCoords = { getAtlas("MonsterEnemy") },
 			order = 10,
 		},
 		preview8 = {
@@ -242,7 +255,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 100/512, 132/512, 338/512, 370/512 } or { 0.49707, 0.52832, 0.201172, 0.263672 },
+			imageCoords = { getAtlas("Object") },
 			order = 11,
 		},
 		preview9 = {
@@ -251,7 +264,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 338/512, 370/512 } or { 0.862305, 0.893555, 0.00195312, 0.0644531 },
+			imageCoords = { getAtlas("QuestNormal") },
 			order = 12,
 		},
 		preview10 = {
@@ -260,7 +273,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 474/512, 506/512 } or { 0.530273, 0.561523, 0.134766, 0.197266 },
+			imageCoords = { getAtlas("QuestTurnin") },
 			order = 13,
 		},
 		preview11 = {
@@ -269,7 +282,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 236/512, 268/512 } or { 0.729492, 0.760742, 0.00195312, 0.0644531 },
+			imageCoords = { getAtlas("QuestDaily") },
 			order = 14,
 		},
 		preview12 = {
@@ -278,7 +291,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 134/512, 166/512, 406/512, 438/512 } or { 0.928711, 0.959961, 0.00195312, 0.0644531 },
+			imageCoords = { getAtlas("QuestRepeatableTurnin") },
 			order = 15,
 		},
 		preview13 = {
@@ -287,7 +300,7 @@ function TrackingDots:GetOptions()
 			type = 'description',
 			fontSize = "medium",
 			image = image,
-			imageCoords = Chinchilla:IsClassic() and { 66/512, 98/512, 406/512, 438/512 } or { 0.430664, 0.461914, 0.201172, 0.263672 },
+			imageCoords = { getAtlas("FlightPath") },
 			order = 16,
 		},
 	}
