@@ -1,0 +1,16 @@
+sudo: false
+language: c
+
+addons:
+  apt:
+    packages:
+    - pandoc
+
+script:
+    - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash -s -- -g 1.13.2
+    - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash
+
+notifications:
+  email:
+    on_success: always
+    on_failure: always
