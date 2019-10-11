@@ -2,7 +2,7 @@
 package-as: Chinchilla
 
 externals:
-	Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk/
+	Libs/LibStub: https://repos.wowace.com/wow/libstub/tags/1.0
 	Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
 	Libs/AceAddon-3.0: https://repos.wowace.com/wow/ace3/trunk/AceAddon-3.0
 	Libs/AceConfig-3.0: https://repos.wowace.com/wow/ace3/trunk/AceConfig-3.0
