@@ -20,7 +20,7 @@ function Appearance:OnInitialize()
 	self.db = Chinchilla.db:RegisterNamespace("Appearance", {
 		profile = {
 			enabled = true,
-			scale = 1, blipScale = 1, alpha = 1, combatAlpha = 1,
+			scale = 1, sizew = 140, sizeh = 140, blipScale = 1, alpha = 1, combatAlpha = 1,
 			borderColor = { 1, 1, 1, 1 }, buttonBorderAlpha = 1,
 			strata = "LOW", shape = "CORNER-BOTTOMLEFT",
 			borderStyle = "Blizzard", borderRadius = 80,
@@ -67,6 +67,8 @@ function Appearance:OnEnable()
 	rotateMinimap = GetCVar("rotateMinimap")
 
 	self:SetScale()
+	self:SetSizeW()
+	self:SetSizeH()
 	self:SetFrameStrata()
 	self:SetShape()
 	self:SetBorderColor()
@@ -99,6 +101,8 @@ end
 
 function Appearance:OnDisable()
 	self:SetScale()
+	self:SetSizeW()
+	self:SetSizeH()
 	self:SetFrameStrata()
 	self:SetShape()
 	self:SetBorderColor()
@@ -168,6 +172,10 @@ function Appearance:PLAYER_REGEN_DISABLED()
 	self:SetCombatAlpha()
 end
 
+function Appearance:ZoomFix()
+		Minimap:SetZoom(Minimap:GetZoom() + 1)
+		Minimap:SetZoom(Minimap:GetZoom() - 1)
+end
 
 local minimapButtons = {}
 do
@@ -264,9 +272,25 @@ function Appearance:SetAlpha(value)
 		Minimap:SetAlpha(value)
 
 		-- to work around a Blizzard bug where the minimap loses its image when indoors with an alpha setting below 1
-		Minimap:SetZoom(Minimap:GetZoom() + 1)
-		Minimap:SetZoom(Minimap:GetZoom() - 1)
+		self:ZoomFix()
 	end
+end
+
+function Appearance:SetSizeW(value)
+	if value then self.db.profile.sizew = value
+	else value = self.db.profile.sizew end
+
+		Minimap:SetWidth(value)
+		self:ZoomFix()
+end
+
+function Appearance:SetSizeH(value)
+	if value then self.db.profile.sizeh = value
+	else value = self.db.profile.sizeh end
+
+		Minimap:SetHeight(value)
+		self:ZoomFix()
+
 end
 
 function Appearance:SetCombatAlpha(value)
@@ -512,6 +536,38 @@ function Appearance:GetOptions()
 			order = 2,
 		},
 ]]--
+		sizew = {
+			name = L["Width"],
+			desc = L["Set width of the minimap."],
+			type = 'range',
+			min = 80,
+			max = 400,
+			step = 0.5,
+			bigStep = 1,
+			get = function()
+				return self.db.profile.sizew
+			end,
+			set = function(_, value)
+				self:SetSizeW(value)
+			end,
+			order = 2,
+		},		
+		sizeh = {
+			name = L["Height"],
+			desc = L["Set height of the minimap."],
+			type = 'range',
+			min = 80,
+			max = 400,
+			step = 0.5,
+			bigStep = 1,
+			get = function()
+				return self.db.profile.sizeh
+			end,
+			set = function(_, value)
+				self:SetSizeH(value)
+			end,
+			order = 3,
+		},
 		strata = {
 			name = L["Strata"],
 			desc = L["Set which layer the minimap is layered on in relation to others in your interface."],
@@ -527,7 +583,7 @@ function Appearance:GetOptions()
 			set = function(_, value)
 				self:SetFrameStrata(value)
 			end,
-			order = 3,
+			order = 4,
 		},
 		alpha = {
 			name = L["Opacity"],
@@ -544,7 +600,7 @@ function Appearance:GetOptions()
 				self:SetAlpha(value)
 			end,
 			isPercent = true,
-			order = 4,
+			order = 5,
 		},
 		combatAlpha = {
 			name = L["Combat opacity"],
@@ -561,7 +617,7 @@ function Appearance:GetOptions()
 				self:SetCombatAlpha(value)
 			end,
 			isPercent = true,
-			order = 5,
+			order = 6,
 		},
 		shape = {
 			name = L["Shape"],
@@ -583,7 +639,7 @@ function Appearance:GetOptions()
 			set = function(_, value)
 				self:SetShape(value)
 			end,
-			order = 6,
+			order = 7,
 		},
 		borderAlpha = {
 			name = L["Border color"],
@@ -596,7 +652,7 @@ function Appearance:GetOptions()
 			set = function(_, ...)
 				self:SetBorderColor(...)
 			end,
-			order = 7,
+			order = 8,
 		},
 		borderStyle = {
 			name = L["Border style"],
@@ -613,7 +669,7 @@ function Appearance:GetOptions()
 			set = function(_, value)
 				self:SetBorderStyle(value)
 			end,
-			order = 8,
+			order = 9,
 		},
 		borderRadius = {
 			name = L["Border radius"],
@@ -629,7 +685,7 @@ function Appearance:GetOptions()
 			set = function(_, value)
 				self:SetBorderRadius(value)
 			end,
-			order = 9,
+			order = 10,
 		},
 		buttonBorderAlpha = {
 			name = L["Button border opacity"],
