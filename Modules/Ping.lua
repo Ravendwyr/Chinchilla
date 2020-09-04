@@ -43,10 +43,10 @@ function Ping:OnEnable()
 	}
 
 	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_Ping_Frame")
+		frame = CreateFrame("Frame", "Chinchilla_Ping_Frame", nil, BackdropTemplateMixin and "BackdropTemplate")
 		frame:Hide()
-
-		frame:SetBackdrop(backdrop)
+		
+--		frame:SetBackdrop(backdrop)
 		frame:SetFrameLevel(MinimapCluster:GetFrameLevel() + 7)
 		frame:SetWidth(1)
 		frame:SetHeight(1)
