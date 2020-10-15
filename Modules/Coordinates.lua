@@ -55,7 +55,7 @@ function Coordinates:OnEnable()
 	}
 
 	if not frame then
-		frame = CreateFrame("Frame", "Chinchilla_Coordinates_Frame", MinimapBackdrop)
+		frame = CreateFrame("Frame", "Chinchilla_Coordinates_Frame", MinimapBackdrop, BackdropTemplateMixin and "BackdropTemplate")
 		frame:SetBackdrop(backdrop)
 
 		frame:SetWidth(1)
