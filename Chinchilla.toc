@@ -1,9 +1,4 @@
-#@retail@
 ## Interface: 80300
-#@end-retail@
-#@non-retail@
-# ## Interface: 11303
-#@end-non-retail@
 ## Title: Chinchilla Minimap
 ## Notes: Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets.
 ## Notes-frFR: Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.
@@ -15,7 +10,7 @@
 ## Notes-zhCN: 很龙猫的小地图插件。*嚼嚼嚼*这龙猫嚼了你的干草球～
 ## Notes-zhTW: 很龍貓的小地圖插件。*嚼嚼嚼*這龍貓嚼了你的乾草球～
 ## Author: Ravendwyr, ckknight
-## Version: @project-version@
+## Version: v2.10.1
 ## X-Category: Map
 ## X-Icon: Interface\AddOns\Chinchilla\Art\icon
 ## X-Curse-Project-ID: 7116
@@ -23,7 +18,6 @@
 ## SavedVariables: Chinchilla2DB
 ## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, Blizzard_TimeManager
 
-#@no-lib-strip@
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 Libs\AceAddon-3.0\AceAddon-3.0.lua
@@ -38,7 +32,6 @@ Libs\AceHook-3.0\AceHook-3.0.lua
 Libs\AceTimer-3.0\AceTimer-3.0.lua
 Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
 Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
-#@end-no-lib-strip@
 
 Locale\enUS.lua
 Locale\deDE.lua

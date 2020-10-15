@@ -5,13 +5,13 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 Chinchilla = LibStub("AceAddon-3.0"):NewAddon("Chinchilla", "AceConsole-3.0", "AceHook-3.0")
 
 
---[===[@non-debug@
-Chinchilla.version = "@project-version@"
---@end-non-debug@]===]
+--@non-debug@
+Chinchilla.version = "v2.10.1"
+--@end-non-debug@
 
---@debug@
+--[===[@debug@
 Chinchilla.version = "Development"
---@end-debug@
+--@end-debug@]===]
 
 
 function Chinchilla:AddBorderStyle()
