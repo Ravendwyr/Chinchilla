@@ -1,1 +1,2 @@
-Libs/
+Libs/*
+!Libs/AceGUI-3.0-SharedMediaWidgets/prototypes.lua
