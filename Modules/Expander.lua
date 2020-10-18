@@ -16,6 +16,7 @@ function Expander:OnInitialize()
 			key = false, toggle = true,
 			scale = 3, alpha = 1, strata = "LOW",
 			anchor = "CENTER", x = 0, y = 0,
+			hideCombat = false
 		},
 	})
 
@@ -31,8 +32,9 @@ local DBI = LibStub("LibDBIcon-1.0", true)
 local show, button
 local origPoint, origParent, origAnchor, origX, origY
 local origHeight, origWidth, origWheel
+local origAlpha
 
-function Expander:Refresh()
+function Expander:Refresh(fromCombat)
 	if show then
 		origPoint, origParent, origAnchor, origX, origY = Minimap:GetPoint()
 		origHeight, origWidth = Minimap:GetSize()
@@ -43,8 +45,8 @@ function Expander:Refresh()
 
 		Minimap:ClearAllPoints()
 		Minimap:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-		Minimap:SetAlpha(self.db.profile.alpha)
-
+		origAlpha = Minimap:GetParent():GetEffectiveAlpha()
+		Minimap:GetParent():SetAlpha(self.db.profile.alpha)
 		Minimap:SetFrameStrata(self.db.profile.strata)
 		MinimapBackdrop:SetFrameStrata(self.db.profile.strata)
 
@@ -59,6 +61,20 @@ function Expander:Refresh()
 			for icon in pairs(DBI.objects) do
 				DBI:Hide(icon)
 			end
+		end
+		
+		if(self.db.profile.hideCombat) then
+			MinimapBackdrop:RegisterEvent('PLAYER_REGEN_DISABLED')
+			MinimapBackdrop:RegisterEvent('PLAYER_REGEN_ENABLED')
+			MinimapBackdrop:SetScript('OnEvent', function(self, event, ...)
+				if(event == 'PLAYER_REGEN_DISABLED') then
+					show = false
+				elseif(event == 'PLAYER_REGEN_ENABLED') then
+					show = true
+				end
+					
+				Expander:Refresh(true)
+			end)
 		end
 	else
 		Minimap:SetWidth(origWidth)
@@ -76,6 +92,8 @@ function Expander:Refresh()
 
 		MinimapBackdrop:Show()
 
+		Minimap:GetParent():SetAlpha(origAlpha or 1)
+		
 		if Appearance then
 			Appearance:SetAlpha()
 			Appearance:SetFrameStrata()
@@ -91,6 +109,11 @@ function Expander:Refresh()
 			for icon in pairs(DBI.objects) do
 				DBI:Refresh(icon)
 			end
+		end
+		
+		if(self.db.profile.hideCombat and fromCombat ~= true) then
+			MinimapBackdrop:UnregisterEvent('PLAYER_REGEN_DISABLED')
+			MinimapBackdrop:UnregisterEvent('PLAYER_REGEN_ENABLED')
 		end
 	end
 
@@ -279,6 +302,19 @@ function Expander:GetOptions()
 				end
 			end,
 			order = 5,
+		},
+		hideCombat = {
+			name = L["Hide In Combat"],
+			desc = L["Choose to close the expanded minimap when entering combat."],
+			type = 'toggle',
+			order = 6,
+			width = "double",
+			get = function() return self.db.profile.hideCombat end,
+			set = function(_, value)
+				self.db.profile.hideCombat = value
+				show = false
+				self:Refresh()
+			end,
 		},
 	}
 end
