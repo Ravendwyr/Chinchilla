@@ -50,7 +50,7 @@ function Expander:Refresh(fromCombat)
 		Minimap:SetFrameStrata(self.db.profile.strata)
 		MinimapBackdrop:SetFrameStrata(self.db.profile.strata)
 
-		Minimap:EnableMouse(false)
+		Minimap:SetMouseClickEnabled(false)
 		Minimap:EnableMouseWheel(false)
 
 		MinimapBackdrop:Hide()
@@ -87,7 +87,7 @@ function Expander:Refresh(fromCombat)
 			Minimap:SetPoint(origPoint, origParent, origAnchor, origX, origY)
 		end
 
-		Minimap:EnableMouse(true)
+		Minimap:SetMouseClickEnabled(true)
 		Minimap:EnableMouseWheel(origWheel)
 
 		MinimapBackdrop:Show()
