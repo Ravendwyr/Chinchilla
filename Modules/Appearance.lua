@@ -172,6 +172,17 @@ function Appearance:PLAYER_REGEN_DISABLED()
 	self:SetCombatAlpha()
 end
 
+function Appearance:ZONE_CHANGED()
+	self:SetShape()
+end
+
+function Appearance:ZONE_CHANGED_INDOORS()
+	self:SetShape()
+end
+
+function Appearance:ZONE_CHANGED_NEW_AREA()
+	self:SetShape()
+end
 
 local minimapButtons = {}
 do
