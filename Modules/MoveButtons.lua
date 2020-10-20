@@ -1,5 +1,5 @@
 
-local MoveButtons = Chinchilla:NewModule("MoveButtons")
+local MoveButtons = Chinchilla:NewModule("MoveButtons", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
 MoveButtons.displayName = L["Move Buttons"]
@@ -282,9 +282,13 @@ end
 function MoveButtons:OnEnable()
 	self:SetLocked()
 	self:Update()
-
+	
 	if not Chinchilla:IsClassic() and not Chinchilla:IsHooked("QueueStatusFrame_Update") then
 		Chinchilla:SecureHook("QueueStatusFrame_Update", PositionLFD)
+	end
+	
+	if not Chinchilla:IsClassic() then
+		self:RegisterEvent("GARRISON_SHOW_LANDING_PAGE")
 	end
 end
 
@@ -515,6 +519,9 @@ function MoveButtons:SetRadius(value)
 	self:Update()
 end
 
+function MoveButtons:GARRISON_SHOW_LANDING_PAGE()
+	self:Update()
+end
 
 function MoveButtons:GetOptions()
 	local x_min = -math.floor(GetScreenWidth()/10 + 0.5) * 5
