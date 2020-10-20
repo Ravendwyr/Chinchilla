@@ -94,10 +94,6 @@ function Appearance:OnEnable()
 		Minimap:SetArchBlobRingAlpha(0)
 		Minimap:SetQuestBlobRingScalar(0)
 		Minimap:SetQuestBlobRingAlpha(0)
-		-- 9.0.1 Bug fix.  Reset shape again... but give Blizzard a second to muck everything up first.
-		C_Timer.After(1.0, function()
-			self:SetShape()
-		end)
 	end
 end
 
