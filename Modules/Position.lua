@@ -814,7 +814,7 @@ function Position:GetOptions()
 			disabled = InCombatLockdown,
 --			disabled = function() return not self:IsEnabled() or not Chinchilla_BossAnchor:IsShown() end,
 		} or nil,
-		vehicleSeats = nameToFrame["vehicle"] and {
+		vehicleSeats = nameToFrame["vehicleSeats"] and {
 			name = L["Vehicle seats"],
 			desc = L["Position of the vehicle seat indicator on the screen"],
 			type = 'group',
