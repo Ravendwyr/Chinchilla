@@ -1,4 +1,5 @@
-sudo: false
+os: linux
+dist: xenial
 language: c
 
 addons:
@@ -12,5 +13,5 @@ script:
 
 notifications:
   email:
-    on_success: always
+    on_success: never
     on_failure: always
