@@ -2,11 +2,9 @@
 
 Minimap addon of awesomeness. Chinchilla alters the default minimap in a way to provide better features and other niceties.
 
-[![Twitter](https://img.shields.io/twitter/follow/ravendwyr.svg?label=Twitter&style=popout)](https://twitter.com/Ravendwyr)
-[![Discord](https://img.shields.io/discord/299308204393889802.svg?label=Discord&style=popout)](https://discord.gg/XC2REFu)
-[![Builder](https://img.shields.io/travis/com/ravendwyr/chinchilla.svg?label=Build&style=popout)](https://travis-ci.com/Ravendwyr/Chinchilla)
-[![Version](https://img.shields.io/github/tag-date/ravendwyr/chinchilla.svg?label=Version&style=popout)](https://www.curseforge.com/wow/addons/chinchilla/files/all)
-[![Tracker](https://img.shields.io/github/issues/ravendwyr/chinchilla.svg?label=Issues&style=popout)](https://github.com/Ravendwyr/Chinchilla/issues)
+[![Builder](https://img.shields.io/travis/com/ravendwyr/chinchilla.svg?label=Build&logo=travis&maxAge=600&style=popout)](https://travis-ci.com/github/Ravendwyr/Chinchilla)
+[![Version](https://img.shields.io/github/tag-date/ravendwyr/chinchilla.svg?label=Version&logo=curseforge&maxAge=600&style=popout)](https://www.curseforge.com/wow/addons/chinchilla/files/all)
+[![Tracker](https://img.shields.io/github/issues/ravendwyr/chinchilla.svg?label=Issues&logo=github&maxAge=600&style=popout)](https://github.com/Ravendwyr/Chinchilla/issues)
 
 ***
 
@@ -42,3 +40,15 @@ Chinchilla Minimap has been developed by many different people over the years, i
 
 * Original creator and maintainer - ckknight
 * Current maintainer - Ravendwyr
+
+***
+
+### Support
+
+[![Twitter](https://img.shields.io/twitter/follow/ravendwyr.svg?label=Twitter&logo=twitter&maxAge=600&style=popout)](https://twitter.com/Ravendwyr)
+[![Discord](https://img.shields.io/discord/299308204393889802.svg?label=Discord&logo=discord&maxAge=600&style=popout)](https://top.gg/servers/299308204393889802)
+
+[![Twitch](https://img.shields.io/badge/Twitch-subscribe-yellow.svg?&logo=twitch)](https://www.twitch.tv/subs/ravendwyr)
+[![Crypto](https://img.shields.io/badge/ETH-send-yellow.svg?&logo=ethereum)](https://etherscan.io/address/0x332224Ed82264298B3DC68dAcf643E8Df4abDCC3)
+[![PayPal](https://img.shields.io/badge/PayPal-donate-yellow.svg?logo=paypal)](https://www.paypal.me/Ravendwyr/5gbp)
+[![Coffee](https://img.shields.io/badge/Kofi-buy-yellow.svg?logo=ko-fi)](https://ko-fi.com/Ravendwyr)
