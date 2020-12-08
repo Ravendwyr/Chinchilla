@@ -216,6 +216,13 @@ function Location:SetMovable(value)
 	else frame:RegisterForDrag() end
 end
 
+function Location:Hide()
+	frame:Hide()
+end
+
+function Location:Show()
+	frame:Show()
+end
 
 function Location:GetOptions()
 	return {
