@@ -238,6 +238,10 @@ function Appearance:SetScale(value)
 		QuestWatchFrame:GetSize()
 	else
 		ObjectiveTrackerFrame:GetSize()
+	-- Fix Instance Difficulty size --
+		MiniMapInstanceDifficulty:SetScale(value)
+		GuildInstanceDifficulty:SetScale(value)
+		MiniMapChallengeMode:SetScale(value)
 	end
 end
 
