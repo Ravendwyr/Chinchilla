@@ -81,11 +81,12 @@ function Appearance:OnEnable()
 		v:Show()
 	end
 
-	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("ADDON_LOADED")
 	self:RegisterEvent("CVAR_UPDATE")
+	self:RegisterEvent("ZONE_CHANGED_INDOORS")
+	self:RegisterEvent("ZONE_CHANGED")
 
 	-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
 	-- Thank you Funkeh` for the code!
@@ -142,15 +143,16 @@ function Appearance:CVAR_UPDATE(_, key, value)
 	if key == "ROTATE_MINIMAP" then rotateMinimap = value end
 end
 
-function Appearance:MINIMAP_UPDATE_ZOOM()
-	local zoom = Minimap:GetZoom()
 
-	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
-	end
+function Appearance:ZONE_CHANGED_INDOORS()
+	indoors = true
 
-	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
-	Minimap:SetZoom(zoom)
+	if inCombat then self:SetCombatAlpha()
+	else self:SetAlpha() end
+end
+
+function Appearance:ZONE_CHANGED()
+	indoors = false
 
 	if inCombat then self:SetCombatAlpha()
 	else self:SetAlpha() end

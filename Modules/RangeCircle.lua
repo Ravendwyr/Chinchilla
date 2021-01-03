@@ -66,9 +66,10 @@ function RangeCircle:OnEnable()
 
 	texture:Show()
 
-	self:RegisterEvent("MINIMAP_UPDATE_ZOOM")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
+	self:RegisterEvent("ZONE_CHANGED_INDOORS")
+	self:RegisterEvent("ZONE_CHANGED")
 	self:Update()
 
 	self:SecureHook(Minimap, "SetZoom", "Update")
@@ -88,16 +89,13 @@ function RangeCircle:PLAYER_REGEN_DISABLED()
 	self:Update()
 end
 
-function RangeCircle:MINIMAP_UPDATE_ZOOM()
-	local zoom = Minimap:GetZoom()
+function RangeCircle:ZONE_CHANGED_INDOORS()
+	indoors = true
+	self:Update()
+end
 
-	if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
-		Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
-	end
-
-	indoors = GetCVar("minimapZoom")+0 ~= Minimap:GetZoom()
-	Minimap:SetZoom(zoom)
-
+function RangeCircle:ZONE_CHANGED()
+	indoors = false
 	self:Update()
 end
 
