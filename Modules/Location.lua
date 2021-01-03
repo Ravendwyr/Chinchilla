@@ -131,7 +131,7 @@ function Location:OnDisable()
 end
 
 
-function Location:MediaRegistered(_, mediaType)
+function Location:MediaRegistered(_, mediaType, mediaName)
 	if mediaType == "font" and mediaName == self.db.profile.font then
 		self:SetFont()
 	elseif mediaType == "background" and mediaName == self.db.profile.backgroundTexture then
