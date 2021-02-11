@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussion
+    url: https://github.com/Ravendwyr/Chinchilla/discussions
+    about: Start a discussion without the need to open a support ticket.
+  - name: Twitter
+    url: https://twitter.com/Ravendwyr
+    about: Send a tweet on Twitter.
+  - name: Discord
+    url: https://top.gg/servers/299308204393889802
+    about: Send a message on Discord.
+  - name: Armoury
+    url: https://worldofwarcraft.com/en-gb/character/eu/silvermoon/okelani
+    about: Send a whisper in-game.
