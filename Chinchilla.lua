@@ -198,7 +198,7 @@ function Chinchilla:OnInitialize()
 end
 
 function Chinchilla:OnEnable()
-	LibStub("AceConfig-3.0"):RegisterOptionsTable("Chinchilla", Chinchilla.CreateConfig)
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Chinchilla", Chinchilla.CreateConfig)
 	AceConfigDialog:SetDefaultSize("Chinchilla", 800, 600)
 
 	self:RegisterChatCommand("chin", "OpenConfig")
