@@ -1,5 +1,5 @@
 
-if Chinchilla:IsClassic() then return end
+if Chinchilla:IsClassic() or Chinchilla:IsBurningCrusade() then return end
 
 local QuestTracker = Chinchilla:NewModule("QuestTracker")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")

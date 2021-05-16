@@ -250,6 +250,17 @@ function MoveButtons:OnInitialize()
 			zoomIn = MinimapZoomIn,
 			zoomOut = MinimapZoomOut,
 		}
+	elseif Chinchilla:IsBurningCrusade() then
+		buttons = {
+			map = MiniMapWorldMapButton,
+			mail = MiniMapMailFrame,
+			dayNight = GameTimeFrame,
+			clock = TimeManagerClockButton,
+			track = MiniMapTracking,
+			voice = MiniMapVoiceChatFrame,
+			zoomIn = MinimapZoomIn,
+			zoomOut = MinimapZoomOut,
+		}
 	else
 		buttons = {
 			difficulty = MiniMapInstanceDifficulty,
@@ -282,12 +293,12 @@ end
 function MoveButtons:OnEnable()
 	self:SetLocked()
 	self:Update()
-	
-	if not Chinchilla:IsClassic() and not Chinchilla:IsHooked("QueueStatusFrame_Update") then
+
+	if Chinchilla:IsRetail() and not Chinchilla:IsHooked("QueueStatusFrame_Update") then
 		Chinchilla:SecureHook("QueueStatusFrame_Update", PositionLFD)
 	end
-	
-	if not Chinchilla:IsClassic() then
+
+	if Chinchilla:IsRetail() then
 		self:RegisterEvent("GARRISON_SHOW_LANDING_PAGE")
 	end
 end

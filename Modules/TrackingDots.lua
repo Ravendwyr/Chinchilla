@@ -8,7 +8,7 @@ TrackingDots.desc = L["Change how the tracking dots look on the minimap."]
 local blipFile = ""
 local blizzardBlips = "Interface\\MiniMap\\ObjectIconsAtlas"
 local trackingDotStyles = {}
-local prefix = Chinchilla:IsClassic() and "Classic-" or "Blip-"
+local prefix = Chinchilla:IsRetail() and "Blip-" or "Classic-"
 
 function TrackingDots:AddTrackingDotStyle(english, localized, texture)
 	if type(english) ~= "string" then

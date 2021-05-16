@@ -45,9 +45,22 @@ function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 	end
 end
 
+
+function Chinchilla:IsRetail()
+	-- One...
+	return WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+end
+
 function Chinchilla:IsClassic()
+	-- Two...
 	return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 end
+
+function Chinchilla:IsBurningCrusade()
+	-- Five!
+	return WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+end
+
 
 function Chinchilla:OpenConfig()
 	AceConfigDialog:Open("Chinchilla")
@@ -208,7 +221,7 @@ function Chinchilla:OnEnable()
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()
 
-	if self:IsClassic() then
+	if self:IsClassic() or self:IsBurningCrusade() then
 		MinimapToggleButton:Hide()
 	end
 
@@ -224,7 +237,7 @@ function Chinchilla:OnDisable()
 	MinimapBorderTop:Show()
 	MinimapZoneTextButton:Show()
 
-	if self:IsClassic() then
+	if self:IsClassic() or self:IsBurningCrusade() then
 		MinimapToggleButton:Show()
 	end
 

@@ -90,7 +90,7 @@ function Appearance:OnEnable()
 
 	-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
 	-- Thank you Funkeh` for the code!
-	if not Chinchilla:IsClassic() then
+	if Chinchilla:IsRetail() then
 		Minimap:SetArchBlobRingScalar(0)
 		Minimap:SetArchBlobRingAlpha(0)
 		Minimap:SetQuestBlobRingScalar(0)
@@ -108,8 +108,11 @@ function Appearance:OnDisable()
 	MinimapBorder:Show()
 	Minimap:SetAlpha(1)
 
-	if Chinchilla:IsClassic() then Minimap:SetMaskTexture("Textures\\MinimapMask")
-	else Minimap:SetMaskTexture(186178) end
+	if Chinchilla:IsClassic() or Chinchilla:IsBurningCrusade() then
+		Minimap:SetMaskTexture("Textures\\MinimapMask")
+	else
+		Minimap:SetMaskTexture(186178)
+	end
 
 	for _, v in ipairs(cornerTextures) do
 		v:Hide()
@@ -119,7 +122,7 @@ function Appearance:OnDisable()
 		Chinchilla:GetModule("MoveButtons"):Update()
 	end
 
-	if not Chinchilla:IsClassic() then
+	if Chinchilla:IsRetail() then
 		Minimap:SetArchBlobRingScalar(1)
 		Minimap:SetArchBlobRingAlpha(1)
 		Minimap:SetQuestBlobRingScalar(1)
@@ -236,7 +239,7 @@ function Appearance:SetScale(value)
 
 	Minimap:SetScale(value)
 
-	if Chinchilla:IsClassic() then
+	if Chinchilla:IsClassic() or Chinchilla:IsBurningCrusade() then
 		QuestWatchFrame:GetSize()
 	else
 		ObjectiveTrackerFrame:GetSize()

@@ -37,6 +37,17 @@ function ShowHide:OnInitialize()
 			zoomOut = "MinimapZoomOut",
 			clock = "TimeManagerClockButton",
 		}
+	elseif Chinchilla:IsBurningCrusade() then
+		frames = {
+			north = "MinimapNorthTag",
+			map = "MiniMapWorldMapButton",
+			mail = "MiniMapMailFrame",
+			dayNight = "GameTimeFrame",
+			track = "MiniMapTracking",
+			zoomIn = "MinimapZoomIn",
+			zoomOut = "MinimapZoomOut",
+			clock = "TimeManagerClockButton",
+		}
 	else
 		frames = {
 			boss = "Chinchilla_BossAnchor",
@@ -82,7 +93,7 @@ function ShowHide:OnInitialize()
 end
 
 function ShowHide:OnEnable()
-	if not Chinchilla:IsClassic() then
+	if Chinchilla:IsRetail() then
 		self:RegisterEvent("CALENDAR_ACTION_PENDING", "UpdateCalendar")
 		self:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES", "UpdateCalendar")
 	end
@@ -207,7 +218,7 @@ function ShowHide:GetOptions()
 			order = 1,
 			get = get, set = "UpdateMouseover",
 		},
-		calendarInviteOnly = not Chinchilla:IsClassic() and {
+		calendarInviteOnly = Chinchilla:IsRetail() and {
 			name = L["Unread Invites Only"],
 			desc = L["Only show the calendar when you have unread invites waiting for you."],
 			type = 'toggle',
