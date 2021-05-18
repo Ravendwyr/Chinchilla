@@ -17,6 +17,7 @@
 ## X-Icon: Interface\AddOns\Chinchilla\Art\icon
 ## X-Curse-Project-ID: 7116
 ## X-WoWI-ID: 8394
+## X-Wago-ID: XrNkjlGa
 ## SavedVariables: Chinchilla2DB
 ## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, Blizzard_TimeManager
 
