@@ -102,15 +102,10 @@ function Ping:OnDisable()
 end
 
 
-local allowNextPlayerPing = false
 local frameTimerID, msgTimerID
 local lastPingedBy = ""
 
 function Ping:MINIMAP_PING(_, unit)
-	if UnitIsUnit("player", unit) and not allowNextPlayerPing then return end
-
-	allowNextPlayerPing = false
-
 	local name, server = UnitName(unit)
 	if server and server ~= "" then
 		name = name .. '-' .. server
@@ -164,9 +159,6 @@ end
 
 
 local function test()
-	if GetNumGroupMembers() > 0 then return end -- prevent ping spam in groups
-
-	allowNextPlayerPing = true
 	Minimap:PingLocation(0, 0)
 end
 
@@ -301,7 +293,7 @@ function Ping:GetOptions()
 			type = 'execute',
 			func = test,
 			order = 1,
-			disabled = function() return GetNumGroupMembers() > 0 end,
+			disabled = function() return GetNumGroupMembers() > 0 end, -- prevent ping spam in groups
 		},
 		chat = {
 			name = L["Show in chat"],
