@@ -32,20 +32,22 @@ local DBI = LibStub("LibDBIcon-1.0", true)
 local show, button
 local origPoint, origParent, origAnchor, origX, origY
 local origHeight, origWidth, origWheel
-local origAlpha
+local origAlpha, origStrata
 
 function Expander:Refresh(fromCombat)
 	if show then
 		origPoint, origParent, origAnchor, origX, origY = Minimap:GetPoint()
 		origHeight, origWidth = Minimap:GetSize()
 		origWheel = Minimap:IsMouseWheelEnabled()
+		origAlpha = Minimap:GetParent():GetEffectiveAlpha()
+		origStrata = Minimap:GetFrameStrata()
 
 		Minimap:SetWidth(140 * self.db.profile.scale)
 		Minimap:SetHeight(140 * self.db.profile.scale)
 
 		Minimap:ClearAllPoints()
 		Minimap:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-		origAlpha = Minimap:GetParent():GetEffectiveAlpha()
+
 		Minimap:GetParent():SetAlpha(self.db.profile.alpha)
 		Minimap:SetFrameStrata(self.db.profile.strata)
 		MinimapBackdrop:SetFrameStrata(self.db.profile.strata)
