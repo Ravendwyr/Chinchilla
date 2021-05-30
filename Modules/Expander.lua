@@ -64,15 +64,17 @@ function Expander:Refresh(fromCombat)
 				DBI:Hide(icon)
 			end
 		end
-		
-		MiniMapInstanceDifficulty:Hide()
-		GuildInstanceDifficulty:Hide()
-		MiniMapChallengeMode:Hide()
-		
+
+		if Chinchilla:IsRetail() then
+			MiniMapInstanceDifficulty:Hide()
+			GuildInstanceDifficulty:Hide()
+			MiniMapChallengeMode:Hide()
+		end
+
 		if((Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled())) then
 			Chinchilla:GetModule("Location"):Hide()
 		end
-			
+
 		if(self.db.profile.hideCombat) then
 			MinimapBackdrop:RegisterEvent('PLAYER_REGEN_DISABLED')
 			MinimapBackdrop:RegisterEvent('PLAYER_REGEN_ENABLED')
@@ -82,7 +84,7 @@ function Expander:Refresh(fromCombat)
 				elseif(event == 'PLAYER_REGEN_ENABLED') then
 					show = true
 				end
-					
+
 				Expander:Refresh(true)
 			end)
 		end
@@ -103,7 +105,7 @@ function Expander:Refresh(fromCombat)
 		MinimapBackdrop:Show()
 
 		Minimap:GetParent():SetAlpha(origAlpha or 1)
-		
+
 		if Appearance then
 			Appearance:SetAlpha()
 			Appearance:SetFrameStrata()
@@ -120,12 +122,14 @@ function Expander:Refresh(fromCombat)
 				DBI:Refresh(icon)
 			end
 		end
-		
+
 		if((Chinchilla:GetModule("Location", true) and Chinchilla:GetModule("Location"):IsEnabled())) then
 			Chinchilla:GetModule("Location"):Show()
 		end
-		
-		MiniMapInstanceDifficulty_Update()
+
+		if Chinchilla:IsRetail() then
+			MiniMapInstanceDifficulty_Update()
+		end
 
 		if(self.db.profile.hideCombat and fromCombat ~= true) then
 			MinimapBackdrop:UnregisterEvent('PLAYER_REGEN_DISABLED')
