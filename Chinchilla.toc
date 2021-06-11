@@ -19,7 +19,7 @@
 ## X-WoWI-ID: 8394
 ## X-Wago-ID: XrNkjlGa
 ## SavedVariables: Chinchilla2DB
-## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, Blizzard_TimeManager
+## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibIsClassic-1.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, Blizzard_TimeManager
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
@@ -37,6 +37,7 @@ Libs\AceHook-3.0\AceHook-3.0.lua
 Libs\AceTimer-3.0\AceTimer-3.0.lua
 Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
 Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
+Libs\LibIsClassic-1.0\LibIsClassic-1.0.lua
 #@end-no-lib-strip@
 
 Locale\enUS.lua

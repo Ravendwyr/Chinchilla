@@ -250,7 +250,7 @@ function MoveButtons:OnInitialize()
 			zoomIn = MinimapZoomIn,
 			zoomOut = MinimapZoomOut,
 		}
-	elseif Chinchilla:IsBurningCrusade() then
+	elseif Chinchilla:IsBurningCrusadeClassic() then
 		buttons = {
 			map = MiniMapWorldMapButton,
 			mail = MiniMapMailFrame,

@@ -37,7 +37,7 @@ function ShowHide:OnInitialize()
 			zoomOut = "MinimapZoomOut",
 			clock = "TimeManagerClockButton",
 		}
-	elseif Chinchilla:IsBurningCrusade() then
+	elseif Chinchilla:IsBurningCrusadeClassic() then
 		frames = {
 			north = "MinimapNorthTag",
 			map = "MiniMapWorldMapButton",

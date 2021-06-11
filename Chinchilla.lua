@@ -2,7 +2,7 @@
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chinchilla")
 
-Chinchilla = LibStub("AceAddon-3.0"):NewAddon("Chinchilla", "AceConsole-3.0", "AceHook-3.0")
+Chinchilla = LibStub("AceAddon-3.0"):NewAddon("Chinchilla", "AceConsole-3.0", "AceHook-3.0", "LibIsClassic-1.0")
 
 
 --[===[@non-debug@
@@ -43,22 +43,6 @@ function Chinchilla:Minimap_OnMouseUp(this, button, ...)
 	else
 		return self.hooks[this].OnMouseUp(this, button, ...)
 	end
-end
-
-
-function Chinchilla:IsRetail()
-	-- One...
-	return WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-end
-
-function Chinchilla:IsClassic()
-	-- Two...
-	return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-end
-
-function Chinchilla:IsBurningCrusade()
-	-- Five!
-	return WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 end
 
 
@@ -221,7 +205,7 @@ function Chinchilla:OnEnable()
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()
 
-	if self:IsClassic() or self:IsBurningCrusade() then
+	if self:IsClassic() or self:IsBurningCrusadeClassic() then
 		MinimapToggleButton:Hide()
 	end
 
@@ -237,7 +221,7 @@ function Chinchilla:OnDisable()
 	MinimapBorderTop:Show()
 	MinimapZoneTextButton:Show()
 
-	if self:IsClassic() or self:IsBurningCrusade() then
+	if self:IsClassic() or self:IsBurningCrusadeClassic() then
 		MinimapToggleButton:Show()
 	end
 
