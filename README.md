@@ -50,6 +50,5 @@ Chinchilla Minimap has been developed by many different people over the years, i
 [![Sponsor](https://img.shields.io/github/sponsors/ravendwyr?label=Sponsors&logo=github+sponsors&style=flat-square)](https://github.com/sponsors/Ravendwyr)
 
 [![Twitch](https://img.shields.io/badge/Twitch-subscribe-yellow?&logo=twitch&style=flat-square)](https://www.twitch.tv/subs/ravendwyr)
-[![Crypto](https://img.shields.io/badge/ETH-send-yellow?&logo=ethereum&style=flat-square)](https://etherscan.io/address/0x332224Ed82264298B3DC68dAcf643E8Df4abDCC3)
 [![PayPal](https://img.shields.io/badge/PayPal-donate-yellow?logo=paypal&style=flat-square)](https://www.paypal.me/Ravendwyr/5gbp)
 [![Coffee](https://img.shields.io/badge/Kofi-buy-yellow?logo=ko-fi&style=flat-square)](https://ko-fi.com/Ravendwyr)
