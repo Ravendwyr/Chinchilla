@@ -60,7 +60,7 @@ Appearance:AddBorderStyle("Flat",			L["Flat"],        "Interface\\AddOns\\Chinch
 Appearance:AddBorderStyle("Chinchilla",	      "Chinchilla",	  "Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Round", "Interface\\AddOns\\Chinchilla\\Art\\Border-Chinchilla-Square")
 
 local cornerTextures = {}
-local inCombat = InCombatLockdown()
+local inCombat = InCombatLockdown() and true or false
 local indoors
 
 function Appearance:OnEnable()
@@ -239,8 +239,10 @@ function Appearance:SetScale(value)
 
 	Minimap:SetScale(value)
 
-	if Chinchilla:IsClassic() or Chinchilla:IsBurningCrusadeClassic() then
+	if Chinchilla:IsClassic() then
 		QuestWatchFrame:GetSize()
+	elseif Chinchilla:IsBurningCrusadeClassic() then
+		WatchFrame:GetSize()
 	else
 		ObjectiveTrackerFrame:GetSize()
 	-- Fix Instance Difficulty size --
