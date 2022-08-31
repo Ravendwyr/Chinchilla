@@ -1,4 +1,4 @@
-## Interface: 90207
+## Interface: 11403
 ## Title: Chinchilla Minimap
 ## Notes: Minimap addon of awesomeness. *chewing sound*. It'll nibble your hay pellets.
 ## Notes-frFR: Minicarte incroyablement incroyable. *bruit de mastication*. Il va grignoter votre foin.
@@ -58,7 +58,6 @@ Modules\Location.lua
 Modules\MoveButtons.lua
 Modules\Ping.lua
 Modules\Position.lua
-Modules\QuestTracker.lua
 Modules\RangeCircle.lua
 Modules\ShowHide.lua
 Modules\TrackingDots.lua
