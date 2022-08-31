@@ -64,7 +64,7 @@ function Chinchilla:CreateConfig()
 				get = function()
 					local current, max = 0, 0
 
-					for _, module in Chinchilla:IterateModules(false) do
+					for _, module in Chinchilla:IterateModules() do
 						if type(module.IsLocked) == "function" then
 							local locked = module:IsLocked()
 
@@ -205,13 +205,12 @@ function Chinchilla:OnEnable()
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:Hide()
 
-	if self:IsClassic() or self:IsBurningCrusadeClassic() then
+	if self:IsClassic() then
 		MinimapToggleButton:Hide()
+	elseif self:IsRetail() then
+		MiniMapWorldMapButton:SetNormalTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
+		MiniMapWorldMapButton:SetPushedTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 	end
-
-	-- this button still exists in Classic
-	MiniMapWorldMapButton:SetNormalTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
-	MiniMapWorldMapButton:SetPushedTexture("Interface\\AddOns\\Chinchilla\\Art\\UI-MiniMap-WorldMapSquare")
 
 	self:RawHookScript(Minimap, "OnMouseUp", "Minimap_OnMouseUp")
 end
@@ -221,12 +220,12 @@ function Chinchilla:OnDisable()
 	MinimapBorderTop:Show()
 	MinimapZoneTextButton:Show()
 
-	if self:IsClassic() or self:IsBurningCrusadeClassic() then
+	if self:IsClassic() then
 		MinimapToggleButton:Show()
+	elseif self:IsRetail() then
+		MiniMapWorldMapButton:SetNormalTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
+		MiniMapWorldMapButton:SetPushedTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
 	end
-
-	MiniMapWorldMapButton:SetNormalTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
-	MiniMapWorldMapButton:SetPushedTexture("Interface\\Minimap\\UI-MiniMap-WorldMapSquare")
 end
 
 function Chinchilla:OnProfileUpdate()
