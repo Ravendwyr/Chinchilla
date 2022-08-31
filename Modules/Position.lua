@@ -24,11 +24,18 @@ function Position:OnInitialize()
 		}
 	})
 
-	if Chinchilla:IsClassic() or Chinchilla:IsBurningCrusadeClassic() then
+	if Chinchilla:IsClassic() then
 		nameToFrame = {
 			minimap = Minimap,
 			durability = DurabilityFrame,
 			questWatch = QuestWatchFrame,
+			ticketStatus = TicketStatusFrame,
+		}
+	elseif Chinchilla:IsBurningCrusadeClassic() then
+		nameToFrame = {
+			minimap = Minimap,
+			durability = DurabilityFrame,
+			questWatch = WatchFrame,
 			ticketStatus = TicketStatusFrame,
 		}
 	else
@@ -173,8 +180,10 @@ function Position:OnEnable()
 	self:SecureHook(DurabilityFrame, "SetPoint", "DurabilityFrame_SetPoint")
 	self:SecureHook(TicketStatusFrame, "SetPoint", "TicketStatusFrame_SetPoint")
 
-	if Chinchilla:IsClassic() or Chinchilla:IsBurningCrusadeClassic() then
+	if Chinchilla:IsClassic() then
 		self:SecureHook(QuestWatchFrame, "SetPoint", "WatchFrame_SetPoint")
+	elseif Chinchilla:IsBurningCrusadeClassic() then
+		self:SecureHook(WatchFrame, "SetPoint", "WatchFrame_SetPoint")
 	else
 		self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
 		self:SecureHook(ObjectiveTrackerFrame, "SetPoint", "WatchFrame_SetPoint")
@@ -316,8 +325,10 @@ function Position:SetMinimapPosition(point, x, y)
 
 	lastQuadrant = quadrant
 
-	if Chinchilla:IsClassic() or Chinchilla:IsBurningCrusadeClassic() then
+	if Chinchilla:IsClassic() then
 		QuestWatchFrame:GetSize()
+	elseif Chinchilla:IsBurningCrusadeClassic() then
+		WatchFrame:GetSize()
 	else
 		ObjectiveTrackerFrame:GetSize()
 	end
@@ -508,8 +519,10 @@ function Position:UpdateClamp(info, value)
 		end
 	end
 
-	if Chinchilla:IsClassic() or Chinchilla:IsBurningCrusadeClassic() then
+	if Chinchilla:IsClassic() then
 		QuestWatchFrame:GetSize()
+	elseif Chinchilla:IsBurningCrusadeClassic() then
+		WatchFrame:GetSize()
 	else
 		ObjectiveTrackerFrame:GetSize()
 	end
