@@ -161,15 +161,11 @@ end
 -- end yoink
 
 local function PositionLFD()
-	if Chinchilla:IsBurningCrusadeClassic() then
-		LFDSearchStatus:ClearAllPoints()
-		LFDSearchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
-	else
-		local point1, point2 = GetTipAnchor(QueueStatusMinimapButton)
+	if not Chinchilla:IsRetail() then return end
 
-		QueueStatusFrame:ClearAllPoints()
-		QueueStatusFrame:SetPoint(point1, QueueStatusMinimapButton, point2)
-	end
+	local point1, point2 = GetTipAnchor(QueueStatusMinimapButton)
+	QueueStatusFrame:ClearAllPoints()
+	QueueStatusFrame:SetPoint(point1, QueueStatusMinimapButton, point2)
 end
 
 
