@@ -161,10 +161,15 @@ end
 -- end yoink
 
 local function PositionLFD()
-	local point1, point2 = GetTipAnchor(QueueStatusMinimapButton)
+	if Chinchilla:IsBurningCrusadeClassic() then
+		LFDSearchStatus:ClearAllPoints()
+		LFDSearchStatus:SetPoint(GetTipAnchor(MiniMapLFGFrame))
+	else
+		local point1, point2 = GetTipAnchor(QueueStatusMinimapButton)
 
-	QueueStatusFrame:ClearAllPoints()
-	QueueStatusFrame:SetPoint(point1, QueueStatusMinimapButton, point2)
+		QueueStatusFrame:ClearAllPoints()
+		QueueStatusFrame:SetPoint(point1, QueueStatusMinimapButton, point2)
+	end
 end
 
 
@@ -254,6 +259,7 @@ function MoveButtons:OnInitialize()
 		buttons = {
 			map = MiniMapWorldMapButton,
 			mail = MiniMapMailFrame,
+			lfg = MiniMapLFGFrame,
 			dayNight = GameTimeFrame,
 			clock = TimeManagerClockButton,
 			track = MiniMapTracking,
