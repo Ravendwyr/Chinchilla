@@ -108,7 +108,7 @@ function Appearance:OnDisable()
 	MinimapBorder:Show()
 	Minimap:SetAlpha(1)
 
-	if Chinchilla:IsClassic() or Chinchilla:IsBurningCrusadeClassic() then
+	if Chinchilla:IsClassic() or Chinchilla:IsWrathClassic() then
 		Minimap:SetMaskTexture("Textures\\MinimapMask")
 	else
 		Minimap:SetMaskTexture(186178)
@@ -241,7 +241,7 @@ function Appearance:SetScale(value)
 
 	if Chinchilla:IsClassic() then
 		QuestWatchFrame:GetSize()
-	elseif Chinchilla:IsBurningCrusadeClassic() then
+	elseif Chinchilla:IsWrathClassic() then
 		WatchFrame:GetSize()
 	else
 		ObjectiveTrackerFrame:GetSize()

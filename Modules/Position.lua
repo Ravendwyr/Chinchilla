@@ -31,7 +31,7 @@ function Position:OnInitialize()
 			questWatch = QuestWatchFrame,
 			ticketStatus = TicketStatusFrame,
 		}
-	elseif Chinchilla:IsBurningCrusadeClassic() then
+	elseif Chinchilla:IsWrathClassic() then
 		nameToFrame = {
 			minimap = Minimap,
 			durability = DurabilityFrame,
@@ -182,7 +182,7 @@ function Position:OnEnable()
 
 	if Chinchilla:IsClassic() then
 		self:SecureHook(QuestWatchFrame, "SetPoint", "WatchFrame_SetPoint")
-	elseif Chinchilla:IsBurningCrusadeClassic() then
+	elseif Chinchilla:IsWrathClassic() then
 		self:SecureHook(WatchFrame, "SetPoint", "WatchFrame_SetPoint")
 	else
 		self:SecureHook(VehicleSeatIndicator, "SetPoint", "VehicleSeatIndicator_SetPoint")
@@ -327,7 +327,7 @@ function Position:SetMinimapPosition(point, x, y)
 
 	if Chinchilla:IsClassic() then
 		QuestWatchFrame:GetSize()
-	elseif Chinchilla:IsBurningCrusadeClassic() then
+	elseif Chinchilla:IsWrathClassic() then
 		WatchFrame:GetSize()
 	else
 		ObjectiveTrackerFrame:GetSize()
@@ -521,7 +521,7 @@ function Position:UpdateClamp(info, value)
 
 	if Chinchilla:IsClassic() then
 		QuestWatchFrame:GetSize()
-	elseif Chinchilla:IsBurningCrusadeClassic() then
+	elseif Chinchilla:IsWrathClassic() then
 		WatchFrame:GetSize()
 	else
 		ObjectiveTrackerFrame:GetSize()
