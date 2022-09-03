@@ -362,10 +362,13 @@ local function angle_set(info, value)
 	if key == "difficulty" then
 		MiniMapInstanceDifficulty:ClearAllPoints()
 		MiniMapInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
-		GuildInstanceDifficulty:ClearAllPoints()
-		GuildInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
-		MiniMapChallengeMode:ClearAllPoints()
-		MiniMapChallengeMode:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+
+		if Chinchilla:IsRetail() then
+			GuildInstanceDifficulty:ClearAllPoints()
+			GuildInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+			MiniMapChallengeMode:ClearAllPoints()
+			MiniMapChallengeMode:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+		end
 	else
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
@@ -454,10 +457,13 @@ local function x_set(info, value)
 	if key == "difficulty" then
 		MiniMapInstanceDifficulty:ClearAllPoints()
 		MiniMapInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
-		GuildInstanceDifficulty:ClearAllPoints()
-		GuildInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
-		MiniMapChallengeMode:ClearAllPoints()
-		MiniMapChallengeMode:SetPoint("CENTER", UIParent, unpack(data))
+
+		if Chinchilla:IsRetail() then
+			GuildInstanceDifficulty:ClearAllPoints()
+			GuildInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+			MiniMapChallengeMode:ClearAllPoints()
+			MiniMapChallengeMode:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+		end
 	else
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
@@ -480,10 +486,13 @@ local function y_set(info, value)
 	if key == "difficulty" then
 		MiniMapInstanceDifficulty:ClearAllPoints()
 		MiniMapInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
-		GuildInstanceDifficulty:ClearAllPoints()
-		GuildInstanceDifficulty:SetPoint("CENTER", UIParent, unpack(data))
-		MiniMapChallengeMode:ClearAllPoints()
-		MiniMapChallengeMode:SetPoint("CENTER", UIParent,  unpack(data))
+
+		if Chinchilla:IsRetail() then
+			GuildInstanceDifficulty:ClearAllPoints()
+			GuildInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+			MiniMapChallengeMode:ClearAllPoints()
+			MiniMapChallengeMode:SetPoint("CENTER", Minimap, "CENTER", getOffset(value))
+		end
 	else
 		buttons[key]:ClearAllPoints()
 		buttons[key]:SetPoint("CENTER", UIParent, unpack(data))
