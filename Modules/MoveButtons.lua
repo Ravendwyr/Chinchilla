@@ -253,6 +253,7 @@ function MoveButtons:OnInitialize()
 		}
 	elseif Chinchilla:IsWrathClassic() then
 		buttons = {
+			difficulty = MiniMapInstanceDifficulty,
 			map = MiniMapWorldMapButton,
 			mail = MiniMapMailFrame,
 			lfg = MiniMapLFGFrame,
