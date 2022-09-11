@@ -243,6 +243,7 @@ function Appearance:SetScale(value)
 		QuestWatchFrame:GetSize()
 	elseif Chinchilla:IsWrathClassic() then
 		WatchFrame:GetSize()
+		MiniMapInstanceDifficulty:SetScale(value)
 	else
 		ObjectiveTrackerFrame:GetSize()
 	-- Fix Instance Difficulty size --
