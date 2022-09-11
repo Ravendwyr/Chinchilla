@@ -65,7 +65,9 @@ function Expander:Refresh(fromCombat)
 			end
 		end
 
-		if Chinchilla:IsRetail() then
+		if Chinchilla:IsWrathClassic() then
+			MiniMapInstanceDifficulty:Hide()
+		elseif Chinchilla:IsRetail() then
 			MiniMapInstanceDifficulty:Hide()
 			GuildInstanceDifficulty:Hide()
 			MiniMapChallengeMode:Hide()
