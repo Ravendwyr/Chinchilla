@@ -15,7 +15,7 @@ jobs:
       - name: Download Repository
         uses: actions/checkout@v3.0.2
         with:
-          fetch-depth: 50
+          fetch-depth: 20
 
       - name: Create Package
         uses: BigWigsMods/packager@v2.0.11
