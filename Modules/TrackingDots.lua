@@ -34,6 +34,7 @@ TrackingDots:AddTrackingDotStyle("BlizzardBigR", L["Blizzard, Big Resources"], "
 TrackingDots:AddTrackingDotStyle("GlassSpheres", L["Glass Spheres"],           "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."GlassSpheres")
 TrackingDots:AddTrackingDotStyle("SolidSpheres", L["Solid Spheres"],           "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."SolidSpheres")
 TrackingDots:AddTrackingDotStyle("Charmed",      L["Charmed"],                 "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."Charmed")
+TrackingDots:AddTrackingDotStyle("HunterZSmall",   "HunterZSmall",             "Interface\\AddOns\\Chinchilla\\Art\\"..prefix.."HunterZSmall")
 
 
 function TrackingDots:OnInitialize()
